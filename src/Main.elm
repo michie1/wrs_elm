@@ -19,6 +19,9 @@ import Navigation
 import UrlParser exposing (Parser, (</>), format, int, oneOf, s, string)
 import String
 
+import Types exposing (Model, Race, Rider)
+import ViewRaces exposing (viewRaces)
+
 main =
   Navigation.program (Navigation.makeParser hashParser)
     --{ init = ( model, Cmd.none ) 
@@ -31,55 +34,41 @@ main =
 
 -- URL PARSERS - check out evancz/url-parser for fancier URL parsing
 
-toHash : Page -> String
+toHash : Types.Page -> String
 toHash page =
   case page of
-    Home ->
+    Types.Home ->
       "#home"
 
-    Riders ->
+    Types.Riders ->
       "#riders"
+    
+    Types.Races ->
+      "#races"
 
-hashParser : Navigation.Location -> Result String Page
+
+hashParser : Navigation.Location -> Result String Types.Page
 hashParser location =
   UrlParser.parse identity pageParser (String.dropLeft 1 location.hash)
 
-type Page = Home | Riders
 
 
-pageParser : Parser (Page -> a) a
+
+pageParser : Parser (Types.Page -> a) a
 pageParser =
   oneOf
-    [ format Home (s "home")
-    , format Riders (s "riders")
+    [ format Types.Home (s "home")
+    , format Types.Riders (s "riders")
+    , format Types.Races (s "races")
     ]
 
 -- MODEL
-
-type alias Race =
-  { name: String
-  }
-
-type alias Rider = 
-  { name : String
-  , licence : String
-  }
-
-type alias Model = 
-  { page : Page
-  , query : String
-  , cache : Dict String (List String)
-  , counter : Int
-  , rider : Rider
-  , races : Array Race
-  , mdl : Material.Model
-  }
 
 
 model : Model
 model =
   Model 
-    Home
+    Types.Home
     ""
     Dict.empty
     1
@@ -87,7 +76,7 @@ model =
     (fromList [ Race "race a", Race "race b" ])
     Material.model
 
-init : Result String Page -> (Model, Cmd Msg)
+init : Result String Types.Page -> (Model, Cmd Msg)
 init result =
   urlUpdate result model
 
@@ -97,30 +86,36 @@ type Msg
   = Increment
   | Decrement
   | Add
+  | GoToRaces
   | Mdl (Material.Msg Msg)
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
     Increment ->
-      { model | counter = model.counter + 1, page = Home }
-        ! [ Navigation.newUrl ( toHash Home ) ]
+      { model | counter = model.counter + 1, page = Types.Home }
+        ! [ Navigation.newUrl ( toHash Types.Home ) ]
      
 
     Decrement ->
-      ( { model | counter = model.counter - 1, page = Riders }
-      , Navigation.newUrl ( toHash Riders )
+      ( { model | counter = model.counter - 1, page = Types.Riders }
+      , Navigation.newUrl ( toHash Types.Riders )
       )
 
     Add -> 
       ( { model | races = Array.push (Race "race c") model.races}
       , Cmd.none
       )
+      
+    GoToRaces ->
+      ( { model | page = Types.Races }
+      , Navigation.newUrl ( toHash Types.Races )
+      )
 
     Mdl msg' -> 
       Material.update msg' model
 
-urlUpdate : Result String Page -> Model -> (Model, Cmd Msg)
+urlUpdate : Result String Types.Page -> Model -> (Model, Cmd Msg)
 urlUpdate result model =
   case result of 
     Ok page ->
@@ -142,8 +137,8 @@ type alias Mdl =
 view : Model -> Html Msg
 view model =
   div []
-    [ Options.styled Html.p [ Typo.display3 ] [text "WRS"]
-    , div [] (viewPage model)
+    [ Options.styled Html.p [ Typo.display3 ] [text "WRS!"]
+    , div [] [ viewPage model ]
     , Chip.span []
       [ Chip.content []
         [ text (toString model.counter) ]
@@ -154,25 +149,30 @@ view model =
     , Button.render Mdl [0] model.mdl 
       [ Button.raised, Button.onClick Decrement ]
       [ text "Decrement" ]
+    , Button.render Mdl [0] model.mdl 
+      [ Button.raised, Button.onClick GoToRaces ]
+      [ text "GoToRaces" ]
     , div [] 
       [ button [ onClick Add ] [ text "Add race c"]
       ]
-    , raceTable (Array.toList model.races)
     , viewRider model
     ]
   |> Material.Scheme.top
 
 
-viewPage : Model -> List (Html msg)
+viewPage : Model -> Html msg
 viewPage model = 
   case model.page of
-    Home ->
-      [ Options.styled Html.p [ Typo.display2 ] [text "HOME"]
-      ]
+    Types.Home ->
+       Options.styled Html.p [ Typo.display2 ] [text "HOME"]
       
-    Riders ->
-      [ Options.styled Html.p [ Typo.display2 ] [text "RIDERS"]
-      ]
+      
+    Types.Riders ->
+       Options.styled Html.p [ Typo.display2 ] [text "RIDERS"]
+      
+    
+    Types.Races ->
+      viewRaces model.races
 
 viewRider : Model -> Html msg
 viewRider model =
@@ -182,28 +182,5 @@ viewRider model =
   , div [] [ text "Licentie: " ]
   , div [] [ text model.rider.licence ]
   ]
-
-raceTable : List Race -> Html msg
-raceTable races = 
-  Table.table []
-    [ Table.thead []
-      [ Table.tr [] 
-        [ Table.th [] [ text "Naam" ]
-        , Table.th [] [ text "Datum" ]
-        , Table.th [] [ text "Soort" ]
-        , Table.th [] [ text "WTOS-renners" ]
-        ]
-      ]
-    , Table.tbody []
-      (races |> List.map (\race ->
-          Table.tr []
-            [ Table.td [] [ text race.name ] 
-            , Table.td [] [ text race.name ] 
-            , Table.td [] [ text race.name ] 
-            , Table.td [ Table.numeric ] [ text race.name ] 
-            ]
-        ) 
-      )
-    ]
 
 
