@@ -1,9 +1,10 @@
-import Html exposing (Html, button, div, text, span, input)
+import Html exposing (Html, button, div, text, span, input, ul, li)
 import Html.Attributes exposing (..)
 import Html.App as Html
 import Html.Events exposing (onClick)
 import Html.Events exposing (onInput)
 import Focus exposing (..)
+import Array exposing (Array, fromList, get)
 
 main =
   Html.beginnerProgram
@@ -14,21 +15,33 @@ main =
 
 -- MODEL
 
+type alias Race =
+  { name: String
+  }
+
 type alias Rider = 
   { name : String
-  , licence: String
+  , licence : String
   }
 
 type alias Model = 
   { counter : Int
   , bla : String
   , rider : Rider
+  , races : Array Race
   }
 
 
 model : Model
 model =
-  Model 1 "foo" (Rider "Michiel" "Elite")
+  Model 
+    1 
+    "foo"
+    (Rider "Michiel" "Elite") 
+    (fromList [ 
+      Race "race a" 
+    , Race "race b" 
+    ])
 
 -- UPDATE
 
@@ -37,8 +50,7 @@ type Msg
   = Increment
   | Decrement
   | Change
-  | SetName String
-
+  | Add
 
 update : Msg -> Model -> Model
 update msg model =
@@ -52,15 +64,10 @@ update msg model =
     Change -> 
         { model | bla = toString model.counter }
 
-    SetName name -> 
-        -- { model | rider = { name | name } }
-        Focus.set (bla) name model
+    Add -> 
+        { model | races = Array.push (Race "race c") model.races}
 
-bla : Focus Rider String
-bla = 
-  Focus.create 
-    .bla 
-    (\f rider -> { rider | bla = f rider.bla }) 
+
 
 -- VIEW
 
@@ -73,8 +80,11 @@ view model =
     , button [ onClick Increment ] [ text "+" ]
     , div [] 
       [ button [ onClick Change ] [ text model.bla ]
+      , button [ onClick Add ] [ text "Add race c"]
+      , div [] [ text (toString model.races) ]
+      , div [] [ printMaybeRaceName (Array.get 0 model.races) ]
+      , div [] [ showRaceNames model.races ]
       ]
-    , div [] [ input [ type' "text", placeholder "Bla", onInput SetName ] [ ] ]
     , viewRider model
     ]
 
@@ -87,3 +97,19 @@ viewRider model =
   , div [] [ text model.rider.licence ]
   ]
 
+printRaceName : Race -> Html msg
+printRaceName race =
+  li [] [ text race.name ]
+
+printMaybeRaceName : Maybe Race -> Html msg
+printMaybeRaceName maybeRace =
+  case maybeRace of
+    Just race -> 
+      printRaceName race
+
+    Nothing ->
+      div [] [ text "No race" ]
+
+showRaceNames : Array Race -> Html msg
+showRaceNames races =
+  ul [] (Array.toList (Array.map printRaceName races))
