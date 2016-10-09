@@ -12,6 +12,7 @@ import Material.Button as Button
 import Material.Options as Options exposing (css)
 import Material.Typography as Typo
 import Material.Table as Table
+import Material.Chip as Chip
 
 main =
   Html.program
@@ -34,7 +35,6 @@ type alias Rider =
 
 type alias Model = 
   { counter : Int
-  , bla : String
   , rider : Rider
   , races : Array Race
   , mdl : Material.Model
@@ -44,8 +44,7 @@ type alias Model =
 model : Model
 model =
   Model 
-    1 
-    "foo"
+    1
     (Rider "Michiel" "Elite") 
     (fromList [ Race "race a", Race "race b" ])
     Material.model
@@ -55,7 +54,6 @@ model =
 type Msg
   = Increment
   | Decrement
-  | Change
   | Add
   | Mdl (Material.Msg Msg)
 
@@ -69,11 +67,6 @@ update msg model =
 
     Decrement ->
       ( { model | counter = model.counter - 1 }
-      , Cmd.none
-      )
-
-    Change -> 
-      ( { model | bla = toString model.counter }
       , Cmd.none
       )
 
@@ -96,39 +89,20 @@ view : Model -> Html Msg
 view model =
   div []
     [ Options.styled Html.p [ Typo.display3 ] [text "WRS"]
-    , button [ onClick Decrement ] [ text "-" ]
-    , div [] [ text (toString model.counter) ]
-    , button [ onClick Increment ] [ text "+" ]
+    , Chip.span []
+      [ Chip.content []
+        [ text (toString model.counter) ]
+      ]
     , Button.render Mdl [0] model.mdl 
-      [ Button.onClick Increment 
-      , css "margin" "0 24px"
-      ]
+      [ Button.raised, Button.onClick Increment ]
       [ text "Increase" ]
+    , Button.render Mdl [0] model.mdl 
+      [ Button.raised, Button.onClick Decrement ]
+      [ text "Decrement" ]
     , div [] 
-      [ button [ onClick Change ] [ text model.bla ]
-      , button [ onClick Add ] [ text "Add race c"]
-      , div [] [ text (toString model.races) ]
-      , div [] [ printMaybeRaceName (Array.get 0 model.races) ]
-      , div [] [ showRaceNames model.races ]
+      [ button [ onClick Add ] [ text "Add race c"]
       ]
-    , Table.table []
-      [ Table.thead []
-        [ Table.tr []
-          [ Table.th [] [ text "Naam" ]
-          , Table.th [ ] [ text "Quantity" ]
-          , Table.th [ ] [ text "Unit Price" ]
-          ]
-        ]
-      , Table.tbody []
-          (Array.toList model.races |> List.map (\item ->
-             Table.tr []
-               [ Table.td [] [ text item.name ]
-               , Table.td [ Table.numeric ] [ text item.name ]
-               , Table.td [ Table.numeric ] [ text item.name ]
-               ]
-             )
-          )
-      ]
+    , raceTable model.races
     , viewRider model
     ]
   |> Material.Scheme.top
@@ -142,19 +116,32 @@ viewRider model =
   , div [] [ text model.rider.licence ]
   ]
 
-printRaceName : Race -> Html msg
-printRaceName race =
-  li [] [ text race.name ]
+raceTable : Array Race -> Html msg
+raceTable races = 
+  Table.table []
+    [ Table.thead []
+      [ Table.tr [] 
+        [ Table.th [] [ text "Naam" ]
+        , Table.th [] [ text "Datum" ]
+        , Table.th [] [ text "Soort" ]
+        , Table.th [] [ text "Aantal WTOS-renners" ]
+        ]
+      ]
+    , Table.tbody []
+      [ case (Array.isEmpty races) of
+          True -> 
+            Table.tr []
+              [ Table.td [] [ text "Geen race" ]
+              ]
 
-printMaybeRaceName : Maybe Race -> Html msg
-printMaybeRaceName maybeRace =
-  case maybeRace of
-    Just race -> 
-      printRaceName race
-
-    Nothing ->
-      div [] [ text "No race" ]
-
-showRaceNames : Array Race -> Html msg
-showRaceNames races =
-  ul [] (Array.toList (Array.map printRaceName races))
+          False -> 
+            Table.tr []
+              (Array.toList races |> 
+                List.map (\item ->
+                  Table.tr []
+                    [ Table.td [] [ text item.name ] ]
+                )
+              )
+          
+      ]
+    ]
