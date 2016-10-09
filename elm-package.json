@@ -3,9 +3,7 @@
     "summary": "helpful summary of your project, less than 80 characters",
     "repository": "https://github.com/user/project.git",
     "license": "BSD3",
-    "source-directories": [
-        "."
-    ],
+    "source-directories": [ "src" ],
     "exposed-modules": [],
     "dependencies": {
         "debois/elm-mdl": "7.6.0 <= v < 8.0.0",
