@@ -2,3 +2,5 @@ Nested.elm
 elm-stuff/
 index.html
 main.html
+node_modules
+npm-debug.log
