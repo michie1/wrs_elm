@@ -14,13 +14,35 @@ import Material.Typography as Typo
 import Material.Table as Table
 import Material.Chip as Chip
 
+import Navigation
+import String
+
 main =
-  Html.program
-    { init = ( model, Cmd.none ) 
+  Navigation.program urlParser
+    --{ init = ( model, Cmd.none ) 
+    { init = init
     , view = view
-    , subscriptions = always Sub.none 
     , update = update
+    , urlUpdate = urlUpdate
+    , subscriptions = always Sub.none 
     }
+
+-- URL PARSERS - check out evancz/url-parser for fancier URL parsing
+
+
+toUrl : Int -> String
+toUrl counter =
+  "#/" ++ toString counter
+
+
+fromUrl : String -> Result String Int
+fromUrl url =
+  String.toInt (String.dropLeft 2 url)
+
+
+urlParser : Navigation.Parser (Result String Int)
+urlParser =
+  Navigation.makeParser (fromUrl << .hash)
 
 -- MODEL
 
@@ -49,6 +71,10 @@ model =
     (fromList [ Race "race a", Race "race b" ])
     Material.model
 
+init : Result String Int -> (Model, Cmd Msg)
+init result =
+  urlUpdate result model
+
 -- UPDATE
 
 type Msg
@@ -62,12 +88,12 @@ update msg model =
   case msg of
     Increment ->
       ( { model | counter = model.counter + 1 }
-      , Cmd.none
+      , Navigation.newUrl (toUrl (model.counter + 1))
       )
 
     Decrement ->
       ( { model | counter = model.counter - 1 }
-      , Cmd.none
+      , Navigation.newUrl (toUrl (model.counter - 1))
       )
 
     Add -> 
@@ -78,6 +104,14 @@ update msg model =
     Mdl msg' -> 
       Material.update msg' model
 
+urlUpdate : Result String Int -> Model -> (Model, Cmd Msg)
+urlUpdate result model =
+  case result of 
+    Ok newCount ->
+      (model, Cmd.none)
+             
+    Err _ ->
+      (model, Navigation.modifyUrl (toUrl model.counter))
 
 
 -- VIEW
@@ -102,7 +136,7 @@ view model =
     , div [] 
       [ button [ onClick Add ] [ text "Add race c"]
       ]
-    , raceTable model.races
+    , raceTable (Array.toList model.races)
     , viewRider model
     ]
   |> Material.Scheme.top
@@ -116,7 +150,7 @@ viewRider model =
   , div [] [ text model.rider.licence ]
   ]
 
-raceTable : Array Race -> Html msg
+raceTable : List Race -> Html msg
 raceTable races = 
   Table.table []
     [ Table.thead []
@@ -124,24 +158,19 @@ raceTable races =
         [ Table.th [] [ text "Naam" ]
         , Table.th [] [ text "Datum" ]
         , Table.th [] [ text "Soort" ]
-        , Table.th [] [ text "Aantal WTOS-renners" ]
+        , Table.th [] [ text "WTOS-renners" ]
         ]
       ]
     , Table.tbody []
-      [ case (Array.isEmpty races) of
-          True -> 
-            Table.tr []
-              [ Table.td [] [ text "Geen race" ]
-              ]
-
-          False -> 
-            Table.tr []
-              (Array.toList races |> 
-                List.map (\item ->
-                  Table.tr []
-                    [ Table.td [] [ text item.name ] ]
-                )
-              )
-          
-      ]
+      (races |> List.map (\race ->
+          Table.tr []
+            [ Table.td [] [ text race.name ] 
+            , Table.td [] [ text race.name ] 
+            , Table.td [] [ text race.name ] 
+            , Table.td [ Table.numeric ] [ text race.name ] 
+            ]
+        ) 
+      )
     ]
+
+
