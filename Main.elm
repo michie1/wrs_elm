@@ -1,4 +1,5 @@
 import Html exposing (Html, button, div, text, span, input, ul, li)
+import Dict exposing (Dict)
 import Html.Attributes exposing (..)
 import Html.App as Html
 import Html.Events exposing (onClick)
@@ -15,10 +16,11 @@ import Material.Table as Table
 import Material.Chip as Chip
 
 import Navigation
+import UrlParser exposing (Parser, (</>), format, int, oneOf, s, string)
 import String
 
 main =
-  Navigation.program urlParser
+  Navigation.program (Navigation.makeParser hashParser)
     --{ init = ( model, Cmd.none ) 
     { init = init
     , view = view
@@ -29,20 +31,28 @@ main =
 
 -- URL PARSERS - check out evancz/url-parser for fancier URL parsing
 
+toHash : Page -> String
+toHash page =
+  case page of
+    Home ->
+      "#home"
 
-toUrl : Int -> String
-toUrl counter =
-  "#/" ++ toString counter
+    Riders ->
+      "#riders"
+
+hashParser : Navigation.Location -> Result String Page
+hashParser location =
+  UrlParser.parse identity pageParser (String.dropLeft 1 location.hash)
+
+type Page = Home | Riders
 
 
-fromUrl : String -> Result String Int
-fromUrl url =
-  String.toInt (String.dropLeft 2 url)
-
-
-urlParser : Navigation.Parser (Result String Int)
-urlParser =
-  Navigation.makeParser (fromUrl << .hash)
+pageParser : Parser (Page -> a) a
+pageParser =
+  oneOf
+    [ format Home (s "home")
+    , format Riders (s "riders")
+    ]
 
 -- MODEL
 
@@ -56,7 +66,10 @@ type alias Rider =
   }
 
 type alias Model = 
-  { counter : Int
+  { page : Page
+  , query : String
+  , cache : Dict String (List String)
+  , counter : Int
   , rider : Rider
   , races : Array Race
   , mdl : Material.Model
@@ -66,12 +79,15 @@ type alias Model =
 model : Model
 model =
   Model 
+    Home
+    ""
+    Dict.empty
     1
     (Rider "Michiel" "Elite") 
     (fromList [ Race "race a", Race "race b" ])
     Material.model
 
-init : Result String Int -> (Model, Cmd Msg)
+init : Result String Page -> (Model, Cmd Msg)
 init result =
   urlUpdate result model
 
@@ -87,13 +103,13 @@ update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
     Increment ->
-      ( { model | counter = model.counter + 1 }
-      , Navigation.newUrl (toUrl (model.counter + 1))
-      )
+      { model | counter = model.counter + 1, page = Home }
+        ! [ Navigation.newUrl ( toHash Home ) ]
+     
 
     Decrement ->
-      ( { model | counter = model.counter - 1 }
-      , Navigation.newUrl (toUrl (model.counter - 1))
+      ( { model | counter = model.counter - 1, page = Riders }
+      , Navigation.newUrl ( toHash Riders )
       )
 
     Add -> 
@@ -104,14 +120,18 @@ update msg model =
     Mdl msg' -> 
       Material.update msg' model
 
-urlUpdate : Result String Int -> Model -> (Model, Cmd Msg)
+urlUpdate : Result String Page -> Model -> (Model, Cmd Msg)
 urlUpdate result model =
   case result of 
-    Ok newCount ->
-      (model, Cmd.none)
+    Ok page ->
+      { model
+        | page = page
+        , query = ""
+      }
+        ! []
              
     Err _ ->
-      (model, Navigation.modifyUrl (toUrl model.counter))
+      (model, Navigation.modifyUrl (toHash model.page))
 
 
 -- VIEW
@@ -123,6 +143,7 @@ view : Model -> Html Msg
 view model =
   div []
     [ Options.styled Html.p [ Typo.display3 ] [text "WRS"]
+    , div [] (viewPage model)
     , Chip.span []
       [ Chip.content []
         [ text (toString model.counter) ]
@@ -140,6 +161,18 @@ view model =
     , viewRider model
     ]
   |> Material.Scheme.top
+
+
+viewPage : Model -> List (Html msg)
+viewPage model = 
+  case model.page of
+    Home ->
+      [ Options.styled Html.p [ Typo.display2 ] [text "HOME"]
+      ]
+      
+    Riders ->
+      [ Options.styled Html.p [ Typo.display2 ] [text "RIDERS"]
+      ]
 
 viewRider : Model -> Html msg
 viewRider model =
