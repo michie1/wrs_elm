@@ -6,7 +6,9 @@ var Elm = require('./src/Main');
 var elm = Elm.Main.fullscreen();
 
 //interop
+/*
 elm.ports.alert.subscribe(function(message) {
   alert(message);
   elm.ports.log.send('Alert called: ' + message);
 });
+*/

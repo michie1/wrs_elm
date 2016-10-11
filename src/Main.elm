@@ -14,6 +14,7 @@ import Material.Options as Options exposing (css)
 import Material.Typography as Typo
 import Material.Table as Table
 import Material.Chip as Chip
+import Material.Layout as Layout
 
 import Navigation
 import UrlParser exposing (Parser, (</>), format, int, oneOf, s, string)
@@ -84,7 +85,7 @@ init result =
 
 type Msg
   = Increment
-  | Decrement
+  | GoToRiders
   | Add
   | GoToRaces
   | Mdl (Material.Msg Msg)
@@ -97,8 +98,9 @@ update msg model =
         ! [ Navigation.newUrl ( toHash Types.Home ) ]
      
 
-    Decrement ->
-      ( { model | counter = model.counter - 1, page = Types.Riders }
+    GoToRiders ->
+      ( 
+        { model | page = Types.Riders }
       , Navigation.newUrl ( toHash Types.Riders )
       )
 
@@ -137,28 +139,34 @@ type alias Mdl =
 view : Model -> Html Msg
 view model =
   div []
-    [ Options.styled Html.p [ Typo.display3 ] [text "WRS!"]
-    , div [] [ viewPage model ]
-    , Chip.span []
-      [ Chip.content []
-        [ text (toString model.counter) ]
-      ]
-    , Button.render Mdl [0] model.mdl 
-      [ Button.raised, Button.onClick Increment ]
-      [ text "Increase" ]
-    , Button.render Mdl [0] model.mdl 
-      [ Button.raised, Button.onClick Decrement ]
-      [ text "Decrement" ]
-    , Button.render Mdl [0] model.mdl 
-      [ Button.raised, Button.onClick GoToRaces ]
-      [ text "GoToRaces" ]
-    , div [] 
-      [ button [ onClick Add ] [ text "Add race c"]
-      ]
-    , viewRider model
+    [ Layout.render Mdl model.mdl [ Layout.fixedHeader ]
+      { header = [
+        Layout.row []
+          [ Layout.title [] 
+              [ Layout.link
+                  [ Layout.href "#home" ]
+                  [ text "WRS" ]
+              ]
+          , Layout.navigation []
+            [ Layout.link
+                [ Layout.href "#races" ]
+                [ text "Races" ]
+            , Layout.link
+                [ Layout.href "#riders" ]
+                [ text "Riders" ]
+            ]
+          ]
+        ]
+      , drawer = []
+      , tabs = ([], [])
+      , main = [ mainView model ]
+      }
     ]
   |> Material.Scheme.top
 
+mainView : Model -> Html Msg
+mainView model =
+  div [] [ viewPage model ]
 
 viewPage : Model -> Html msg
 viewPage model = 
