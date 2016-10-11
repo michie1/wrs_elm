@@ -10,6 +10,7 @@ type alias Model =
   , cache : Dict String (List String)
   , counter : Int
   , rider : Rider
+  , riders : Array Rider
   , races : Array Race
   , mdl : Material.Model
   }

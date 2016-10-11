@@ -22,6 +22,7 @@ import String
 
 import Types exposing (Model, Race, Rider)
 import ViewRaces exposing (viewRaces)
+import ViewRiders exposing (viewRiders)
 
 main =
   Navigation.program (Navigation.makeParser hashParser)
@@ -74,6 +75,7 @@ model =
     Dict.empty
     1
     (Rider "Michiel" "Elite") 
+    (fromList [ Rider "Michiel" "Elite", Rider "Henk" "Amateur" ])
     (fromList [ Race "race a", Race "race b" ])
     Material.model
 
@@ -172,11 +174,14 @@ viewPage : Model -> Html msg
 viewPage model = 
   case model.page of
     Types.Home ->
-       Options.styled Html.p [ Typo.display2 ] [text "HOME"]
+      div [] 
+        [ Options.styled Html.p [ Typo.display2 ] [text "HOME"]
+        , viewRider model
+        ]
       
       
     Types.Riders ->
-       Options.styled Html.p [ Typo.display2 ] [text "RIDERS"]
+      viewRiders model.riders
       
     
     Types.Races ->
