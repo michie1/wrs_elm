@@ -2,7 +2,8 @@ module ViewRiders exposing (..)
 
 import Array exposing (Array, fromList, get)
 import Html exposing (Html, button, div, text, span, input, ul, li)
-import Types exposing (Model, Race, Rider)
+import App.Model exposing (Rider)
+
 
 import Material
 import Material.Scheme

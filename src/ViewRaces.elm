@@ -2,21 +2,39 @@ module ViewRaces exposing (..)
 
 import Array exposing (Array, fromList, get)
 import Html exposing (Html, button, div, text, span, input, ul, li)
-import Types exposing (Model, Race, Rider)
+import Html.Attributes exposing (..)
+
+import App.Model exposing (Rider, Mdl)
+import App.Msg exposing (Msg(..))
+
+import Race.Model exposing (Race)
 
 import Material
 import Material.Scheme
 import Material.Button as Button
-import Material.Options as Options exposing (css)
+import Material.Options as Options exposing (Style, css)
 import Material.Typography as Typo
 import Material.Table as Table
 import Material.Chip as Chip
+import Material.Layout as Layout
 
-viewRaces : (Array Race) -> Html msg
-viewRaces races =
+-- viewRaces : (Array Race) -> Material.Model -> Html msg
+viewRaces : (Array Race) -> Mdl -> Html Msg
+viewRaces races mdl =
   div [] 
-  [ Options.styled Html.p [ Typo.display2 ] [text "RACES"] 
+  [ Options.styled Html.p 
+      [ Typo.display2 ]
+      [ text "RACES" ] 
     , raceTable (Array.toList races)
+    , div [] 
+        [ Layout.link
+            [ Layout.href "#races-add" ]
+            [ text "Add race" ]
+        , Button.render Mdl [0] mdl
+            [ Button.raised
+           , Button.onClick GoToRaceAdd ]
+            [ text "Add race" ]
+        ]
   ]
 
 
