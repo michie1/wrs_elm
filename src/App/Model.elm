@@ -16,8 +16,8 @@ type alias App =
   , cache : Dict String (List String)
   , counter : Int
   , rider : Rider
-  , riders : Array Rider
-  , races : Array Race
+  , riders : List Rider
+  , races : List Race
   , raceAdd : RaceAdd
   , mdl : Material.Model
   }
@@ -45,9 +45,9 @@ initial =
         ""
         Dict.empty
         1
-        (Rider "Michiel" "Elite") 
-        (fromList [ Rider "Michiel" "Elite", Rider "Henk" "Amateur" ])
-        (fromList [ Race "race a", Race "race b" ])
+        ( Rider "Michiel" "Elite") 
+        [ Rider "Michiel" "Elite", Rider "Henk" "Amateur" ]
+        [ Race "race a", Race "race b" ]
         RaceAdd.Model.initial
         Material.model
     , Cmd.none 

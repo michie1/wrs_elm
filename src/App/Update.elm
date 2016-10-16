@@ -7,6 +7,7 @@ import Race.Model exposing (Race)
 import Array exposing (Array, fromList, get)
 --import RaceAdd.Update
 import RaceAdd.Update
+import Races.Update
 
 import Material
 
@@ -39,7 +40,15 @@ update msg app =
           , Cmd.map RaceAdd cmd 
           )
 
+
+    RacesMsg subMsg ->
+      let 
+          ( updatedRaces, cmd ) =
+            Races.Update.update subMsg app.races
+      in
+          ( { app | races = updatedRaces }
+          , Cmd.map RacesMsg cmd
+          )
+
     Mdl msg' -> 
       Material.update msg' app
-
-
