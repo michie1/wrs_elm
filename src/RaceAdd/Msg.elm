@@ -6,5 +6,5 @@ import Race.Model exposing (Race)
 
 
 type Msg
-  = Add Race
+  = SetName String
   | Mdl (Material.Msg Msg)

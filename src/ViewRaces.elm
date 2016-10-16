@@ -32,7 +32,8 @@ viewRaces races mdl =
             [ text "Add race" ]
         , Button.render Mdl [0] mdl
             [ Button.raised
-           , Button.onClick GoToRaceAdd ]
+            --, Button.onClick GoToRaceAdd 
+            ]
             [ text "Add race" ]
         ]
   ]

@@ -6,6 +6,7 @@ import Material
 
 import App.Msg exposing (Msg(..))
 import RaceAdd.Msg as RaceAdd
+import RaceAdd.Model exposing (RaceAdd)
 
 import Race.Model exposing (Race)
 
@@ -17,6 +18,7 @@ type alias App =
   , rider : Rider
   , riders : Array Rider
   , races : Array Race
+  , raceAdd : RaceAdd
   , mdl : Material.Model
   }
 
@@ -46,6 +48,7 @@ initial =
         (Rider "Michiel" "Elite") 
         (fromList [ Rider "Michiel" "Elite", Rider "Henk" "Amateur" ])
         (fromList [ Race "race a", Race "race b" ])
+        RaceAdd.Model.initial
         Material.model
     , Cmd.none 
     )

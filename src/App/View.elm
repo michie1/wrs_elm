@@ -17,6 +17,7 @@ import Material.Scheme
 import Material.Options as Options exposing (css)
 import Material.Typography as Typo
 import Material.Layout as Layout
+import Material.Textfield as Textfield
 
 render : App -> Html Msg
 render app =
@@ -40,6 +41,7 @@ render app =
                 [ Layout.href "#race-add" ]
                 [ text "Add race" ]
             ]
+    
           ]
         ]
       , drawer = []
@@ -58,10 +60,19 @@ viewPage app =
   case app.page of
     Home ->
       div [] 
-        [ Options.styled Html.p 
-            [ Typo.display2 ] 
-            [ text "HOME" ]
-        , viewRider app
+        [ div [] 
+          [ Textfield.render Mdl [2] app.mdl
+              [ Textfield.label "hoi"
+              , Textfield.floatingLabel
+              , Textfield.text' 
+              ]
+          , div [] 
+            [ Options.styled Html.p 
+                [ Typo.display2 ] 
+                [ text "HOME" ]
+            , viewRider app
+            ]
+          ]
         ]
       
     Riders ->
@@ -72,7 +83,7 @@ viewPage app =
 
     RaceAddPage -> 
       div [] 
-        [ Html.App.map RaceAdd (RaceAdd.View.render (Race "leeg") app.mdl)
+        [ Html.App.map RaceAdd (RaceAdd.View.render app.raceAdd)
         ]
 
 viewRider : App -> Html Msg
