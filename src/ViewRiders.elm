@@ -1,6 +1,5 @@
 module ViewRiders exposing (..)
 
-import Array exposing (Array, fromList, get)
 import Html exposing (Html, button, div, text, span, input, ul, li)
 import App.Model exposing (Rider)
 
@@ -13,11 +12,11 @@ import Material.Typography as Typo
 import Material.Table as Table
 import Material.Chip as Chip
 
-viewRiders : (Array Rider) -> Html msg
+viewRiders : (List Rider) -> Html msg
 viewRiders riders =
   div [] 
   [ Options.styled Html.p [ Typo.display2 ] [text "RIDERS"] 
-    , riderTable (Array.toList riders)
+    , riderTable (riders)
   ]
 
 

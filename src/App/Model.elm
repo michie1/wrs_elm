@@ -1,6 +1,5 @@
 module App.Model exposing (App, Page(..), Rider, Mdl, initial)
 
-import Array exposing (Array, fromList, get)
 import Dict exposing (Dict)
 import Material 
 

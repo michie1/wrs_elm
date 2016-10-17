@@ -1,6 +1,5 @@
 module ViewRaces exposing (..)
 
-import Array exposing (Array, fromList, get)
 import Html exposing (Html, button, div, text, span, input, ul, li)
 import Html.Attributes exposing (..)
 
@@ -18,14 +17,13 @@ import Material.Table as Table
 import Material.Chip as Chip
 import Material.Layout as Layout
 
--- viewRaces : (Array Race) -> Material.Model -> Html msg
-viewRaces : (Array Race) -> Mdl -> Html Msg
+viewRaces : (List Race) -> Mdl -> Html Msg
 viewRaces races mdl =
   div [] 
   [ Options.styled Html.p 
       [ Typo.display2 ]
       [ text "RACES" ] 
-    , raceTable (Array.toList races)
+    , raceTable (List.toList races)
     , div [] 
         [ Layout.link
             [ Layout.href "#races-add" ]
