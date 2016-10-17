@@ -6,7 +6,6 @@ import Html.App as Html
 import Html.Events exposing (onClick)
 import Html.Events exposing (onInput)
 import Focus exposing (..)
-import Array exposing (Array, fromList, get)
 
 import Navigation
 import UrlParser exposing (Parser, (</>), format, int, oneOf, s, string)

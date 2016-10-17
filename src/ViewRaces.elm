@@ -23,7 +23,7 @@ viewRaces races mdl =
   [ Options.styled Html.p 
       [ Typo.display2 ]
       [ text "RACES" ] 
-    , raceTable (List.toList races)
+    , raceTable (races)
     , div [] 
         [ Layout.link
             [ Layout.href "#races-add" ]

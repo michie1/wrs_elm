@@ -4,7 +4,6 @@ import App.Model exposing (App, Page(..))
 import App.Msg exposing (Msg(..))
 
 import Race.Model exposing (Race)
-import Array exposing (Array, fromList, get)
 --import RaceAdd.Update
 import RaceAdd.Update
 import Races.Update
