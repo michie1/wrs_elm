@@ -2,13 +2,13 @@ module RaceAdd.Model exposing (RaceAdd, initial)
 
 import Material 
 
+import Race.Model exposing (Race)
+
 type alias RaceAdd =
-  { name : String
-  , mdl : Material.Model
+  { race: Race
   }
 
 initial : RaceAdd
 initial =
-  { name = "HOI"
-  , mdl = Material.model
+  { race = Race "Initial"
   }

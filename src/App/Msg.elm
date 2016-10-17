@@ -4,10 +4,15 @@ import Material
 
 import RaceAdd.Msg as RaceAdd
 
-import Races.Msg
+import Race.Model exposing (Race)
+
+import App.Page exposing (Page(..))
 
 type Msg
-  = RaceAdd RaceAdd.Msg
-  | RacesMsg Races.Msg.Msg
+  --= RaceAdd RaceAdd.Msg
+  --| RacesMsg Races.Msg.Msg
+  = Add Race
+  | SetName String
+  | GoTo Page
   | Mdl (Material.Msg Msg)
 

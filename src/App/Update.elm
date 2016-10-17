@@ -1,11 +1,11 @@
 module App.Update exposing (update)
 
-import App.Model exposing (App, Page(..))
+import App.Model exposing (App)
+import App.Page exposing (Page(..))
 import App.Msg exposing (Msg(..))
 
 import Race.Model exposing (Race)
 --import RaceAdd.Update
-import RaceAdd.Update
 import Races.Update
 
 import Material
@@ -27,27 +27,35 @@ toHash page =
     RaceAddPage ->
       "#race-add"
 
+
 update : Msg -> App -> (App, Cmd Msg)
 update msg app =
   case msg of
-    RaceAdd subMsg -> 
-      let
-        ( state, cmd ) =
-          ( RaceAdd.Update.update subMsg app.raceAdd)
-      in
-          ( { app | raceAdd = state }
-          , Cmd.map RaceAdd cmd 
-          )
+    
+    Add race -> 
+      ( { app | 
+          races = ( List.append [race] app.races )
+        -- , newRace = ( Race "" ) 
+        }
+      , Navigation.newUrl "#races"
+      )
 
-
-    RacesMsg subMsg ->
+    SetName name' ->
       let 
-          ( updatedRaces, cmd ) =
-            Races.Update.update subMsg app.races
-      in
-          ( { app | races = updatedRaces }
-          , Cmd.map RacesMsg cmd
-          )
+        raceAdd = app.raceAdd
+        race = raceAdd.race
+        race' = { race | name = name' }
+        raceAdd' = { raceAdd | race = race' }
+        app' = { app | raceAdd = raceAdd' }
+      in 
+        ( app'
+        , Cmd.none 
+        )
+
+    GoTo page ->
+      ( app
+      , (Navigation.newUrl (toHash page))
+      )
 
     Mdl msg' -> 
       Material.update msg' app

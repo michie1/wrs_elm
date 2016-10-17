@@ -1,11 +1,12 @@
 module Races.List exposing (..)
 
-import Races.Msg as Races exposing (Msg(..))
+--import Races.Msg as Races exposing (Msg(..))
 import Races.Model exposing (Race)
 
 import App.Model 
 --exposing (Mdl)
 import App.Msg 
+import App.Page
 
 import Html exposing (Html, div, text)
 
@@ -16,10 +17,19 @@ import Material.Options as Options exposing (Style, css)
 import Material.Typography as Typo
 import Material.Table as Table
 
-render : List Race -> Html Races.Msg
-render races =
+
+render : List Race -> App.Model.Mdl -> Html App.Msg.Msg
+render races mdl =
   div []
-    [ raceTable races
+    [ div [] 
+      [ raceTable races 
+      ]
+    , Button.render App.Msg.Mdl [0] mdl
+      [ Button.raised
+      , Button.onClick ( App.Msg.GoTo App.Page.RaceAddPage )
+      ]
+      [ text "Add" 
+      ]
     ]
 
 raceTable : List Race -> Html msg

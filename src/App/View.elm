@@ -4,7 +4,8 @@ import Html exposing (Html, button, div, text, span, input, ul, li)
 import Html.App
 
 import App.Msg exposing (Msg(..))
-import App.Model exposing (App, Rider, Page(..), Mdl)
+import App.Model exposing (App, Rider, Mdl)
+import App.Page
 
 import Race.Model exposing (Race)
 
@@ -60,15 +61,10 @@ mainView app =
 viewPage : App -> Html Msg
 viewPage app = 
   case app.page of
-    Home ->
+    App.Page.Home ->
       div [] 
         [ div [] 
-          [ Textfield.render Mdl [2] app.mdl
-              [ Textfield.label "hoi"
-              , Textfield.floatingLabel
-              , Textfield.text' 
-              ]
-          , div [] 
+          [ div [] 
             [ Options.styled Html.p 
                 [ Typo.display2 ] 
                 [ text "HOME" ]
@@ -77,18 +73,17 @@ viewPage app =
           ]
         ]
       
-    Riders ->
+    App.Page.Riders ->
       viewRiders app.riders
       
-    Races ->
-      --viewRaces app.races app.mdl
+    App.Page.Races ->
       div [] 
-        [ Html.App.map RacesMsg (Races.List.render app.races)
+        [ Races.List.render app.races app.mdl
         ]
 
-    RaceAddPage -> 
+    App.Page.RaceAddPage -> 
       div [] 
-        [ Html.App.map RaceAdd (RaceAdd.View.render app.raceAdd)
+        [ RaceAdd.View.render app.raceAdd.race app.mdl
         ]
 
 viewRider : App -> Html Msg

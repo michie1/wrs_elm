@@ -1,4 +1,4 @@
-module App.Model exposing (App, Page(..), Rider, Mdl, initial)
+module App.Model exposing (App, Rider, Mdl, initial)
 
 import Dict exposing (Dict)
 import Material 
@@ -9,8 +9,10 @@ import RaceAdd.Model exposing (RaceAdd)
 
 import Race.Model exposing (Race)
 
+import App.Page as Page exposing (Page(..))
+
 type alias App = 
-  { page : Page
+  { page : Page.Page
   , query : String
   , cache : Dict String (List String)
   , counter : Int
@@ -20,12 +22,6 @@ type alias App =
   , raceAdd : RaceAdd
   , mdl : Material.Model
   }
-
-type Page = 
-    Home 
-  | Riders
-  | Races
-  | RaceAddPage
 
 
 type alias Rider = 
@@ -46,7 +42,7 @@ initial =
         1
         ( Rider "Michiel" "Elite") 
         [ Rider "Michiel" "Elite", Rider "Henk" "Amateur" ]
-        [ Race "race a", Race "race b" ]
+        [ Race "race a", Race "race c" ]
         RaceAdd.Model.initial
         Material.model
     , Cmd.none 

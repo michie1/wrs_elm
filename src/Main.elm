@@ -11,7 +11,8 @@ import Navigation
 import UrlParser exposing (Parser, (</>), format, int, oneOf, s, string)
 import String
 
-import App.Model exposing (App, Rider, Page(..), Mdl)
+import App.Model exposing (App, Rider, Mdl)
+import App.Page
 import App.Msg exposing (Msg(..))
 import App.View
 import App.Update
@@ -34,45 +35,45 @@ main =
 
 -- URL PARSERS - check out evancz/url-parser for fancier URL parsing
 
-toHash : Page -> String
+toHash : App.Page.Page -> String
 toHash page =
   case page of
-    Home ->
+    App.Page.Home ->
       "#home"
 
-    Riders ->
+    App.Page.Riders ->
       "#riders"
     
-    Races ->
+    App.Page.Races ->
       "#races"
 
-    RaceAddPage ->
+    App.Page.RaceAddPage ->
       "#race-add"
 
 
-hashParser : Navigation.Location -> Result String Page
+hashParser : Navigation.Location -> Result String App.Page.Page
 hashParser location =
   UrlParser.parse identity pageParser (String.dropLeft 1 location.hash)
 
 
 
 
-pageParser : Parser (Page -> a) a
+pageParser : Parser (App.Page.Page -> a) a
 pageParser =
   oneOf
-    [ format Home (s "home")
-    , format Riders (s "riders")
-    , format Races (s "races")
-    , format RaceAddPage (s "race-add")
+    [ format App.Page.Home (s "home")
+    , format App.Page.Riders (s "riders")
+    , format App.Page.Races (s "races")
+    , format App.Page.RaceAddPage (s "race-add")
     ]
 
 -- MODEL
 
-init : Result String Page -> (App, Cmd Msg)
+init : Result String App.Page.Page -> (App, Cmd Msg)
 init result =
   urlUpdate result (fst App.Model.initial)
 
-urlUpdate : Result String Page -> App -> (App, Cmd Msg)
+urlUpdate : Result String App.Page.Page -> App -> (App, Cmd Msg)
 urlUpdate result app =
   case result of 
     Ok page ->
