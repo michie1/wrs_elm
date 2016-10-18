@@ -50,6 +50,8 @@ toHash page =
     App.Page.RaceAddPage ->
       "#race-add"
 
+    App.Page.RacesDetails ->
+      "#races-1"
 
 hashParser : Navigation.Location -> Result String App.Page.Page
 hashParser location =
@@ -65,6 +67,7 @@ pageParser =
     , format App.Page.Riders (s "riders")
     , format App.Page.Races (s "races")
     , format App.Page.RaceAddPage (s "race-add")
+    , format App.Page.RacesDetails (s "races-1")
     ]
 
 -- MODEL

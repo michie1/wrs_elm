@@ -12,6 +12,7 @@ import Race.Model exposing (Race)
 import RaceAdd.View
 
 import Races.List
+import Races.Details
 
 import ViewRaces exposing (viewRaces)
 import ViewRiders exposing (viewRiders)
@@ -79,6 +80,11 @@ viewPage app =
     App.Page.Races ->
       div [] 
         [ Races.List.render app.races app.mdl
+        ]
+      
+    App.Page.RacesDetails ->
+      div [] 
+        [ Races.Details.render app.races app.mdl
         ]
 
     App.Page.RaceAddPage -> 

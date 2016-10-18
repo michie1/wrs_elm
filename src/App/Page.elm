@@ -4,4 +4,5 @@ type Page =
     Home 
   | Riders
   | Races
+  | RacesDetails
   | RaceAddPage

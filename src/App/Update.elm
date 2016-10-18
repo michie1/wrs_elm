@@ -7,6 +7,7 @@ import App.Msg exposing (Msg(..))
 import Race.Model exposing (Race)
 --import RaceAdd.Update
 import Races.Update
+import RaceAdd.Model exposing (RaceAdd)
 
 import Material
 
@@ -28,14 +29,26 @@ toHash page =
       "#race-add"
 
 
+setRaceName : Race -> String -> Race
+setRaceName race name =
+  { race | name = name }
+
+clearRaceName : Race -> Race
+clearRaceName race =
+  setRaceName race ""
+
+setRaceAdd : RaceAdd -> Race -> RaceAdd
+setRaceAdd raceAdd race' =
+  { raceAdd | race = race' }
+
 update : Msg -> App -> (App, Cmd Msg)
 update msg app =
   case msg of
     
     Add race -> 
       ( { app | 
-          races = ( List.append [race] app.races )
-        -- , newRace = ( Race "" ) 
+          races = ( List.append [race] app.races ) 
+        , raceAdd = ( setRaceAdd app.raceAdd ( clearRaceName app.raceAdd.race ) ) 
         }
       , Navigation.newUrl "#races"
       )
