@@ -1,5 +1,6 @@
 module Races.Msg exposing (..)
 
-type Msg 
-  = Add
-  | ShowRaces
+
+type Msg
+    = Add
+    | ShowRaces

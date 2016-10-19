@@ -1,15 +1,17 @@
 module Races.Details exposing (..)
 
 --import Races.Msg as Races exposing (Msg(..))
+
 import Races.Model exposing (Race)
+import App.Model
 
-import App.Model 
+
 --exposing (Mdl)
-import App.Msg 
+
+import App.Msg
 import App.Page
-
 import Html exposing (Html, div, text)
-
+import Material.List as List
 import Material
 import Material.Scheme
 import Material.Button as Button
@@ -20,22 +22,38 @@ import Material.Table as Table
 
 render : List Race -> App.Model.Mdl -> Html App.Msg.Msg
 render races mdl =
-  case List.head races of                  
-    Nothing ->  
-      div []
-        [ text "Geen race" ]
+    case List.head races of
+        Nothing ->
+            div []
+                [ heading "Race does not exist" ]
 
-    Just race ->
-      div []
-        [ div [] 
-          [ text "Wel race" 
-          ]
-        , div [] 
-          [ Button.render App.Msg.Mdl [0] mdl
-            [ Button.raised 
-            , Button.onClick ( App.Msg.GoTo App.Page.RaceAddPage )
-            ] 
-            [ text "HOI" 
+        Just race ->
+            div []
+                [ heading race.name
+                , info race
+                ]
+
+heading : String -> Html App.Msg.Msg
+heading title =
+    Options.styled 
+        Html.p
+        [ Typo.display2 ]
+        [ text title ]
+
+li : String -> String -> Html App.Msg.Msg
+li sub value =
+    List.li [ List.withSubtitle ] 
+        [ List.content [] 
+            [ text value
+            , List.subtitle [] [ text sub ]
             ]
-          ]
+        ]
+
+info : Race -> Html App.Msg.Msg
+info race =
+    List.ul []
+        [ li "Name" race.name
+        , li "Date" race.name
+        , li "Type" race.name
+        , li "Points" race.name
         ]

@@ -1,7 +1,8 @@
 module Races.Model exposing (..)
 
-import Material 
+import Material
+
 
 type alias Race =
-  { name: String
-  }
+    { name : String
+    }
