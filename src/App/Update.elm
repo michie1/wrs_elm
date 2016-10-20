@@ -7,6 +7,7 @@ import App.Msg exposing (Msg(..))
 import Races.Model exposing (Race, RaceAdd)
 import Riders.Model exposing (Rider, RiderAdd)
 
+import Riders.Update
 
 import Material
 import Navigation
@@ -16,9 +17,7 @@ setRaceName : Race -> String -> Race
 setRaceName race name =
     { race | name = name }
 
-setRiderName : Rider -> String -> Rider
-setRiderName rider name =
-    { rider | name = name }
+
  
 setRaceId : Race -> List Race -> Race
 setRaceId race races =
@@ -26,39 +25,21 @@ setRaceId race races =
         id = calcRaceId races
     in 
         { race | id = id }
-        
-setRiderId : Rider -> List Rider -> Rider
-setRiderId rider riders =
-    let 
-        id = calcRiderId riders
-    in 
-        { rider | id = id }
+
 
 calcRaceId : List Race -> Int
 calcRaceId races = 
     ( List.length races ) + 1
 
-calcRiderId : List Rider -> Int
-calcRiderId riders = 
-    ( List.length riders ) + 1
 
 clearRaceName : Race -> Race
 clearRaceName race =
     setRaceName race ""
 
-clearRiderName : Rider -> Rider
-clearRiderName rider =
-    setRiderName rider ""
 
 setRaceAdd : RaceAdd -> Race -> RaceAdd
 setRaceAdd raceAdd race' =
     { raceAdd | race = race' }
-
-setRiderAdd : RiderAdd -> Rider -> RiderAdd
-setRiderAdd riderAdd rider' =
-    { riderAdd | rider = rider' }
-
-
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
@@ -74,16 +55,7 @@ update msg app =
                 , Navigation.newUrl ("#races/" ++ (toString newRace.id))
                 )
 
-        AddRider rider ->
-            let
-                newRider = setRiderId rider app.riders
-            in
-                ( { app
-                    | riders = (List.append [ newRider ] app.riders)
-                    , riderAdd = (setRiderAdd app.riderAdd (clearRiderName app.riderAdd.rider))
-                  }
-                , Navigation.newUrl ("#riders/" ++ (toString newRider.id))
-                )
+   
 
         SetRaceName name' ->
             let
@@ -105,27 +77,12 @@ update msg app =
                 ( app'
                 , Cmd.none
                 )
-                
-        SetRiderName name' ->
-            let
-                riderAdd =
-                    app.riderAdd
 
-                rider =
-                    riderAdd.rider
+        AddRider rider ->
+            Riders.Update.addRider app rider  
 
-                rider' =
-                    { rider | name = name' }
-
-                riderAdd' =
-                    { riderAdd | rider = rider' }
-
-                app' =
-                    { app | riderAdd = riderAdd' }
-            in
-                ( app'
-                , Cmd.none
-                )
+        SetRiderName newName ->
+            Riders.Update.setRiderAddName app newName
 
         GoTo page ->
             ( app
