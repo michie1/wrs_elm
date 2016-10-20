@@ -5,8 +5,8 @@ import Html.App
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App, Rider, Mdl)
 import App.Page
-import Race.Model exposing (Race)
-import RaceAdd.View
+import Races.Model exposing (Race)
+import Races.Add
 import Races.List
 import Races.Details
 import ViewRiders exposing (viewRiders)
@@ -69,7 +69,6 @@ viewPage app =
                         [ Options.styled Html.p
                             [ Typo.display2 ]
                             [ text "HOME" ]
-                        , viewRider app
                         ]
                     ]
                 ]
@@ -94,9 +93,9 @@ viewPage app =
                     app.mdl
                 ]
 
-        App.Page.RaceAddPage ->
+        App.Page.RacesAdd ->
             div []
-                [ RaceAdd.View.render app.raceAdd.race app.mdl
+                [ Races.Add.render app.raceAdd.race app.mdl
                 ]
 
 

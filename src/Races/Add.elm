@@ -1,4 +1,4 @@
-module RaceAdd.View exposing (render)
+module Races.Add exposing (render)
 
 import Html exposing (Html, button, div, text, span, input, ul, li)
 
@@ -15,13 +15,22 @@ import Material.Options as Options exposing (css)
 
 --import RaceAdd.Msg as RaceAdd exposing (Msg(..))
 
-import RaceAdd.Model exposing (RaceAdd)
-import Race.Model exposing (Race)
+--import RaceAdd.Model exposing (RaceAdd)
+import App.Model exposing (Mdl)
+import Races.Model exposing (Race)
 import App.Msg
-import App.Model
+
+type alias RaceAdd =
+    { race : Race
+    }
 
 
-render : Race -> App.Model.Mdl -> Html App.Msg.Msg
+initial : RaceAdd
+initial =
+    { race = (Race 0 "Initial")
+    }
+
+render : Race -> Mdl -> Html App.Msg.Msg
 render race mdl =
     div []
         [ Options.styled Html.p

@@ -3,10 +3,10 @@ module App.Model exposing (App, Rider, Mdl, initial)
 import Dict exposing (Dict)
 import Material
 import App.Msg exposing (Msg(..))
-import RaceAdd.Msg as RaceAdd
-import RaceAdd.Model exposing (RaceAdd)
-import Race.Model exposing (Race)
+--import RaceAdd.Msg as RaceAdd
+--import RaceAdd.Model exposing (RaceAdd)
 import App.Page as Page exposing (Page(..))
+import Races.Model
 
 
 type alias App =
@@ -16,8 +16,8 @@ type alias App =
     , counter : Int
     , rider : Rider
     , riders : List Rider
-    , races : List Race
-    , raceAdd : RaceAdd
+    , races : List Races.Model.Race
+    , raceAdd : Races.Model.RaceAdd
     , mdl : Material.Model
     }
 
@@ -41,8 +41,8 @@ initial =
         1
         (Rider "Michiel" "Elite")
         [ Rider "Michiel" "Elite", Rider "Henk" "Amateur" ]
-        [ (Race 1 "race a"), (Race 2 "race c") ]
-        RaceAdd.Model.initial
+        [ (Races.Model.Race 1 "race a"), (Races.Model.Race 2 "race c") ]
+        Races.Model.initial
         Material.model
     , Cmd.none
     )

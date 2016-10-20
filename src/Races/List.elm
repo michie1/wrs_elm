@@ -2,8 +2,8 @@ module Races.List exposing (..)
 
 --import Races.Msg as Races exposing (Msg(..))
 
-import Races.Model exposing (Race)
 import App.Model
+import Races.Model exposing (Race)
 
 
 --exposing (Mdl)
@@ -19,18 +19,25 @@ import Material.Options as Options exposing (Style, css)
 import Material.Typography as Typo
 import Material.Table as Table
 
+heading : String -> Html App.Msg.Msg
+heading title =
+    Options.styled 
+        Html.p
+        [ Typo.display2 ]
+        [ text title ]
 
 render : List Race -> App.Model.Mdl -> Html App.Msg.Msg
 render races mdl =
     div []
         [ div []
-            [ raceTable races
+            [ heading "Races"
+            , raceTable races
             ]
         , Button.render App.Msg.Mdl
             [ 0 ]
             mdl
             [ Button.raised
-            , Button.onClick (App.Msg.GoTo App.Page.RaceAddPage)
+            , Button.onClick (App.Msg.GoTo App.Page.RacesAdd)
             ]
             [ text "Add"
             ]

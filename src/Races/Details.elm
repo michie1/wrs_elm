@@ -2,8 +2,8 @@ module Races.Details exposing (..)
 
 --import Races.Msg as Races exposing (Msg(..))
 
+import App.Model exposing (Mdl)
 import Races.Model exposing (Race)
-import App.Model
 
 
 --exposing (Mdl)
@@ -20,7 +20,7 @@ import Material.Typography as Typo
 import Material.Table as Table
 
 
-render : Maybe Race -> App.Model.Mdl -> Html App.Msg.Msg
+render : Maybe Race -> Mdl -> Html App.Msg.Msg
 render maybeRace mdl =
     case maybeRace of
         Nothing ->

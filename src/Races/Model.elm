@@ -1,7 +1,14 @@
-module Races.Model exposing (..)
+module Races.Model exposing (RaceAdd, Race, initial)
 
-import Material
+type alias RaceAdd =
+    { race : Race
+    }
 
+
+initial : RaceAdd
+initial =
+    { race = (Race 0 "Initial")
+    }
 
 type alias Race =
     { id : Int

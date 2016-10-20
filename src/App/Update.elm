@@ -3,34 +3,17 @@ module App.Update exposing (update)
 import App.Model exposing (App)
 import App.Page exposing (Page(..))
 import App.Msg exposing (Msg(..))
-import Race.Model exposing (Race)
+
+import Races.Model exposing (Race, RaceAdd)
 
 
 --import RaceAdd.Update
 
-import Races.Update
-import RaceAdd.Model exposing (RaceAdd)
+--import RaceAdd.Model exposing (RaceAdd)
 import Material
 import Navigation
 
 
-toHash : Page -> String
-toHash page =
-    case page of
-        Home ->
-            "#home"
-
-        Riders ->
-            "#riders"
-
-        Races ->
-            "#races"
-
-        RaceAddPage ->
-            "#race-add"
-
-        RacesDetails id -> 
-            "#races/" ++ toString id
 
 
 setRaceName : Race -> String -> Race
@@ -93,7 +76,7 @@ update msg app =
 
         GoTo page ->
             ( app
-            , (Navigation.newUrl (toHash page))
+            , (Navigation.newUrl (App.Page.toHash page))
             )
 
         Mdl msg' ->
