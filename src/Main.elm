@@ -46,6 +46,9 @@ pageParser =
         , format App.Page.RacesAdd (s "races" </> s "add")
         , format App.Page.RacesDetails (s "races" </> int)
         , format App.Page.Races (s "races")
+
+        , format App.Page.ResultsAdd (s "results" </> s "add")
+        , format App.Page.Results (s "results")
         ]
 
 -- MODEL

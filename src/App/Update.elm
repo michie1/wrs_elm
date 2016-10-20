@@ -8,9 +8,12 @@ import Races.Model exposing (Race, RaceAdd)
 import Riders.Model exposing (Rider, RiderAdd)
 
 import Riders.Update
+import Results.Update
 
 import Material
 import Navigation
+
+import String
 
 
 setRaceName : Race -> String -> Race
@@ -83,6 +86,26 @@ update msg app =
 
         SetRiderName newName ->
             Riders.Update.setRiderAddName app newName
+
+        AddResult result ->
+            Results.Update.addResult app result  
+
+        SetResultResult value ->
+            Results.Update.setResultAddResult app value
+
+        SetResultRider newId ->
+            case String.toInt newId of
+                Err msg -> 
+                    Results.Update.setResultAddRider app 0
+                Ok value ->
+                    Results.Update.setResultAddRider app value
+
+        SetResultRace newId ->
+            case String.toInt newId of
+                Err msg -> 
+                    Results.Update.setResultAddRace app 0
+                Ok value ->
+                    Results.Update.setResultAddRace app value
 
         GoTo page ->
             ( app

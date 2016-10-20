@@ -8,6 +8,7 @@ import App.Msg exposing (Msg(..))
 import App.Page as Page exposing (Page(..))
 import Races.Model
 import Riders.Model 
+import Results.Model 
 
 
 type alias App =
@@ -17,6 +18,8 @@ type alias App =
     , races : List Races.Model.Race
     , raceAdd : Races.Model.RaceAdd
     , riderAdd : Riders.Model.RiderAdd
+    , results : List Results.Model.Result
+    , resultAdd : Results.Model.ResultAdd
     , mdl : Material.Model
     }
 
@@ -37,6 +40,8 @@ initial =
         [ (Races.Model.Race 1 "race a"), (Races.Model.Race 2 "race c") ]
         Races.Model.initial
         Riders.Model.initial
+        [ Results.Model.Result 1 1 1 "doei" ]
+        Results.Model.initial
         Material.model
     , Cmd.none
     )

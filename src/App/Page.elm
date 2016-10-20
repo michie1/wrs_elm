@@ -23,6 +23,13 @@ toHash page =
 
         RacesDetails id -> 
             "#races/" ++ toString id
+
+        Results ->
+            "#results" 
+
+        ResultsAdd ->
+            "#results/add"
+        
 type Page
     = Home
     | RidersAdd
@@ -31,3 +38,5 @@ type Page
     | RacesAdd
     | RacesDetails Int
     | Races
+    | Results
+    | ResultsAdd

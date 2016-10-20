@@ -13,6 +13,8 @@ import Races.Details
 import Riders.List
 import Riders.Details
 import Riders.Add
+import Results.List
+import Results.Add
 import Material.Scheme
 import Material.Options as Options exposing (css)
 import Material.Typography as Typo
@@ -40,6 +42,9 @@ render app =
                         , Layout.link
                             [ Layout.href "#riders" ]
                             [ text "Riders" ]
+                        , Layout.link
+                            [ Layout.href "#results" ]
+                            [ text "Results" ]
                         ]
                     ]
                 ]
@@ -84,13 +89,18 @@ viewPage app =
         App.Page.RidersDetails id ->
             div []
                 [ Riders.Details.render 
-                    (List.head 
+                    app
+                    id
+
+                    {-- (List.head 
                         (List.filter 
                             (\rider -> rider.id == id)
                             app.riders
                         )
                     ) 
+                    app.results 
                     app.mdl
+                    --}
                 ]
 
         App.Page.Races ->
@@ -113,6 +123,16 @@ viewPage app =
         App.Page.RacesAdd ->
             div []
                 [ Races.Add.render app.raceAdd.race app.mdl
+                ]
+
+        App.Page.Results ->
+            div []
+                [ Results.List.render app.results app.mdl
+                ] 
+
+        App.Page.ResultsAdd ->
+            div []
+                [ Results.Add.render app.resultAdd.result app.mdl
                 ]
 
 
