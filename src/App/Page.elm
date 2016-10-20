@@ -9,6 +9,12 @@ toHash page =
         Riders ->
             "#riders"
 
+        RidersAdd ->
+            "#riders/add"
+
+        RidersDetails id ->
+            "#riders/" ++ toString id
+
         Races ->
             "#races"
 
@@ -19,6 +25,8 @@ toHash page =
             "#races/" ++ toString id
 type Page
     = Home
+    | RidersAdd
+    | RidersDetails Int
     | Riders
     | RacesAdd
     | RacesDetails Int

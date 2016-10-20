@@ -1,4 +1,4 @@
-module Races.Add exposing (render)
+module Riders.Add exposing (render)
 
 import Html exposing (Html, button, div, text, span, input, ul, li)
 
@@ -11,40 +11,40 @@ import Material.Options as Options exposing (css)
 
 
 import App.Model exposing (Mdl)
-import Races.Model exposing (Race)
+import Riders.Model exposing (Rider)
 import App.Msg
 
-type alias RaceAdd =
-    { race : Race
+type alias RiderAdd =
+    { rider : Rider
     }
 
 
-initial : RaceAdd
+initial : RiderAdd
 initial =
-    { race = (Race 0 "Initial")
+    { rider = (Rider 0 "Initial" "")
     }
 
-render : Race -> Mdl -> Html App.Msg.Msg
-render race mdl =
+render : Rider -> Mdl -> Html App.Msg.Msg
+render rider mdl =
     div []
         [ Options.styled Html.p
             [ Typo.display2 ]
-            [ text "Add race" ]
+            [ text "Add rider" ]
         , div []
             [ Textfield.render App.Msg.Mdl
                 [ 2 ]
                 mdl
-                [ Textfield.label ("Name " ++ race.name)
+                [ Textfield.label ("Name " ++ rider.name)
                 , Textfield.floatingLabel
                 , Textfield.text'
-                , Textfield.onInput App.Msg.SetRaceName
+                , Textfield.onInput App.Msg.SetRiderName
                 ]
             ]
         , Button.render App.Msg.Mdl
             [ 0 ]
             mdl
             [ Button.raised
-            , Button.onClick (App.Msg.AddRace race)
+            , Button.onClick (App.Msg.AddRider rider)
             ]
             [ text "Add" ]
         ]

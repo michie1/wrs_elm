@@ -11,13 +11,11 @@ import Focus exposing (..)
 import Navigation
 import UrlParser exposing (Parser, (</>), format, int, oneOf, s, string)
 import String
-import App.Model exposing (App, Rider, Mdl)
+import App.Model exposing (App, Mdl)
 import App.Page
 import App.Msg exposing (Msg(..))
 import App.View
 import App.Update
-import ViewRiders exposing (viewRiders)
-import Races.Add
 
 
 main =
@@ -42,16 +40,15 @@ pageParser : Parser (App.Page.Page -> a) a
 pageParser =
     oneOf
         [ format App.Page.Home (s "home")
+        , format App.Page.RidersAdd (s "riders" </> s "add")
+        , format App.Page.RidersDetails (s "riders" </> int)
         , format App.Page.Riders (s "riders")
         , format App.Page.RacesAdd (s "races" </> s "add")
         , format App.Page.RacesDetails (s "races" </> int)
         , format App.Page.Races (s "races")
         ]
 
-
-
 -- MODEL
-
 
 init : Result String App.Page.Page -> ( App, Cmd Msg )
 init result =

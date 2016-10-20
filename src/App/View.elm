@@ -3,13 +3,16 @@ module App.View exposing (render)
 import Html exposing (Html, button, div, text, span, input, ul, li)
 import Html.App
 import App.Msg exposing (Msg(..))
-import App.Model exposing (App, Rider, Mdl)
+import App.Model exposing (App, Mdl)
 import App.Page
+import Riders.Model exposing (Rider)
 import Races.Model exposing (Race)
 import Races.Add
 import Races.List
 import Races.Details
-import ViewRiders exposing (viewRiders)
+import Riders.List
+import Riders.Details
+import Riders.Add
 import Material.Scheme
 import Material.Options as Options exposing (css)
 import Material.Typography as Typo
@@ -37,12 +40,6 @@ render app =
                         , Layout.link
                             [ Layout.href "#riders" ]
                             [ text "Riders" ]
-                        , Layout.link
-                            [ Layout.href "#races/add" ]
-                            [ text "Add race" ]
-                        , Layout.link
-                            [ Layout.href "#races/1" ]
-                            [ text "Race 1" ]
                         ]
                     ]
                 ]
@@ -74,7 +71,27 @@ viewPage app =
                 ]
 
         App.Page.Riders ->
-            viewRiders app.riders
+            div []
+                [ Riders.List.render app.riders app.mdl
+                ]   
+    
+        App.Page.RidersAdd ->
+            div []
+                [ Riders.Add.render app.riderAdd.rider app.mdl
+                ]
+
+
+        App.Page.RidersDetails id ->
+            div []
+                [ Riders.Details.render 
+                    (List.head 
+                        (List.filter 
+                            (\rider -> rider.id == id)
+                            app.riders
+                        )
+                    ) 
+                    app.mdl
+                ]
 
         App.Page.Races ->
             div []
@@ -99,11 +116,3 @@ viewPage app =
                 ]
 
 
-viewRider : App -> Html Msg
-viewRider app =
-    div []
-        [ div [] [ text "Naam: " ]
-        , div [] [ text app.rider.name ]
-        , div [] [ text "Licentie: " ]
-        , div [] [ text app.rider.licence ]
-        ]

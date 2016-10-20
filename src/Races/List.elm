@@ -29,18 +29,18 @@ heading title =
 render : List Race -> App.Model.Mdl -> Html App.Msg.Msg
 render races mdl =
     div []
-        [ div []
-            [ heading "Races"
-            , raceTable races
+        [ heading "Races"
+        , div []
+            [ Button.render App.Msg.Mdl
+                [ 0 ]
+                mdl
+                [ Button.raised
+                , Button.onClick (App.Msg.GoTo App.Page.RacesAdd)
+                ]
+                [ text "Add"
+                ]
             ]
-        , Button.render App.Msg.Mdl
-            [ 0 ]
-            mdl
-            [ Button.raised
-            , Button.onClick (App.Msg.GoTo App.Page.RacesAdd)
-            ]
-            [ text "Add"
-            ]
+        , raceTable races
         ]
 
 
