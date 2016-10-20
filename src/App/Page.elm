@@ -5,5 +5,5 @@ type Page
     = Home
     | Riders
     | Races
-    | RacesDetails
+    | RacesDetails Int
     | RaceAddPage

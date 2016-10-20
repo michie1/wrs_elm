@@ -9,7 +9,6 @@ import Race.Model exposing (Race)
 import RaceAdd.View
 import Races.List
 import Races.Details
-import ViewRaces exposing (viewRaces)
 import ViewRiders exposing (viewRiders)
 import Material.Scheme
 import Material.Options as Options exposing (css)
@@ -39,8 +38,11 @@ render app =
                             [ Layout.href "#riders" ]
                             [ text "Riders" ]
                         , Layout.link
-                            [ Layout.href "#race-add" ]
+                            [ Layout.href "#races/add" ]
                             [ text "Add race" ]
+                        , Layout.link
+                            [ Layout.href "#races/1" ]
+                            [ text "Race 1" ]
                         ]
                     ]
                 ]
@@ -80,9 +82,16 @@ viewPage app =
                 [ Races.List.render app.races app.mdl
                 ]
 
-        App.Page.RacesDetails ->
+        App.Page.RacesDetails id ->
             div []
-                [ Races.Details.render app.races app.mdl
+                [ Races.Details.render 
+                    (List.head 
+                        (List.filter 
+                            (\race -> race.id == id)
+                            app.races
+                        )
+                    ) 
+                    app.mdl
                 ]
 
         App.Page.RaceAddPage ->

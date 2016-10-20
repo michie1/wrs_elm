@@ -20,9 +20,9 @@ import Material.Typography as Typo
 import Material.Table as Table
 
 
-render : List Race -> App.Model.Mdl -> Html App.Msg.Msg
-render races mdl =
-    case List.head races of
+render : Maybe Race -> App.Model.Mdl -> Html App.Msg.Msg
+render maybeRace mdl =
+    case maybeRace of
         Nothing ->
             div []
                 [ heading "Race does not exist" ]
@@ -44,8 +44,8 @@ li : String -> String -> Html App.Msg.Msg
 li sub value =
     List.li [ List.withSubtitle ] 
         [ List.content [] 
-            [ text value
-            , List.subtitle [] [ text sub ]
+            [ List.subtitle [] [ text sub ]
+            , text value
             ]
         ]
 

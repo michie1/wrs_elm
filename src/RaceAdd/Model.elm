@@ -11,5 +11,5 @@ type alias RaceAdd =
 
 initial : RaceAdd
 initial =
-    { race = Race "Initial"
+    { race = (Race 0 "Initial")
     }

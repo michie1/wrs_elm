@@ -41,7 +41,7 @@ initial =
         1
         (Rider "Michiel" "Elite")
         [ Rider "Michiel" "Elite", Rider "Henk" "Amateur" ]
-        [ Race "race a", Race "race c" ]
+        [ (Race 1 "race a"), (Race 2 "race c") ]
         RaceAdd.Model.initial
         Material.model
     , Cmd.none

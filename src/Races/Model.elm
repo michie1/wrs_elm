@@ -4,5 +4,6 @@ import Material
 
 
 type alias Race =
-    { name : String
+    { id : Int
+    , name : String
     }

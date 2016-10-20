@@ -29,13 +29,24 @@ toHash page =
         RaceAddPage ->
             "#race-add"
 
-        RacesDetails -> 
-            "#races-1"
+        RacesDetails id -> 
+            "#races/" ++ toString id
 
 
 setRaceName : Race -> String -> Race
 setRaceName race name =
     { race | name = name }
+ 
+setRaceId : Race -> List Race -> Race
+setRaceId race races =
+    let 
+        id = calcRaceId races
+    in 
+        { race | id = id }
+
+calcRaceId : List Race -> Int
+calcRaceId races = 
+    ( List.length races ) + 1
 
 
 clearRaceName : Race -> Race
@@ -53,7 +64,7 @@ update msg app =
     case msg of
         Add race ->
             ( { app
-                | races = (List.append [ race ] app.races)
+                | races = (List.append [ (setRaceId race app.races) ] app.races)
                 , raceAdd = (setRaceAdd app.raceAdd (clearRaceName app.raceAdd.race))
               }
             , Navigation.newUrl "#races"

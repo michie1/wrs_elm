@@ -10,7 +10,8 @@ import App.Model
 
 import App.Msg
 import App.Page
-import Html exposing (Html, div, text)
+import Html exposing (Html, div, text, a)
+import Html.Attributes exposing (href)
 import Material
 import Material.Scheme
 import Material.Button as Button
@@ -36,7 +37,7 @@ render races mdl =
         ]
 
 
-raceTable : List Race -> Html msg
+raceTable : List Race -> Html App.Msg.Msg
 raceTable races =
     Table.table []
         [ Table.thead []
@@ -52,7 +53,11 @@ raceTable races =
                 |> List.map
                     (\race ->
                         Table.tr []
-                            [ Table.td [] [ text race.name ]
+                            [ Table.td [] 
+                                [ a 
+                                    [ href ("#races/" ++ (toString race.id)) ] 
+                                    [ text race.name ]
+                                ]
                             , Table.td [] [ text race.name ]
                             , Table.td [] [ text race.name ]
                             , Table.td [ Table.numeric ] [ text race.name ]

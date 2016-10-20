@@ -16,7 +16,6 @@ import App.Page
 import App.Msg exposing (Msg(..))
 import App.View
 import App.Update
-import ViewRaces exposing (viewRaces)
 import ViewRiders exposing (viewRiders)
 import RaceAdd.View
 import Race.Model exposing (Race)
@@ -50,25 +49,25 @@ toHash page =
             "#races"
 
         App.Page.RaceAddPage ->
-            "#race-add"
+            "#races/add"
 
-        App.Page.RacesDetails ->
-            "#races-1"
+        App.Page.RacesDetails id ->
+            "#races/1" 
+            --++ toString id
 
 
 hashParser : Navigation.Location -> Result String App.Page.Page
 hashParser location =
     UrlParser.parse identity pageParser (String.dropLeft 1 location.hash)
 
-
 pageParser : Parser (App.Page.Page -> a) a
 pageParser =
     oneOf
         [ format App.Page.Home (s "home")
         , format App.Page.Riders (s "riders")
+        , format App.Page.RacesDetails (s "races" </> int)
+        , format App.Page.RaceAddPage (s "races" </> s "add")
         , format App.Page.Races (s "races")
-        , format App.Page.RaceAddPage (s "race-add")
-        , format App.Page.RacesDetails (s "races-1")
         ]
 
 
@@ -83,7 +82,7 @@ init result =
 
 urlUpdate : Result String App.Page.Page -> App -> ( App, Cmd Msg )
 urlUpdate result app =
-    case result of
+    case Debug.log "result" result of
         Ok page ->
             { app
                 | page = page
@@ -94,8 +93,3 @@ urlUpdate result app =
         Err _ ->
             ( app, Navigation.modifyUrl (toHash app.page) )
 
-
-
--- VIEW
---type alias Mdl =
---  Material.Model
