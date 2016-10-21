@@ -91,16 +91,6 @@ viewPage app =
                 [ Riders.Details.render 
                     app
                     id
-
-                    {-- (List.head 
-                        (List.filter 
-                            (\rider -> rider.id == id)
-                            app.riders
-                        )
-                    ) 
-                    app.results 
-                    app.mdl
-                    --}
                 ]
 
         App.Page.Races ->
@@ -111,13 +101,8 @@ viewPage app =
         App.Page.RacesDetails id ->
             div []
                 [ Races.Details.render 
-                    (List.head 
-                        (List.filter 
-                            (\race -> race.id == id)
-                            app.races
-                        )
-                    ) 
-                    app.mdl
+                    app
+                    id
                 ]
 
         App.Page.RacesAdd ->
