@@ -1,4 +1,4 @@
-module Races.Model exposing (RaceAdd, Race, initial)
+module Races.Model exposing (RaceAdd, Race, empty, initialRaces)
 
 type alias Race =
     { id : Int
@@ -10,8 +10,13 @@ type alias RaceAdd =
     }
 
 
-initial : RaceAdd
-initial =
-    { race = (Race 0 "Initial")
+empty : RaceAdd
+empty =
+    { race = Race 0 "empty"
     }
 
+initialRaces : List Race
+initialRaces =
+    [ Race 1 "race a"
+    , Race 2 "race c"
+    ]

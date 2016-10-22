@@ -46,9 +46,21 @@ render app raceId =
                     div []
                         [ heading race.name
                         , info race
+                        , addResultButton race app.mdl
                         , resultsTable race results app.riders
                         ]
 
+
+addResultButton : Races.Model.Race -> App.Model.Mdl -> Html App.Msg.Msg
+addResultButton race mdl = 
+    Button.render App.Msg.Mdl
+        [ 0 ]
+        mdl
+        [ Button.raised
+        , Button.onClick (App.Msg.GoTo (App.Page.ResultsAdd race.id))
+        ]
+        [ text "Add"
+        ]
 
 heading : String -> Html App.Msg.Msg
 heading title =

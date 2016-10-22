@@ -25,16 +25,6 @@ render : List Results.Model.Result -> App.Model.Mdl -> Html App.Msg.Msg
 render results mdl =
     div []
         [ heading "Results"
-        , div []
-            [ Button.render App.Msg.Mdl
-                [ 0 ]
-                mdl
-                [ Button.raised
-                , Button.onClick (App.Msg.GoTo App.Page.ResultsAdd)
-                ]
-                [ text "Add"
-                ]
-            ]
         , resultsTable results
         ]
 

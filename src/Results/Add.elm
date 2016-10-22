@@ -11,50 +11,51 @@ import Material.Options as Options exposing (css)
 
 
 import App.Model exposing (Mdl)
-import Results.Model 
 import App.Msg
 
-render : Results.Model.Result -> Mdl -> Html App.Msg.Msg
-render result mdl =
+import Results.Model 
+import Races.Model
+import Riders.Model
+
+render : Races.Model.Race -> Results.Model.ResultAdd -> List Riders.Model.Rider -> Mdl -> Html App.Msg.Msg
+render race resultAdd riders mdl =
     div []
-        [ Options.styled Html.p
-            [ Typo.display2 ]
-            [ text "Add result" ]
+        [ heading ("Add result for " ++ race.name)
         , div []
-            [ resultField result.result mdl
-            , idField result.riderId "Rider" mdl App.Msg.SetResultRider
-            , idField result.raceId "Race" mdl App.Msg.SetResultRace
+            [ field 0 "Result" App.Msg.SetResultResult mdl
+            , field 1 "Rider name" App.Msg.SetResultRiderName mdl
             ]
-        , Button.render App.Msg.Mdl
-            [ 0 ]
-            mdl
-            [ Button.raised
-            , Button.onClick (App.Msg.AddResult result)
-            ]
-            [ text "Add" ]
+        , addButton mdl
         ]
 
-resultField : String -> Mdl -> Html App.Msg.Msg
-resultField result mdl =
+heading : String -> Html App.Msg.Msg
+heading headingText =
+    Options.styled 
+        Html.p
+        [ Typo.display2 ]
+        [ text headingText ]
+        
+
+field : Int -> String -> (String -> App.Msg.Msg) -> Mdl -> Html App.Msg.Msg
+field index label msg mdl =
     div [] 
         [ Textfield.render App.Msg.Mdl
-            [ 2 ]
+            [ index ]
             mdl
-            [ Textfield.label ("Result " ++ result)
+            [ Textfield.label label
             , Textfield.floatingLabel
             , Textfield.text'
-            , Textfield.onInput App.Msg.SetResultResult
+            , Textfield.onInput msg
             ]
         ]
 
-idField : Int -> String -> Mdl -> (String -> App.Msg.Msg) -> Html App.Msg.Msg
-idField id label mdl msg =
-    div [] 
-        [ Textfield.render App.Msg.Mdl
-            [ 2 ]
-            mdl
-            [ Textfield.label (label ++ " " ++ (toString id) )
-            , Textfield.floatingLabel
-            , Textfield.text'
-            , Textfield.onInput msg ]
+
+addButton : Mdl -> Html App.Msg.Msg
+addButton mdl =
+    Button.render App.Msg.Mdl
+        [ 0 ]
+        mdl
+        [ Button.raised
+        , Button.onClick (App.Msg.AddResult)
         ]
+        [ text "Add" ]

@@ -1,4 +1,4 @@
-module Riders.Model exposing (RiderAdd, Rider, initial)
+module Riders.Model exposing (RiderAdd, Rider, empty, initialRiders)
 
 type alias Rider =
     { id : Int
@@ -11,7 +11,13 @@ type alias RiderAdd =
     { rider : Rider
     }    
 
-initial : RiderAdd
-initial =
-    { rider = (Rider 0 "Initial" "")
+empty : RiderAdd
+empty =
+    { rider = (Rider 0 "empty" "")
     }
+
+initialRiders : List Rider
+initialRiders =
+    [ Rider 1 "Michiel" "Elite"
+    , Rider 2 "Henk" "Amateur"
+    ]

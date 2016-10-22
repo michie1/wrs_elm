@@ -1,21 +1,80 @@
-module Results.Update exposing (setResultAddResult, setResultAddRider, setResultAddRace, addResult)
+module Results.Update exposing (setResultAddResult, setResultAddRider, setResultAddRace, addResult, setRider)
 
 import App.Model exposing (App)
 import Results.Model exposing (ResultAdd)
+import Riders.Model
+
 import App.Msg exposing (Msg(..))
 import Navigation
 
-addResult : App -> Results.Model.Result ->  ( App, Cmd Msg )
-addResult app result =
+addResult : App ->  ( App, Cmd Msg )
+addResult app =
     let
-        newResult = setResultId result app.results
-        newApp = setResultAdd app (clearResult app.resultAdd.result)
+        result = app.resultAdd.result
+
+        newResult = 
+            { result | id = (calcResultId app.results)
+                     , riderId = ( getRiderId app.riders app.resultAdd.riderName )
+            }
+
+        newResults = newResult :: app.results
+
     in
-        ( { newApp | 
-                results = (List.append [ newResult ] app.results)
-          }
-        , Navigation.newUrl ("#results")
+        if newResult.riderId == 0 then
+            ( app, Cmd.none )
+        else if resultExists newResult app.results then
+            ( app, Cmd.none )
+        else 
+            ( { app | results = newResults 
+                    , resultAdd = Debug.log "Empty resultAdd" Results.Model.empty
+              }
+            , Navigation.newUrl ("#races/" ++ toString newResult.raceId)
+            )
+
+resultExists : Results.Model.Result -> List Results.Model.Result -> Bool
+resultExists result results =
+    ( List.length
+        ( List.filter 
+            (\r -> r.raceId == result.raceId && r.riderId == result.riderId)
+            results
         )
+    ) /= 0
+
+setRider : App -> String -> ( App, Cmd Msg )
+setRider app name =
+    ( ( set app ( setRiderNameResultAdd app.resultAdd name ) ) 
+    , Cmd.none
+    )
+
+setRiderId : App -> Int -> App
+setRiderId app riderId =
+    setResultAdd app ( setResultRider app.resultAdd.result riderId )
+
+getRiderId : List Riders.Model.Rider -> String -> Int
+getRiderId riders name =
+    let 
+        maybeRider = List.head
+            ( List.filter 
+                (\rider -> rider.name == name)
+                riders
+            )
+    in
+        case maybeRider of
+            Just rider ->
+                Debug.log "rider.id" rider.id
+
+            Nothing ->
+                0
+
+
+setRiderNameResultAdd : ResultAdd -> String -> ResultAdd
+setRiderNameResultAdd resultAdd name =
+    { resultAdd | riderName = name }
+
+set : App -> ResultAdd -> App
+set app resultAdd =
+    { app | resultAdd = resultAdd }
+
 
 setResultAddResult : App -> String -> ( App, Cmd Msg )
 setResultAddResult app value =
@@ -65,10 +124,3 @@ calcResultId : List Results.Model.Result -> Int
 calcResultId results = 
     ( List.length results ) + 1
         
-setResultId : Results.Model.Result -> List Results.Model.Result -> Results.Model.Result
-setResultId result results =
-    let 
-        id = calcResultId results
-    in 
-        { result | id = id }
-

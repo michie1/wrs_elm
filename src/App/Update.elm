@@ -14,6 +14,7 @@ import Material
 import Navigation
 
 import String
+import Debug
 
 
 setRaceName : Race -> String -> Race
@@ -87,8 +88,8 @@ update msg app =
         SetRiderName newName ->
             Riders.Update.setRiderAddName app newName
 
-        AddResult result ->
-            Results.Update.addResult app result  
+        AddResult ->
+            Results.Update.addResult app
 
         SetResultResult value ->
             Results.Update.setResultAddResult app value
@@ -100,12 +101,9 @@ update msg app =
                 Ok value ->
                     Results.Update.setResultAddRider app value
 
-        SetResultRace newId ->
-            case String.toInt newId of
-                Err msg -> 
-                    Results.Update.setResultAddRace app 0
-                Ok value ->
-                    Results.Update.setResultAddRace app value
+
+        SetResultRiderName name ->
+            Results.Update.setRider app name
 
         GoTo page ->
             ( app

@@ -1,5 +1,7 @@
 module App.Page exposing (Page(..), toHash)
 
+import Races.Model
+
 toHash : Page -> String
 toHash page =
     case page of
@@ -27,8 +29,8 @@ toHash page =
         Results ->
             "#results" 
 
-        ResultsAdd ->
-            "#results/add"
+        ResultsAdd id ->
+            "#races/" ++ (toString id) ++ "/add"
         
 type Page
     = Home
@@ -39,4 +41,4 @@ type Page
     | RacesDetails Int
     | Races
     | Results
-    | ResultsAdd
+    | ResultsAdd Int

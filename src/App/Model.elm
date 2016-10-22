@@ -36,12 +36,14 @@ initial =
     ( App
         Home
         Dict.empty
-        [ Riders.Model.Rider 1 "Michiel" "Elite", Riders.Model.Rider 2 "Henk" "Amateur" ]
-        [ (Races.Model.Race 1 "race a"), (Races.Model.Race 2 "race c") ]
-        Races.Model.initial
-        Riders.Model.initial
+        --[ Riders.Model.Rider 1 "Michiel" "Elite", Riders.Model.Rider 2 "Henk" "Amateur" ]
+        Riders.Model.initialRiders
+        --[ (Races.Model.Race 1 "race a"), (Races.Model.Race 2 "race c") ]
+        Races.Model.initialRaces
+        Races.Model.empty
+        Riders.Model.empty
         [ Results.Model.Result 1 1 1 "doei" ]
-        Results.Model.initial
+        Results.Model.empty
         Material.model
     , Cmd.none
     )

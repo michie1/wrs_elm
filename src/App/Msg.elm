@@ -17,10 +17,10 @@ type
     | AddRider Rider
     | SetRiderName String
 
-    | AddResult Results.Model.Result
+    | AddResult 
     | SetResultResult String
     | SetResultRider String
-    | SetResultRace String
+    | SetResultRiderName String
 
     | GoTo Page
     | Mdl (Material.Msg Msg)

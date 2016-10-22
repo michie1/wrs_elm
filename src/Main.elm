@@ -17,6 +17,8 @@ import App.Msg exposing (Msg(..))
 import App.View
 import App.Update
 
+import Results.Update
+
 
 main =
     Navigation.program (Navigation.makeParser hashParser)
@@ -40,14 +42,16 @@ pageParser : Parser (App.Page.Page -> a) a
 pageParser =
     oneOf
         [ format App.Page.Home (s "home")
+
         , format App.Page.RidersAdd (s "riders" </> s "add")
         , format App.Page.RidersDetails (s "riders" </> int)
         , format App.Page.Riders (s "riders")
+
+        , format App.Page.ResultsAdd (s "races" </> int </> s "add")
         , format App.Page.RacesAdd (s "races" </> s "add")
         , format App.Page.RacesDetails (s "races" </> int)
         , format App.Page.Races (s "races")
 
-        , format App.Page.ResultsAdd (s "results" </> s "add")
         , format App.Page.Results (s "results")
         ]
 
@@ -62,8 +66,16 @@ urlUpdate : Result String App.Page.Page -> App -> ( App, Cmd Msg )
 urlUpdate result app =
     case Debug.log "result" result of
         Ok page ->
-            { app | page = page }
-            ! []
+            let
+                newApp = { app | page = page }
+            in
+                case page of
+                    App.Page.ResultsAdd raceId ->
+                        (Results.Update.setResultAddRace newApp raceId)
+
+                    _ ->
+                        newApp
+                        ! []
 
         Err _ ->
             ( app, Navigation.modifyUrl (App.Page.toHash app.page) )

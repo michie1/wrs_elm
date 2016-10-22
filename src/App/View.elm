@@ -20,7 +20,7 @@ import Material.Options as Options exposing (css)
 import Material.Typography as Typo
 import Material.Layout as Layout
 import Material.Textfield as Textfield
-
+import Navigation
 
 render : App -> Html Msg
 render app =
@@ -115,9 +115,27 @@ viewPage app =
                 [ Results.List.render app.results app.mdl
                 ] 
 
-        App.Page.ResultsAdd ->
-            div []
-                [ Results.Add.render app.resultAdd.result app.mdl
-                ]
+        App.Page.ResultsAdd raceId ->
+            let 
+                maybeRace = getRace raceId app.races
+            in
+                case maybeRace of
+                    Nothing ->
+                        --Navigation.newUrl (App.Page.toHash app.page)
+                        --App.Msg.GoTo app.page
+                        div []
+                            [ text "Race does not exist." ]
+
+                    Just race ->
+                        div []
+                            [ Results.Add.render race app.resultAdd app.riders app.mdl
+                            ]
 
 
+getRace : Int -> List Races.Model.Race -> Maybe Races.Model.Race
+getRace raceId races =
+    List.head 
+        ( List.filter 
+            (\race -> race.id == raceId)
+            races
+        )
