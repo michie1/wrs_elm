@@ -12,7 +12,7 @@ import Results.Model
 import App.Msg
 import App.Page
 import Html exposing (Html, a, div, text)
-import Html.Attributes exposing (href)
+import Html.Attributes exposing (href, style)
 import Material.List as List
 import Material
 import Material.Scheme
@@ -21,6 +21,8 @@ import Material.Options as Options exposing (Style, css)
 import Material.Typography as Typo
 import Material.Table as Table
 
+
+import Comments.List
 
 render : App.Model.App -> Int -> Html App.Msg.Msg
 render app raceId =
@@ -44,10 +46,20 @@ render app raceId =
                             app.results
                 in
                     div []
-                        [ heading race.name
-                        , info race
-                        , addResultButton race app.mdl
-                        , resultsTable race results app.riders
+                        [ div [ ] 
+                            [ div [] 
+                                [ heading race.name
+                                , info race
+                                ]
+                            , div [] 
+                                [ subHeading "Results"
+                                , addResultButton race app.mdl
+                                ]
+                            , resultsTable race results app.riders
+                            ]
+                        , subHeading "Comments"
+                        , addCommentButton race app.mdl
+                        , Comments.List.render app race
                         ]
 
 
@@ -61,12 +73,30 @@ addResultButton race mdl =
         ]
         [ text "Add"
         ]
+        
+addCommentButton : Races.Model.Race -> App.Model.Mdl -> Html App.Msg.Msg
+addCommentButton race mdl = 
+    Button.render App.Msg.Mdl
+        [ 0 ]
+        mdl
+        [ Button.raised
+        , Button.onClick (App.Msg.GoTo (App.Page.CommentAdd race.id))
+        ]
+        [ text "Add"
+        ]
 
 heading : String -> Html App.Msg.Msg
 heading title =
     Options.styled 
         Html.p
         [ Typo.display2 ]
+        [ text title ]
+
+subHeading : String -> Html App.Msg.Msg
+subHeading title =
+    Options.styled 
+        Html.p
+        [ Typo.display1 ]
         [ text title ]
 
 li : String -> String -> Html App.Msg.Msg

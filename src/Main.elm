@@ -18,7 +18,7 @@ import App.View
 import App.Update
 
 import Results.Update
-
+import Comments.Update
 
 main =
     Navigation.program (Navigation.makeParser hashParser)
@@ -48,6 +48,7 @@ pageParser =
         , format App.Page.Riders (s "riders")
 
         , format App.Page.ResultsAdd (s "races" </> int </> s "add")
+        , format App.Page.CommentAdd (s "races" </> int </> s "comment")
         , format App.Page.RacesAdd (s "races" </> s "add")
         , format App.Page.RacesDetails (s "races" </> int)
         , format App.Page.Races (s "races")
@@ -72,6 +73,9 @@ urlUpdate result app =
                 case page of
                     App.Page.ResultsAdd raceId ->
                         (Results.Update.setResultAddRace newApp raceId)
+
+                    App.Page.CommentAdd raceId ->
+                        Comments.Update.setRaceId newApp raceId
 
                     _ ->
                         newApp

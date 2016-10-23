@@ -21,6 +21,12 @@ type
     | SetResultResult String
     | SetResultRider String
     | SetResultRiderName String
+    
+    | ResultAddSetRiderId Int
+
+    | CommentAddSetText String
+    | CommentAddSetRiderIndex Int
+    | CommentAdd
 
     | GoTo Page
     | Mdl (Material.Msg Msg)

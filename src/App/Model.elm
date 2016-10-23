@@ -9,6 +9,7 @@ import App.Page as Page exposing (Page(..))
 import Races.Model
 import Riders.Model 
 import Results.Model 
+import Comments.Model
 
 
 type alias App =
@@ -20,6 +21,8 @@ type alias App =
     , riderAdd : Riders.Model.RiderAdd
     , results : List Results.Model.Result
     , resultAdd : Results.Model.ResultAdd
+    , comments : List  Comments.Model.Comment
+    , commentAdd : Comments.Model.Add
     , mdl : Material.Model
     }
 
@@ -36,14 +39,14 @@ initial =
     ( App
         Home
         Dict.empty
-        --[ Riders.Model.Rider 1 "Michiel" "Elite", Riders.Model.Rider 2 "Henk" "Amateur" ]
         Riders.Model.initialRiders
-        --[ (Races.Model.Race 1 "race a"), (Races.Model.Race 2 "race c") ]
         Races.Model.initialRaces
         Races.Model.empty
         Riders.Model.empty
-        [ Results.Model.Result 1 1 1 "doei" ]
+        Results.Model.initialResults
         Results.Model.empty
+        Comments.Model.initialComments
+        Comments.Model.initialAdd
         Material.model
     , Cmd.none
     )

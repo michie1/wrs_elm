@@ -1,4 +1,4 @@
-module Results.Model exposing (ResultAdd, Result, empty)
+module Results.Model exposing (ResultAdd, Result, empty, initialResults)
 
 import Riders.Model exposing (Rider)
 
@@ -22,3 +22,7 @@ empty =
     , riderName = ""
     , riders = []
     }
+
+initialResults : List Result
+initialResults =    
+    [ Result 1 1 1 "9000" ]

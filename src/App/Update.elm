@@ -1,7 +1,7 @@
 module App.Update exposing (update)
 
 import App.Model exposing (App)
-import App.Page exposing (Page(..))
+import App.Page 
 import App.Msg exposing (Msg(..))
 
 import Races.Model exposing (Race, RaceAdd)
@@ -9,12 +9,14 @@ import Riders.Model exposing (Rider, RiderAdd)
 
 import Riders.Update
 import Results.Update
+import Comments.Update
 
 import Material
 import Navigation
 
 import String
 import Debug
+import Array
 
 
 setRaceName : Race -> String -> Race
@@ -105,6 +107,22 @@ update msg app =
         SetResultRiderName name ->
             Results.Update.setRider app name
 
+        ResultAddSetRiderId index ->
+            let
+                id = Debug.log "id: " (getRiderIdByIndex index app.riders)
+            in
+                Results.Update.setResultAddRider app id
+
+
+        CommentAddSetText text ->
+            Comments.Update.setText app text
+
+        CommentAddSetRiderIndex riderIndex ->
+            Comments.Update.setRiderIndex app riderIndex
+
+        CommentAdd ->
+            Comments.Update.add app
+
         GoTo page ->
             ( app
             , (Navigation.newUrl (App.Page.toHash page))
@@ -112,3 +130,18 @@ update msg app =
 
         Mdl msg' ->
             Material.update msg' app
+
+getRiderIdByIndex : Int -> List Riders.Model.Rider -> Int
+getRiderIdByIndex index riders =
+    let
+        arrayRiders = Array.fromList riders
+        maybeRider = Array.get index arrayRiders
+    in
+        case maybeRider of
+            Nothing ->
+                0
+
+            Just rider ->
+                rider.id
+
+

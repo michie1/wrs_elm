@@ -15,6 +15,9 @@ import Riders.Details
 import Riders.Add
 import Results.List
 import Results.Add
+
+import Comments.Add
+
 import Material.Scheme
 import Material.Options as Options exposing (css)
 import Material.Typography as Typo
@@ -124,13 +127,29 @@ viewPage app =
                         --Navigation.newUrl (App.Page.toHash app.page)
                         --App.Msg.GoTo app.page
                         div []
-                            [ text "Race does not exist." ]
+                            [ text "Race does not exist. Adding result not possible." ]
 
                     Just race ->
                         div []
                             [ Results.Add.render race app.resultAdd app.riders app.mdl
                             ]
 
+
+        App.Page.CommentAdd raceId ->
+            let 
+                maybeRace = getRace raceId app.races
+            in
+                case maybeRace of
+                    Nothing ->
+                        --Navigation.newUrl (App.Page.toHash app.page)
+                        --App.Msg.GoTo app.page
+                        div []
+                            [ text "Race does not exist. Adding comment not possible." ]
+
+                    Just race ->
+                        div []
+                            [ Comments.Add.render app.commentAdd race app.riders app.mdl
+                            ]
 
 getRace : Int -> List Races.Model.Race -> Maybe Races.Model.Race
 getRace raceId races =

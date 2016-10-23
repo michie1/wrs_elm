@@ -11,10 +11,14 @@ addResult : App ->  ( App, Cmd Msg )
 addResult app =
     let
         result = app.resultAdd.result
+        --riderId = Debug.log "riderId: " app.resultAdd.result.
+
+        riderId = if result.riderId == 0 then (firstRiderId app.riders) else result.riderId
 
         newResult = 
             { result | id = (calcResultId app.results)
-                     , riderId = ( getRiderId app.riders app.resultAdd.riderName )
+                     --, riderId = ( getRiderId app.riders app.resultAdd.riderName )
+                     , riderId = riderId
             }
 
         newResults = newResult :: app.results
@@ -26,10 +30,19 @@ addResult app =
             ( app, Cmd.none )
         else 
             ( { app | results = newResults 
-                    , resultAdd = Debug.log "Empty resultAdd" Results.Model.empty
+                    , resultAdd = Results.Model.empty
               }
             , Navigation.newUrl ("#races/" ++ toString newResult.raceId)
             )
+
+firstRiderId : List Riders.Model.Rider -> Int
+firstRiderId riders =
+     case ( List.head riders ) of
+        Nothing ->
+            0
+
+        Just rider ->
+            rider.id
 
 resultExists : Results.Model.Result -> List Results.Model.Result -> Bool
 resultExists result results =

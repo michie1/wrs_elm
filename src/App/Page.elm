@@ -31,6 +31,9 @@ toHash page =
 
         ResultsAdd id ->
             "#races/" ++ (toString id) ++ "/add"
+
+        CommentAdd id ->
+            "#races/" ++ (toString id) ++ "/comment"
         
 type Page
     = Home
@@ -42,3 +45,5 @@ type Page
     | Races
     | Results
     | ResultsAdd Int
+
+    | CommentAdd Int
