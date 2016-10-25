@@ -28,5 +28,8 @@ type
     | CommentAddSetRiderIndex Int
     | CommentAdd
 
+    | Alert String 
+    | Log String
+
     | GoTo Page
     | Mdl (Material.Msg Msg)

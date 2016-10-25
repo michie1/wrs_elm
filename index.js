@@ -1,14 +1,12 @@
 'use strict';
 
-require('./index.html');
+//require('./index.html');
 var Elm = require('./src/Main');
 
-var elm = Elm.Main.fullscreen();
+//var elm = Elm.Main.fullscreen();
+var elm = Elm.Main.embed(document.getElementById('main'));
 
-//interop
-/*
 elm.ports.alert.subscribe(function(message) {
-  alert(message);
+  console.log('alert: ', message);
   elm.ports.log.send('Alert called: ' + message);
 });
-*/

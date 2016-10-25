@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Html exposing (Html, button, div, text, span, input, ul, li)
 import Html.App
@@ -20,6 +20,8 @@ import App.Update
 import Results.Update
 import Comments.Update
 
+--import Alert exposing (subscriptions)
+
 main =
     Navigation.program (Navigation.makeParser hashParser)
         --{ init = ( app, Cmd.none )
@@ -27,7 +29,8 @@ main =
         , view = App.View.render
         , update = App.Update.update
         , urlUpdate = urlUpdate
-        , subscriptions = always Sub.none
+        --, subscriptions = always Sub.none
+        , subscriptions = subscriptions
         }
 
 
@@ -84,3 +87,9 @@ urlUpdate result app =
         Err _ ->
             ( app, Navigation.modifyUrl (App.Page.toHash app.page) )
 
+
+port log : (String -> msg) -> Sub msg
+
+subscriptions : App -> Sub Msg
+subscriptions app =
+      log App.Msg.Log

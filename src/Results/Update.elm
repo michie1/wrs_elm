@@ -24,7 +24,7 @@ addResult app =
         newResults = newResult :: app.results
 
     in
-        if newResult.riderId == 0 then
+        if ( Debug.log "new result rider id: " newResult.riderId ) == 0 then
             ( app, Cmd.none )
         else if resultExists newResult app.results then
             ( app, Cmd.none )

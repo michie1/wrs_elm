@@ -20,14 +20,14 @@ import Results.Model
 import Races.Model
 import Riders.Model
 
-render : Races.Model.Race -> Results.Model.ResultAdd -> List Riders.Model.Rider -> Mdl -> Html App.Msg.Msg
-render race resultAdd riders mdl =
+render : Races.Model.Race -> Results.Model.ResultAdd -> List Riders.Model.Rider -> List Results.Model.Result -> Mdl -> Html App.Msg.Msg
+render race resultAdd riders results mdl =
     div []
         [ heading ("Add result for " ++ race.name)
         , div []
             [ field 0 "Result" App.Msg.SetResultResult mdl
             --, field 1 "Rider name" App.Msg.SetResultRiderName mdl
-            , selectRider riders mdl
+            , selectRider riders race results mdl
             ]
         , addButton mdl
         ]
@@ -64,21 +64,32 @@ addButton mdl =
         ]
         [ text "Add" ]
 
-selectRider : List Riders.Model.Rider -> Mdl -> Html App.Msg.Msg
-selectRider riders mdl =
+
+resultExists : List Results.Model.Result -> Races.Model.Race -> Riders.Model.Rider -> Bool
+resultExists results race rider =
+    List.length ( List.filter
+                    (\result -> race.id == result.raceId && rider.id == result.riderId)
+                    results
+                ) == 1
+
+
+selectRider : List Riders.Model.Rider -> Races.Model.Race -> List Results.Model.Result -> Mdl -> Html App.Msg.Msg
+selectRider allRiders race results mdl =
     div []
         [ Html.select 
             [ onSelect App.Msg.ResultAddSetRiderId ]
             ( List.map 
                 (\rider ->
                     ( Html.option 
-                        [ Html.Attributes.value (toString rider.id) ] 
+                        [ ( Html.Attributes.value (toString rider.id) )
+                        -- , ( Html.Attributes.disabled ( resultExists results race rider ) )
+                        ]  
                         [ text rider.name ]
                     )
                 )
-                riders
+                --riders
+                allRiders
             )
-            
         ]
 
 targetSelectedIndex : Json.Decoder Int

@@ -1,4 +1,4 @@
-module App.Update exposing (update)
+port module App.Update exposing (update)
 
 import App.Model exposing (App)
 import App.Page 
@@ -17,7 +17,6 @@ import Navigation
 import String
 import Debug
 import Array
-
 
 setRaceName : Race -> String -> Race
 setRaceName race name =
@@ -46,6 +45,8 @@ clearRaceName race =
 setRaceAdd : RaceAdd -> Race -> RaceAdd
 setRaceAdd raceAdd race' =
     { raceAdd | race = race' }
+
+port alert : String -> Cmd msg
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
@@ -127,6 +128,21 @@ update msg app =
             ( app
             , (Navigation.newUrl (App.Page.toHash page))
             )
+
+
+        Alert message ->
+            ( app
+            , alert (Debug.log "alert message" message)
+            --, Cmd.none
+            )
+
+        Log message ->
+            let 
+                m = Debug.log "message" message
+            in
+                ( app
+                , Cmd.none
+                )
 
         Mdl msg' ->
             Material.update msg' app

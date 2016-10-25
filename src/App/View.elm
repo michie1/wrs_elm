@@ -48,6 +48,9 @@ render app =
                         , Layout.link
                             [ Layout.href "#results" ]
                             [ text "Results" ]
+                        , Layout.link
+                            [ Layout.onClick (App.Msg.Alert "hoi") ]
+                            [ text "alert" ]
                         ]
                     ]
                 ]
@@ -131,7 +134,7 @@ viewPage app =
 
                     Just race ->
                         div []
-                            [ Results.Add.render race app.resultAdd app.riders app.mdl
+                            [ Results.Add.render race app.resultAdd app.riders app.results app.mdl
                             ]
 
 
