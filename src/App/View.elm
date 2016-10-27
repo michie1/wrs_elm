@@ -51,6 +51,9 @@ render app =
                         , Layout.link
                             [ Layout.onClick (App.Msg.Alert "hoi") ]
                             [ text "alert" ]
+                        , Layout.link
+                            [ Layout.onClick (App.Msg.Reset) ]
+                            [ text "Reset" ]
                         ]
                     ]
                 ]

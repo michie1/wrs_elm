@@ -29,7 +29,11 @@ type
     | CommentAdd
 
     | Alert String 
+
     | Log String
+    | SetState String
+
+    | Reset
 
     | GoTo Page
     | Mdl (Material.Msg Msg)

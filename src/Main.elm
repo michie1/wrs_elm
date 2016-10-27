@@ -89,7 +89,11 @@ urlUpdate result app =
 
 
 port log : (String -> msg) -> Sub msg
+port setState: (String -> msg) -> Sub msg
 
 subscriptions : App -> Sub Msg
-subscriptions app =
-      log App.Msg.Log
+subscriptions app = 
+    Sub.batch 
+        [ log App.Msg.Log
+        , setState App.Msg.SetState
+        ]
