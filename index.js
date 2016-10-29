@@ -3,11 +3,21 @@
 //require('./index.html');
 var Elm = require('./src/Main');
 
-//var elm = Elm.Main.fullscreen();
-var elm = Elm.Main.embed(document.getElementById('main'));
 
-elm.ports.alert.subscribe(function(message) {
-  //console.log('alert: ', message);
+var storedState = localStorage.getItem('wrs2');
+var startingState = storedState ? JSON.parse(storedState) : null;
+//var todomvc = Elm.Todo.fullscreen(startingState);
+
+
+
+//var elm = Elm.Main.fullscreen();
+var elm = Elm.Main.embed(document.getElementById('main'), startingState);
+
+elm.ports.setStorage.subscribe(function(state) {
+  localStorage.setItem('wrs2', JSON.stringify(state));
+});
+
+elm.ports.saveState.subscribe(function() {
   //elm.ports.log.send('Alert called: ' + message);
   
   var model = localStorage.getItem('wrs');

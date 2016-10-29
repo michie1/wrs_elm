@@ -1,5 +1,7 @@
 port module Main exposing (..)
 
+import Dict
+
 import Navigation
 import UrlParser exposing (Parser, (</>), format, int, oneOf, s, string)
 import String
@@ -11,20 +13,33 @@ import App.View
 import Results.Update
 import Comments.Update
 
+import Riders.Model
+import Races.Model
+import Results.Model
+import Comments.Model
+
+import Material
+
 
 --import Alert exposing (subscriptions)
 
+type alias Flags =
+    { riders : List Riders.Model.Rider
+    , races : List Races.Model.Race
+    , results : List Results.Model.Result
+    , comments : List Comments.Model.Comment
+    }
 
-main : Program Never
+main : Program (Maybe Flags)
 main =
-    Navigation.program (Navigation.makeParser hashParser)
+    Navigation.programWithFlags 
+        (Navigation.makeParser hashParser)
         --{ init = ( app, Cmd.none )
         { init = init
         , view = App.View.render
-        , update = App.Update.update
-        , urlUpdate =
-            urlUpdate
-            --, subscriptions = always Sub.none
+        --, update = App.Update.update
+        , update = App.Update.updateWithStorage
+        , urlUpdate = urlUpdate
         , subscriptions = subscriptions
         }
 
@@ -42,6 +57,7 @@ pageParser : Parser (App.Page.Page -> a) a
 pageParser =
     oneOf
         [ format App.Page.Home (s "home")
+        , format App.Page.Home (s "")
         , format App.Page.RidersAdd (s "riders" </> s "add")
         , format App.Page.RidersDetails (s "riders" </> int)
         , format App.Page.Riders (s "riders")
@@ -57,15 +73,41 @@ pageParser =
 
 -- MODEL
 
+appStateFromFlags : Flags -> App
+appStateFromFlags flags =
+    App.Model.App 
+        App.Page.Home
+        Dict.empty
+        flags.riders
+        flags.races 
+        Races.Model.empty
+        Riders.Model.empty
+        flags.results
+        Results.Model.empty
+        flags.comments
+        Comments.Model.initialAdd
+        Material.model
 
-init : Result String App.Page.Page -> ( App, Cmd Msg )
-init result =
-    urlUpdate result (fst App.Model.initial)
+init : Maybe Flags -> Result String App.Page.Page -> ( App, Cmd Msg )
+init maybeFlags result =
+   let
+        appStateInit =
+            case maybeFlags of
+                Nothing ->
+                    (fst App.Model.initial)
+
+
+                Maybe.Just flags ->
+                    appStateFromFlags flags
+    in
+        urlUpdate
+            result 
+            appStateInit
 
 
 urlUpdate : Result String App.Page.Page -> App -> ( App, Cmd Msg )
-urlUpdate result app =
-    case Debug.log "result" result of
+urlUpdate resultPage app =
+    case Debug.log "result" resultPage of
         Ok page ->
             let
                 newApp =

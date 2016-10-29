@@ -1,10 +1,12 @@
-port module App.Update exposing (update)
+port module App.Update exposing (update, updateWithStorage)
 
 import App.Model exposing (App)
 import App.Page
 import App.Msg exposing (Msg(..))
 import Races.Model exposing (Race, RaceAdd)
 import Riders.Model exposing (Rider, RiderAdd)
+import Comments.Model
+import Results.Model
 import Riders.Update
 import Results.Update
 import Comments.Update
@@ -14,6 +16,7 @@ import String
 import Debug
 import Array
 import Json.Decode exposing ((:=))
+--import Json.Encode
 import App.Decoder
 
 
@@ -46,8 +49,29 @@ setRaceAdd raceAdd race' =
     { raceAdd | race = race' }
 
 
-port alert : String -> Cmd msg
+type alias StoredApp =
+    { page : String
+    , riders : List Riders.Model.Rider
+    , races : List Races.Model.Race
+    , comments : List Comments.Model.Comment
+    , results : List Results.Model.Result
+    }
 
+port saveState : String -> Cmd msg
+port setStorage : StoredApp -> Cmd msg
+
+updateWithStorage : Msg -> App -> ( App, Cmd Msg )
+updateWithStorage msg app =
+    let
+        ( newApp, cmds ) =
+            update msg app
+    in
+        ( newApp
+        , Cmd.batch 
+            [ setStorage (StoredApp (toString newApp.page) newApp.riders newApp.races newApp.comments newApp.results)
+            , cmds 
+            ]
+        )
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
@@ -129,9 +153,9 @@ update msg app =
             , (Navigation.newUrl (App.Page.toHash page))
             )
 
-        Alert message ->
+        Save ->
             ( app
-            , alert (Debug.log "alert message" message)
+            , saveState (Debug.log "alert message" "message")
               --, Cmd.none
             )
 

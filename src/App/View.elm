@@ -44,8 +44,8 @@ render app =
                             [ Layout.href "#results" ]
                             [ text "Results" ]
                         , Layout.link
-                            [ Layout.onClick (App.Msg.Alert "hoi") ]
-                            [ text "alert" ]
+                            [ Layout.onClick (App.Msg.Save) ]
+                            [ text "Save" ]
                         , Layout.link
                             [ Layout.onClick (App.Msg.Reset) ]
                             [ text "Reset" ]

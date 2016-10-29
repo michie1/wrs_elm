@@ -19,7 +19,7 @@ type Msg
     | CommentAddSetText String
     | CommentAddSetRiderIndex Int
     | CommentAdd
-    | Alert String
+    | Save
     | Log String
     | SetState String
     | Reset
