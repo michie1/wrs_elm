@@ -12,10 +12,10 @@ import App.Model exposing (Mdl)
 import App.Msg
 import Results.Model
 import Races.Model
-import Riders.Model
+import Riders.Model exposing (Rider)
 
 
-render : Races.Model.Race -> Results.Model.ResultAdd -> List Riders.Model.Rider -> List Results.Model.Result -> Mdl -> Html App.Msg.Msg
+render : Races.Model.Race -> Results.Model.ResultAdd -> List Rider -> List Results.Model.Result -> Mdl -> Html App.Msg.Msg
 render race resultAdd riders results mdl =
     div []
         [ heading ("Add result for " ++ race.name)
