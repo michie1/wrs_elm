@@ -12,19 +12,19 @@ import App.Msg
 import App.Page
 import Html exposing (Html, div, text, a)
 import Html.Attributes exposing (href)
-import Material
-import Material.Scheme
 import Material.Button as Button
 import Material.Options as Options exposing (Style, css)
 import Material.Typography as Typo
 import Material.Table as Table
 
+
 heading : String -> Html App.Msg.Msg
 heading title =
-    Options.styled 
+    Options.styled
         Html.p
         [ Typo.display2 ]
         [ text title ]
+
 
 render : List Race -> App.Model.Mdl -> Html App.Msg.Msg
 render races mdl =
@@ -60,9 +60,9 @@ raceTable races =
                 |> List.map
                     (\race ->
                         Table.tr []
-                            [ Table.td [] 
-                                [ a 
-                                    [ href ("#races/" ++ (toString race.id)) ] 
+                            [ Table.td []
+                                [ a
+                                    [ href ("#races/" ++ (toString race.id)) ]
                                     [ text race.name ]
                                 ]
                             , Table.td [] [ text race.name ]

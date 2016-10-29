@@ -3,12 +3,15 @@ module App.Model exposing (App, Mdl, initial)
 import Dict exposing (Dict)
 import Material
 import App.Msg exposing (Msg(..))
+
+
 --import RaceAdd.Msg as RaceAdd
 --import RaceAdd.Model exposing (RaceAdd)
+
 import App.Page as Page exposing (Page(..))
 import Races.Model
-import Riders.Model 
-import Results.Model 
+import Riders.Model
+import Results.Model
 import Comments.Model
 
 
@@ -21,13 +24,10 @@ type alias App =
     , riderAdd : Riders.Model.RiderAdd
     , results : List Results.Model.Result
     , resultAdd : Results.Model.ResultAdd
-    , comments : List  Comments.Model.Comment
+    , comments : List Comments.Model.Comment
     , commentAdd : Comments.Model.Add
     , mdl : Material.Model
     }
-
-
-
 
 
 type alias Mdl =

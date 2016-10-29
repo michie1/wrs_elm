@@ -1,25 +1,21 @@
 module Results.List exposing (render)
 
 import Html exposing (Html, a, div, text, span, input, ul, li)
-import Html.Attributes exposing (href)
 import Results.Model
-import Material
-import Material.Scheme
-import Material.Button as Button
 import Material.Options as Options exposing (css)
 import Material.Typography as Typo
 import Material.Table as Table
-
 import App.Model
-import App.Page
 import App.Msg
+
 
 heading : String -> Html App.Msg.Msg
 heading title =
-    Options.styled 
+    Options.styled
         Html.p
         [ Typo.display2 ]
         [ text title ]
+
 
 render : List Results.Model.Result -> App.Model.Mdl -> Html App.Msg.Msg
 render results mdl =
@@ -27,6 +23,7 @@ render results mdl =
         [ heading "Results"
         , resultsTable results
         ]
+
 
 resultsTable : List Results.Model.Result -> Html msg
 resultsTable results =

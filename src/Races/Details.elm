@@ -7,6 +7,7 @@ import Races.Model exposing (Race)
 import Riders.Model
 import Results.Model
 
+
 --exposing (Mdl)
 
 import App.Msg
@@ -14,44 +15,42 @@ import App.Page
 import Html exposing (Html, a, div, text)
 import Html.Attributes exposing (href, style)
 import Material.List as List
-import Material
-import Material.Scheme
 import Material.Button as Button
 import Material.Options as Options exposing (Style, css)
 import Material.Typography as Typo
 import Material.Table as Table
-
-
 import Comments.List
+
 
 render : App.Model.App -> Int -> Html App.Msg.Msg
 render app raceId =
-    let maybeRace = 
-        List.head 
-            ( List.filter 
-                (\race -> race.id == raceId)
-                app.races
-            )
-    in 
+    let
+        maybeRace =
+            List.head
+                (List.filter
+                    (\race -> race.id == raceId)
+                    app.races
+                )
+    in
         case maybeRace of
             Nothing ->
                 div []
                     [ heading "Rider does not exist" ]
-                         
+
             Just race ->
-                let 
-                    results = 
-                        List.filter 
+                let
+                    results =
+                        List.filter
                             (\result -> result.raceId == race.id)
                             app.results
                 in
                     div []
-                        [ div [ ] 
-                            [ div [] 
+                        [ div []
+                            [ div []
                                 [ heading race.name
                                 , info race
                                 ]
-                            , div [] 
+                            , div []
                                 [ subHeading "Results"
                                 , addResultButton race app.mdl
                                 ]
@@ -64,7 +63,7 @@ render app raceId =
 
 
 addResultButton : Races.Model.Race -> App.Model.Mdl -> Html App.Msg.Msg
-addResultButton race mdl = 
+addResultButton race mdl =
     Button.render App.Msg.Mdl
         [ 0 ]
         mdl
@@ -73,9 +72,10 @@ addResultButton race mdl =
         ]
         [ text "Add"
         ]
-        
+
+
 addCommentButton : Races.Model.Race -> App.Model.Mdl -> Html App.Msg.Msg
-addCommentButton race mdl = 
+addCommentButton race mdl =
     Button.render App.Msg.Mdl
         [ 0 ]
         mdl
@@ -85,28 +85,32 @@ addCommentButton race mdl =
         [ text "Add"
         ]
 
+
 heading : String -> Html App.Msg.Msg
 heading title =
-    Options.styled 
+    Options.styled
         Html.p
         [ Typo.display2 ]
         [ text title ]
 
+
 subHeading : String -> Html App.Msg.Msg
 subHeading title =
-    Options.styled 
+    Options.styled
         Html.p
         [ Typo.display1 ]
         [ text title ]
 
+
 li : String -> String -> Html App.Msg.Msg
 li sub value =
-    List.li [ List.withSubtitle ] 
-        [ List.content [] 
+    List.li [ List.withSubtitle ]
+        [ List.content []
             [ List.subtitle [] [ text sub ]
             , text value
             ]
         ]
+
 
 info : Race -> Html App.Msg.Msg
 info race =
@@ -115,7 +119,8 @@ info race =
         , li "Date" race.name
         , li "Type" race.name
         , li "Points" race.name
-        ]        
+        ]
+
 
 resultsTable : Race -> List Results.Model.Result -> List Riders.Model.Rider -> Html msg
 resultsTable race results riders =
@@ -137,29 +142,31 @@ resultsTable race results riders =
             )
         ]
 
+
 riderRow : Results.Model.Result -> List Riders.Model.Rider -> Html msg
 riderRow result riders =
-    let maybeRider = 
-        List.head 
-            ( List.filter 
-                (\rider -> rider.id == result.riderId)
-                riders
-            )
-    in 
+    let
+        maybeRider =
+            List.head
+                (List.filter
+                    (\rider -> rider.id == result.riderId)
+                    riders
+                )
+    in
         case maybeRider of
             Nothing ->
                 Table.tr []
                     [ Table.td [] [ text "RiderId does not exist" ]
                     ]
-                         
+
             Just rider ->
                 Table.tr []
                     [ Table.td [] [ text (toString result.id) ]
-                    , Table.td [] [ 
-                                    a 
-                                        [ href ("#riders/" ++ (toString rider.id)) ] 
-                                        [ text rider.name ]
-                                    ]
+                    , Table.td []
+                        [ a
+                            [ href ("#riders/" ++ (toString rider.id)) ]
+                            [ text rider.name ]
+                        ]
                     , Table.td [] [ text rider.name ]
                     , Table.td [] [ text result.result ]
                     ]

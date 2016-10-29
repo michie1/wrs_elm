@@ -3,22 +3,17 @@ module Results.Add exposing (render)
 import Html exposing (Html, button, div, text, span, input, ul, li)
 import Html.Attributes
 import Html.Events
-
 import Json.Decode as Json
-
-import Material exposing (Model)
 import Material.Button as Button
 import Material.Textfield as Textfield
 import Material.Typography as Typo
 import Material.Options as Options exposing (css)
-
-
 import App.Model exposing (Mdl)
 import App.Msg
-
-import Results.Model 
+import Results.Model
 import Races.Model
 import Riders.Model
+
 
 render : Races.Model.Race -> Results.Model.ResultAdd -> List Riders.Model.Rider -> List Results.Model.Result -> Mdl -> Html App.Msg.Msg
 render race resultAdd riders results mdl =
@@ -26,23 +21,24 @@ render race resultAdd riders results mdl =
         [ heading ("Add result for " ++ race.name)
         , div []
             [ field 0 "Result" App.Msg.SetResultResult mdl
-            --, field 1 "Rider name" App.Msg.SetResultRiderName mdl
+              --, field 1 "Rider name" App.Msg.SetResultRiderName mdl
             , selectRider riders race results mdl
             ]
         , addButton mdl
         ]
 
+
 heading : String -> Html App.Msg.Msg
 heading headingText =
-    Options.styled 
+    Options.styled
         Html.p
         [ Typo.display2 ]
         [ text headingText ]
-        
+
 
 field : Int -> String -> (String -> App.Msg.Msg) -> Mdl -> Html App.Msg.Msg
 field index label msg mdl =
-    div [] 
+    div []
         [ Textfield.render App.Msg.Mdl
             [ index ]
             mdl
@@ -67,23 +63,25 @@ addButton mdl =
 
 resultExists : List Results.Model.Result -> Races.Model.Race -> Riders.Model.Rider -> Bool
 resultExists results race rider =
-    List.length ( List.filter
-                    (\result -> race.id == result.raceId && rider.id == result.riderId)
-                    results
-                ) == 1
+    List.length
+        (List.filter
+            (\result -> race.id == result.raceId && rider.id == result.riderId)
+            results
+        )
+        == 1
 
 
 selectRider : List Riders.Model.Rider -> Races.Model.Race -> List Results.Model.Result -> Mdl -> Html App.Msg.Msg
 selectRider allRiders race results mdl =
     div []
-        [ Html.select 
+        [ Html.select
             [ onSelect App.Msg.ResultAddSetRiderId ]
-            ( List.map 
+            (List.map
                 (\rider ->
-                    ( Html.option 
-                        [ ( Html.Attributes.value (toString rider.id) )
-                        -- , ( Html.Attributes.disabled ( resultExists results race rider ) )
-                        ]  
+                    (Html.option
+                        [ (Html.Attributes.value (toString rider.id))
+                          -- , ( Html.Attributes.disabled ( resultExists results race rider ) )
+                        ]
                         [ text rider.name ]
                     )
                 )
@@ -92,9 +90,11 @@ selectRider allRiders race results mdl =
             )
         ]
 
+
 targetSelectedIndex : Json.Decoder Int
 targetSelectedIndex =
     Json.at [ "target", "selectedIndex" ] Json.int
+
 
 onSelect : (Int -> msg) -> Html.Attribute msg
 onSelect msg =

@@ -1,5 +1,6 @@
 module Comments.Model exposing (Comment, Add, empty, initialComments, initialAdd)
 
+
 type alias Comment =
     { id : Int
     , raceId : Int
@@ -7,11 +8,13 @@ type alias Comment =
     , text : String
     }
 
+
 type alias Add =
     { raceId : Int
     , riderIndex : Int
     , text : String
     }
+
 
 empty : Comment
 empty =
@@ -21,12 +24,14 @@ empty =
     , text = ""
     }
 
+
 initialComments : List Comment
-initialComments = 
-    [ 
-        Comment 1 1 1 "Leuk!"
+initialComments =
+    [ Comment 1 1 1 "Leuk!"
     ]
 
+
+initialAdd : { riderIndex : Int, raceId : Int, text : String }
 initialAdd =
     { riderIndex = 0
     , raceId = 0

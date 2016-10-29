@@ -1,11 +1,9 @@
 module App.View exposing (render)
 
 import Html exposing (Html, button, div, text, span, input, ul, li)
-import Html.App
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App, Mdl)
 import App.Page
-import Riders.Model exposing (Rider)
 import Races.Model exposing (Race)
 import Races.Add
 import Races.List
@@ -15,15 +13,12 @@ import Riders.Details
 import Riders.Add
 import Results.List
 import Results.Add
-
 import Comments.Add
-
 import Material.Scheme
 import Material.Options as Options exposing (css)
 import Material.Typography as Typo
 import Material.Layout as Layout
-import Material.Textfield as Textfield
-import Navigation
+
 
 render : App -> Html Msg
 render app =
@@ -87,17 +82,16 @@ viewPage app =
         App.Page.Riders ->
             div []
                 [ Riders.List.render app.riders app.mdl
-                ]   
-    
+                ]
+
         App.Page.RidersAdd ->
             div []
                 [ Riders.Add.render app.riderAdd.rider app.mdl
                 ]
 
-
         App.Page.RidersDetails id ->
             div []
-                [ Riders.Details.render 
+                [ Riders.Details.render
                     app
                     id
                 ]
@@ -109,7 +103,7 @@ viewPage app =
 
         App.Page.RacesDetails id ->
             div []
-                [ Races.Details.render 
+                [ Races.Details.render
                     app
                     id
                 ]
@@ -122,11 +116,12 @@ viewPage app =
         App.Page.Results ->
             div []
                 [ Results.List.render app.results app.mdl
-                ] 
+                ]
 
         App.Page.ResultsAdd raceId ->
-            let 
-                maybeRace = getRace raceId app.races
+            let
+                maybeRace =
+                    getRace raceId app.races
             in
                 case maybeRace of
                     Nothing ->
@@ -140,10 +135,10 @@ viewPage app =
                             [ Results.Add.render race app.resultAdd app.riders app.results app.mdl
                             ]
 
-
         App.Page.CommentAdd raceId ->
-            let 
-                maybeRace = getRace raceId app.races
+            let
+                maybeRace =
+                    getRace raceId app.races
             in
                 case maybeRace of
                     Nothing ->
@@ -157,10 +152,11 @@ viewPage app =
                             [ Comments.Add.render app.commentAdd race app.riders app.mdl
                             ]
 
+
 getRace : Int -> List Races.Model.Race -> Maybe Races.Model.Race
 getRace raceId races =
-    List.head 
-        ( List.filter 
+    List.head
+        (List.filter
             (\race -> race.id == raceId)
             races
         )

@@ -1,6 +1,5 @@
 module App.Page exposing (Page(..), toHash)
 
-import Races.Model
 
 toHash : Page -> String
 toHash page =
@@ -23,18 +22,19 @@ toHash page =
         RacesAdd ->
             "#races/add"
 
-        RacesDetails id -> 
+        RacesDetails id ->
             "#races/" ++ toString id
 
         Results ->
-            "#results" 
+            "#results"
 
         ResultsAdd id ->
             "#races/" ++ (toString id) ++ "/add"
 
         CommentAdd id ->
             "#races/" ++ (toString id) ++ "/comment"
-        
+
+
 type Page
     = Home
     | RidersAdd
@@ -45,5 +45,4 @@ type Page
     | Races
     | Results
     | ResultsAdd Int
-
     | CommentAdd Int
