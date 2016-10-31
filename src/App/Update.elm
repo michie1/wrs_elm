@@ -3,8 +3,8 @@ port module App.Update exposing (update, updateWithStorage)
 import App.Model exposing (App)
 import App.Page
 import App.Msg exposing (Msg(..))
-import Races.Model exposing (Race, RaceAdd)
-import Riders.Model exposing (Rider, RiderAdd)
+import Races.Model exposing (Race)
+import Riders.Model 
 import Comments.Model
 import Results.Model
 import Riders.Update
@@ -18,7 +18,6 @@ import Array
 import Json.Decode exposing ((:=))
 --import Json.Encode
 import App.Decoder
-
 
 setRaceName : Race -> String -> Race
 setRaceName race name =
@@ -44,9 +43,9 @@ clearRaceName race =
     setRaceName race ""
 
 
-setRaceAdd : RaceAdd -> Race -> RaceAdd
-setRaceAdd raceAdd race' =
-    { raceAdd | race = race' }
+--setRaceAdd : Races.Model.Add -> Race -> Races.Model.Add
+--setRaceAdd raceAdd race' =
+--    { raceAdd | race = race' }
 
 
 type alias StoredApp =
@@ -59,6 +58,7 @@ type alias StoredApp =
 
 port saveState : String -> Cmd msg
 port setStorage : StoredApp -> Cmd msg
+port resetState : String -> Cmd msg
 
 updateWithStorage : Msg -> App -> ( App, Cmd Msg )
 updateWithStorage msg app =
@@ -67,7 +67,7 @@ updateWithStorage msg app =
             update msg app
     in
         ( newApp
-        , Cmd.batch 
+        , Cmd.batch
             [ setStorage (StoredApp (toString newApp.page) newApp.riders newApp.races newApp.comments newApp.results)
             , cmds 
             ]
@@ -76,38 +76,47 @@ updateWithStorage msg app =
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
     case msg of
-        AddRace race ->
-            let
-                newRace =
-                    setRaceId race app.races
-            in
-                ( { app
-                    | races = (List.append [ newRace ] app.races)
-                    , raceAdd = (setRaceAdd app.raceAdd (clearRaceName app.raceAdd.race))
-                  }
-                , Navigation.newUrl ("#races/" ++ (toString newRace.id))
-                )
+        AddRace ->
+            case app.raceAdd of
+                Nothing ->
+                    ( app
+                    , Cmd.none
+                    )
+
+                Just raceAdd ->
+                    let
+                        newRace = 
+                            ( Races.Model.Race 
+                                (calcRaceId app.races)
+                                raceAdd.name
+                            )
+                    in
+                        ( { app
+                            | races = (List.append [ newRace ] app.races)
+                            , raceAdd = Nothing
+                                --(setRaceAdd app.raceAdd (clearRaceName app.raceAdd.race))
+                          }
+                        , Navigation.newUrl ("#races/" ++ (toString newRace.id))
+                        )
 
         SetRaceName name' ->
-            let
-                raceAdd =
-                    app.raceAdd
+            case app.raceAdd of
+                Nothing ->
+                    ( app
+                    , Cmd.none
+                    )
 
-                race =
-                    raceAdd.race
+                Just raceAdd ->
+                    let
+                        raceAdd' =
+                            { raceAdd | name = name' }
 
-                race' =
-                    { race | name = name' }
-
-                raceAdd' =
-                    { raceAdd | race = race' }
-
-                app' =
-                    { app | raceAdd = raceAdd' }
-            in
-                ( app'
-                , Cmd.none
-                )
+                        app' =
+                            { app | raceAdd = Just raceAdd' }
+                    in
+                        ( app'
+                        , Cmd.none
+                        )
 
         AddRider rider ->
             Riders.Update.addRider app rider
@@ -170,6 +179,9 @@ update msg app =
 
         Reset ->
             App.Model.initial
+            --( app
+            --, (resetState "reset")
+            --)
 
         SetState message ->
             let

@@ -1,4 +1,4 @@
-module Races.Model exposing (RaceAdd, Race, empty, initialRaces)
+module Races.Model exposing (Add, Race, empty, initialRaces)
 
 
 type alias Race =
@@ -7,14 +7,16 @@ type alias Race =
     }
 
 
-type alias RaceAdd =
-    { race : Race
+type alias Add =
+    { name : String
+    , date : String
     }
 
 
-empty : RaceAdd
+empty : Add
 empty =
-    { race = Race 0 "empty"
+    { name = "empty"
+    , date = "date"
     }
 
 

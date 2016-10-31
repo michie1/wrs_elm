@@ -20,7 +20,7 @@ type alias App =
     , cache : Dict String (List String)
     , riders : List Riders.Model.Rider
     , races : List Races.Model.Race
-    , raceAdd : Races.Model.RaceAdd
+    , raceAdd : Maybe Races.Model.Add
     , riderAdd : Riders.Model.RiderAdd
     , results : List Results.Model.Result
     , resultAdd : Results.Model.ResultAdd
@@ -41,7 +41,8 @@ initial =
         Dict.empty
         Riders.Model.initialRiders
         Races.Model.initialRaces
-        Races.Model.empty
+        --Races.Model.empty
+        Nothing
         Riders.Model.empty
         Results.Model.initialResults
         Results.Model.empty

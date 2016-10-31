@@ -49,6 +49,9 @@ render app =
                         , Layout.link
                             [ Layout.onClick (App.Msg.Reset) ]
                             [ text "Reset" ]
+                        , Layout.link
+                            []
+                            [ text (toString app.raceAdd) ]
                         ]
                     ]
                 ]
@@ -109,9 +112,14 @@ viewPage app =
                 ]
 
         App.Page.RacesAdd ->
-            div []
-                [ Races.Add.render app.raceAdd.race app.mdl
-                ]
+            case app.raceAdd of
+                Nothing ->
+                    div [] [ text "RaceAdd nothing" ]
+                    -- crash?
+                Just raceAdd ->
+                    div []
+                        [ Races.Add.render raceAdd app.mdl
+                        ]
 
         App.Page.Results ->
             div []

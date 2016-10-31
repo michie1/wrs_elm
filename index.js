@@ -4,22 +4,23 @@
 var Elm = require('./src/Main');
 
 
-var storedState = localStorage.getItem('wrs2');
+var storedState = localStorage.getItem('wrs');
 var startingState = storedState ? JSON.parse(storedState) : null;
-//var todomvc = Elm.Todo.fullscreen(startingState);
 
-
-
-//var elm = Elm.Main.fullscreen();
 var elm = Elm.Main.embed(document.getElementById('main'), startingState);
 
 elm.ports.setStorage.subscribe(function(state) {
-  localStorage.setItem('wrs2', JSON.stringify(state));
+  localStorage.setItem('wrs', state ? JSON.stringify(state) : null);
+});
+
+elm.ports.resetState.subscribe(function () {
+  localStorage.setItem('wrs', null);
 });
 
 elm.ports.saveState.subscribe(function() {
   //elm.ports.log.send('Alert called: ' + message);
-  
+
+  /*
   var model = localStorage.getItem('wrs');
   var initial = {
     page: 'races',
@@ -53,4 +54,5 @@ elm.ports.saveState.subscribe(function() {
   //elm.ports.setState.send('{"page":"' + localStorage.getItem('page') + '","bla":"foo"}');
   //console.log(localStorage.getItem('wrs'));
   elm.ports.setState.send(localStorage.getItem('wrs'));
+  */
 });

@@ -9,39 +9,31 @@ import App.Model exposing (Mdl)
 import Races.Model exposing (Race)
 import App.Msg
 
-
-type alias RaceAdd =
-    { race : Race
-    }
-
-
-initial : RaceAdd
-initial =
-    { race = (Race 0 "Initial")
-    }
-
-
-render : Race -> Mdl -> Html App.Msg.Msg
-render race mdl =
-    div []
-        [ Options.styled Html.p
-            [ Typo.display2 ]
-            [ text "Add race" ]
-        , div []
-            [ Textfield.render App.Msg.Mdl
-                [ 2 ]
-                mdl
-                [ Textfield.label ("Name " ++ race.name)
-                , Textfield.floatingLabel
-                , Textfield.text'
-                , Textfield.onInput App.Msg.SetRaceName
+render : Races.Model.Add -> Mdl -> Html App.Msg.Msg
+render raceAdd mdl =
+    let
+        name = raceAdd.name
+        date = raceAdd.date
+    in
+        div []
+            [ Options.styled Html.p
+                [ Typo.display2 ]
+                [ text "Add race" ]
+            , div []
+                [ Textfield.render App.Msg.Mdl
+                    [ 2 ]
+                    mdl
+                    [ Textfield.label ("Name " ++ name)
+                    , Textfield.floatingLabel
+                    , Textfield.text'
+                    , Textfield.onInput App.Msg.SetRaceName
+                    ]
                 ]
+            , Button.render App.Msg.Mdl
+                [ 0 ]
+                mdl
+                [ Button.raised
+                , Button.onClick (App.Msg.AddRace)
+                ]
+                [ text "Add" ]
             ]
-        , Button.render App.Msg.Mdl
-            [ 0 ]
-            mdl
-            [ Button.raised
-            , Button.onClick (App.Msg.AddRace race)
-            ]
-            [ text "Add" ]
-        ]

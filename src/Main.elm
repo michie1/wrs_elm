@@ -80,7 +80,7 @@ appStateFromFlags flags =
         Dict.empty
         flags.riders
         flags.races 
-        Races.Model.empty
+        (Just Races.Model.empty) --Nothing --Races.Model.empty
         Riders.Model.empty
         flags.results
         Results.Model.empty
@@ -101,13 +101,13 @@ init maybeFlags result =
                     appStateFromFlags flags
     in
         urlUpdate
-            result 
+            result
             appStateInit
 
 
 urlUpdate : Result String App.Page.Page -> App -> ( App, Cmd Msg )
 urlUpdate resultPage app =
-    case Debug.log "result" resultPage of
+    case Debug.log "resultPage" resultPage of
         Ok page ->
             let
                 newApp =
@@ -119,6 +119,12 @@ urlUpdate resultPage app =
 
                     App.Page.CommentAdd raceId ->
                         Comments.Update.setRaceId newApp raceId
+
+                    App.Page.RacesAdd ->
+                        ( Debug.log "newApp" { newApp | raceAdd = Just Races.Model.empty }
+                        , Cmd.none
+                        )
+
 
                     _ ->
                         newApp

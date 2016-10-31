@@ -7,7 +7,7 @@ import App.Page exposing (Page(..))
 
 
 type Msg
-    = AddRace Race
+    = AddRace 
     | SetRaceName String
     | AddRider Rider
     | SetRiderName String
