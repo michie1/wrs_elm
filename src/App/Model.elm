@@ -41,7 +41,6 @@ initial =
         Dict.empty
         Riders.Model.initialRiders
         Races.Model.initialRaces
-        --Races.Model.empty
         Nothing
         Riders.Model.empty
         Results.Model.initialResults

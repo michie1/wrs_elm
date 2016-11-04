@@ -80,7 +80,7 @@ appStateFromFlags flags =
         Dict.empty
         flags.riders
         flags.races 
-        (Just Races.Model.empty) --Nothing --Races.Model.empty
+        Nothing 
         Riders.Model.empty
         flags.results
         Results.Model.empty
