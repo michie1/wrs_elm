@@ -1,4 +1,4 @@
-port module App.Update exposing (update, updateWithStorage)
+port module App.Update exposing (update, updateWithStorage, fromJust, calcRaceId)
 
 import App.Model exposing (App)
 import App.Page
@@ -19,34 +19,13 @@ import Json.Decode exposing ((:=))
 --import Json.Encode
 import App.Decoder
 
-setRaceName : Race -> String -> Race
-setRaceName race name =
-    { race | name = name }
-
-
-setRaceId : Race -> List Race -> Race
-setRaceId race races =
-    let
-        id =
-            calcRaceId races
-    in
-        { race | id = id }
-
-
-calcRaceId : List Race -> Int
-calcRaceId races =
-    (List.length races) + 1
-
-
-clearRaceName : Race -> Race
-clearRaceName race =
-    setRaceName race ""
-
-
---setRaceAdd : Races.Model.Add -> Race -> Races.Model.Add
---setRaceAdd raceAdd race' =
---    { raceAdd | race = race' }
-
+fromJust : Maybe a -> a
+fromJust maybeA =
+    case maybeA of 
+        Nothing ->
+            Debug.crash "maybeA should always be Just."
+        Just justA ->
+            justA
 
 type alias StoredApp =
     { page : String
@@ -73,162 +52,134 @@ updateWithStorage msg app =
             ]
         )
 
+
+
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
-    case msg of
-        AddRace ->
-            case app.raceAdd of
-                Nothing ->
-                    ( app
+        case msg of
+            AddRace ->
+                let
+                    raceAdd = fromJust app.raceAdd
+                    newRace = 
+                        Races.Model.Race 
+                            (calcRaceId app.races)
+                            raceAdd.name
+                in
+                    ( { app
+                        | races = (newRace :: app.races)
+                        , raceAdd = Nothing
+                      }
+                    , Navigation.newUrl ("#races/" ++ (toString newRace.id))
+                    )
+
+            SetRaceName newName ->
+                let
+                    raceAdd = fromJust app.raceAdd
+                    newRaceAdd =
+                        { raceAdd | name = newName }
+                in
+                    ( { app 
+                        | raceAdd = Just newRaceAdd }
                     , Cmd.none
                     )
 
-                Just raceAdd ->
-                    let
-                        newRace = 
-                            ( Races.Model.Race 
-                                (calcRaceId app.races)
-                                raceAdd.name
-                            )
-                    in
-                        ( { app
-                            | races = (List.append [ newRace ] app.races)
-                            , raceAdd = Nothing
-                                --(setRaceAdd app.raceAdd (clearRaceName app.raceAdd.race))
-                          }
-                        , Navigation.newUrl ("#races/" ++ (toString newRace.id))
-                        )
+            AddRider rider ->
+                Riders.Update.addRider app rider
 
-        SetRaceName name' ->
-            case app.raceAdd of
-                Nothing ->
-                    ( app
-                    , Cmd.none
-                    )
+            SetRiderName newName ->
+                Riders.Update.setRiderAddName app newName
 
-                Just raceAdd ->
-                    let
-                        raceAdd' =
-                            { raceAdd | name = name' }
+            AddResult ->
+                Results.Update.addResult app
 
-                        app' =
-                            { app | raceAdd = Just raceAdd' }
-                    in
-                        ( app'
-                        , Cmd.none
-                        )
+            SetResultResult value ->
+                Results.Update.setResultAddResult app value
 
-        AddRider rider ->
-            Riders.Update.addRider app rider
+            SetResultRider newId ->
+                case String.toInt newId of
+                    Err msg ->
+                        Debug.crash "Value not an int in SetResultRider"
 
-        SetRiderName newName ->
-            Riders.Update.setRiderAddName app newName
+                    Ok value ->
+                        Results.Update.setResultAddRider app value
 
-        AddResult ->
-            Results.Update.addResult app
+            SetResultRiderName name ->
+                Results.Update.setRider app name
 
-        SetResultResult value ->
-            Results.Update.setResultAddResult app value
+            ResultAddSetRiderId index ->
+                let
+                    id =
+                        Debug.log "id: " (getRiderIdByIndex index app.riders)
+                in
+                    Results.Update.setResultAddRider app id
 
-        SetResultRider newId ->
-            case String.toInt newId of
-                Err msg ->
-                    Results.Update.setResultAddRider app 0
+            CommentAddSetText text ->
+                Comments.Update.setText app text
 
-                Ok value ->
-                    Results.Update.setResultAddRider app value
+            CommentAddSetRiderIndex riderIndex ->
+                Comments.Update.setRiderIndex app riderIndex
 
-        SetResultRiderName name ->
-            Results.Update.setRider app name
+            CommentAdd ->
+                Comments.Update.add app
 
-        ResultAddSetRiderId index ->
-            let
-                id =
-                    Debug.log "id: " (getRiderIdByIndex index app.riders)
-            in
-                Results.Update.setResultAddRider app id
-
-        CommentAddSetText text ->
-            Comments.Update.setText app text
-
-        CommentAddSetRiderIndex riderIndex ->
-            Comments.Update.setRiderIndex app riderIndex
-
-        CommentAdd ->
-            Comments.Update.add app
-
-        GoTo page ->
-            ( app
-            , (Navigation.newUrl (App.Page.toHash page))
-            )
-
-        Save ->
-            ( app
-            , saveState (Debug.log "alert message" "message")
-              --, Cmd.none
-            )
-
-        Log message ->
-            let
-                m =
-                    Debug.log "message" message
-            in
+            GoTo page ->
                 ( app
-                , Cmd.none
+                , (Navigation.newUrl (App.Page.toHash page))
                 )
 
-        Reset ->
-            App.Model.initial
-            --( app
-            --, (resetState "reset")
-            --)
-
-        SetState message ->
-            let
-                resultApp =
-                    Json.Decode.decodeString App.Decoder.app message
-
-                { races
-                , riders
-                , comments
-                , results
-                , page
-                }
-                    = Maybe.withDefault
-                            { races = []
-                            , riders = []
-                            , comments = []
-                            , results = []
-                            , page = "home"
-                            }
-                            (Result.toMaybe resultApp)
-            in
-                ( { app
-                    | races = races
-                    , riders = riders
-                    , comments = comments
-                    , results = results
-                  }
+            Save ->
+                ( app
+                , saveState (Debug.log "alert message" "message")
                   --, Cmd.none
-                , (Navigation.newUrl ("#" ++ page))
                 )
 
-        Mdl msg' ->
-            Material.update msg' app
+            Log message ->
+                let
+                    m =
+                        Debug.log "message" message
+                in
+                    ( app
+                    , Cmd.none
+                    )
 
+            Reset ->
+                App.Model.initial
+                --( app
+                --, (resetState "reset")
+                --)
 
-checkBla : Result a b -> String
-checkBla resultBla =
-    case resultBla of
-        Ok val ->
-            let
-                x =
-                    Debug.log "val" val
-            in
-                "ok!"
+            SetState message ->
+                let
+                    resultApp =
+                        Json.Decode.decodeString App.Decoder.app message
 
-        Err msg ->
-            "err!"
+                    { races
+                    , riders
+                    , comments
+                    , results
+                    , page
+                    }
+                        = Maybe.withDefault
+                                { races = []
+                                , riders = []
+                                , comments = []
+                                , results = []
+                                , page = "home"
+                                }
+                                (Result.toMaybe resultApp)
+                in
+                    ( { app
+                        | races = races
+                        , riders = riders
+                        , comments = comments
+                        , results = results
+                      }
+                      --, Cmd.none
+                    , (Navigation.newUrl ("#" ++ page))
+                    )
+
+            Mdl msg' ->
+                Material.update msg' app
 
 
 getRiderIdByIndex : Int -> List Riders.Model.Rider -> Int
@@ -246,4 +197,8 @@ getRiderIdByIndex index riders =
 
             Just rider ->
                 rider.id
+
+calcRaceId : List Race -> Int
+calcRaceId races =
+    (List.length races) + 1
 
