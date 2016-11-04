@@ -29,25 +29,33 @@ all =
         , test "calcRaceId with one race in list" <|
             \() ->
                 Expect.equal (App.Update.calcRaceId [Races.Model.Race 1 "first race"]) 2
-        , test "Comment Add initial text" <|
-            \() ->
-                let
-                    initialApp = fst App.Model.initial
-                in
-                    Expect.equal initialApp.commentAdd.text "Empty comment"
-        , test "Comment Add set text" <|
-            \() ->
-                let
-                    initialApp = fst App.Model.initial
-                    newApp = fst (Comments.Update.setText initialApp "Foo")
-                in
-                    Expect.equal newApp.commentAdd.text "Foo"     
-                
-        , test "Comment Add set raceId" <|
-            \() ->
-                let
-                    initialApp = fst App.Model.initial
-                    newApp = fst (Comments.Update.setRaceId initialApp 1)
-                in
-                    Expect.equal newApp.commentAdd.raceId 1  
+        , comment
         ]
+
+comment : Test
+comment = 
+    let
+        initialApp = fst App.Model.initial
+        appText = fst (Comments.Update.setText initialApp "Foo")
+        appRaceId = fst (Comments.Update.setRaceId appText 1)
+        appCommentAdd = fst (Comments.Update.add appRaceId)
+        comment = App.Update.fromJust (List.head (appCommentAdd.comments))
+    in
+        describe "Comment test"
+            [ test "add initial text" <|
+                \() ->
+                    Expect.equal initialApp.commentAdd.text "Empty comment"
+            , test "add test text" <|
+                \() ->
+                    Expect.equal appText.commentAdd.text "Foo"     
+            , test "add set raceId" <|
+                \() ->
+                    Expect.equal appRaceId.commentAdd.raceId 1  
+            , test "Add length comments list" <|
+                \() ->
+                    Expect.equal (List.length appCommentAdd.comments) 2
+            , test "Add text" <|
+                \() ->
+                    Expect.equal comment.text "Foo"
+            ]
+
