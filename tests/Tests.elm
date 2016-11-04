@@ -5,8 +5,11 @@ import Expect
 import String
 
 import App.Update
+import App.Model
 
 import Races.Model
+
+import Comments.Update
 
 all : Test
 all =
@@ -26,4 +29,25 @@ all =
         , test "calcRaceId with one race in list" <|
             \() ->
                 Expect.equal (App.Update.calcRaceId [Races.Model.Race 1 "first race"]) 2
+        , test "Comment Add initial text" <|
+            \() ->
+                let
+                    initialApp = fst App.Model.initial
+                in
+                    Expect.equal initialApp.commentAdd.text "Empty comment"
+        , test "Comment Add set text" <|
+            \() ->
+                let
+                    initialApp = fst App.Model.initial
+                    newApp = fst (Comments.Update.setText initialApp "Foo")
+                in
+                    Expect.equal newApp.commentAdd.text "Foo"     
+                
+        , test "Comment Add set raceId" <|
+            \() ->
+                let
+                    initialApp = fst App.Model.initial
+                    newApp = fst (Comments.Update.setRaceId initialApp 1)
+                in
+                    Expect.equal newApp.commentAdd.raceId 1  
         ]
