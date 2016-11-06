@@ -10,8 +10,6 @@ import App.Page
 import App.Msg exposing (Msg(..))
 import App.Update
 import App.View
-import Results.Update
-import Comments.Update
 
 import Riders.Model
 import Races.Model
@@ -83,9 +81,9 @@ appStateFromFlags flags =
         Nothing 
         Riders.Model.empty
         flags.results
-        Results.Model.empty
+        Nothing -- Results.Model.empty
         flags.comments
-        Comments.Model.initialAdd
+        Nothing -- Comments.Model.initialAdd
         Material.model
 
 init : Maybe Flags -> Result String App.Page.Page -> ( App, Cmd Msg )
@@ -94,7 +92,7 @@ init maybeFlags result =
         appStateInit =
             case maybeFlags of
                 Nothing ->
-                    (fst App.Model.initial)
+                    (App.Model.initial)
 
 
                 Maybe.Just flags ->
@@ -115,15 +113,31 @@ urlUpdate resultPage app =
             in
                 case page of
                     App.Page.ResultsAdd raceId ->
-                        (Results.Update.setResultAddRace newApp raceId)
+                        --(Results.Update.setResultAddRace newApp raceId)
+                        let 
+                            resultAdd = Results.Model.initialAdd
+                            resultAddWithRaceId = { resultAdd | raceId = raceId }
+                        in
+                            ( { newApp | resultAdd = Just resultAddWithRaceId }
+                            , Cmd.none
+                            )
 
                     App.Page.CommentAdd raceId ->
-                        Comments.Update.setRaceId newApp raceId
+                        --Comments.Update.setRaceId newApp raceId
+                        let
+                           commentAdd = Comments.Model.initialAdd
+                           commentAddWithRaceId = { commentAdd | raceId = raceId }
+                        in
+                            ( { newApp | commentAdd = Just commentAddWithRaceId }
+                            , Cmd.none
+                            )
+
 
                     App.Page.RacesAdd ->
                         ( Debug.log "newApp" { newApp | raceAdd = Just Races.Model.empty }
                         , Cmd.none
                         )
+
 
 
                     _ ->

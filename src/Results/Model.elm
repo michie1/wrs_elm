@@ -1,4 +1,4 @@
-module Results.Model exposing (ResultAdd, Result, empty, initialResults)
+module Results.Model exposing (ResultAdd, Result, initialAdd, initialResults)
 
 import Riders.Model exposing (Rider)
 
@@ -12,17 +12,21 @@ type alias Result =
 
 
 type alias ResultAdd =
-    { result : Result
+    { raceId : Int
     , riderName : String
+    , riderId : Int
     , riders : List Rider
+    , result : String
     }
 
 
-empty : ResultAdd
-empty =
-    { result = (Result 0 0 0 "")
+initialAdd : ResultAdd
+initialAdd =
+    { raceId = 0
+    , riderId = 0
     , riderName = ""
     , riders = []
+    , result = ""
     }
 
 

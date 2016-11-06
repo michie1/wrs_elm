@@ -1,8 +1,9 @@
-module Comments.Update exposing (add, setText, setRaceId, setRiderIndex)
+module Comments.Update exposing (new, setText, setRaceId, setRiderIndex)
 
 import Navigation
 import Array
 import App.Model exposing (App)
+import Util
 import App.Msg exposing (Msg(..))
 import Comments.Model exposing (Comment, Add, initialAdd)
 import Riders.Model
@@ -11,44 +12,53 @@ import Riders.Model
 -- Exposed
 
 
-add : App -> ( App, Cmd Msg )
-add app =
+--add : App -> ( App, Cmd Msg )
+new : Int -> App -> ( Comment, Cmd Msg )
+new id app =
     let
+        commentAdd = Util.fromJust app.commentAdd
+        riderId = Util.fromJust (getRiderIdByIndex commentAdd.riderIndex app.riders)
         comment =
             Comment
-                (calcId app.comments)
-                app.commentAdd.raceId
-                (getRiderIdByIndex app.commentAdd.riderIndex app.riders)
-                app.commentAdd.text
-
-        comments =
-            comment :: app.comments
+                id
+                riderId
+                commentAdd.raceId
+                commentAdd.text
     in
-        ( setComments (set app Comments.Model.initialAdd) comments
+        ( comment
         , Navigation.newUrl ("#races/" ++ toString comment.raceId)
         )
 
 
 setText : App -> String -> ( App, Cmd Msg )
 setText app text =
-    ( set app (setAddText app.commentAdd text), Cmd.none )
+    let
+        commentAdd = Util.fromJust app.commentAdd
+    in
+        ( set app (setAddText commentAdd text), Cmd.none )
 
 
 setRaceId : App -> Int -> ( App, Cmd Msg )
 setRaceId app raceId =
-    ( set app (setAddRaceId app.commentAdd raceId), Cmd.none )
+    let
+        commentAdd = Util.fromJust app.commentAdd
+    in
+        ( set app (setAddRaceId commentAdd raceId), Cmd.none )
 
 
 setRiderIndex : App -> Int -> ( App, Cmd Msg )
 setRiderIndex app riderIndex =
-    ( set app (setAddRiderIndex app.commentAdd (Debug.log "riderIndex" riderIndex)), Cmd.none )
+    let
+        commentAdd = Util.fromJust app.commentAdd
+    in
+        ( set app (setAddRiderIndex commentAdd (Debug.log "riderIndex" riderIndex)), Cmd.none )
 
 
 
 -- Helpers
 
 
-getRiderIdByIndex : Int -> List Riders.Model.Rider -> Int
+getRiderIdByIndex : Int -> List Riders.Model.Rider -> Maybe Int
 getRiderIdByIndex index riders =
     let
         arrayRiders =
@@ -59,10 +69,10 @@ getRiderIdByIndex index riders =
     in
         case maybeRider of
             Nothing ->
-                0
+                Nothing
 
             Just rider ->
-                rider.id
+                Just rider.id
 
 
 calcId : List Comment -> Int
@@ -92,4 +102,4 @@ setAddRiderIndex add riderIndex =
 
 set : App -> Add -> App
 set app commentAdd =
-    { app | commentAdd = commentAdd }
+    { app | commentAdd = Just commentAdd }

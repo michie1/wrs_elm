@@ -1,7 +1,7 @@
 module App.Msg exposing (Msg(..))
 
 import Material
-import Races.Model exposing (Race)
+--import Races.Model exposing (Race)
 import Riders.Model exposing (Rider)
 import App.Page exposing (Page(..))
 
@@ -12,7 +12,7 @@ type Msg
     | AddRider Rider
     | SetRiderName String
     | AddResult
-    | SetResultResult String
+    | SetResultAddResult String
     | SetResultRider String
     | SetResultRiderName String
     | ResultAddSetRiderId Int

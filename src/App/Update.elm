@@ -1,4 +1,4 @@
-port module App.Update exposing (update, updateWithStorage, fromJust, calcRaceId)
+port module App.Update exposing (update, updateWithStorage, calcRaceId)
 
 import App.Model exposing (App)
 import App.Page
@@ -15,17 +15,12 @@ import Navigation
 import String
 import Debug
 import Array
+import Util
 import Json.Decode exposing ((:=))
 --import Json.Encode
 import App.Decoder
 
-fromJust : Maybe a -> a
-fromJust maybeA =
-    case maybeA of 
-        Nothing ->
-            Debug.crash "maybeA should always be Just."
-        Just justA ->
-            justA
+
 
 type alias StoredApp =
     { page : String
@@ -59,7 +54,7 @@ update msg app =
         case msg of
             AddRace ->
                 let
-                    raceAdd = fromJust app.raceAdd
+                    raceAdd = Util.fromJust app.raceAdd
                     newRace = 
                         Races.Model.Race 
                             (calcRaceId app.races)
@@ -74,7 +69,7 @@ update msg app =
 
             SetRaceName newName ->
                 let
-                    raceAdd = fromJust app.raceAdd
+                    raceAdd = Util.fromJust app.raceAdd
                     newRaceAdd =
                         { raceAdd | name = newName }
                 in
@@ -90,10 +85,25 @@ update msg app =
                 Riders.Update.setRiderAddName app newName
 
             AddResult ->
-                Results.Update.addResult app
+                let 
+                    ( maybeResult, cmd ) = Results.Update.addResult app
+                in
+                    case maybeResult of 
+                        Just result ->
+                            ( { app | results = result :: app.results }
+                            , cmd )
+                        Nothing ->
+                            ( app, cmd )
 
-            SetResultResult value ->
-                Results.Update.setResultAddResult app value
+            SetResultAddResult value ->
+                --Results.Update.setResultAddResult app value
+                let
+                    resultAdd = Util.fromJust app.resultAdd
+                    resultAddWithResult = { resultAdd | result = value }
+                in
+                    ( { app | resultAdd = Just resultAddWithResult }
+                    , Cmd.none
+                    )
 
             SetResultRider newId ->
                 case String.toInt newId of
@@ -114,13 +124,35 @@ update msg app =
                     Results.Update.setResultAddRider app id
 
             CommentAddSetText text ->
-                Comments.Update.setText app text
+                let
+                    commentAdd = Util.fromJust app.commentAdd
+                    commentAddWithText = { commentAdd | text = text }
+                in
+                    ( { app | commentAdd = Just commentAddWithText }
+                    , Cmd.none 
+                    )
+
+                --Comments.Update.setText app text
+                    
 
             CommentAddSetRiderIndex riderIndex ->
-                Comments.Update.setRiderIndex app riderIndex
+                let
+                    commentAdd = Util.fromJust app.commentAdd
+                    commentAddWithRiderIndex = { commentAdd | riderIndex = riderIndex }
+                in
+                    ( { app | commentAdd = Just commentAddWithRiderIndex }
+                    , Cmd.none 
+                    )
 
             CommentAdd ->
-                Comments.Update.add app
+                let
+                    (comment, cmd) = Comments.Update.new 
+                                        ((List.length app.comments) + 1)
+                                        app
+                in
+                    ( { app | comments = comment :: app.comments
+                            , commentAdd = Nothing }
+                    , cmd)
 
             GoTo page ->
                 ( app
@@ -143,7 +175,7 @@ update msg app =
                     )
 
             Reset ->
-                App.Model.initial
+                (App.Model.initial, Cmd.none)
                 --( app
                 --, (resetState "reset")
                 --)

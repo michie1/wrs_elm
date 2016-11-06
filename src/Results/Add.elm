@@ -20,7 +20,7 @@ render race resultAdd riders results mdl =
     div []
         [ heading ("Add result for " ++ race.name)
         , div []
-            [ field 0 "Result" App.Msg.SetResultResult mdl
+            [ field 0 "Result" App.Msg.SetResultAddResult mdl
               --, field 1 "Rider name" App.Msg.SetResultRiderName mdl
             , selectRider riders race results mdl
             ]

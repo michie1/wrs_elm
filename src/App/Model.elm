@@ -2,7 +2,7 @@ module App.Model exposing (App, Mdl, initial)
 
 import Dict exposing (Dict)
 import Material
-import App.Msg exposing (Msg(..))
+--import App.Msg exposing (Msg(..))
 
 
 --import RaceAdd.Msg as RaceAdd
@@ -23,9 +23,9 @@ type alias App =
     , raceAdd : Maybe Races.Model.Add
     , riderAdd : Riders.Model.RiderAdd
     , results : List Results.Model.Result
-    , resultAdd : Results.Model.ResultAdd
+    , resultAdd : Maybe Results.Model.ResultAdd
     , comments : List Comments.Model.Comment
-    , commentAdd : Comments.Model.Add
+    , commentAdd : Maybe Comments.Model.Add
     , mdl : Material.Model
     }
 
@@ -34,7 +34,8 @@ type alias Mdl =
     Material.Model
 
 
-initial : ( App, Cmd Msg )
+initial : ( App )
+    --, Cmd Msg )
 initial =
     ( App
         Home
@@ -44,9 +45,9 @@ initial =
         Nothing
         Riders.Model.empty
         Results.Model.initialResults
-        Results.Model.empty
+        Nothing -- Results.Model.empty
         Comments.Model.initialComments
-        Comments.Model.initialAdd
+        Nothing -- Comments.Model.initialAdd
         Material.model
-    , Cmd.none
+    --, Cmd.none
     )

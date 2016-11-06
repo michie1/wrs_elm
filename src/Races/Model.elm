@@ -15,7 +15,7 @@ type alias Add =
 
 empty : Add
 empty =
-    { name = "empty"
+    { name = ""
     , date = "date"
     }
 

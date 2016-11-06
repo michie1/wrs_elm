@@ -19,6 +19,8 @@ import Material.Options as Options exposing (css)
 import Material.Typography as Typo
 import Material.Layout as Layout
 
+import Util
+
 
 render : App -> Html Msg
 render app =
@@ -130,6 +132,12 @@ viewPage app =
             let
                 maybeRace =
                     getRace raceId app.races
+                --resultAdd = Util.fromJust app.resultAdd
+                resultAdd = case app.resultAdd of
+                    Nothing ->
+                        Debug.crash "resultAdd shouldn't be Nothing in App.Page.ResultsAdd."
+                    Just value ->
+                        value
             in
                 case maybeRace of
                     Nothing ->
@@ -140,13 +148,15 @@ viewPage app =
 
                     Just race ->
                         div []
-                            [ Results.Add.render race app.resultAdd app.riders app.results app.mdl
+                            [ Results.Add.render race resultAdd app.riders app.results app.mdl
                             ]
 
         App.Page.CommentAdd raceId ->
             let
                 maybeRace =
                     getRace raceId app.races
+                commentAdd =
+                    Util.fromJust app.commentAdd
             in
                 case maybeRace of
                     Nothing ->
@@ -157,7 +167,7 @@ viewPage app =
 
                     Just race ->
                         div []
-                            [ Comments.Add.render app.commentAdd race app.riders app.mdl
+                            [ Comments.Add.render commentAdd race app.riders app.mdl
                             ]
 
 
