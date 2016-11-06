@@ -27,8 +27,8 @@ empty =
 
 initialRaces : List Race
 initialRaces =
-    [ Race 1 "race a" "05-11-2016" -- (dateFromString "2016-11-01")
-    , Race 2 "race c" "06-11-2016" -- (dateFromString "2016-10-01")
+    [ Race 1 "race a" "10-31-2016" -- (dateFromString "2016-11-01")
+    , Race 2 "race c" "10-21-2016" -- (dateFromString "2016-10-01")
     ]
 
 dateFromString : String -> Date.Date

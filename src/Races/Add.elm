@@ -6,6 +6,7 @@ import Material.Textfield as Textfield
 import Material.Typography as Typo
 import Material.Options as Options exposing (css)
 import App.Model exposing (Mdl)
+import App.Msg
 import Races.Model exposing (Race)
 import App.Msg
 import Date
@@ -35,7 +36,7 @@ render raceAdd mdl =
                 [ Textfield.render App.Msg.Mdl
                     [ 2 ]
                     mdl
-                    [ Textfield.label "Date (DD-MM-YYYY)"
+                    [ Textfield.label "Date (MM-DD-YYYY)"
                     , Textfield.value dateString
                     , Textfield.floatingLabel
                     , Textfield.text'
@@ -47,15 +48,34 @@ render raceAdd mdl =
                             Textfield.error <| "Invalid date"
                     ]
                 ]
-            , Button.render App.Msg.Mdl
-                [ 0 ]
-                mdl
-                [ Button.raised
-                , if name == "" then
-                    Button.disabled
-                  else
-                    Options.nop
-                , Button.onClick App.Msg.AddRace
+            , div []
+                [ Button.render App.Msg.Mdl
+                    [ 3 ]
+                    mdl
+                    [ Button.raised
+                    --, Button.onClick today
+                    , Button.onClick App.Msg.SetRaceAddYesterday
+                    ]
+                    [ text "Yesterday" ]
+                , Button.render App.Msg.Mdl
+                    [ 4 ]
+                    mdl
+                    [ Button.raised
+                    , Button.onClick App.Msg.SetRaceAddToday
+                    ]
+                    [ text "Today" ]
                 ]
-                [ text "Add" ]
+            , div []
+                [ Button.render App.Msg.Mdl
+                    [ 0 ]
+                    mdl
+                    [ Button.raised
+                    , if name == "" then
+                        Button.disabled
+                      else
+                        Options.nop
+                    , Button.onClick App.Msg.AddRace
+                    ]
+                    [ text "Add" ]
+                ] 
             ]

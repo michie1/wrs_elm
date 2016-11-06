@@ -65,7 +65,7 @@ raceTable races =
                                     [ href ("#races/" ++ (toString race.id)) ]
                                     [ text race.name ]
                                 ]
-                            , Table.td [] [ text race.name ]
+                            , Table.td [] [ text race.date ]
                             , Table.td [] [ text race.name ]
                             , Table.td [ Table.numeric ] [ text race.name ]
                             ]

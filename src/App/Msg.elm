@@ -28,5 +28,9 @@ type Msg
     | Reset
     | SetNow (Maybe Date.Date)
     | SetRaceAdd (Maybe Date.Date)
+    | SetRaceAddYesterday
+    | SetRaceAddYesterday2 (Maybe Date.Date)
+    | SetRaceAddToday --(Maybe Date.Date)
+    | SetRaceAddToday2 (Maybe Date.Date)
     | GoTo Page
     | Mdl (Material.Msg Msg)

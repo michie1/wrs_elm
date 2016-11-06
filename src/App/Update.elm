@@ -20,7 +20,8 @@ import Json.Decode exposing ((:=))
 --import Json.Encode
 import App.Decoder
 import Date
-
+import Date.Extra
+import Task
 
 type alias StoredApp =
     { page : String
@@ -199,11 +200,52 @@ update msg app =
 
             SetRaceAdd maybeNow ->
                 let 
-                    dateFormatted = Debug.log "dateFormatted" (formatDate maybeNow)
+                    dateFormatted = case maybeNow of
+                        Just now ->
+                            formatDate now
+                        Nothing ->
+                            ""
                     raceAdd = Races.Model.Add "" dateFormatted 
                 in
                     ( { app | raceAdd = Just raceAdd }
                     , Cmd.none
+                    )
+
+            SetRaceAddYesterday ->
+                ( app, yesterdayTask )
+        
+            SetRaceAddYesterday2 maybeDate ->
+                let 
+                    raceAdd = Util.fromJust app.raceAdd  
+                    today = Util.fromJust maybeDate
+
+                    dateFormatted = case maybeDate of
+                        Just date ->
+                            formatDate (Date.Extra.add Date.Extra.Day (-1) date)
+                        Nothing ->
+                            ""
+                    newRaceAdd = { raceAdd | dateString = dateFormatted }
+                in
+                    ( { app | raceAdd = Just newRaceAdd }
+                    , Cmd.none 
+                    )
+
+            SetRaceAddToday ->
+                ( app, todayTask )
+
+            SetRaceAddToday2 maybeDate ->
+                let 
+                    raceAdd = Util.fromJust app.raceAdd
+                    dateFormatted = case maybeDate of
+                        Just date ->
+                            formatDate date
+                        Nothing ->
+                            ""
+
+                    newRaceAdd = { raceAdd | dateString = dateFormatted }
+                in
+                    ( { app | raceAdd = Just newRaceAdd }
+                    , Cmd.none 
                     )
 
             SetState message ->
@@ -288,15 +330,30 @@ numMonth month =
         Date.Dec ->
             12
 
-formatDate : Maybe Date.Date -> String
-formatDate maybeDate =
-    case maybeDate of
-            Just date ->
-                (toString <| Date.day date)
-                ++ "-"
-                ++ (toString <| numMonth <| Date.month date)
-                ++ "-"
-                ++ (toString <| Date.year date)
+leadingZero : Int -> String
+leadingZero value =
+    if value < 10 then
+        "0" ++ toString value
+    else
+        toString value
 
-            Nothing ->
-                ""
+formatDate : Date.Date -> String
+formatDate date =
+    (toString <| numMonth <| Date.month date)
+    ++ "-"
+    ++ (leadingZero (Date.day date))
+    ++ "-"
+    ++ (toString <| Date.year date)
+
+
+todayTask : Cmd App.Msg.Msg
+todayTask = 
+      Task.perform 
+          (always (App.Msg.SetRaceAddToday2 Nothing)) 
+          (Just >> App.Msg.SetRaceAddToday2) Date.now
+
+yesterdayTask : Cmd App.Msg.Msg
+yesterdayTask = 
+      Task.perform 
+          (always (App.Msg.SetRaceAddYesterday2 Nothing)) 
+          (Just >> App.Msg.SetRaceAddYesterday2) Date.now
