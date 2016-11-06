@@ -6,10 +6,14 @@ import String
 
 import App.Update
 import App.Model
+import App.Msg
 
 import Races.Model
 
-import Comments.Update
+--import Comments.Update
+import Comments.Model
+
+import Util
 
 all : Test
 all =
@@ -22,7 +26,7 @@ all =
                 Expect.equal "a" (String.left 1 "abcdefg")
         , test "fromJust just" <|
             \() ->
-                Expect.equal (App.Update.fromJust (Just 5)) 5
+                Expect.equal (Util.fromJust (Just 5)) 5
         , test "calcRaceId with empty list" <|
             \() ->
                 Expect.equal (App.Update.calcRaceId []) 1
@@ -35,27 +39,67 @@ all =
 comment : Test
 comment = 
     let
-        initialApp = fst App.Model.initial
-        appText = fst (Comments.Update.setText initialApp "Foo")
-        appRaceId = fst (Comments.Update.setRaceId appText 1)
-        appCommentAdd = fst (Comments.Update.add appRaceId)
-        comment = App.Update.fromJust (List.head (appCommentAdd.comments))
+        bla = 1
+        --appNothing = fst App.Model.initial
+        --commentAdd = Comments.Model.initialAdd
+        --raceId = 1
+        --commentAddWithRaceId = { commentAdd | raceId = raceId }
     in
-        describe "Comment test"
-            [ test "add initial text" <|
+        describe "Comment "
+            [ test "hoi" <|
                 \() ->
-                    Expect.equal initialApp.commentAdd.text "Empty comment"
-            , test "add test text" <|
-                \() ->
-                    Expect.equal appText.commentAdd.text "Foo"     
-            , test "add set raceId" <|
-                \() ->
-                    Expect.equal appRaceId.commentAdd.raceId 1  
-            , test "Add length comments list" <|
-                \() ->
-                    Expect.equal (List.length appCommentAdd.comments) 2
-            , test "Add text" <|
-                \() ->
-                    Expect.equal comment.text "Foo"
+                    Expect.equal True True
+            , commentAddInitialNothing
+            , commentAddInitialJust
+            , commentAdd
             ]
 
+commentAddInitialNothing : Test
+commentAddInitialNothing =
+    let 
+        app = App.Model.initial
+    in
+        test "commentAdd is initially Nothing" <|
+            \() ->
+                Expect.equal app.commentAdd Nothing
+
+commentAddInitialJust : Test
+commentAddInitialJust = 
+    let
+        initialApp = App.Model.initial
+        initialAdd = Comments.Model.initialAdd
+        raceId = 1
+        commentAdd = { initialAdd | raceId = raceId }
+    in
+        describe "commentAdd initial Just"
+            [ test "text" <|
+                \() ->
+                    Expect.equal commentAdd.text "Empty comment"
+            , test "raceId" <|
+                \() ->
+                    Expect.equal commentAdd.raceId raceId
+            ]
+
+commentAdd : Test
+commentAdd =
+    let 
+        initialApp = App.Model.initial
+        initialAdd = Comments.Model.initialAdd
+        raceId = 1
+        commentAdd = { initialAdd | raceId = raceId }
+        app = { initialApp | commentAdd = Just commentAdd }
+        numCommentsBefore = List.length app.comments 
+
+        ( newApp, cmd ) = App.Update.update App.Msg.CommentAdd app
+    in
+        describe "Adding a comment"
+        [ test "commentAdd should be Nothing" <|
+            \() ->
+                Expect.equal newApp.commentAdd Nothing
+        , test "Number of comments should be one more" <|
+            \() ->
+                let
+                    numCommentsAfter = List.length newApp.comments
+                in
+                    Expect.equal numCommentsAfter (numCommentsBefore + 1)
+        ]
