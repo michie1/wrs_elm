@@ -5,12 +5,14 @@ import Results.Model
 import Riders.Model
 import Comments.Model
 import Json.Decode exposing ((:=))
+--import Json.Decode.Extra
 
 race : Json.Decode.Decoder Races.Model.Race
 race =
-    Json.Decode.object2 Races.Model.Race
+    Json.Decode.object3 Races.Model.Race
         ("id" := Json.Decode.int)
         ("name" := Json.Decode.string)
+        ("date" := Json.Decode.string)
 
 rider : Json.Decode.Decoder Riders.Model.Rider
 rider =

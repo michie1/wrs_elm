@@ -19,7 +19,7 @@ import Util
 import Json.Decode exposing ((:=))
 --import Json.Encode
 import App.Decoder
-
+import Date
 
 
 type alias StoredApp =
@@ -59,6 +59,7 @@ update msg app =
                         Races.Model.Race 
                             (calcRaceId app.races)
                             raceAdd.name
+                            raceAdd.dateString
                 in
                     ( { app
                         | races = (newRace :: app.races)
@@ -72,6 +73,17 @@ update msg app =
                     raceAdd = Util.fromJust app.raceAdd
                     newRaceAdd =
                         { raceAdd | name = newName }
+                in
+                    ( { app 
+                        | raceAdd = Just newRaceAdd }
+                    , Cmd.none
+                    )
+
+            SetRaceDate newDate ->
+                let
+                    raceAdd = Util.fromJust app.raceAdd
+                    newRaceAdd =
+                        { raceAdd | dateString = newDate }
                 in
                     ( { app 
                         | raceAdd = Just newRaceAdd }
@@ -180,6 +192,20 @@ update msg app =
                 --, (resetState "reset")
                 --)
 
+            SetNow maybeDate ->
+                ( { app | now = maybeDate }
+                , Cmd.none
+                )
+
+            SetRaceAdd maybeNow ->
+                let 
+                    dateFormatted = Debug.log "dateFormatted" (formatDate maybeNow)
+                    raceAdd = Races.Model.Add "" dateFormatted 
+                in
+                    ( { app | raceAdd = Just raceAdd }
+                    , Cmd.none
+                    )
+
             SetState message ->
                 let
                     resultApp =
@@ -234,3 +260,43 @@ calcRaceId : List Race -> Int
 calcRaceId races =
     (List.length races) + 1
 
+numMonth : Date.Month -> Int
+numMonth month =
+    case month of
+        Date.Jan ->
+            1
+        Date.Feb ->
+            2
+        Date.Mar ->
+            3
+        Date.Apr ->
+            4
+        Date.May ->
+            5
+        Date.Jun ->
+            6
+        Date.Jul ->
+            7
+        Date.Aug ->
+            8
+        Date.Sep ->
+            9
+        Date.Oct ->
+            10
+        Date.Nov ->
+            11
+        Date.Dec ->
+            12
+
+formatDate : Maybe Date.Date -> String
+formatDate maybeDate =
+    case maybeDate of
+            Just date ->
+                (toString <| Date.day date)
+                ++ "-"
+                ++ (toString <| numMonth <| Date.month date)
+                ++ "-"
+                ++ (toString <| Date.year date)
+
+            Nothing ->
+                ""

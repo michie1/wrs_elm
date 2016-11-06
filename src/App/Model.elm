@@ -14,6 +14,8 @@ import Riders.Model
 import Results.Model
 import Comments.Model
 
+import Date
+
 
 type alias App =
     { page : Page.Page
@@ -26,6 +28,7 @@ type alias App =
     , resultAdd : Maybe Results.Model.ResultAdd
     , comments : List Comments.Model.Comment
     , commentAdd : Maybe Comments.Model.Add
+    , now : Maybe Date.Date
     , mdl : Material.Model
     }
 
@@ -34,8 +37,7 @@ type alias Mdl =
     Material.Model
 
 
-initial : ( App )
-    --, Cmd Msg )
+initial : App
 initial =
     ( App
         Home
@@ -48,6 +50,6 @@ initial =
         Nothing -- Results.Model.empty
         Comments.Model.initialComments
         Nothing -- Comments.Model.initialAdd
+        Nothing
         Material.model
-    --, Cmd.none
     )

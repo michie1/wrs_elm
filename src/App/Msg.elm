@@ -5,10 +5,13 @@ import Material
 import Riders.Model exposing (Rider)
 import App.Page exposing (Page(..))
 
+import Date
+
 
 type Msg
     = AddRace 
     | SetRaceName String
+    | SetRaceDate String
     | AddRider Rider
     | SetRiderName String
     | AddResult
@@ -23,5 +26,7 @@ type Msg
     | Log String
     | SetState String
     | Reset
+    | SetNow (Maybe Date.Date)
+    | SetRaceAdd (Maybe Date.Date)
     | GoTo Page
     | Mdl (Material.Msg Msg)

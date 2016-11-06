@@ -17,6 +17,8 @@ import Results.Model
 import Comments.Model
 
 import Material
+import Task
+import Date
 
 
 --import Alert exposing (subscriptions)
@@ -84,6 +86,7 @@ appStateFromFlags flags =
         Nothing -- Results.Model.empty
         flags.comments
         Nothing -- Comments.Model.initialAdd
+        Nothing
         Material.model
 
 init : Maybe Flags -> Result String App.Page.Page -> ( App, Cmd Msg )
@@ -103,6 +106,15 @@ init maybeFlags result =
             appStateInit
 
 
+
+now : Cmd Msg
+now = 
+      Task.perform (always (App.Msg.SetNow Nothing)) (Just >> App.Msg.SetNow) Date.now
+
+setRaceAdd : Cmd Msg
+setRaceAdd = 
+      Task.perform (always (App.Msg.SetRaceAdd Nothing)) (Just >> App.Msg.SetRaceAdd) Date.now
+      
 urlUpdate : Result String App.Page.Page -> App -> ( App, Cmd Msg )
 urlUpdate resultPage app =
     case Debug.log "resultPage" resultPage of
@@ -134,9 +146,11 @@ urlUpdate resultPage app =
 
 
                     App.Page.RacesAdd ->
-                        ( Debug.log "newApp" { newApp | raceAdd = Just Races.Model.empty }
-                        , Cmd.none
-                        )
+                            --( { newApp | raceAdd = Just raceAdd }
+                            ( newApp
+                            --, Cmd.none
+                            , setRaceAdd
+                            )
 
 
 
