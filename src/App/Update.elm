@@ -1,4 +1,5 @@
-port module App.Update exposing (update, updateWithStorage, calcRaceId)
+--port module App.Update exposing (update, updateWithStorage, calcRaceId)
+port module App.Update exposing (update, calcRaceId)
 
 import App.Model exposing (App)
 import App.Page
@@ -32,9 +33,10 @@ type alias StoredApp =
     }
 
 port saveState : String -> Cmd msg
-port setStorage : StoredApp -> Cmd msg
+--port setStorage : StoredApp -> Cmd msg
 port resetState : String -> Cmd msg
 
+{--
 updateWithStorage : Msg -> App -> ( App, Cmd Msg )
 updateWithStorage msg app =
     let
@@ -47,7 +49,7 @@ updateWithStorage msg app =
             , cmds 
             ]
         )
-
+--}
 
 
 update : Msg -> App -> ( App, Cmd Msg )
@@ -61,6 +63,7 @@ update msg app =
                             (calcRaceId app.races)
                             raceAdd.name
                             raceAdd.dateString
+                            Races.Model.Cat_B
                 in
                     ( { app
                         | races = (newRace :: app.races)

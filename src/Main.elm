@@ -1,6 +1,6 @@
 port module Main exposing (..)
 
-import Dict
+--import Dict
 
 import Navigation
 import UrlParser exposing (Parser, (</>), format, int, oneOf, s, string)
@@ -16,7 +16,7 @@ import Races.Model
 import Results.Model
 import Comments.Model
 
-import Material
+--import Material
 import Task
 import Date
 
@@ -30,20 +30,26 @@ type alias Flags =
     , comments : List Comments.Model.Comment
     }
 
-main : Program (Maybe Flags)
+--main : Program (Maybe Flags)
+main : Program Never
 main =
-    Navigation.programWithFlags 
+    Navigation.program --WithFlags 
         (Navigation.makeParser hashParser)
         --{ init = ( app, Cmd.none )
+        --{ init =  ( App.Model.initial, Cmd.none) --init
         { init = init
         , view = App.View.render
         --, update = App.Update.update
-        , update = App.Update.updateWithStorage
+        --, update = App.Update.updateWithStorage
+        , update = App.Update.update
         , urlUpdate = urlUpdate
         , subscriptions = subscriptions
         }
 
 
+init : Result String App.Page.Page -> ( App, Cmd Msg )
+init result =
+    urlUpdate result App.Model.initial
 
 -- URL PARSERS - check out evancz/url-parser for fancier URL parsing
 
@@ -73,6 +79,7 @@ pageParser =
 
 -- MODEL
 
+{--
 appStateFromFlags : Flags -> App
 appStateFromFlags flags =
     App.Model.App 
@@ -104,6 +111,7 @@ init maybeFlags result =
         urlUpdate
             result
             appStateInit
+--}
 
 
 

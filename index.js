@@ -5,9 +5,10 @@ var Elm = require('./src/Main');
 
 
 var storedState = localStorage.getItem('wrs');
-var startingState = storedState ? JSON.parse(storedState) : null;
+//var startingState = storedState ? JSON.parse(storedState) : null;
+var startingState = null;
 
-var elm = Elm.Main.embed(document.getElementById('main'), startingState);
+var elm = Elm.Main.embed(document.getElementById('main'));//, startingState);
 
 elm.ports.setStorage.subscribe(function(state) {
   localStorage.setItem('wrs', state ? JSON.stringify(state) : null);
