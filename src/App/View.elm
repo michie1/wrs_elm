@@ -1,6 +1,7 @@
 module App.View exposing (render)
 
-import Html exposing (Html, button, div, text, span, input, ul, li)
+import Html exposing (Html, button, nav, div, text, span, a, input, ul, li)
+import Html.Attributes exposing (href, id, class)
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App, Mdl)
 import App.Page
@@ -14,7 +15,7 @@ import Riders.Add
 import Results.List
 import Results.Add
 import Comments.Add
-import Material.Scheme
+--import Material.Scheme
 import Material.Options as Options exposing (css)
 import Material.Typography as Typo
 import Material.Layout as Layout
@@ -22,47 +23,64 @@ import Material.Layout as Layout
 import Util
 
 
+header : App -> Html App.Msg.Msg
+header app =  
+    Layout.row []
+        [ Layout.title []
+            [ Layout.link
+                [ Layout.href "#home" ]
+                [ text "WRS" ]
+            ]
+        , Layout.navigation []
+            [ Layout.link
+                [ Layout.href "#races" ]
+                [ text "Races" ]
+            , Layout.link
+                [ Layout.href "#riders" ]
+                [ text "Riders" ]
+            , Layout.link
+                [ Layout.href "#results" ]
+                [ text "Results" ]
+            , Layout.link
+                [ Layout.onClick (App.Msg.Save) ]
+                [ text "Save" ]
+            , Layout.link
+                [ Layout.onClick (App.Msg.Reset) ]
+                [ text "Reset" ]
+            , Layout.link
+                []
+                [ text (toString app.raceAdd) ]
+            ]
+        ]
+
+header2 : App -> Html App.Msg.Msg
+header2 app =
+    nav []
+    [ div 
+        [ class "nav-wrapper" ]
+        [ a [ class "brand-logo left", href "#home"] [ text "WRS" ]
+        , ul [ id "nav-mobile", class "right" ]
+            [ li [ ] [ a [ href "#races" ] [ text "Races" ] ]
+            , li [ ] [ a [ href "#riders" ] [ text "Riders" ] ]
+            , li [ ] [ a [ href "#results" ] [ text "Results" ] ]
+            --, li [ ] [ a [ href "#" ] [ text "Reset" ] ]
+            ]
+        ]
+    ]
+
 render : App -> Html Msg
 render app =
     div []
         [ Layout.render Mdl
             app.mdl
             [ Layout.fixedHeader ]
-            { header =
-                [ Layout.row []
-                    [ Layout.title []
-                        [ Layout.link
-                            [ Layout.href "#home" ]
-                            [ text "WRS" ]
-                        ]
-                    , Layout.navigation []
-                        [ Layout.link
-                            [ Layout.href "#races" ]
-                            [ text "Races" ]
-                        , Layout.link
-                            [ Layout.href "#riders" ]
-                            [ text "Riders" ]
-                        , Layout.link
-                            [ Layout.href "#results" ]
-                            [ text "Results" ]
-                        , Layout.link
-                            [ Layout.onClick (App.Msg.Save) ]
-                            [ text "Save" ]
-                        , Layout.link
-                            [ Layout.onClick (App.Msg.Reset) ]
-                            [ text "Reset" ]
-                        , Layout.link
-                            []
-                            [ text (toString app.raceAdd) ]
-                        ]
-                    ]
-                ]
+            { header = [ header2 app ] --header app ]
             , drawer = []
             , tabs = ( [], [] )
             , main = [ mainView app ]
             }
         ]
-        |> Material.Scheme.top
+        --|> Material.Scheme.top
 
 
 mainView : App -> Html Msg

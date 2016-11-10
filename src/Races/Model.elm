@@ -1,4 +1,4 @@
-module Races.Model exposing (Add, Race, initialRaces, Category(..))
+module Races.Model exposing (Add, Race, initialRaces, Category(..), categoryString)
 
 import Date
 
@@ -42,3 +42,12 @@ dateFromString dateString =
 
         Err errMsg ->
             Debug.crash "dateFromString invalid date string"
+
+categoryString : Category -> String
+categoryString category =
+    case category of
+        Cat_A ->
+            "Cat A"
+
+        Cat_B ->
+            "Cat B"

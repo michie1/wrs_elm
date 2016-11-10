@@ -215,7 +215,13 @@ update msg app =
                     )
 
             SetRaceAddYesterday ->
-                ( app, yesterdayTask )
+                let 
+                    yesterdayTask = 
+                          Task.perform 
+                              (always (App.Msg.SetRaceAddYesterday2 Nothing)) 
+                              (Just >> App.Msg.SetRaceAddYesterday2) Date.now
+                in
+                    ( app, yesterdayTask )
         
             SetRaceAddYesterday2 maybeDate ->
                 let 
@@ -234,7 +240,13 @@ update msg app =
                     )
 
             SetRaceAddToday ->
-                ( app, todayTask )
+                let
+                    todayTask =
+                        Task.perform 
+                          (always (App.Msg.SetRaceAddToday2 Nothing)) 
+                          (Just >> App.Msg.SetRaceAddToday2) Date.now
+                in
+                    ( app, todayTask )
 
             SetRaceAddToday2 maybeDate ->
                 let 
@@ -347,16 +359,3 @@ formatDate date =
     ++ (leadingZero (Date.day date))
     ++ "-"
     ++ (toString <| Date.year date)
-
-
-todayTask : Cmd App.Msg.Msg
-todayTask = 
-      Task.perform 
-          (always (App.Msg.SetRaceAddToday2 Nothing)) 
-          (Just >> App.Msg.SetRaceAddToday2) Date.now
-
-yesterdayTask : Cmd App.Msg.Msg
-yesterdayTask = 
-      Task.perform 
-          (always (App.Msg.SetRaceAddYesterday2 Nothing)) 
-          (Just >> App.Msg.SetRaceAddYesterday2) Date.now

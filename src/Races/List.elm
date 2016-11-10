@@ -3,7 +3,7 @@ module Races.List exposing (..)
 --import Races.Msg as Races exposing (Msg(..))
 
 import App.Model
-import Races.Model exposing (Race)
+import Races.Model exposing (Race, categoryString)
 
 
 --exposing (Mdl)
@@ -66,7 +66,7 @@ raceTable races =
                                     [ text race.name ]
                                 ]
                             , Table.td [] [ text race.date ]
-                            , Table.td [] [ text race.name ]
+                            , Table.td [] [ text (categoryString race.category) ]
                             , Table.td [ Table.numeric ] [ text race.name ]
                             ]
                     )

@@ -65,6 +65,7 @@ render raceAdd mdl =
                     ]
                     [ text "Today" ]
                 ]
+            , categoryButtons mdl
             , div []
                 [ Button.render App.Msg.Mdl
                     [ 0 ]
@@ -79,3 +80,19 @@ render raceAdd mdl =
                     [ text "Add" ]
                 ] 
             ]
+
+categoryButtons : Mdl -> Html App.Msg.Msg
+categoryButtons mdl =
+    div []
+        [ Button.render App.Msg.Mdl
+          [ 5 ]
+          mdl
+          [ Button.raised ]
+          [ text "Cat A" ]
+        , Button.render App.Msg.Mdl
+          [ 6 ]
+          mdl
+          [ Button.raised ]
+          [ text "Cat B" ]
+        ]
+
