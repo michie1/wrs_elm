@@ -4,30 +4,30 @@ import Html exposing (Html, button, div, text, span, input, ul, li)
 import Html.Attributes
 import Html.Events
 import Json.Decode as Json
-import Material.Button as Button
-import Material.Textfield as Textfield
-import Material.Typography as Typo
-import Material.Options as Options exposing (css)
-import App.Model exposing (Mdl)
+--import Material.Button as Button
+--import Material.Textfield as Textfield
+--import Material.Typography as Typo
+--import Material.Options as Options exposing (css)
+import App.Model --exposing (Mdl)
 import App.Msg
 import Results.Model
 import Races.Model
 import Riders.Model exposing (Rider)
 
 
-render : Races.Model.Race -> Results.Model.ResultAdd -> List Rider -> List Results.Model.Result -> Mdl -> Html App.Msg.Msg
-render race resultAdd riders results mdl =
+render : Races.Model.Race -> Results.Model.ResultAdd -> List Rider -> List Results.Model.Result -> Html App.Msg.Msg
+render race resultAdd riders results =
     div []
-        [ heading ("Add result for " ++ race.name)
-        , div []
-            [ field 0 "Result" App.Msg.SetResultAddResult mdl
+        [ --heading ("Add result for " ++ race.name)
+         div []
+            [ --field 0 "Result" App.Msg.SetResultAddResult
               --, field 1 "Rider name" App.Msg.SetResultRiderName mdl
-            , selectRider riders race results mdl
+             selectRider riders race results
             ]
-        , addButton mdl
+        --, addButton
         ]
 
-
+{--
 heading : String -> Html App.Msg.Msg
 heading headingText =
     Options.styled
@@ -36,22 +36,22 @@ heading headingText =
         [ text headingText ]
 
 
-field : Int -> String -> (String -> App.Msg.Msg) -> Mdl -> Html App.Msg.Msg
-field index label msg mdl =
+field : Int -> String -> (String -> App.Msg.Msg) -> Html App.Msg.Msg
+field index label msg =
     div []
         [ Textfield.render App.Msg.Mdl
             [ index ]
             mdl
             [ Textfield.label label
             , Textfield.floatingLabel
-            , Textfield.text'
+            , Textfield.text_
             , Textfield.onInput msg
             ]
         ]
 
 
 addButton : Mdl -> Html App.Msg.Msg
-addButton mdl =
+addButton =
     Button.render App.Msg.Mdl
         [ 0 ]
         mdl
@@ -59,6 +59,7 @@ addButton mdl =
         , Button.onClick (App.Msg.AddResult)
         ]
         [ text "Add" ]
+--}
 
 
 resultExists : List Results.Model.Result -> Races.Model.Race -> Riders.Model.Rider -> Bool
@@ -71,8 +72,8 @@ resultExists results race rider =
         == 1
 
 
-selectRider : List Riders.Model.Rider -> Races.Model.Race -> List Results.Model.Result -> Mdl -> Html App.Msg.Msg
-selectRider allRiders race results mdl =
+selectRider : List Riders.Model.Rider -> Races.Model.Race -> List Results.Model.Result -> Html App.Msg.Msg
+selectRider allRiders race results =
     div []
         [ Html.select
             [ onSelect App.Msg.ResultAddSetRiderId ]

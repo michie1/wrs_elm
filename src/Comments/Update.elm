@@ -10,14 +10,18 @@ import Riders.Model
 
 
 -- Exposed
-
-
 --add : App -> ( App, Cmd Msg )
+
+
 new : Int -> App -> ( Comment, Cmd Msg )
 new id app =
     let
-        commentAdd = Util.fromJust app.commentAdd
-        riderId = Util.fromJust (getRiderIdByIndex commentAdd.riderIndex app.riders)
+        commentAdd =
+            Util.fromJust app.commentAdd
+
+        riderId =
+            Util.fromJust (getRiderIdByIndex commentAdd.riderIndex app.riders)
+
         comment =
             Comment
                 id
@@ -33,7 +37,8 @@ new id app =
 setText : App -> String -> ( App, Cmd Msg )
 setText app text =
     let
-        commentAdd = Util.fromJust app.commentAdd
+        commentAdd =
+            Util.fromJust app.commentAdd
     in
         ( set app (setAddText commentAdd text), Cmd.none )
 
@@ -41,7 +46,8 @@ setText app text =
 setRaceId : App -> Int -> ( App, Cmd Msg )
 setRaceId app raceId =
     let
-        commentAdd = Util.fromJust app.commentAdd
+        commentAdd =
+            Util.fromJust app.commentAdd
     in
         ( set app (setAddRaceId commentAdd raceId), Cmd.none )
 
@@ -49,7 +55,8 @@ setRaceId app raceId =
 setRiderIndex : App -> Int -> ( App, Cmd Msg )
 setRiderIndex app riderIndex =
     let
-        commentAdd = Util.fromJust app.commentAdd
+        commentAdd =
+            Util.fromJust app.commentAdd
     in
         ( set app (setAddRiderIndex commentAdd (Debug.log "riderIndex" riderIndex)), Cmd.none )
 

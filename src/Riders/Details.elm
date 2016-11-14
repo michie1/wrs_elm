@@ -2,7 +2,7 @@ module Riders.Details exposing (..)
 
 --import Riders.Msg as Riders exposing (Msg(..))
 
-import App.Model exposing (Mdl)
+import App.Model 
 import Riders.Model exposing (Rider)
 
 
@@ -10,12 +10,12 @@ import Riders.Model exposing (Rider)
 
 import App.Msg
 import App.Model
-import Html exposing (Html, a, div, text)
+import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, li)
 import Html.Attributes exposing (href)
-import Material.List as List
-import Material.Options as Options exposing (Style, css)
-import Material.Typography as Typo
-import Material.Table as Table
+--import Material.List as List
+--import Material.Options as Options exposing (Style, css)
+--import Material.Typography as Typo
+--import Material.Table as Table
 import Results.Model
 import Races.Model
 
@@ -37,7 +37,8 @@ render app riderId =
         case maybeRider of
             Nothing ->
                 div []
-                    [ heading "Rider does not exist" ]
+                    [ --heading "Rider does not exist" 
+                    ]
 
             Just rider ->
                 let
@@ -47,12 +48,13 @@ render app riderId =
                             app.results
                 in
                     div []
-                        [ heading rider.name
-                        , info rider
-                        , resultsTable rider results app.races
+                        [ --heading rider.name
+                        --, info rider
+                         resultsTable rider results app.races
                         ]
 
 
+{--
 heading : String -> Html App.Msg.Msg
 heading title =
     Options.styled
@@ -79,19 +81,20 @@ info rider =
         , li "Points" rider.name
         ]
 
+--}
 
 resultsTable : Rider -> List Results.Model.Result -> List Races.Model.Race -> Html msg
 resultsTable rider results races =
-    Table.table []
-        [ Table.thead []
-            [ Table.tr []
-                [ Table.th [] [ text "id" ]
-                , Table.th [] [ text "Race" ]
-                , Table.th [] [ text "Date" ]
-                , Table.th [] [ text "Result" ]
+    table []
+        [ thead []
+            [ tr []
+                [ th [] [ text "id" ]
+                , th [] [ text "Race" ]
+                , th [] [ text "Date" ]
+                , th [] [ text "Result" ]
                 ]
             ]
-        , Table.tbody []
+        , tbody []
             (results
                 |> List.map
                     (\result ->
@@ -113,18 +116,18 @@ raceRow result races =
     in
         case maybeRace of
             Nothing ->
-                Table.tr []
-                    [ Table.td [] [ text "RaceId does not exist" ]
+                tr []
+                    [ td [] [ text "RaceId does not exist" ]
                     ]
 
             Just race ->
-                Table.tr []
-                    [ Table.td [] [ text (toString result.id) ]
-                    , Table.td []
+                tr []
+                    [ td [] [ text (toString result.id) ]
+                    , td []
                         [ a
                             [ href ("#races/" ++ (toString race.id)) ]
                             [ text race.name ]
                         ]
-                    , Table.td [] [ text race.name ]
-                    , Table.td [] [ text result.result ]
+                    , td [] [ text race.name ]
+                    , td [] [ text result.result ]
                     ]

@@ -1,10 +1,10 @@
-module App.Model exposing (App, Mdl, initial)
+module App.Model exposing (App, initial)--, Mdl, initial)
 
 import Dict exposing (Dict)
-import Material
+--import Material
+
+
 --import App.Msg exposing (Msg(..))
-
-
 --import RaceAdd.Msg as RaceAdd
 --import RaceAdd.Model exposing (RaceAdd)
 
@@ -13,7 +13,6 @@ import Races.Model
 import Riders.Model
 import Results.Model
 import Comments.Model
-
 import Date
 
 
@@ -29,17 +28,17 @@ type alias App =
     , comments : List Comments.Model.Comment
     , commentAdd : Maybe Comments.Model.Add
     , now : Maybe Date.Date
-    , mdl : Material.Model
+    --, mdl : Material.Model
     }
 
 
-type alias Mdl =
-    Material.Model
+--type alias Mdl =
+    --Material.Model
 
 
 initial : App
 initial =
-    ( App
+    (App
         Home
         Dict.empty
         Riders.Model.initialRiders
@@ -47,9 +46,11 @@ initial =
         Nothing
         Riders.Model.empty
         Results.Model.initialResults
-        Nothing -- Results.Model.empty
-        Comments.Model.initialComments
-        Nothing -- Comments.Model.initialAdd
         Nothing
-        Material.model
+        -- Results.Model.empty
+        Comments.Model.initialComments
+        Nothing
+        -- Comments.Model.initialAdd
+        Nothing
+        --Material.model
     )

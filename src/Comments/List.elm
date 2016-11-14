@@ -5,9 +5,9 @@ import App.Msg
 import Comments.Model
 import Riders.Model
 import Races.Model
-import Html exposing (Html, div, text, a)
+import Html exposing (Html, div, text, a, table, thead, tbody, tr, td, th)
 import Html.Attributes exposing (href)
-import Material.Table as Table
+--import Material.Table as Table
 
 
 render : App.Model.App -> Races.Model.Race -> Html App.Msg.Msg
@@ -19,16 +19,16 @@ render app race =
 
 commentsTable : List Comments.Model.Comment -> Races.Model.Race -> List Riders.Model.Rider -> Html App.Msg.Msg
 commentsTable comments race riders =
-    Table.table []
-        [ Table.thead []
-            [ Table.tr []
-                [ Table.th [] [ text "id" ]
-                , Table.th [] [ text "Rider" ]
-                , Table.th [] [ text "Datum" ]
-                , Table.th [] [ text "Text" ]
+    table []
+        [ thead []
+            [ tr []
+                [ th [] [ text "id" ]
+                , th [] [ text "Rider" ]
+                , th [] [ text "Datum" ]
+                , th [] [ text "Text" ]
                 ]
             ]
-        , Table.tbody []
+        , tbody []
             ((filterCommentsByRace comments race)
                 |> List.map
                     (\comment ->
@@ -44,6 +44,7 @@ filterCommentsByRace comments race =
         (\comment -> comment.raceId == race.id)
         comments
 
+
 getRiderById : Int -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
 getRiderById id riders =
     List.head
@@ -52,22 +53,23 @@ getRiderById id riders =
             riders
         )
 
+
 commentRow : Comments.Model.Comment -> Maybe Riders.Model.Rider -> Html App.Msg.Msg
 commentRow comment maybeRider =
-        case maybeRider of
-            Nothing ->
-                Table.tr []
-                    [ Table.td [] [ text "RiderId does not exist" ]
-                    ]
+    case maybeRider of
+        Nothing ->
+            tr []
+                [ td [] [ text "RiderId does not exist" ]
+                ]
 
-            Just rider ->
-                Table.tr []
-                    [ Table.td [] [ text (toString comment.id) ]
-                    , Table.td []
-                        [ a
-                            [ href ("#riders/" ++ (toString rider.id)) ]
-                            [ text rider.name ]
-                        ]
-                    , Table.td [] [ text comment.text ]
-                    , Table.td [] [ text comment.text ]
+        Just rider ->
+            tr []
+                [ td [] [ text (toString comment.id) ]
+                , td []
+                    [ a
+                        [ href ("#riders/" ++ (toString rider.id)) ]
+                        [ text rider.name ]
                     ]
+                , td [] [ text comment.text ]
+                , td [] [ text comment.text ]
+                ]

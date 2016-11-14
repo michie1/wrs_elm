@@ -1,95 +1,106 @@
 module Races.Add exposing (render)
 
 import Html exposing (Html, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
-import Html.Attributes exposing (value, autofocus, class, name, type', id, for, checked, disabled)
+import Html.Attributes exposing (value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
-import Material.Textfield as Textfield
-import Material.Options as Options exposing (css)
-import App.Model exposing (Mdl)
+--import Material.Textfield as Textfield
+--import Material.Options as Options exposing (css)
+--import App.Model exposing (Mdl)
 import App.Msg
 import Races.Model exposing (Race)
 import App.Msg
-import Date
+--import Date
 
 
-render : Races.Model.Add -> Mdl -> Html App.Msg.Msg
-render raceAdd mdl =
+render : Races.Model.Add -> Html App.Msg.Msg
+render raceAdd =
     let
-        name = raceAdd.name
-        dateString = raceAdd.dateString
-        submitDisabled = name == ""
-     in
+        name =
+            raceAdd.name
+
+        dateString =
+            raceAdd.dateString
+
+        submitDisabled =
+            name == ""
+    in
         div []
             [ h2 [] [ text "Add Race" ]
             , div []
                 [ div [ class "row" ]
                     [ div [ class "input-field col s6" ]
-                        [ input [ id "name", type' "text", onInput App.Msg.SetRaceName ] []
+                        [ input [ id "name", type_ "text", onInput App.Msg.SetRaceName ] []
                         , label [ for "name" ] [ text ("Name " ++ name) ]
                         ]
                     ]
                 , div [ class "row" ]
                     [ div [ class "input-field col s6" ]
-                        [ input [ id "date"
-                                , type' "text"
-                                , value dateString
-                                , onInput App.Msg.SetRaceDate 
-                                ] 
-                                []
+                        [ input
+                            [ id "date"
+                            , type_ "text"
+                            , value dateString
+                            , onInput App.Msg.SetRaceDate
+                            ]
+                            []
                         , label [ for "date" ] [ text "Date" ]
                         ]
                     ]
                 , div [ class "row" ]
-                    [ button 
+                    [ button
                         [ class "waves-effect waves-light btn"
                         , onClick App.Msg.SetRaceAddYesterday
-                        ] 
+                        ]
                         [ text "Yesterday" ]
-                    , button 
+                    , button
                         [ class "waves-effect waves-light btn"
                         , onClick App.Msg.SetRaceAddToday
-                        ] 
+                        ]
                         [ text "Today" ]
                     ]
-                , div [ class "row" ] [ categoryButtons mdl ]
+                , div [ class "row" ] [ categoryButtons ]
                 , div [ class "row" ]
-                    [ button 
+                    [ button
                         [ class "waves-effect waves-light btn"
-                        , type' "submit" 
+                        , type_ "submit"
                         , onClick App.Msg.AddRace
                         , Html.Attributes.name "action"
                         , disabled submitDisabled
-                        ] 
+                        ]
                         [ text "Add Race"
                         , i [ class "material-icons right" ] [ text "send" ]
                         ]
                     ]
                 ]
-             , div []
+            {-- , div []
                 [ Textfield.render App.Msg.Mdl
                     [ 2 ]
                     mdl
                     [ Textfield.label "Date (MM-DD-YYYY)"
                     , Textfield.value dateString
                     , Textfield.floatingLabel
-                    , Textfield.text'
+                    , Textfield.text_
                     , Textfield.onInput App.Msg.SetRaceDate
                     , case Date.fromString dateString of
                         Ok date ->
                             Options.nop
+
                         Err errMsg ->
                             Textfield.error <| "Invalid date"
                     ]
                 ]
+            --}
             ]
 
-categoryButtons : Mdl -> Html App.Msg.Msg
-categoryButtons mdl =
+
+categoryButtons : Html App.Msg.Msg
+categoryButtons =
     div []
-        [ p [] 
-            [ input [ checked True, name "category", type' "radio", id "cat_a" ] [ ] , label [ for "cat_a" ] [ text "Cat A" ]
+        [ p []
+            [ input [ checked True, name "category", type_ "radio", id "cat_a" ] []
+            , label [ for "cat_a" ] [ text "Cat A" ]
             ]
-        , p [] 
-            [ input [ name "category", type' "radio", id "cat_b" ] [ ] , label [ for "cat_b" ] [ text "Cat B" ]
+        , p []
+            [ input [ name "category", type_ "radio", id "cat_b" ] []
+            , label [ for "cat_b" ] [ text "Cat B" ]
             ]
         ]

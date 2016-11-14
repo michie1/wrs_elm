@@ -1,15 +1,17 @@
 module App.Msg exposing (Msg(..))
 
-import Material
+--import Material
+
+
 --import Races.Model exposing (Race)
+
 import Riders.Model exposing (Rider)
 import App.Page exposing (Page(..))
-
 import Date
 
 
 type Msg
-    = AddRace 
+    = AddRace
     | SetRaceName String
     | SetRaceDate String
     | AddRider Rider
@@ -30,8 +32,9 @@ type Msg
     | SetRaceAdd (Maybe Date.Date)
     | SetRaceAddYesterday
     | SetRaceAddYesterday2 (Maybe Date.Date)
-    | SetRaceAddToday --(Maybe Date.Date)
+    | SetRaceAddToday
+      --(Maybe Date.Date)
     | SetRaceAddToday2 (Maybe Date.Date)
     | GoTo Page
-    | UpdateMaterialize 
-    | Mdl (Material.Msg Msg)
+    | UpdateMaterialize
+    --| Mdl (Material.Msg Msg)

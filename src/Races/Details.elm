@@ -2,7 +2,7 @@ module Races.Details exposing (..)
 
 --import Races.Msg as Races exposing (Msg(..))
 
-import App.Model exposing (Mdl)
+import App.Model --exposing (Mdl)
 import Races.Model exposing (Race)
 import Riders.Model
 import Results.Model
@@ -12,13 +12,13 @@ import Results.Model
 
 import App.Msg
 import App.Page
-import Html exposing (Html, a, div, text)
+import Html exposing (Html, a, div, text, table, tbody, thead, tr, td, th)
 import Html.Attributes exposing (href, style)
-import Material.List as List
-import Material.Button as Button
-import Material.Options as Options exposing (Style, css)
-import Material.Typography as Typo
-import Material.Table as Table
+--import Material.List as List
+--import Material.Button as Button
+--import Material.Options as Options exposing (Style, css)
+--import Material.Typography as Typo
+--import Material.Table as Table
 import Comments.List
 
 
@@ -35,7 +35,8 @@ render app raceId =
         case maybeRace of
             Nothing ->
                 div []
-                    [ heading "Rider does not exist" ]
+                    [ --heading "Rider does not exist" 
+                    ]
 
             Just race ->
                 let
@@ -47,23 +48,23 @@ render app raceId =
                     div []
                         [ div []
                             [ div []
-                                [ heading race.name
-                                , info race
+                                [ --heading race.name
+                                --, info race
                                 ]
                             , div []
-                                [ subHeading "Results"
-                                , addResultButton race app.mdl
+                                [ --subHeading "Results"
+                                --, addResultButton race app.mdl
                                 ]
-                            , resultsTable race results app.riders
+                            --, resultsTable race results app.riders
                             ]
-                        , subHeading "Comments"
-                        , addCommentButton race app.mdl
+                        --, subHeading "Comments"
+                        --, addCommentButton race app.mdl
                         , Comments.List.render app race
                         ]
 
-
-addResultButton : Races.Model.Race -> App.Model.Mdl -> Html App.Msg.Msg
-addResultButton race mdl =
+{--
+addResultButton : Races.Model.Race -> Html App.Msg.Msg
+addResultButton race =
     Button.render App.Msg.Mdl
         [ 0 ]
         mdl
@@ -74,8 +75,8 @@ addResultButton race mdl =
         ]
 
 
-addCommentButton : Races.Model.Race -> App.Model.Mdl -> Html App.Msg.Msg
-addCommentButton race mdl =
+addCommentButton : Races.Model.Race -> Html App.Msg.Msg
+addCommentButton race =
     Button.render App.Msg.Mdl
         [ 0 ]
         mdl
@@ -84,8 +85,9 @@ addCommentButton race mdl =
         ]
         [ text "Add"
         ]
+--}
 
-
+{--
 heading : String -> Html App.Msg.Msg
 heading title =
     Options.styled
@@ -100,21 +102,24 @@ subHeading title =
         Html.p
         [ Typo.display1 ]
         [ text title ]
+--}
 
 
+{--
 li : String -> String -> Html App.Msg.Msg
 li sub value =
-    List.li [ List.withSubtitle ]
-        [ List.content []
-            [ List.subtitle [] [ text sub ]
+    li [ withSubtitle ]
+        [ content []
+            [ subtitle [] [ text sub ]
             , text value
             ]
         ]
+--}
 
-
+{--
 info : Race -> Html App.Msg.Msg
 info race =
-    List.ul []
+    ul []
         [ li "Name" race.name
         , li "Date" race.name
         , li "Type" race.name
@@ -124,16 +129,16 @@ info race =
 
 resultsTable : Race -> List Results.Model.Result -> List Riders.Model.Rider -> Html msg
 resultsTable race results riders =
-    Table.table []
-        [ Table.thead []
-            [ Table.tr []
-                [ Table.th [] [ text "id" ]
-                , Table.th [] [ text "Rider" ]
-                , Table.th [] [ text "Date" ]
-                , Table.th [] [ text "Result" ]
+    table []
+        [ thead []
+            [ tr []
+                [ th [] [ text "id" ]
+                , th [] [ text "Rider" ]
+                , th [] [ text "Date" ]
+                , th [] [ text "Result" ]
                 ]
             ]
-        , Table.tbody []
+        , tbody []
             (results
                 |> List.map
                     (\result ->
@@ -155,18 +160,19 @@ riderRow result riders =
     in
         case maybeRider of
             Nothing ->
-                Table.tr []
-                    [ Table.td [] [ text "RiderId does not exist" ]
+                tr []
+                    [ td [] [ text "RiderId does not exist" ]
                     ]
 
             Just rider ->
-                Table.tr []
-                    [ Table.td [] [ text (toString result.id) ]
-                    , Table.td []
+                tr []
+                    [ td [] [ text (toString result.id) ]
+                    , td []
                         [ a
                             [ href ("#riders/" ++ (toString rider.id)) ]
                             [ text rider.name ]
                         ]
-                    , Table.td [] [ text rider.name ]
-                    , Table.td [] [ text result.result ]
+                    , td [] [ text rider.name ]
+                    , td [] [ text result.result ]
                     ]
+--}

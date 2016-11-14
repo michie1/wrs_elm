@@ -5,45 +5,48 @@ import Html.Attributes
 import Html.Events
 import Json.Decode as Json
 import App.Msg
-import App.Model exposing (Mdl)
-import Material.Button as Button
-import Material.Textfield as Textfield
-import Material.Typography as Typo
-import Material.Options as Options exposing (css)
+import App.Model --exposing (Mdl)
+--import Material.Button as Button
+--import Material.Textfield as Textfield
+--import Material.Typography as Typo
+--import Material.Options as Options exposing (css)
 import Races.Model
 import Riders.Model exposing (Rider)
 import Comments.Model
 
 
-render : Comments.Model.Add -> Races.Model.Race -> List Rider -> Mdl -> Html App.Msg.Msg
-render add race riders mdl =
+render : Comments.Model.Add -> Races.Model.Race -> List Rider -> Html App.Msg.Msg
+render add race riders =
     div []
-        [ heading ("Comment on " ++ race.name)
-        , div []
+        [ -- heading ("Comment on " ++ race.name)
+        {-- , div []
             [ Textfield.render App.Msg.Mdl
                 [ 0 ]
                 mdl
                 [ Textfield.label "Text"
                 , Textfield.floatingLabel
-                , Textfield.text'
+                , Textfield.text_
                 , Textfield.onInput App.Msg.CommentAddSetText
                 ]
             ]
-        , selectRider add.riderIndex riders mdl
-        , addButton mdl
+        --}
+         selectRider add.riderIndex riders
+        --, addButton
         ]
 
 
+{--
 heading : String -> Html App.Msg.Msg
 heading headingText =
     Options.styled
         Html.p
         [ Typo.display2 ]
         [ text headingText ]
+--}
 
-
-addButton : Mdl -> Html App.Msg.Msg
-addButton mdl =
+{--
+addButton : Html App.Msg.Msg
+addButton =
     Button.render App.Msg.Mdl
         [ 0 ]
         mdl
@@ -51,11 +54,14 @@ addButton mdl =
         , Button.onClick (App.Msg.CommentAdd)
         ]
         [ text "Add" ]
+--}
 
 
-selectRider : Int -> List Riders.Model.Rider -> Mdl -> Html App.Msg.Msg
-selectRider selectedIndex riders mdl =
-    div []
+selectRider : Int -> List Riders.Model.Rider -> Html App.Msg.Msg
+selectRider selectedIndex riders =
+    div [] 
+        []
+        {--
         [ Html.select
             [ onSelect App.Msg.CommentAddSetRiderIndex ]
             (List.map
@@ -68,6 +74,7 @@ selectRider selectedIndex riders mdl =
                 (List.indexedMap (,) riders)
             )
         ]
+        --}
 
 
 targetSelectedIndex : Json.Decoder Int

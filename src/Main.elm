@@ -3,25 +3,27 @@ port module Main exposing (..)
 --import Dict
 
 import Navigation
-import UrlParser exposing (Parser, (</>), format, int, oneOf, s, string)
-import String
-import App.Model exposing (App, Mdl)
+import UrlParser exposing (Parser, (</>), map, int, oneOf, s, string)
+--import String
+import App.Model exposing (App)
 import App.Page
 import App.Msg exposing (Msg(..))
 import App.Update
 import App.View
-
 import Riders.Model
 import Races.Model
 import Results.Model
 import Comments.Model
 
+
 --import Material
+
 import Task
 import Date
 
 
 --import Alert exposing (subscriptions)
+
 
 type alias Flags =
     { riders : List Riders.Model.Rider
@@ -30,17 +32,24 @@ type alias Flags =
     , comments : List Comments.Model.Comment
     }
 
+
+
 --main : Program (Maybe Flags)
+
+
 main : Program Never
 main =
-    Navigation.program --WithFlags 
-        (Navigation.makeParser hashParser)
+    Navigation.program
+        --WithFlags
+        --(Navigation.makeParser hashParser)
+        urlParser
         --{ init = ( app, Cmd.none )
         --{ init =  ( App.Model.initial, Cmd.none) --init
         { init = init
-        , view = App.View.render
-        --, update = App.Update.update
-        --, update = App.Update.updateWithStorage
+        , view =
+            App.View.render
+            --, update = App.Update.update
+            --, update = App.Update.updateWithStorage
         , update = App.Update.update
         , urlUpdate = urlUpdate
         , subscriptions = subscriptions
@@ -51,43 +60,42 @@ init : Result String App.Page.Page -> ( App, Cmd Msg )
 init result =
     urlUpdate result App.Model.initial
 
--- URL PARSERS - check out evancz/url-parser for fancier URL parsing
 
+
+-- URL PARSERS - check out evancz/url-parser for fancier URL parsing
 
 hashParser : Navigation.Location -> Result String App.Page.Page
 hashParser location =
     UrlParser.parse identity pageParser (String.dropLeft 1 location.hash)
 
-
 pageParser : Parser (App.Page.Page -> a) a
 pageParser =
     oneOf
-        [ format App.Page.Home (s "home")
-        , format App.Page.Home (s "")
-        , format App.Page.RidersAdd (s "riders" </> s "add")
-        , format App.Page.RidersDetails (s "riders" </> int)
-        , format App.Page.Riders (s "riders")
-        , format App.Page.ResultsAdd (s "races" </> int </> s "add")
-        , format App.Page.CommentAdd (s "races" </> int </> s "comment")
-        , format App.Page.RacesAdd (s "races" </> s "add")
-        , format App.Page.RacesDetails (s "races" </> int)
-        , format App.Page.Races (s "races")
-        , format App.Page.Results (s "results")
+        [ map App.Page.Home (s "home")
+        , map App.Page.Home (s "")
+        , map App.Page.RidersAdd (s "riders" </> s "add")
+        , map App.Page.RidersDetails (s "riders" </> int)
+        , map App.Page.Riders (s "riders")
+        , map App.Page.ResultsAdd (s "races" </> int </> s "add")
+        , map App.Page.CommentAdd (s "races" </> int </> s "comment")
+        , map App.Page.RacesAdd (s "races" </> s "add")
+        , map App.Page.RacesDetails (s "races" </> int)
+        , map App.Page.Races (s "races")
+        , map App.Page.Results (s "results")
         ]
 
 
 
 -- MODEL
-
 {--
 appStateFromFlags : Flags -> App
 appStateFromFlags flags =
-    App.Model.App 
+    App.Model.App
         App.Page.Home
         Dict.empty
         flags.riders
-        flags.races 
-        Nothing 
+        flags.races
+        Nothing
         Riders.Model.empty
         flags.results
         Nothing -- Results.Model.empty
@@ -114,15 +122,22 @@ init maybeFlags result =
 --}
 
 
-
 now : Cmd Msg
-now = 
-      Task.perform (always (App.Msg.SetNow Nothing)) (Just >> App.Msg.SetNow) Date.now
+now =
+    Task.perform 
+        --(always (App.Msg.SetNow Nothing)) 
+        (Just >> App.Msg.SetNow) 
+        Date.now
+
 
 setRaceAdd : Cmd Msg
-setRaceAdd = 
-      Task.perform (always (App.Msg.SetRaceAdd Nothing)) (Just >> App.Msg.SetRaceAdd) Date.now
-      
+setRaceAdd =
+    Task.perform 
+        --(always (App.Msg.SetRaceAdd Nothing)) 
+        (Just >> App.Msg.SetRaceAdd) 
+        Date.now
+
+
 urlUpdate : Result String App.Page.Page -> App -> ( App, Cmd Msg )
 urlUpdate resultPage app =
     case Debug.log "resultPage" resultPage of
@@ -134,9 +149,12 @@ urlUpdate resultPage app =
                 case page of
                     App.Page.ResultsAdd raceId ->
                         --(Results.Update.setResultAddRace newApp raceId)
-                        let 
-                            resultAdd = Results.Model.initialAdd
-                            resultAddWithRaceId = { resultAdd | raceId = raceId }
+                        let
+                            resultAdd =
+                                Results.Model.initialAdd
+
+                            resultAddWithRaceId =
+                                { resultAdd | raceId = raceId }
                         in
                             ( { newApp | resultAdd = Just resultAddWithRaceId }
                             , Cmd.none
@@ -145,24 +163,28 @@ urlUpdate resultPage app =
                     App.Page.CommentAdd raceId ->
                         --Comments.Update.setRaceId newApp raceId
                         let
-                           commentAdd = Comments.Model.initialAdd
-                           commentAddWithRaceId = { commentAdd | raceId = raceId }
+                            commentAdd =
+                                Comments.Model.initialAdd
+
+                            commentAddWithRaceId =
+                                { commentAdd | raceId = raceId }
                         in
                             ( { newApp | commentAdd = Just commentAddWithRaceId }
                             , Cmd.none
                             )
 
-
                     App.Page.RacesAdd ->
-                            --( { newApp | raceAdd = Just raceAdd }
-                            ( newApp
-                            --, Cmd.none
-                            , Cmd.batch [ setRaceAdd
-                                        , Task.perform identity identity (Task.succeed App.Msg.UpdateMaterialize)
-                                        ]
-                            )
-
-
+                        --( { newApp | raceAdd = Just raceAdd }
+                        ( newApp
+                          --, Cmd.none
+                        , Cmd.batch
+                            [ setRaceAdd
+                            , Task.perform 
+                                --identity 
+                                identity 
+                                (Task.succeed App.Msg.UpdateMaterialize)
+                            ]
+                        )
 
                     _ ->
                         newApp

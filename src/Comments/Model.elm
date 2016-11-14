@@ -32,7 +32,7 @@ initialComments =
 
 
 initialAdd : { riderIndex : Int, raceId : Int, text : String }
-initialAdd = 
+initialAdd =
     { riderIndex = 0
     , raceId = 0
     , text = "Empty comment"

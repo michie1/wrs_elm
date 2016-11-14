@@ -5,7 +5,6 @@ import Results.Model exposing (ResultAdd)
 import Riders.Model
 import App.Msg exposing (Msg(..))
 import Navigation
-
 import Util
 
 
@@ -13,14 +12,15 @@ addResult : App -> ( Maybe Results.Model.Result, Cmd Msg )
 addResult app =
     let
         --resultAdd = Util.fromJust app.resultAdd
-        resultAdd = case app.resultAdd of
-            Nothing ->
-                Debug.crash "resultAdd shouldn't be Nothing when addResult is called."
+        resultAdd =
+            case app.resultAdd of
+                Nothing ->
+                    Debug.crash "resultAdd shouldn't be Nothing when addResult is called."
 
-            Just value ->
-                value
+                Just value ->
+                    value
+
         -- result = resultAdd.result
-
         --riderId = Debug.log "riderId: " app.resultAdd.result.
         riderId =
             if resultAdd.riderId == 0 then
@@ -28,12 +28,12 @@ addResult app =
             else
                 resultAdd.riderId
 
-        result = Results.Model.Result 
-                    (calcResultId app.results)
-                    riderId
-                    resultAdd.raceId
-                    resultAdd.result
-
+        result =
+            Results.Model.Result
+                (calcResultId app.results)
+                riderId
+                resultAdd.raceId
+                resultAdd.result
     in
         if (Debug.log "new result rider id: " result.riderId) == 0 then
             ( Nothing, Cmd.none )
@@ -69,7 +69,8 @@ resultExists result results =
 setRider : App -> String -> ( App, Cmd Msg )
 setRider app name =
     let
-        resultAdd = Util.fromJust app.resultAdd
+        resultAdd =
+            Util.fromJust app.resultAdd
     in
         ( (set app (setRiderNameResultAdd resultAdd name))
         , Cmd.none
@@ -79,8 +80,11 @@ setRider app name =
 setRiderId : App -> Int -> App
 setRiderId app riderId =
     let
-        resultAdd = Util.fromJust app.resultAdd
-        resultAddWithRiderId = { resultAdd | riderId = riderId }
+        resultAdd =
+            Util.fromJust app.resultAdd
+
+        resultAddWithRiderId =
+            { resultAdd | riderId = riderId }
     in
         --setResultAdd app ({ resultAdd | riderId = riderId })
         { app | resultAdd = Just resultAddWithRiderId }
@@ -117,8 +121,11 @@ set app resultAdd =
 setResultAddRider : App -> Int -> ( App, Cmd Msg )
 setResultAddRider app riderId =
     let
-        resultAdd = Util.fromJust app.resultAdd
-        resultAddWithRiderId = { resultAdd | riderId = riderId }
+        resultAdd =
+            Util.fromJust app.resultAdd
+
+        resultAddWithRiderId =
+            { resultAdd | riderId = riderId }
     in
         --( setResultAdd app (setResultRider resultAdd newId)
         ( { app | resultAdd = Just resultAddWithRiderId }
@@ -129,13 +136,17 @@ setResultAddRider app riderId =
 setResultAddRace : App -> Int -> ( App, Cmd Msg )
 setResultAddRace app raceId =
     let
-        resultAdd = Util.fromJust app.resultAdd
-        resultAddWithRaceId = { resultAdd | raceId = raceId }
+        resultAdd =
+            Util.fromJust app.resultAdd
+
+        resultAddWithRaceId =
+            { resultAdd | raceId = raceId }
     in
         --( setResultAdd app (setResultRace resultAdd raceId)
         ( { app | resultAdd = Just resultAddWithRaceId }
         , Cmd.none
         )
+
 
 setResultResult : Results.Model.Result -> String -> Results.Model.Result
 setResultResult result value =
@@ -155,6 +166,7 @@ setResultRace result rider =
 clearResult : Results.Model.Result -> Results.Model.Result
 clearResult result =
     setResultResult result ""
+
 
 calcResultId : List Results.Model.Result -> Int
 calcResultId results =
