@@ -9,10 +9,10 @@ import Races.Model exposing (Race, categoryString)
 --exposing (Mdl)
 
 import App.Msg
-import App.Page
+--import App.Page
 import Html exposing (Html, div, text, a)
-import Html.Attributes exposing (href)
-import Material.Button as Button
+import Html.Attributes exposing (href, class)
+--import Material.Button as Button
 import Material.Options as Options exposing (Style, css)
 import Material.Typography as Typo
 import Material.Table as Table
@@ -30,16 +30,8 @@ render : List Race -> App.Model.Mdl -> Html App.Msg.Msg
 render races mdl =
     div []
         [ heading "Races"
-        , div []
-            [ Button.render App.Msg.Mdl
-                [ 0 ]
-                mdl
-                [ Button.raised
-                , Button.onClick (App.Msg.GoTo App.Page.RacesAdd)
-                ]
-                [ text "Add"
-                ]
-            ]
+        , div [] 
+            [ a [ href "#races/add", class "waves-effect waves-light btn" ] [ text "Add race" ] ]
         , raceTable races
         ]
 

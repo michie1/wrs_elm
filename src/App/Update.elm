@@ -35,6 +35,7 @@ type alias StoredApp =
 port saveState : String -> Cmd msg
 --port setStorage : StoredApp -> Cmd msg
 port resetState : String -> Cmd msg
+port updateMaterialize : () -> Cmd msg
 
 {--
 updateWithStorage : Msg -> App -> ( App, Cmd Msg )
@@ -195,6 +196,12 @@ update msg app =
                 --( app
                 --, (resetState "reset")
                 --)
+
+            UpdateMaterialize ->
+                let
+                    bla = Debug.log "update Materialize" "bla"
+                in
+                    ( app, updateMaterialize () )
 
             SetNow maybeDate ->
                 ( { app | now = maybeDate }

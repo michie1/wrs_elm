@@ -33,4 +33,5 @@ type Msg
     | SetRaceAddToday --(Maybe Date.Date)
     | SetRaceAddToday2 (Maybe Date.Date)
     | GoTo Page
+    | UpdateMaterialize 
     | Mdl (Material.Msg Msg)

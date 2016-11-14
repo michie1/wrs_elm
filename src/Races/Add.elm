@@ -1,9 +1,9 @@
 module Races.Add exposing (render)
 
-import Html exposing (Html, button, div, text, span, input, ul, li)
-import Material.Button as Button
+import Html exposing (Html, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
+import Html.Attributes exposing (value, autofocus, class, name, type', id, for, checked, disabled)
+import Html.Events exposing (onClick, onInput)
 import Material.Textfield as Textfield
-import Material.Typography as Typo
 import Material.Options as Options exposing (css)
 import App.Model exposing (Mdl)
 import App.Msg
@@ -17,19 +17,52 @@ render raceAdd mdl =
     let
         name = raceAdd.name
         dateString = raceAdd.dateString
+        submitDisabled = name == ""
      in
         div []
-            [ Options.styled Html.p
-                [ Typo.display2 ]
-                [ text "Add race" ]
+            [ h2 [] [ text "Add Race" ]
             , div []
-                [ Textfield.render App.Msg.Mdl
-                    [ 1 ]
-                    mdl
-                    [ Textfield.label ("Name " ++ name)
-                    , Textfield.floatingLabel
-                    , Textfield.text'
-                    , Textfield.onInput App.Msg.SetRaceName
+                [ div [ class "row" ]
+                    [ div [ class "input-field col s6" ]
+                        [ input [ id "name", type' "text", onInput App.Msg.SetRaceName ] []
+                        , label [ for "name" ] [ text ("Name " ++ name) ]
+                        ]
+                    ]
+                , div [ class "row" ]
+                    [ div [ class "input-field col s6" ]
+                        [ input [ id "date"
+                                , type' "text"
+                                , value dateString
+                                , onInput App.Msg.SetRaceDate 
+                                ] 
+                                []
+                        , label [ for "date" ] [ text "Date" ]
+                        ]
+                    ]
+                , div [ class "row" ]
+                    [ button 
+                        [ class "waves-effect waves-light btn"
+                        , onClick App.Msg.SetRaceAddYesterday
+                        ] 
+                        [ text "Yesterday" ]
+                    , button 
+                        [ class "waves-effect waves-light btn"
+                        , onClick App.Msg.SetRaceAddToday
+                        ] 
+                        [ text "Today" ]
+                    ]
+                , div [ class "row" ] [ categoryButtons mdl ]
+                , div [ class "row" ]
+                    [ button 
+                        [ class "waves-effect waves-light btn"
+                        , type' "submit" 
+                        , onClick App.Msg.AddRace
+                        , Html.Attributes.name "action"
+                        , disabled submitDisabled
+                        ] 
+                        [ text "Add Race"
+                        , i [ class "material-icons right" ] [ text "send" ]
+                        ]
                     ]
                 ]
              , div []
@@ -48,51 +81,15 @@ render raceAdd mdl =
                             Textfield.error <| "Invalid date"
                     ]
                 ]
-            , div []
-                [ Button.render App.Msg.Mdl
-                    [ 3 ]
-                    mdl
-                    [ Button.raised
-                    --, Button.onClick today
-                    , Button.onClick App.Msg.SetRaceAddYesterday
-                    ]
-                    [ text "Yesterday" ]
-                , Button.render App.Msg.Mdl
-                    [ 4 ]
-                    mdl
-                    [ Button.raised
-                    , Button.onClick App.Msg.SetRaceAddToday
-                    ]
-                    [ text "Today" ]
-                ]
-            , categoryButtons mdl
-            , div []
-                [ Button.render App.Msg.Mdl
-                    [ 0 ]
-                    mdl
-                    [ Button.raised
-                    , if name == "" then
-                        Button.disabled
-                      else
-                        Options.nop
-                    , Button.onClick App.Msg.AddRace
-                    ]
-                    [ text "Add" ]
-                ] 
             ]
 
 categoryButtons : Mdl -> Html App.Msg.Msg
 categoryButtons mdl =
     div []
-        [ Button.render App.Msg.Mdl
-          [ 5 ]
-          mdl
-          [ Button.raised ]
-          [ text "Cat A" ]
-        , Button.render App.Msg.Mdl
-          [ 6 ]
-          mdl
-          [ Button.raised ]
-          [ text "Cat B" ]
+        [ p [] 
+            [ input [ checked True, name "category", type' "radio", id "cat_a" ] [ ] , label [ for "cat_a" ] [ text "Cat A" ]
+            ]
+        , p [] 
+            [ input [ name "category", type' "radio", id "cat_b" ] [ ] , label [ for "cat_b" ] [ text "Cat B" ]
+            ]
         ]
-

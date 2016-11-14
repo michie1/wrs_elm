@@ -157,7 +157,9 @@ urlUpdate resultPage app =
                             --( { newApp | raceAdd = Just raceAdd }
                             ( newApp
                             --, Cmd.none
-                            , setRaceAdd
+                            , Cmd.batch [ setRaceAdd
+                                        , Task.perform identity identity (Task.succeed App.Msg.UpdateMaterialize)
+                                        ]
                             )
 
 

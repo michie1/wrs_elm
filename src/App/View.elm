@@ -24,37 +24,7 @@ import Util
 
 
 header : App -> Html App.Msg.Msg
-header app =  
-    Layout.row []
-        [ Layout.title []
-            [ Layout.link
-                [ Layout.href "#home" ]
-                [ text "WRS" ]
-            ]
-        , Layout.navigation []
-            [ Layout.link
-                [ Layout.href "#races" ]
-                [ text "Races" ]
-            , Layout.link
-                [ Layout.href "#riders" ]
-                [ text "Riders" ]
-            , Layout.link
-                [ Layout.href "#results" ]
-                [ text "Results" ]
-            , Layout.link
-                [ Layout.onClick (App.Msg.Save) ]
-                [ text "Save" ]
-            , Layout.link
-                [ Layout.onClick (App.Msg.Reset) ]
-                [ text "Reset" ]
-            , Layout.link
-                []
-                [ text (toString app.raceAdd) ]
-            ]
-        ]
-
-header2 : App -> Html App.Msg.Msg
-header2 app =
+header app =
     nav []
     [ div 
         [ class "nav-wrapper" ]
@@ -74,7 +44,7 @@ render app =
         [ Layout.render Mdl
             app.mdl
             [ Layout.fixedHeader ]
-            { header = [ header2 app ] --header app ]
+            { header = [ header app ] --header app ]
             , drawer = []
             , tabs = ( [], [] )
             , main = [ mainView app ]

@@ -10,12 +10,23 @@ var startingState = null;
 
 var elm = Elm.Main.embed(document.getElementById('main'));//, startingState);
 
+/*
 elm.ports.setStorage.subscribe(function(state) {
   localStorage.setItem('wrs', state ? JSON.stringify(state) : null);
 });
 
 elm.ports.resetState.subscribe(function () {
   localStorage.setItem('wrs', null);
+});
+*/
+
+elm.ports.updateMaterialize.subscribe(function () {
+  setTimeout(function () {
+      console.log('updateMaterialize');
+      Materialize.updateTextFields();
+    }, 
+    0 // fixes prefilled form data of MaterialzeCSS issue, with overlapping text
+  );
 });
 
 elm.ports.saveState.subscribe(function() {
@@ -57,3 +68,8 @@ elm.ports.saveState.subscribe(function() {
   elm.ports.setState.send(localStorage.getItem('wrs'));
   */
 });
+
+//$('.datepicker').pickadate({
+   //selectMonths: true, // Creates a dropdown to control month
+   //selectYears: 1 // Creates a dropdown of 15 years to control year
+//});
