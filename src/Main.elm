@@ -14,6 +14,7 @@ import Riders.Model
 import Races.Model
 import Results.Model
 import Comments.Model
+import App.Commands
 
 
 --import Material
@@ -57,10 +58,14 @@ parser location =
     --urlUpdate result App.Model.initial
 init : Navigation.Location -> ( App, Cmd Msg )
 init location =
-  --let 
-    --route = routeParser location
-  --in 
-    ( App.Model.initial, Cmd.none ) --, fetchForRoute route )
+  let 
+    route = Debug.log "route" (App.Routing.routeParser location)
+    initial = App.Model.initial
+    initialWithRoute = { initial | route = route }
+  in 
+    --( App.Model.initial, Cmd.none ) --, fetchForRoute route )
+    --( App.Model.initial, App.Commands.fetchForRoute route )
+    ( initialWithRoute, App.Commands.fetchForRoute route )
 
 -- URL PARSERS - check out evancz/url-parser for fancier URL parsing
 

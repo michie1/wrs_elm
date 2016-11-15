@@ -2,7 +2,7 @@ module Races.List exposing (..)
 
 --import Races.Msg as Races exposing (Msg(..))
 
-import App.Model
+--import App.Model
 import Races.Model exposing (Race, categoryString)
 
 
@@ -13,7 +13,7 @@ import App.Msg
 
 --import App.Page
 
-import Html exposing (Html, div, text, a, table, tr, td, th, thead, tbody)
+import Html exposing (Html, h2, div, text, a, table, tr, td, th, thead, tbody)
 import Html.Attributes exposing (href, class)
 
 
@@ -24,21 +24,11 @@ import Html.Attributes exposing (href, class)
 --import Material.Table as Table
 
 
-{--
-heading : String -> Html App.Msg.Msg
-heading title =
-    Options.styled
-        Html.p
-        [ Typo.display2 ]
-        [ text title ]
---}
-
-
 render : List Race -> Html App.Msg.Msg
 render races =
     div []
-        --[ heading "Races"
-        [ div []
+        [ h2 [] [ text "races" ]
+        , div []
             [ a [ href "#races/add", class "waves-effect waves-light btn" ] [ text "Add race" ] ]
         , raceTable races
         ]

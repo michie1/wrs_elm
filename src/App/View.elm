@@ -1,6 +1,6 @@
 module App.View exposing (render)
 
-import Html exposing (Html, button, nav, div, text, span, a, input, ul, li)
+import Html exposing (Html, h2, button, nav, div, text, span, a, input, ul, li)
 import Html.Attributes exposing (href, id, class)
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
@@ -44,7 +44,9 @@ header app =
 render : App -> Html Msg
 render app =
     div []
-        []
+        [ header app
+        , mainView app
+        ]
         {--
         [ Layout.render Mdl
             app.mdl
@@ -73,14 +75,7 @@ viewPage app =
     case app.route of
         App.Routing.Home ->
             div []
-                [ div []
-                    [ div []
-                        []
-                        {--[ Options.styled Html.p
-                            [ Typo.display2 ]
-                            [ text "HOME" ]
-                            ]--}
-                    ]
+                [ h2 [] [ text "Home" ]
                 ]
 
         App.Routing.Riders ->

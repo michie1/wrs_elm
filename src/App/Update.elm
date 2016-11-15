@@ -6,6 +6,7 @@ port module App.Update exposing (update, calcRaceId)
 import App.Model exposing (App)
 import App.Routing
 import App.Msg exposing (Msg(..))
+import App.Commands
 import Races.Model exposing (Race)
 import Riders.Model
 import Comments.Model
@@ -477,6 +478,8 @@ urlUpdate route app =
 
                     App.Routing.RacesAdd ->
                         --( { newApp | raceAdd = Just raceAdd }
+                        ( newApp, App.Commands.fetchForRoute App.Routing.RacesAdd )
+                        {--
                         ( newApp
                           --, Cmd.none
                         , Cmd.batch
@@ -487,6 +490,7 @@ urlUpdate route app =
                                 (Task.succeed App.Msg.UpdateMaterialize)
                             ]
                         )
+                        --}
 
                     _ ->
                         newApp

@@ -12,8 +12,8 @@ import Results.Model
 
 import App.Msg
 import App.Routing
-import Html exposing (Html, a, div, text, table, tbody, thead, tr, td, th)
-import Html.Attributes exposing (href, style)
+import Html exposing (Html, button, li, i, h2, h3, ul, li, a, div, text, table, tbody, thead, tr, td, th)
+import Html.Attributes exposing (href, class, style)
 --import Material.List as List
 --import Material.Button as Button
 --import Material.Options as Options exposing (Style, css)
@@ -35,7 +35,7 @@ render app raceId =
         case maybeRace of
             Nothing ->
                 div []
-                    [ --heading "Rider does not exist" 
+                    [ text "Race does not exist" 
                     ]
 
             Just race ->
@@ -48,17 +48,17 @@ render app raceId =
                     div []
                         [ div []
                             [ div []
-                                [ --heading race.name
-                                --, info race
+                                [ h2 [] [ text race.name ] 
+                                , info race
                                 ]
                             , div []
-                                [ --subHeading "Results"
+                                [ h3 [] [ text "Results" ]
                                 --, addResultButton race app.mdl
                                 ]
-                            --, resultsTable race results app.riders
+                            , resultsTable race results app.riders
                             ]
-                        --, subHeading "Comments"
-                        --, addCommentButton race app.mdl
+                        , h3 [] [ text "Comments" ]
+                        , addCommentButton race
                         , Comments.List.render app race
                         ]
 
@@ -74,9 +74,20 @@ addResultButton race =
         [ text "Add"
         ]
 
+--}
 
 addCommentButton : Races.Model.Race -> Html App.Msg.Msg
 addCommentButton race =
+  button
+    [ class "waves-effect waves-light btn"
+    --, type_ "submit"
+    --, onClick App.Msg.AddRace
+    --, onClick (App.Msg.GoTo (App.Page.CommentAdd race.id))
+    , Html.Attributes.name "action"
+    --, disabled submitDisabled
+    ]
+    [ text "Add Comment" ]
+{--
     Button.render App.Msg.Mdl
         [ 0 ]
         mdl
@@ -116,14 +127,13 @@ li sub value =
         ]
 --}
 
-{--
 info : Race -> Html App.Msg.Msg
 info race =
     ul []
-        [ li "Name" race.name
-        , li "Date" race.name
-        , li "Type" race.name
-        , li "Points" race.name
+        [ li [] [ text ("Name " ++ race.name) ]
+        , li [] [ text ("Date " ++ race.name) ]
+        , li [] [ text ("Type " ++ race.name) ]
+        , li [] [ text ("Points " ++ race.name) ]
         ]
 
 
@@ -175,4 +185,3 @@ riderRow result riders =
                     , td [] [ text rider.name ]
                     , td [] [ text result.result ]
                     ]
---}
