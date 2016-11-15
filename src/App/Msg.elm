@@ -6,7 +6,7 @@ module App.Msg exposing (Msg(..))
 --import Races.Model exposing (Race)
 
 import Riders.Model exposing (Rider)
-import App.Page exposing (Page(..))
+import App.Routing exposing (Route(..))
 import Date
 
 
@@ -35,6 +35,7 @@ type Msg
     | SetRaceAddToday
       --(Maybe Date.Date)
     | SetRaceAddToday2 (Maybe Date.Date)
-    | GoTo Page
     | UpdateMaterialize
+    | NavigateTo Route
+    | UrlUpdate Route
     --| Mdl (Material.Msg Msg)

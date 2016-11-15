@@ -11,7 +11,7 @@ import Results.Model
 --exposing (Mdl)
 
 import App.Msg
-import App.Page
+import App.Routing
 import Html exposing (Html, a, div, text, table, tbody, thead, tr, td, th)
 import Html.Attributes exposing (href, style)
 --import Material.List as List

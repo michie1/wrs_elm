@@ -4,7 +4,7 @@
 port module App.Update exposing (update, calcRaceId)
 
 import App.Model exposing (App)
-import App.Page
+import App.Routing
 import App.Msg exposing (Msg(..))
 import Races.Model exposing (Race)
 import Riders.Model
@@ -208,11 +208,12 @@ update msg app =
                   }
                 , cmd
                 )
-
+    {--
         GoTo page ->
             ( app
             , (Navigation.newUrl (App.Page.toHash page))
             )
+    --}
 
         Save ->
             ( app
@@ -352,6 +353,12 @@ update msg app =
                 , (Navigation.newUrl ("#" ++ page))
                 )
 
+        UrlUpdate route ->
+            urlUpdate route app
+
+        NavigateTo route ->
+            ( app, Navigation.newUrl <| App.Routing.reverse route )
+
         --Mdl msg_ ->
         --    Material.update msg_ app
 
@@ -433,3 +440,64 @@ formatDate date =
         ++ (leadingZero (Date.day date))
         ++ "-"
         ++ (toString <| Date.year date)
+
+--urlUpdate : Result String App.Routing.Route -> App -> ( App, Cmd Msg )
+urlUpdate : App.Routing.Route -> App -> ( App, Cmd Msg )
+urlUpdate route app =
+            let
+                newApp =
+                    { app | route = route }
+            in
+                case route of
+                    App.Routing.ResultsAdd raceId ->
+                        --(Results.Update.setResultAddRace newApp raceId)
+                        let
+                            resultAdd =
+                                Results.Model.initialAdd
+
+                            resultAddWithRaceId =
+                                { resultAdd | raceId = raceId }
+                        in
+                            ( { newApp | resultAdd = Just resultAddWithRaceId }
+                            , Cmd.none
+                            )
+
+                    App.Routing.CommentAdd raceId ->
+                        --Comments.Update.setRaceId newApp raceId
+                        let
+                            commentAdd =
+                                Comments.Model.initialAdd
+
+                            commentAddWithRaceId =
+                                { commentAdd | raceId = raceId }
+                        in
+                            ( { newApp | commentAdd = Just commentAddWithRaceId }
+                            , Cmd.none
+                            )
+
+                    App.Routing.RacesAdd ->
+                        --( { newApp | raceAdd = Just raceAdd }
+                        ( newApp
+                          --, Cmd.none
+                        , Cmd.batch
+                            [ setRaceAdd
+                            , Task.perform 
+                                --identity 
+                                identity 
+                                (Task.succeed App.Msg.UpdateMaterialize)
+                            ]
+                        )
+
+                    _ ->
+                        newApp
+                            ! []
+
+
+setRaceAdd : Cmd Msg
+setRaceAdd =
+    Task.perform 
+        --(always (App.Msg.SetRaceAdd Nothing)) 
+        (Just >> App.Msg.SetRaceAdd) 
+        Date.now
+
+

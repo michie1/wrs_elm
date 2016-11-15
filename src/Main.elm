@@ -3,10 +3,10 @@ port module Main exposing (..)
 --import Dict
 
 import Navigation
-import UrlParser exposing (Parser, (</>), map, int, oneOf, s, string)
+--import UrlParser exposing (Parser, (</>), map, int, oneOf, s, string)
 --import String
 import App.Model exposing (App)
-import App.Page
+import App.Routing
 import App.Msg exposing (Msg(..))
 import App.Update
 import App.View
@@ -37,52 +37,36 @@ type alias Flags =
 --main : Program (Maybe Flags)
 
 
-main : Program Never
+main : Program Never App Msg
 main =
     Navigation.program
-        --WithFlags
-        --(Navigation.makeParser hashParser)
-        urlParser
-        --{ init = ( app, Cmd.none )
-        --{ init =  ( App.Model.initial, Cmd.none) --init
+        parser
         { init = init
-        , view =
-            App.View.render
-            --, update = App.Update.update
-            --, update = App.Update.updateWithStorage
         , update = App.Update.update
-        , urlUpdate = urlUpdate
         , subscriptions = subscriptions
+        , view = App.View.render
         }
 
 
-init : Result String App.Page.Page -> ( App, Cmd Msg )
-init result =
-    urlUpdate result App.Model.initial
+parser : Navigation.Location -> Msg
+parser location =
+  UrlUpdate <| App.Routing.routeParser location
 
-
+--init : Result String App.Page.Page -> ( App, Cmd Msg )
+--init result =
+    --urlUpdate result App.Model.initial
+init : Navigation.Location -> ( App, Cmd Msg )
+init location =
+  --let 
+    --route = routeParser location
+  --in 
+    ( App.Model.initial, Cmd.none ) --, fetchForRoute route )
 
 -- URL PARSERS - check out evancz/url-parser for fancier URL parsing
 
-hashParser : Navigation.Location -> Result String App.Page.Page
-hashParser location =
-    UrlParser.parse identity pageParser (String.dropLeft 1 location.hash)
-
-pageParser : Parser (App.Page.Page -> a) a
-pageParser =
-    oneOf
-        [ map App.Page.Home (s "home")
-        , map App.Page.Home (s "")
-        , map App.Page.RidersAdd (s "riders" </> s "add")
-        , map App.Page.RidersDetails (s "riders" </> int)
-        , map App.Page.Riders (s "riders")
-        , map App.Page.ResultsAdd (s "races" </> int </> s "add")
-        , map App.Page.CommentAdd (s "races" </> int </> s "comment")
-        , map App.Page.RacesAdd (s "races" </> s "add")
-        , map App.Page.RacesDetails (s "races" </> int)
-        , map App.Page.Races (s "races")
-        , map App.Page.Results (s "results")
-        ]
+--hashParser : Navigation.Location -> Result String App.Page.Page
+--hashParser location =
+    --UrlParser.parse identity pageParser (String.dropLeft 1 location.hash)
 
 
 
@@ -130,68 +114,8 @@ now =
         Date.now
 
 
-setRaceAdd : Cmd Msg
-setRaceAdd =
-    Task.perform 
-        --(always (App.Msg.SetRaceAdd Nothing)) 
-        (Just >> App.Msg.SetRaceAdd) 
-        Date.now
 
 
-urlUpdate : Result String App.Page.Page -> App -> ( App, Cmd Msg )
-urlUpdate resultPage app =
-    case Debug.log "resultPage" resultPage of
-        Ok page ->
-            let
-                newApp =
-                    { app | page = page }
-            in
-                case page of
-                    App.Page.ResultsAdd raceId ->
-                        --(Results.Update.setResultAddRace newApp raceId)
-                        let
-                            resultAdd =
-                                Results.Model.initialAdd
-
-                            resultAddWithRaceId =
-                                { resultAdd | raceId = raceId }
-                        in
-                            ( { newApp | resultAdd = Just resultAddWithRaceId }
-                            , Cmd.none
-                            )
-
-                    App.Page.CommentAdd raceId ->
-                        --Comments.Update.setRaceId newApp raceId
-                        let
-                            commentAdd =
-                                Comments.Model.initialAdd
-
-                            commentAddWithRaceId =
-                                { commentAdd | raceId = raceId }
-                        in
-                            ( { newApp | commentAdd = Just commentAddWithRaceId }
-                            , Cmd.none
-                            )
-
-                    App.Page.RacesAdd ->
-                        --( { newApp | raceAdd = Just raceAdd }
-                        ( newApp
-                          --, Cmd.none
-                        , Cmd.batch
-                            [ setRaceAdd
-                            , Task.perform 
-                                --identity 
-                                identity 
-                                (Task.succeed App.Msg.UpdateMaterialize)
-                            ]
-                        )
-
-                    _ ->
-                        newApp
-                            ! []
-
-        Err _ ->
-            ( app, Navigation.modifyUrl (App.Page.toHash app.page) )
 
 
 port log : (String -> msg) -> Sub msg

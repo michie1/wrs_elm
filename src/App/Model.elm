@@ -8,7 +8,7 @@ import Dict exposing (Dict)
 --import RaceAdd.Msg as RaceAdd
 --import RaceAdd.Model exposing (RaceAdd)
 
-import App.Page as Page exposing (Page(..))
+import App.Routing as Routing exposing (Route(..))
 import Races.Model
 import Riders.Model
 import Results.Model
@@ -17,7 +17,7 @@ import Date
 
 
 type alias App =
-    { page : Page.Page
+    { route : Routing.Route
     , cache : Dict String (List String)
     , riders : List Riders.Model.Rider
     , races : List Races.Model.Race

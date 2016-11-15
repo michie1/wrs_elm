@@ -8,7 +8,7 @@ import Riders.Model exposing (Rider)
 --import Material.Typography as Typo
 --import Material.Table as Table
 import App.Model
-import App.Page
+import App.Routing
 import App.Msg
 
 {--

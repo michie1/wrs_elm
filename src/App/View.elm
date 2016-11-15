@@ -4,7 +4,7 @@ import Html exposing (Html, button, nav, div, text, span, a, input, ul, li)
 import Html.Attributes exposing (href, id, class)
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
-import App.Page
+import App.Routing
 import Races.Model exposing (Race)
 import Races.Add
 import Races.List
@@ -70,8 +70,8 @@ mainView app =
 
 viewPage : App -> Html Msg
 viewPage app =
-    case app.page of
-        App.Page.Home ->
+    case app.route of
+        App.Routing.Home ->
             div []
                 [ div []
                     [ div []
@@ -83,36 +83,36 @@ viewPage app =
                     ]
                 ]
 
-        App.Page.Riders ->
+        App.Routing.Riders ->
             div []
                 [ Riders.List.render app.riders
                 ]
 
-        App.Page.RidersAdd ->
+        App.Routing.RidersAdd ->
             div []
                 [ Riders.Add.render app.riderAdd.rider
                 ]
 
-        App.Page.RidersDetails id ->
+        App.Routing.RidersDetails id ->
             div []
                 [ Riders.Details.render
                     app
                     id
                 ]
 
-        App.Page.Races ->
+        App.Routing.Races ->
             div []
                 [ Races.List.render app.races
                 ]
 
-        App.Page.RacesDetails id ->
+        App.Routing.RacesDetails id ->
             div []
                 [ Races.Details.render
                     app
                     id
                 ]
 
-        App.Page.RacesAdd ->
+        App.Routing.RacesAdd ->
             case app.raceAdd of
                 Nothing ->
                     div [] [ text "RaceAdd nothing" ]
@@ -123,12 +123,12 @@ viewPage app =
                         [ Races.Add.render raceAdd
                         ]
 
-        App.Page.Results ->
+        App.Routing.Results ->
             div []
                 [ Results.List.render app.results
                 ]
 
-        App.Page.ResultsAdd raceId ->
+        App.Routing.ResultsAdd raceId ->
             let
                 maybeRace =
                     getRace raceId app.races
@@ -137,7 +137,7 @@ viewPage app =
                 resultAdd =
                     case app.resultAdd of
                         Nothing ->
-                            Debug.crash "resultAdd shouldn't be Nothing in App.Page.ResultsAdd."
+                            Debug.crash "resultAdd shouldn't be Nothing in App.Routing.ResultsAdd."
 
                         Just value ->
                             value
@@ -154,7 +154,7 @@ viewPage app =
                             [ Results.Add.render race resultAdd app.riders app.results 
                             ]
 
-        App.Page.CommentAdd raceId ->
+        App.Routing.CommentAdd raceId ->
             let
                 maybeRace =
                     getRace raceId app.races
