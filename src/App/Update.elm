@@ -274,7 +274,8 @@ update msg app =
                         (Just >> App.Msg.SetRaceAddYesterday2)
                         Date.now
             in
-                ( app, yesterdayTask )
+                --( app, yesterdayTask )
+                ( app, Cmd.batch [ yesterdayTask, updateMaterialize () ] )
 
         SetRaceAddYesterday2 maybeDate ->
             let
@@ -307,7 +308,7 @@ update msg app =
                         (Just >> App.Msg.SetRaceAddToday2)
                         Date.now
             in
-                ( app, todayTask )
+                ( app, Cmd.batch [ todayTask, updateMaterialize () ] )
 
         SetRaceAddToday2 maybeDate ->
             let
@@ -439,11 +440,11 @@ leadingZero value =
 
 formatDate : Date.Date -> String
 formatDate date =
-    (toString <| numMonth <| Date.month date)
-        ++ "-"
-        ++ (leadingZero (Date.day date))
-        ++ "-"
-        ++ (toString <| Date.year date)
+    (leadingZero (Date.day date)) ++
+    "-" ++
+    toString (numMonth (Date.month date)) ++
+    "-" ++
+    toString (Date.year date)
 
 --urlUpdate : Result String App.Routing.Route -> App -> ( App, Cmd Msg )
 urlUpdate : App.Routing.Route -> App -> ( App, Cmd Msg )

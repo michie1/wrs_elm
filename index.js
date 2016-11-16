@@ -25,7 +25,7 @@ elm.ports.updateMaterialize.subscribe(function () {
       console.log('updateMaterialize');
       Materialize.updateTextFields();
     }, 
-    0 // fixes prefilled form data of MaterialzeCSS issue, with overlapping text
+    100 // fixes prefilled form data of MaterialzeCSS issue, with overlapping text
   );
 });
 

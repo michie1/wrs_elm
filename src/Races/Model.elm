@@ -37,9 +37,9 @@ empty =
 
 initialRaces : List Race
 initialRaces =
-    [ Race 1 "race a" "10-31-2016" Cat_A
+    [ Race 1 "race a" "31-10-2016" Cat_A
       -- (dateFromString "2016-11-01")
-    , Race 2 "race c" "10-21-2016" Cat_B
+    , Race 2 "race c" "21-10-2016" Cat_B
       -- (dateFromString "2016-10-01")
     ]
 
