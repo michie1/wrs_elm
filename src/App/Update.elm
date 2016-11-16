@@ -355,7 +355,10 @@ update msg app =
                 )
 
         UrlUpdate route ->
-            urlUpdate route app
+            let 
+                bla = Debug.log "bla route" route
+            in
+                urlUpdate route app
 
         NavigateTo route ->
             ( app, Navigation.newUrl <| App.Routing.reverse route )

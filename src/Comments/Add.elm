@@ -1,6 +1,6 @@
 module Comments.Add exposing (render)
 
-import Html exposing (Html, text, div)
+import Html exposing (Html, text, div, h2)
 import Html.Attributes
 import Html.Events
 import Json.Decode as Json
@@ -18,7 +18,8 @@ import Comments.Model
 render : Comments.Model.Add -> Races.Model.Race -> List Rider -> Html App.Msg.Msg
 render add race riders =
     div []
-        [ -- heading ("Comment on " ++ race.name)
+        [ h2 [] [ text ("Comment on " ++ race.name) ]
+
         {-- , div []
             [ Textfield.render App.Msg.Mdl
                 [ 0 ]
@@ -30,7 +31,7 @@ render add race riders =
                 ]
             ]
         --}
-         selectRider add.riderIndex riders
+        , selectRider add.riderIndex riders
         --, addButton
         ]
 

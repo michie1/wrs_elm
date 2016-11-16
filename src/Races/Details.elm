@@ -14,6 +14,7 @@ import App.Msg
 import App.Routing
 import Html exposing (Html, button, li, i, h2, h3, ul, li, a, div, text, table, tbody, thead, tr, td, th)
 import Html.Attributes exposing (href, class, style)
+import Html.Events exposing (onClick, onInput)
 --import Material.List as List
 --import Material.Button as Button
 --import Material.Options as Options exposing (Style, css)
@@ -53,7 +54,7 @@ render app raceId =
                                 ]
                             , div []
                                 [ h3 [] [ text "Results" ]
-                                --, addResultButton race app.mdl
+                                , addResultButton race
                                 ]
                             , resultsTable race results app.riders
                             ]
@@ -62,19 +63,22 @@ render app raceId =
                         , Comments.List.render app race
                         ]
 
-{--
 addResultButton : Races.Model.Race -> Html App.Msg.Msg
 addResultButton race =
-    Button.render App.Msg.Mdl
-        [ 0 ]
-        mdl
-        [ Button.raised
-        , Button.onClick (App.Msg.GoTo (App.Page.ResultsAdd race.id))
+    button
+        [ class "waves-effect waves-light btn"
+        --, type_ "submit"
+        --, onClick App.Msg.AddRace
+        , onClick (App.Msg.NavigateTo (App.Routing.ResultsAdd race.id))
+        --, onClick (App.Msg.GoTo (App.Page.CommentAdd race.id))
+        -- Button.onClick (App.Msg.GoTo (App.Page.ResultsAdd race.id))
+        , Html.Attributes.name "action"
+        --, disabled submitDisabled
         ]
-        [ text "Add"
-        ]
+        [ text "Add comment" ]
 
---}
+
+
 
 addCommentButton : Races.Model.Race -> Html App.Msg.Msg
 addCommentButton race =
@@ -83,6 +87,7 @@ addCommentButton race =
     --, type_ "submit"
     --, onClick App.Msg.AddRace
     --, onClick (App.Msg.GoTo (App.Page.CommentAdd race.id))
+    , onClick (App.Msg.NavigateTo (App.Routing.CommentAdd race.id))
     , Html.Attributes.name "action"
     --, disabled submitDisabled
     ]
