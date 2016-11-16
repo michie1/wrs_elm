@@ -75,7 +75,7 @@ addResultButton race =
         , Html.Attributes.name "action"
         --, disabled submitDisabled
         ]
-        [ text "Add comment" ]
+        [ text "Add result" ]
 
 
 

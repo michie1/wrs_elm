@@ -1,7 +1,7 @@
 --port module App.Update exposing (update, updateWithStorage, calcRaceId)
 
 
-port module App.Update exposing (update, calcRaceId)
+port module App.Update exposing (update, calcRaceId, urlUpdate)
 
 import App.Model exposing (App)
 import App.Routing
@@ -475,6 +475,8 @@ urlUpdate route app =
 
                             commentAddWithRaceId =
                                 { commentAdd | raceId = raceId }
+
+                            a = Debug.log "urlUpdate CommentAdd" "hoi"
                         in
                             ( { newApp | commentAdd = Just commentAddWithRaceId }
                             , Cmd.none
@@ -482,7 +484,10 @@ urlUpdate route app =
 
                     App.Routing.RacesAdd ->
                         --( { newApp | raceAdd = Just raceAdd }
-                        ( newApp, App.Commands.fetchForRoute App.Routing.RacesAdd )
+                        let
+                            a = Debug.log "urlUpdate" "RacesAdd"
+                        in
+                            ( newApp, App.Commands.fetchForRoute App.Routing.RacesAdd )
                         {--
                         ( newApp
                           --, Cmd.none

@@ -1,8 +1,8 @@
 module Comments.Add exposing (render)
 
-import Html exposing (Html, text, div, h2)
-import Html.Attributes
-import Html.Events
+import Html exposing (Html, text, div, h2, button, i)
+import Html.Attributes exposing (class, type_, class)
+import Html.Events exposing (onClick)
 import Json.Decode as Json
 import App.Msg
 import App.Model --exposing (Mdl)
@@ -32,30 +32,21 @@ render add race riders =
             ]
         --}
         , selectRider add.riderIndex riders
-        --, addButton
+        , addButton
         ]
 
-
-{--
-heading : String -> Html App.Msg.Msg
-heading headingText =
-    Options.styled
-        Html.p
-        [ Typo.display2 ]
-        [ text headingText ]
---}
-
-{--
 addButton : Html App.Msg.Msg
 addButton =
-    Button.render App.Msg.Mdl
-        [ 0 ]
-        mdl
-        [ Button.raised
-        , Button.onClick (App.Msg.CommentAdd)
+     button
+        [ class "waves-effect waves-light btn"
+        , type_ "submit"
+        , onClick (App.Msg.CommentAdd)
+        , Html.Attributes.name "action"
+        --, disabled submitDisabled
         ]
-        [ text "Add" ]
---}
+        [ text "Add comment"
+        , i [ class "material-icons right" ] [ text "send" ]
+        ]
 
 
 selectRider : Int -> List Riders.Model.Rider -> Html App.Msg.Msg

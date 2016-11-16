@@ -59,13 +59,16 @@ parser location =
 init : Navigation.Location -> ( App, Cmd Msg )
 init location =
   let 
-    route = Debug.log "route" (App.Routing.routeParser location)
-    initial = App.Model.initial
-    initialWithRoute = { initial | route = route }
+    route = Debug.log "route in init" (App.Routing.routeParser location)
+    --initial = App.Model.initial
+    --initialWithRoute = { initial | route = route }
+    (app, cmd) = App.Update.urlUpdate route App.Model.initial
+
   in 
     --( App.Model.initial, Cmd.none ) --, fetchForRoute route )
     --( App.Model.initial, App.Commands.fetchForRoute route )
-    ( initialWithRoute, App.Commands.fetchForRoute route )
+    --( initialWithRoute, App.Commands.fetchForRoute route )
+    (app, cmd)
 
 -- URL PARSERS - check out evancz/url-parser for fancier URL parsing
 
