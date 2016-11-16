@@ -1,11 +1,11 @@
 module Comments.Add exposing (render)
 
-import Html exposing (Html, text, div, h2, button, i)
-import Html.Attributes exposing (class, type_, class)
-import Html.Events exposing (onClick)
+import Html exposing (Html, text, div, h2, button, i, input, label)
+import Html.Attributes exposing (class, type_, id, for, class, disabled)
+import Html.Events exposing (onClick, onInput)
 import Json.Decode as Json
 import App.Msg
-import App.Model --exposing (Mdl)
+--import App.Model --exposing (Mdl)
 --import Material.Button as Button
 --import Material.Textfield as Textfield
 --import Material.Typography as Typo
@@ -17,32 +17,37 @@ import Comments.Model
 
 render : Comments.Model.Add -> Races.Model.Race -> List Rider -> Html App.Msg.Msg
 render add race riders =
-    div []
-        [ h2 [] [ text ("Comment on " ++ race.name) ]
-
-        {-- , div []
-            [ Textfield.render App.Msg.Mdl
-                [ 0 ]
-                mdl
-                [ Textfield.label "Text"
-                , Textfield.floatingLabel
-                , Textfield.text_
-                , Textfield.onInput App.Msg.CommentAddSetText
+    let
+        submitDisabled =
+            add.text == ""
+    in
+        div []
+            [ h2 [] [ text ("Comment on " ++ race.name) ]
+            , div []
+                [ div [ class "row" ]
+                    [ div [ class "input-field col s6" ]
+                        [ input
+                            [ id "text"
+                            , type_ "text"
+                            , onInput App.Msg.CommentAddSetText
+                            ]
+                            []
+                        , label [ for "text" ] [ text "Comment" ]
+                        ]
+                    ]
                 ]
+            , selectRider add.riderIndex riders
+            , addButton submitDisabled
             ]
-        --}
-        , selectRider add.riderIndex riders
-        , addButton
-        ]
 
-addButton : Html App.Msg.Msg
-addButton =
+addButton : Bool -> Html App.Msg.Msg
+addButton submitDisabled =
      button
         [ class "waves-effect waves-light btn"
         , type_ "submit"
         , onClick (App.Msg.CommentAdd)
         , Html.Attributes.name "action"
-        --, disabled submitDisabled
+        , disabled submitDisabled
         ]
         [ text "Add comment"
         , i [ class "material-icons right" ] [ text "send" ]

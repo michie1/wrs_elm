@@ -52,6 +52,8 @@ port resetState : String -> Cmd msg
 
 port updateMaterialize : () -> Cmd msg
 
+port autocomplete : () -> Cmd msg
+
 
 
 {--
@@ -243,6 +245,9 @@ update msg app =
                     Debug.log "update Materialize" "bla"
             in
                 ( app, updateMaterialize () )
+
+        Autocomplete ->
+            ( app, autocomplete () )
 
         SetNow maybeDate ->
             ( { app | now = maybeDate }
@@ -464,7 +469,8 @@ urlUpdate route app =
                                 { resultAdd | raceId = raceId }
                         in
                             ( { newApp | resultAdd = Just resultAddWithRaceId }
-                            , Cmd.none
+                            --, Cmd.none
+                            , App.Commands.fetchForRoute (App.Routing.ResultsAdd raceId)
                             )
 
                     App.Routing.CommentAdd raceId ->
@@ -479,9 +485,10 @@ urlUpdate route app =
                             a = Debug.log "urlUpdate CommentAdd" "hoi"
                         in
                             ( { newApp | commentAdd = Just commentAddWithRaceId }
-                            , Cmd.none
+                            --, Cmd.none
+                            , App.Commands.fetchForRoute App.Routing.RacesAdd
                             )
-
+    
                     App.Routing.RacesAdd ->
                         --( { newApp | raceAdd = Just raceAdd }
                         let

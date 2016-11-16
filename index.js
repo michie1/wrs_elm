@@ -29,6 +29,16 @@ elm.ports.updateMaterialize.subscribe(function () {
   );
 });
 
+elm.ports.autocomplete.subscribe(function () {
+  console.log('autcomplete is called');
+  $('input.autocomplete').autocomplete({
+    data: {
+      "Michiel": null,
+      "Henk": null,
+    }
+  });
+});
+
 elm.ports.saveState.subscribe(function() {
   //elm.ports.log.send('Alert called: ' + message);
 

@@ -1,14 +1,13 @@
 module Results.Add exposing (render)
 
-import Html exposing (Html, button, div, text, span, input, ul, li)
-import Html.Attributes
-import Html.Events
+import Html exposing (Html, button, div, text, span, label, input, ul, li, h2, input, i)
+import Html.Attributes exposing (class, id, type_, for)
+import Html.Events exposing (onInput, onClick)
 import Json.Decode as Json
 --import Material.Button as Button
 --import Material.Textfield as Textfield
 --import Material.Typography as Typo
 --import Material.Options as Options exposing (css)
-import App.Model --exposing (Mdl)
 import App.Msg
 import Results.Model
 import Races.Model
@@ -18,48 +17,43 @@ import Riders.Model exposing (Rider)
 render : Races.Model.Race -> Results.Model.ResultAdd -> List Rider -> List Results.Model.Result -> Html App.Msg.Msg
 render race resultAdd riders results =
     div []
-        [ --heading ("Add result for " ++ race.name)
-         div []
-            [ --field 0 "Result" App.Msg.SetResultAddResult
-              --, field 1 "Rider name" App.Msg.SetResultRiderName mdl
-             selectRider riders race results
+        [ h2 [] [ text ("Add result for " ++ race.name) ]
+        , div []
+            [ div [ class "row" ]
+                [ div [ class "input-field col s6" ]
+                    [ input [ id "result", type_ "text", onInput App.Msg.SetResultAddResult ] []
+                    , label [ for "result" ] [ text "Result" ]
+                    ]
+                ]
+            , div [ class "row" ]
+                [ div [ class "input-field col s6" ]
+                    [ input
+                        [ id "date"
+                        , type_ "text"
+                        , onInput App.Msg.SetResultRiderName
+                        , class "autocomplete"
+                        ]
+                        []
+                    , label [ for "date" ] [ text "Rider" ]
+                    ]
+                ]
             ]
-        --, addButton
-        ]
-
-{--
-heading : String -> Html App.Msg.Msg
-heading headingText =
-    Options.styled
-        Html.p
-        [ Typo.display2 ]
-        [ text headingText ]
-
-
-field : Int -> String -> (String -> App.Msg.Msg) -> Html App.Msg.Msg
-field index label msg =
-    div []
-        [ Textfield.render App.Msg.Mdl
-            [ index ]
-            mdl
-            [ Textfield.label label
-            , Textfield.floatingLabel
-            , Textfield.text_
-            , Textfield.onInput msg
+        , div []
+            [ selectRider riders race results
+            ]
+        , div [ class "row" ]
+            [ button
+                [ class "waves-effect waves-light btn"
+                , type_ "submit"
+                , onClick App.Msg.AddResult
+                , Html.Attributes.name "action"
+                --, disabled submitDisabled
+                ]
+                [ text "Add result"
+                , i [ class "material-icons right" ] [ text "send" ]
+                ]
             ]
         ]
-
-
-addButton : Mdl -> Html App.Msg.Msg
-addButton =
-    Button.render App.Msg.Mdl
-        [ 0 ]
-        mdl
-        [ Button.raised
-        , Button.onClick (App.Msg.AddResult)
-        ]
-        [ text "Add" ]
---}
 
 
 resultExists : List Results.Model.Result -> Races.Model.Race -> Riders.Model.Rider -> Bool
