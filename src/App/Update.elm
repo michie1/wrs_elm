@@ -46,13 +46,15 @@ port saveState : String -> Cmd msg
 
 --port setStorage : StoredApp -> Cmd msg
 
+--port setAutocomplete : String -> Cmd msg
+
 
 port resetState : String -> Cmd msg
 
 
 port updateMaterialize : () -> Cmd msg
 
-port autocomplete : () -> Cmd msg
+port autocomplete : List String -> Cmd msg
 
 
 
@@ -98,6 +100,7 @@ update msg app =
             let
                 raceAdd =
                     Util.fromJust app.raceAdd
+
 
                 newRaceAdd =
                     { raceAdd | name = newName }
@@ -164,7 +167,10 @@ update msg app =
                     Results.Update.setResultAddRider app value
 
         SetResultRiderName name ->
-            Results.Update.setRider app name
+            let
+                a = Debug.log "name" name
+            in
+                Results.Update.setRider app name
 
         ResultAddSetRiderId index ->
             let
@@ -247,7 +253,10 @@ update msg app =
                 ( app, updateMaterialize () )
 
         Autocomplete ->
-            ( app, autocomplete () )
+            let
+                riders = List.map (\rider -> rider.name) app.riders
+            in
+                ( app, autocomplete riders )
 
         SetNow maybeDate ->
             ( { app | now = maybeDate }

@@ -10,6 +10,8 @@ var startingState = null;
 
 var elm = Elm.Main.embed(document.getElementById('main'));//, startingState);
 
+$.elm = elm;
+
 /*
 elm.ports.setStorage.subscribe(function(state) {
   localStorage.setItem('wrs', state ? JSON.stringify(state) : null);
@@ -29,13 +31,15 @@ elm.ports.updateMaterialize.subscribe(function () {
   );
 });
 
-elm.ports.autocomplete.subscribe(function () {
-  console.log('autcomplete is called');
-  $('input.autocomplete').autocomplete({
-    data: {
-      "Michiel": null,
-      "Henk": null,
-    }
+elm.ports.autocomplete.subscribe(function (riders) {
+  console.log('autcomplete is called', riders);
+  var ridersObj = riders.reduce(function(result, rider) { 
+    result[rider] = null;
+    return result 
+  }, {});
+
+  var autocomplete = $('input.autocomplete').autocomplete({
+    data: ridersObj
   });
 });
 

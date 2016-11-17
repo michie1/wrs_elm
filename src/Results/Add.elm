@@ -1,8 +1,8 @@
 module Results.Add exposing (render)
 
 import Html exposing (Html, button, div, text, span, label, input, ul, li, h2, input, i)
-import Html.Attributes exposing (class, id, type_, for)
-import Html.Events exposing (onInput, onClick)
+import Html.Attributes exposing (class, id, type_, for, disabled, value)
+import Html.Events exposing (onInput, onClick, on)
 import Json.Decode as Json
 --import Material.Button as Button
 --import Material.Textfield as Textfield
@@ -14,46 +14,55 @@ import Races.Model
 import Riders.Model exposing (Rider)
 
 
+riderNameExists : String -> List Rider -> Bool
+riderNameExists name riders =
+    List.length (List.filter (\rider -> rider.name == name) riders) > 0
+
 render : Races.Model.Race -> Results.Model.ResultAdd -> List Rider -> List Results.Model.Result -> Html App.Msg.Msg
 render race resultAdd riders results =
-    div []
-        [ h2 [] [ text ("Add result for " ++ race.name) ]
-        , div []
-            [ div [ class "row" ]
-                [ div [ class "input-field col s6" ]
-                    [ input [ id "result", type_ "text", onInput App.Msg.SetResultAddResult ] []
-                    , label [ for "result" ] [ text "Result" ]
+    let 
+        submitDisabled = 
+            not (riderNameExists resultAdd.riderName riders)
+    in
+        div []
+            [ h2 [] [ text ("Add result for " ++ race.name) ]
+            , div []
+                [ div [ class "row" ]
+                    [ div [ class "input-field col s6" ]
+                        [ input [ id "result", type_ "text", onInput App.Msg.SetResultAddResult ] []
+                        , label [ for "result" ] [ text "Result" ]
+                        ]
                     ]
+                , div [ class "row" ]
+                    [ div [ class "input-field col s6" ]
+                        [ input
+                            [ id "rider"
+                            , type_ "text"
+                            , value resultAdd.riderName
+                            , onInput App.Msg.SetResultRiderName
+                            , class "autocomplete"
+                            ]
+                            []
+                        , label [ for "rider" ] [ text ("Rider: " ++ resultAdd.riderName) ]
+                        ]
+                    ]
+                ]
+            , div []
+                [ selectRider riders race results
                 ]
             , div [ class "row" ]
-                [ div [ class "input-field col s6" ]
-                    [ input
-                        [ id "date"
-                        , type_ "text"
-                        , onInput App.Msg.SetResultRiderName
-                        , class "autocomplete"
-                        ]
-                        []
-                    , label [ for "date" ] [ text "Rider" ]
+                [ button
+                    [ class "waves-effect waves-light btn"
+                    , type_ "submit"
+                    , onClick App.Msg.AddResult
+                    , Html.Attributes.name "action"
+                    , disabled submitDisabled
+                    ]
+                    [ text "Add result"
+                    , i [ class "material-icons right" ] [ text "send" ]
                     ]
                 ]
             ]
-        , div []
-            [ selectRider riders race results
-            ]
-        , div [ class "row" ]
-            [ button
-                [ class "waves-effect waves-light btn"
-                , type_ "submit"
-                , onClick App.Msg.AddResult
-                , Html.Attributes.name "action"
-                --, disabled submitDisabled
-                ]
-                [ text "Add result"
-                , i [ class "material-icons right" ] [ text "send" ]
-                ]
-            ]
-        ]
 
 
 resultExists : List Results.Model.Result -> Races.Model.Race -> Riders.Model.Rider -> Bool

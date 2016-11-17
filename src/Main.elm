@@ -130,10 +130,14 @@ port log : (String -> msg) -> Sub msg
 
 port setState : (String -> msg) -> Sub msg
 
+port setAutocomplete : (String -> msg) -> Sub msg
+
 
 subscriptions : App -> Sub Msg
 subscriptions app =
     Sub.batch
         [ log App.Msg.Log
         , setState App.Msg.SetState
+        , setAutocomplete App.Msg.SetResultRiderName
         ]
+        
