@@ -23,6 +23,8 @@ render race resultAdd riders results =
     let 
         submitDisabled = 
             not (riderNameExists resultAdd.riderName riders)
+            ||
+            resultAdd.result == ""
     in
         div []
             [ h2 [] [ text ("Add result for " ++ race.name) ]

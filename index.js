@@ -32,15 +32,17 @@ elm.ports.updateMaterialize.subscribe(function () {
 });
 
 elm.ports.autocomplete.subscribe(function (riders) {
-  console.log('autcomplete is called', riders);
-  var ridersObj = riders.reduce(function(result, rider) { 
-    result[rider] = null;
-    return result 
-  }, {});
+  setTimeout(function () {
+    console.log('autcomplete is called', riders);
+    var ridersObj = riders.reduce(function(result, rider) { 
+      result[rider] = null;
+      return result 
+    }, {});
 
-  var autocomplete = $('input.autocomplete').autocomplete({
-    data: ridersObj
-  });
+    var autocomplete = $('input.autocomplete').autocomplete({
+      data: ridersObj
+    });
+  }, 100);
 });
 
 elm.ports.saveState.subscribe(function() {

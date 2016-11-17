@@ -22,28 +22,44 @@ addResult app =
 
         -- result = resultAdd.result
         --riderId = Debug.log "riderId: " app.resultAdd.result.
+        {--
         riderId =
             if resultAdd.riderId == 0 then
                 (firstRiderId app.riders)
             else
                 resultAdd.riderId
+        --}
 
-        result =
-            Results.Model.Result
-                (calcResultId app.results)
-                riderId
-                resultAdd.raceId
-                resultAdd.result
+   
     in
-        if (Debug.log "new result rider id: " result.riderId) == 0 then
-            ( Nothing, Cmd.none )
-        else if resultExists result app.results then
-            ( Nothing, Debug.log "result does not exists" Cmd.none )
-        else
-            ( Just result
-            , Navigation.newUrl ("#races/" ++ toString (Debug.log "raceId" result.raceId))
-            )
+        case (getRiderByName resultAdd.riderName app.riders) of
+            Just rider ->
+                let
 
+                    result =
+                        Results.Model.Result
+                            (calcResultId app.results)
+                            rider.id
+                            resultAdd.raceId
+                            resultAdd.result
+                in
+                    --if (Debug.log "new result rider id: " result.riderId) == 0 then
+                    --   ( Nothing, Cmd.none )
+                    --else 
+                    if resultExists result app.results then
+                        ( Nothing, Debug.log "result already exists" Cmd.none )
+                    else
+                        ( Just result
+                        , Navigation.newUrl ("#races/" ++ toString (Debug.log "raceId" result.raceId))
+                        )
+
+            Nothing ->
+                ( Nothing, Cmd.none )
+
+
+getRiderByName : String -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
+getRiderByName name riders =
+    List.head (List.filter (\rider -> rider.name == name) riders)
 
 firstRiderId : List Riders.Model.Rider -> Int
 firstRiderId riders =

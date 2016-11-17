@@ -36,7 +36,7 @@ type Msg
       --(Maybe Date.Date)
     | SetRaceAddToday2 (Maybe Date.Date)
     | UpdateMaterialize
-    | Autocomplete
+    | Autocomplete Int
     | NavigateTo Route
     | UrlUpdate Route
     --| Mdl (Material.Msg Msg)

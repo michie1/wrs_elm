@@ -19,6 +19,7 @@ import Navigation
 import String
 import Debug
 import Array
+import Set
 import Util
 import Json.Decode -- exposing ((:=))
 
@@ -252,9 +253,24 @@ update msg app =
             in
                 ( app, updateMaterialize () )
 
-        Autocomplete ->
+        Autocomplete raceId ->
             let
-                riders = List.map (\rider -> rider.name) app.riders
+                resultSet = Set.fromList
+                                (List.map 
+                                    (\result -> result.riderId)
+                                    ( List.filter
+                                        (\result -> result.raceId == raceId)
+                                        app.results
+                                    ) 
+                                )
+
+                riders = List.map
+                            (\rider -> rider.name)
+                            (List.filter
+                                (\rider -> not (Set.member rider.id resultSet))
+                                app.riders
+                            )
+
             in
                 ( app, autocomplete riders )
 
