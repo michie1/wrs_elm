@@ -37,6 +37,9 @@ reverse route =
         CommentAdd id ->
             "#races/" ++ (toString id) ++ "/comment"
 
+        AccountLogin ->
+            "#account/login"
+
 
 type Route
     = Home
@@ -49,6 +52,7 @@ type Route
     | Results
     | ResultsAdd Int
     | CommentAdd Int
+    | AccountLogin
 
 matchers : Parser (Route -> a) a
 matchers =
@@ -64,6 +68,7 @@ matchers =
         , map RacesDetails (s "races" </> int)
         , map Races (s "races")
         , map Results (s "results")
+        , map AccountLogin (s "account" </> s "login")
         ]
 
 routeParser : Navigation.Location -> Route

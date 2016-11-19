@@ -14,6 +14,7 @@ import Riders.Model
 import Results.Model
 import Comments.Model
 import Date
+import Account.Model
 
 
 type alias App =
@@ -28,6 +29,8 @@ type alias App =
     , comments : List Comments.Model.Comment
     , commentAdd : Maybe Comments.Model.Add
     , now : Maybe Date.Date
+    , account : Maybe Riders.Model.Rider
+    , accountLogin : Account.Model.Login
     --, mdl : Material.Model
     }
 
@@ -52,5 +55,7 @@ initial =
         Nothing
         -- Comments.Model.initialAdd
         Nothing
+        Nothing
+        Account.Model.login
         --Material.model
     )

@@ -16,6 +16,8 @@ import Results.List
 import Results.Add
 import Comments.Add
 
+import Account.View
+
 
 --import Material.Scheme
 
@@ -24,6 +26,14 @@ import Comments.Add
 --import Material.Layout as Layout
 import Util
 
+userLi : App -> Html App.Msg.Msg
+userLi app =
+    case app.account of
+        Just account ->
+            li [] [ a [ href "#account" ] [ text account.name ] ]
+
+        Nothing ->
+            li [] [ a [ href "#account/login" ] [ text "Login" ] ]
 
 header : App -> Html App.Msg.Msg
 header app =
@@ -32,7 +42,8 @@ header app =
             [ class "nav-wrapper" ]
             [ a [ class "brand-logo left", href "#home" ] [ text "WRS" ]
             , ul [ id "nav-mobile", class "right" ]
-                [ li [] [ a [ href "#races" ] [ text "Races" ] ]
+                [ userLi app
+                , li [] [ a [ href "#races" ] [ text "Races" ] ]
                 , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
                 , li [] [ a [ href "#results" ] [ text "Results" ] ]
                   --, li [ ] [ a [ href "#" ] [ text "Reset" ] ]
@@ -168,6 +179,9 @@ viewPage app =
                         div []
                             [ Comments.Add.render commentAdd race app.riders
                             ]
+
+        App.Routing.AccountLogin ->
+            Account.View.login app
 
 
 getRace : Int -> List Races.Model.Race -> Maybe Races.Model.Race

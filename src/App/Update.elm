@@ -394,8 +394,27 @@ update msg app =
         NavigateTo route ->
             ( app, Navigation.newUrl <| App.Routing.reverse route )
 
-        --Mdl msg_ ->
-        --    Material.update msg_ app
+        AccountLogin ->
+            let
+                account = 
+                    Riders.Model.Rider 
+                        1
+                        app.accountLogin.name
+                        "amateur"
+            in
+                ( { app | account = Just account }
+                , Navigation.newUrl "#home"
+                )
+
+        AccountLoginName name ->
+            let 
+                previousAccountLogin = app.accountLogin
+                accountLogin = { previousAccountLogin | name = name }
+            in
+                ( { app | accountLogin = accountLogin }
+                , Cmd.none
+                )
+            
 
 
 getRiderIdByIndex : Int -> List Riders.Model.Rider -> Int
@@ -490,8 +509,17 @@ urlUpdate route app =
                             resultAdd =
                                 Results.Model.initialAdd
 
+                            name = case app.account of
+                                Just account ->
+                                    account.name
+                                Nothing ->
+                                    ""
+
                             resultAddWithRaceId =
-                                { resultAdd | raceId = raceId }
+                                { resultAdd 
+                                    | raceId = raceId
+                                    , riderName = name
+                                }
                         in
                             ( { newApp | resultAdd = Just resultAddWithRaceId }
                             --, Cmd.none

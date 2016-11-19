@@ -31,6 +31,9 @@ fetchForRoute route =
                         [ Task.perform
                             identity
                             (Task.succeed (App.Msg.Autocomplete raceId))
+                        , Task.perform 
+                            identity 
+                            (Task.succeed App.Msg.UpdateMaterialize)
                         ]
 
             _ ->

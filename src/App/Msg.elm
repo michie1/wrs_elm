@@ -39,4 +39,6 @@ type Msg
     | Autocomplete Int
     | NavigateTo Route
     | UrlUpdate Route
+    | AccountLogin
+    | AccountLoginName String
     --| Mdl (Material.Msg Msg)
