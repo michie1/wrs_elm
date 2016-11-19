@@ -1,7 +1,6 @@
 Nested.elm
-elm-stuff/
-index.html
 main.html
+elm-stuff/
 node_modules
 npm-debug.log
 .ctags
