@@ -1,4 +1,4 @@
-module Comments.Update exposing (new, setText, setRaceId, setRiderIndex)
+module Comments.Update exposing (new, setText, setRaceId)
 
 import Navigation
 import Array
@@ -19,19 +19,28 @@ new id app =
         commentAdd =
             Util.fromJust app.commentAdd
 
-        riderId =
-            Util.fromJust (getRiderIdByIndex commentAdd.riderIndex app.riders)
+        maybeRider = getRiderByName (Debug.log "riderName" commentAdd.riderName) app.riders
 
-        comment =
-            Comment
-                id
-                riderId
-                commentAdd.raceId
-                commentAdd.text
     in
-        ( comment
-        , Navigation.newUrl ("#races/" ++ toString comment.raceId)
-        )
+        case maybeRider of 
+            Just rider -> 
+                let
+                    comment =
+                        Comment
+                            id
+                            commentAdd.raceId
+                            rider.id
+                            commentAdd.text
+                in
+                    ( comment
+                    , Navigation.newUrl ("#races/" ++ toString commentAdd.raceId)
+                    )
+
+            Nothing -> 
+                let
+                    a = Debug.log "New comment" "Rider unknown."
+                in
+                    ( (Comment 0 0 0 "fout"), Cmd.none)
 
 
 setText : App -> String -> ( App, Cmd Msg )
@@ -51,7 +60,7 @@ setRaceId app raceId =
     in
         ( set app (setAddRaceId commentAdd raceId), Cmd.none )
 
-
+{--
 setRiderIndex : App -> Int -> ( App, Cmd Msg )
 setRiderIndex app riderIndex =
     let
@@ -59,6 +68,7 @@ setRiderIndex app riderIndex =
             Util.fromJust app.commentAdd
     in
         ( set app (setAddRiderIndex commentAdd (Debug.log "riderIndex" riderIndex)), Cmd.none )
+--}
 
 
 
@@ -102,11 +112,17 @@ setAddRaceId add raceId =
     { add | raceId = raceId }
 
 
-setAddRiderIndex : Add -> Int -> Add
-setAddRiderIndex add riderIndex =
-    { add | riderIndex = riderIndex }
+setAddRiderName : Add -> String -> Add
+setAddRiderName add riderName =
+    { add | riderName = riderName }
 
 
 set : App -> Add -> App
 set app commentAdd =
     { app | commentAdd = Just commentAdd }
+
+getRiderByName : String -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
+getRiderByName name riders =
+    List.head (List.filter (\rider -> rider.name == name) riders)
+
+

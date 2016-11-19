@@ -177,7 +177,7 @@ viewPage app =
 
                     Just race ->
                         div []
-                            [ Comments.Add.render commentAdd race app.riders
+                            [ Comments.Add.render app commentAdd race app.riders
                             ]
 
         App.Routing.AccountLogin ->

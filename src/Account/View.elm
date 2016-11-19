@@ -23,6 +23,17 @@ login app =
                         , label [ for "name" ] [ text ("Name " ++ app.accountLogin.name) ]
                         ]
                     ]
+                , div [ class "row" ]
+                    [ div [ class "input-field col s6" ]
+                        [ input
+                            [ id "password"
+                            , type_ "password"
+                            , onInput App.Msg.AccountLoginPassword
+                            ]
+                            []
+                        , label [ for "password" ] [ text "Password" ]
+                        ]
+                    ]
                 ]
         , button
             [ class "waves-effect waves-light btn"

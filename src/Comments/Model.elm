@@ -11,7 +11,7 @@ type alias Comment =
 
 type alias Add =
     { raceId : Int
-    , riderIndex : Int
+    , riderName : String
     , text : String
     }
 
@@ -31,9 +31,10 @@ initialComments =
     ]
 
 
-initialAdd : { riderIndex : Int, raceId : Int, text : String }
+--initialAdd : { riderIndex : Int, raceId : Int, text : String }
+initialAdd : Add
 initialAdd =
-    { riderIndex = 0
-    , raceId = 0
+    { raceId = 0
+    , riderName = "" 
     , text = ""
     }

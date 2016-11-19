@@ -22,7 +22,7 @@ type Msg
     | SetResultRiderName String
     | ResultAddSetRiderId Int
     | CommentAddSetText String
-    | CommentAddSetRiderIndex Int
+    | CommentAddSetRiderName String
     | CommentAdd
     | Save
     | Log String
@@ -41,4 +41,5 @@ type Msg
     | UrlUpdate Route
     | AccountLogin
     | AccountLoginName String
+    | AccountLoginPassword String
     --| Mdl (Material.Msg Msg)

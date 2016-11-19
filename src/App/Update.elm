@@ -185,23 +185,31 @@ update msg app =
                 commentAdd =
                     Util.fromJust app.commentAdd
 
+                --account =
+                --    Util.fromJust app.account
+
+                --riderId = account.id
+                    
                 commentAddWithText =
-                    { commentAdd | text = text }
+                    { commentAdd 
+                        | text = text
+                        --, riderId = riderId
+                    }
             in
                 ( { app | commentAdd = Just commentAddWithText }
                 , Cmd.none
                 )
 
         --Comments.Update.setText app text
-        CommentAddSetRiderIndex riderIndex ->
+        CommentAddSetRiderName riderName ->
             let
                 commentAdd =
                     Util.fromJust app.commentAdd
 
-                commentAddWithRiderIndex =
-                    { commentAdd | riderIndex = riderIndex }
+                commentAddWithRiderName =
+                    { commentAdd | riderName = riderName }
             in
-                ( { app | commentAdd = Just commentAddWithRiderIndex }
+                ( { app | commentAdd = Just commentAddWithRiderName }
                 , Cmd.none
                 )
 
@@ -213,7 +221,7 @@ update msg app =
                         app
             in
                 ( { app
-                    | comments = comment :: app.comments
+                    | comments = (Debug.log "comment2" comment) :: app.comments
                     , commentAdd = Nothing
                   }
                 , cmd
@@ -396,13 +404,12 @@ update msg app =
 
         AccountLogin ->
             let
-                account = 
-                    Riders.Model.Rider 
-                        1
-                        app.accountLogin.name
-                        "amateur"
+                maybeRider = getRiderByName 
+                                app.accountLogin.name
+                                app.riders
+
             in
-                ( { app | account = Just account }
+                ( { app | account = maybeRider }
                 , Navigation.newUrl "#home"
                 )
 
@@ -414,7 +421,20 @@ update msg app =
                 ( { app | accountLogin = accountLogin }
                 , Cmd.none
                 )
+
+        AccountLoginPassword password ->
+            let 
+                previousAccountLogin = app.accountLogin
+                accountLogin = { previousAccountLogin | password = password }
+            in
+                ( { app | accountLogin = accountLogin }
+                , Cmd.none
+                )
             
+    
+getRiderByName : String -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
+getRiderByName name riders =
+    List.head (List.filter (\rider -> rider.name == name) riders)
 
 
 getRiderIdByIndex : Int -> List Riders.Model.Rider -> Int
@@ -532,14 +552,20 @@ urlUpdate route app =
                             commentAdd =
                                 Comments.Model.initialAdd
 
-                            commentAddWithRaceId =
-                                { commentAdd | raceId = raceId }
+                            riderName = (Util.fromJust app.account).name
 
-                            a = Debug.log "urlUpdate CommentAdd" "hoi"
+                            commentAddWithRaceId =
+                                { commentAdd 
+                                    | raceId = raceId
+                                    , riderName = riderName
+                                }
+
+                            a = Debug.log "urlUpdate CommentAdd" riderName
+                            b = Debug.log "urlUpdate CommentAdd" raceId
                         in
                             ( { newApp | commentAdd = Just commentAddWithRaceId }
                             --, Cmd.none
-                            , App.Commands.fetchForRoute App.Routing.RacesAdd
+                            , App.Commands.fetchForRoute (App.Routing.CommentAdd raceId)
                             )
     
                     App.Routing.RacesAdd ->
