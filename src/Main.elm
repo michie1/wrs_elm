@@ -50,7 +50,7 @@ main =
 
 parser : Navigation.Location -> Msg
 parser location =
-  UrlUpdate <| App.Routing.routeParser location
+  UrlUpdate (App.Routing.routeParser location)
 
 --init : Result String App.Page.Page -> ( App, Cmd Msg )
 --init result =

@@ -519,8 +519,23 @@ formatDate date =
 urlUpdate : App.Routing.Route -> App -> ( App, Cmd Msg )
 urlUpdate route app =
             let
-                newApp =
-                    { app | route = route }
+                -- Trying to do some onUrlLeave, to put some state back to Nothing
+                newApp = case route of
+                            App.Routing.CommentAdd raceId ->
+                                { app | route = route }
+
+                            _ ->
+                                let
+                                    maybeCommentAdd = app.commentAdd
+                                in
+                                    case maybeCommentAdd of
+                                        Just commentAdd ->
+                                            { app | commentAdd = Nothing
+                                                  , route = route
+                                            }
+
+                                        Nothing -> 
+                                            { app | route = route }
             in
                 case route of
                     App.Routing.ResultsAdd raceId ->
