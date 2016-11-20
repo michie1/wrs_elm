@@ -55,8 +55,9 @@ rider =
 
 comment : Json.Decode.Decoder Comments.Model.Comment
 comment =
-    Json.Decode.map4 Comments.Model.Comment
+    Json.Decode.map5 Comments.Model.Comment
         (Json.Decode.field "id" Json.Decode.int)
+        (Json.Decode.field "datetime" Json.Decode.string)
         (Json.Decode.field "raceId" Json.Decode.int)
         (Json.Decode.field "riderId" Json.Decode.int)
         (Json.Decode.field "text" Json.Decode.string)

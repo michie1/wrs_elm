@@ -163,11 +163,11 @@ riderRow result riders =
 commentsUl : List Comments.Model.Comment -> Race -> List Riders.Model.Rider -> Html msg
 commentsUl comments race riders =
     ul [ class "collection" ] 
-         ((filterCommentsByRace comments race)
-                |> List.map
+            ( List.map
                     (\comment ->
                         commentLi comment (getRiderById comment.riderId riders)
                     )
+                    (filterCommentsByRace comments race)
             )
 
 
@@ -184,9 +184,12 @@ commentLi comment maybeRider =
         Just rider ->
             li [ class "collection-item avatar" ]
                [ i [ class "material-icons circle red" ] [ text "play_arrow" ]
-               , span [ class "title"] [ text rider.name ]
+               , span [ class "title"] 
+                      [ a [ href ("#riders/" ++ (toString rider.id)) ]
+                          [ text rider.name ]
+                      ]
                , p [] 
-                   [ span [] [ text "Date" ]
+                   [ span [] [ text comment.datetime ]
                    , br [] []
                    , span [] [ text comment.text ]
                    ]

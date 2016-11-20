@@ -28,6 +28,7 @@ new id app =
                     comment =
                         Comment
                             id
+                            "01-02-2013"
                             commentAdd.raceId
                             rider.id
                             commentAdd.text
@@ -40,7 +41,7 @@ new id app =
                 let
                     a = Debug.log "New comment" "Rider unknown."
                 in
-                    ( (Comment 0 0 0 "fout"), Cmd.none)
+                    ( (Comment 0 "wrong date" 0 0 "fout"), Cmd.none)
 
 
 setText : App -> String -> ( App, Cmd Msg )

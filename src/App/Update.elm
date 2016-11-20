@@ -335,7 +335,7 @@ update msg app =
                             ""
 
                 raceAdd =
-                    Races.Model.Add "" dateFormatted Races.Model.Classic -- TODO: fix with value for category
+                    Races.Model.Add "" dateFormatted Races.Model.Classic 
             in
                 ( { app | raceAdd = Just raceAdd }
                 , Cmd.none
