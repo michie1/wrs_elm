@@ -62,7 +62,7 @@ render raceAdd =
                     [ button
                         [ class "waves-effect waves-light btn"
                         , type_ "submit"
-                        , onClick App.Msg.AddRace
+                        , onClick App.Msg.RaceAdd
                         , Html.Attributes.name "action"
                         , disabled submitDisabled
                         ]
@@ -91,22 +91,22 @@ render raceAdd =
             --}
             ]
 
-categoryButtonCheck : String -> String -> Bool -> Html App.Msg.Msg
-categoryButtonCheck categoryName categoryText isChecked =
+categoryButtonCheck : String -> String -> Races.Model.Category -> Bool -> Html App.Msg.Msg
+categoryButtonCheck categoryName categoryText category isChecked =
     p []
-        [ input [ checked isChecked, name "category", type_ "radio", id categoryName ] []
+        [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (App.Msg.RaceAddCategory category) ] []
         , label [ for categoryName ] [ text categoryText ]
         ]
 
-categoryButton : String -> String -> Html App.Msg.Msg
-categoryButton categoryName categoryText =
-    categoryButtonCheck categoryName categoryText False
+categoryButton : String -> String -> Races.Model.Category -> Html App.Msg.Msg
+categoryButton categoryName categoryText category =
+    categoryButtonCheck categoryName categoryText category False
 
 categoryButtons : Html App.Msg.Msg
 categoryButtons =
     div []
-        [ categoryButtonCheck "classic" "Klassieker" True
-        , categoryButton "criterum" "Criterium"
-        , categoryButton "regiocross" "Regiocross"
-        , categoryButton "other" "Other"
+        [ categoryButtonCheck "classic" "Klassieker" Races.Model.Classic True
+        , categoryButton "criterum" "Criterium" Races.Model.Criterium
+        , categoryButton "regiocross" "Regiocross" Races.Model.Regiocross
+        , categoryButton "other" "Other" Races.Model.Other
         ]

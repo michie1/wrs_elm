@@ -23,7 +23,7 @@ login app =
                         , label [ for "name" ] [ text "Name" ]
                         ]
                     ]
-                , div [ class "row" ]
+                {-- , div [ class "row" ]
                     [ div [ class "input-field col s6" ]
                         [ input
                             [ id "password"
@@ -34,6 +34,7 @@ login app =
                         , label [ for "password" ] [ text "Password" ]
                         ]
                     ]
+                --}
                 ]
         , button
             [ class "waves-effect waves-light btn"

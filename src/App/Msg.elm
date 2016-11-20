@@ -6,21 +6,25 @@ module App.Msg exposing (Msg(..))
 --import Races.Model exposing (Race)
 
 import Riders.Model exposing (Rider)
+import Races.Model
+import Results.Model
 import App.Routing exposing (Route(..))
 import Date
 
 
 type Msg
-    = AddRace
+    = RaceAdd
     | SetRaceName String
     | SetRaceDate String
+    | RaceAddCategory Races.Model.Category
     | AddRider Rider
     | SetRiderName String
-    | AddResult
+    | ResultAdd
+    | ResultAddCategory Results.Model.ResultCategory
     | SetResultAddResult String
-    | SetResultRider String
+    --| SetResultRider String
     | SetResultRiderName String
-    | ResultAddSetRiderId Int
+    --| ResultAddSetRiderId Int
     | CommentAddSetText String
     | CommentAddSetRiderName String
     | CommentAdd

@@ -21,6 +21,9 @@ onUrlLeave prevRoute prevApp =
         App.Routing.AccountSignup ->
             { prevApp | accountSignup = Nothing }
 
+        App.Routing.RacesAdd ->
+            { prevApp | raceAdd = Nothing }
+
         _ ->
             prevApp
 

@@ -61,14 +61,39 @@ comment =
         (Json.Decode.field "riderId" Json.Decode.int)
         (Json.Decode.field "text" Json.Decode.string)
 
+decodeResultCategory : String -> Json.Decode.Decoder Results.Model.ResultCategory
+decodeResultCategory string = Json.Decode.succeed (resultCategory string)
+
+resultCategory : String -> Results.Model.ResultCategory
+--Json.Decode.Decoder Races.Model.Category
+resultCategory string =
+    case string of
+        "amateurs" ->
+            Results.Model.Amateurs
+
+        "basislidmaatschap" ->
+            Results.Model.Basislidmaatschap
+
+        "cata" ->
+            Results.Model.CatA
+
+        "catb" ->
+            Results.Model.CatB
+
+        _ ->
+            Results.Model.Unknown
 
 result : Json.Decode.Decoder Results.Model.Result
 result =
-    Json.Decode.map4 Results.Model.Result
+    Json.Decode.map5 Results.Model.Result
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "riderId" Json.Decode.int)
         (Json.Decode.field "raceId" Json.Decode.int)
         (Json.Decode.field "result" Json.Decode.string)
+        ( Json.Decode.field "category" 
+            (Json.Decode.string
+              |> Json.Decode.andThen decodeResultCategory)
+        )
 
 
 page : Json.Decode.Decoder String

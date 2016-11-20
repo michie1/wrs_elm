@@ -1,4 +1,4 @@
-module Races.Model exposing (Add, Race, initialRaces, Category(..), categoryString)
+module Races.Model exposing (Add, Race, initialRaces, Category, Category(..), categoryString)
 
 import Date
 
@@ -24,6 +24,7 @@ type alias Race =
 type alias Add =
     { name : String
     , dateString : String
+    , category : Category
     }
 
 

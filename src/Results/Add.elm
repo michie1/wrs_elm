@@ -1,7 +1,7 @@
 module Results.Add exposing (render)
 
-import Html exposing (Html, button, div, text, span, label, input, ul, li, h2, input, i)
-import Html.Attributes exposing (class, id, type_, for, disabled, value)
+import Html exposing (Html, button, div, text, span, label, input, ul, li, h2, input, i, p)
+import Html.Attributes exposing (class, id, type_, for, disabled, value, name, checked)
 import Html.Events exposing (onInput, onClick, on)
 import Json.Decode as Json
 --import Material.Button as Button
@@ -49,14 +49,12 @@ render race resultAdd riders results =
                         ]
                     ]
                 ]
-            , div []
-                [ selectRider riders race results
-                ]
+            , div [ class "row" ] [ categoryButtons ]
             , div [ class "row" ]
                 [ button
                     [ class "waves-effect waves-light btn"
                     , type_ "submit"
-                    , onClick App.Msg.AddResult
+                    , onClick App.Msg.ResultAdd
                     , Html.Attributes.name "action"
                     , disabled submitDisabled
                     ]
@@ -76,32 +74,22 @@ resultExists results race rider =
         )
         == 1
 
-
-selectRider : List Riders.Model.Rider -> Races.Model.Race -> List Results.Model.Result -> Html App.Msg.Msg
-selectRider allRiders race results =
-    div []
-        [ Html.select
-            [ onSelect App.Msg.ResultAddSetRiderId ]
-            (List.map
-                (\rider ->
-                    (Html.option
-                        [ (Html.Attributes.value (toString rider.id))
-                          -- , ( Html.Attributes.disabled ( resultExists results race rider ) )
-                        ]
-                        [ text rider.name ]
-                    )
-                )
-                --riders
-                allRiders
-            )
+categoryButtonCheck : String -> String -> Results.Model.ResultCategory -> Bool -> Html App.Msg.Msg
+categoryButtonCheck categoryName categoryText category isChecked =
+    p []
+        [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (App.Msg.ResultAddCategory category) ] []
+        , label [ for categoryName ] [ text categoryText ]
         ]
 
+categoryButton : String -> String -> Results.Model.ResultCategory -> Html App.Msg.Msg
+categoryButton categoryName categoryText category =
+    categoryButtonCheck categoryName categoryText category False
 
-targetSelectedIndex : Json.Decoder Int
-targetSelectedIndex =
-    Json.at [ "target", "selectedIndex" ] Json.int
-
-
-onSelect : (Int -> msg) -> Html.Attribute msg
-onSelect msg =
-    Html.Events.on "change" (Json.map msg targetSelectedIndex)
+categoryButtons : Html App.Msg.Msg
+categoryButtons =
+    div []
+        [ categoryButtonCheck "amateurs" "Amateurs" Results.Model.Amateurs True
+        , categoryButton "basislidmaatschap" "Basislidmaatschap" Results.Model.Basislidmaatschap
+        , categoryButton "cata" "Cat A" Results.Model.CatA
+        , categoryButton "catb" "Cat B" Results.Model.CatB
+        ]

@@ -116,6 +116,7 @@ resultsTable race results riders =
                 , th [] [ text "Rider" ]
                 , th [] [ text "Date" ]
                 , th [] [ text "Result" ]
+                , th [] [ text "Category" ]
                 ]
             ]
         , tbody []
@@ -154,4 +155,5 @@ riderRow result riders =
                         ]
                     , td [] [ text rider.name ]
                     , td [] [ text result.result ]
+                    , td [] [ text (toString result.category) ]
                     ]

@@ -82,24 +82,27 @@ updateWithStorage msg app =
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
     case msg of
-        AddRace ->
-            let
-                raceAdd =
-                    Util.fromJust app.raceAdd
+        RaceAdd ->
+            case app.raceAdd of
+                Just raceAdd -> 
+                    let
+                        newRace =
+                            Races.Model.Race
+                                (calcRaceId app.races)
+                                raceAdd.name
+                                raceAdd.dateString
+                                raceAdd.category
+                                --Races.Model.Classic
+                    in
+                        ( { app
+                            | races = (newRace :: app.races)
+                            --, raceAdd = Nothing
+                          }
+                        , Navigation.newUrl ("#races/" ++ (toString newRace.id))
+                        )
 
-                newRace =
-                    Races.Model.Race
-                        (calcRaceId app.races)
-                        raceAdd.name
-                        raceAdd.dateString
-                        Races.Model.Classic
-            in
-                ( { app
-                    | races = (newRace :: app.races)
-                    , raceAdd = Nothing
-                  }
-                , Navigation.newUrl ("#races/" ++ (toString newRace.id))
-                )
+                Nothing ->
+                    ( app, Cmd.none )
 
         SetRaceName newName ->
             let
@@ -115,6 +118,19 @@ update msg app =
                   }
                 , Cmd.none
                 )
+
+        RaceAddCategory category ->
+            case app.raceAdd of
+                Just raceAdd ->
+                    let
+                        nextRaceAdd = { raceAdd | category = category }
+                    in
+                        ( { app | raceAdd = Just nextRaceAdd }
+                        , Cmd.none
+                        )
+
+                Nothing ->
+                    ( app, Cmd.none )
 
         SetRaceDate newDate ->
             let
@@ -136,7 +152,7 @@ update msg app =
         SetRiderName newName ->
             Riders.Update.setRiderAddName app newName
 
-        AddResult ->
+        ResultAdd ->
             let
                 ( maybeResult, cmd ) =
                     Results.Update.addResult app
@@ -149,6 +165,19 @@ update msg app =
 
                     Nothing ->
                         ( app, cmd )
+
+        ResultAddCategory category ->
+            case app.resultAdd of
+                Just resultAdd ->
+                    let
+                        nextResultAdd = { resultAdd | category = category }
+                    in
+                        ( { app | resultAdd = Just nextResultAdd }
+                        , Cmd.none
+                        )
+
+                Nothing ->
+                    ( app, Cmd.none )
 
         SetResultAddResult value ->
             --Results.Update.setResultAddResult app value
@@ -163,6 +192,7 @@ update msg app =
                 , Cmd.none
                 )
 
+        {--
         SetResultRider newId ->
             case String.toInt newId of
                 Err msg ->
@@ -170,6 +200,7 @@ update msg app =
 
                 Ok value ->
                     Results.Update.setResultAddRider app value
+        --}
 
         SetResultRiderName name ->
             let
@@ -177,12 +208,14 @@ update msg app =
             in
                 Results.Update.setRider app name
 
+        {--
         ResultAddSetRiderId index ->
             let
                 id =
                     Debug.log "id: " (getRiderIdByIndex index app.riders)
             in
                 Results.Update.setResultAddRider app id
+        --}
 
         CommentAddSetText text ->
             let
@@ -302,7 +335,7 @@ update msg app =
                             ""
 
                 raceAdd =
-                    Races.Model.Add "" dateFormatted
+                    Races.Model.Add "" dateFormatted Races.Model.Classic -- TODO: fix with value for category
             in
                 ( { app | raceAdd = Just raceAdd }
                 , Cmd.none
@@ -452,7 +485,7 @@ update msg app =
                     , Navigation.newUrl "#home"
                     )
 
-                Nothing -> -- Not logged in
+                Nothing -> 
                     ( app, Cmd.none )
 
 
@@ -466,7 +499,7 @@ update msg app =
                                         "Amateur"
                     in
                         ( { app | riders = (newRider :: app.riders) }
-                        , Navigation.newUrl "#home"
+                        , Navigation.newUrl "#account/login"
                         )
 
                 Nothing ->

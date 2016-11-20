@@ -1,4 +1,4 @@
-module Results.Update exposing (setResultAddRider, setResultAddRace, addResult, setRider)
+module Results.Update exposing ({--setResultAddRider, --} setResultAddRace, addResult, setRider)
 
 import App.Model exposing (App)
 import Results.Model exposing (ResultAdd)
@@ -42,6 +42,7 @@ addResult app =
                             rider.id
                             resultAdd.raceId
                             resultAdd.result
+                            resultAdd.category
                 in
                     --if (Debug.log "new result rider id: " result.riderId) == 0 then
                     --   ( Nothing, Cmd.none )
@@ -93,6 +94,7 @@ setRider app name =
         )
 
 
+{--
 setRiderId : App -> Int -> App
 setRiderId app riderId =
     let
@@ -104,7 +106,7 @@ setRiderId app riderId =
     in
         --setResultAdd app ({ resultAdd | riderId = riderId })
         { app | resultAdd = Just resultAddWithRiderId }
-
+--}
 
 getRiderId : List Riders.Model.Rider -> String -> Int
 getRiderId riders name =
@@ -134,6 +136,7 @@ set app resultAdd =
     { app | resultAdd = Just resultAdd }
 
 
+{--
 setResultAddRider : App -> Int -> ( App, Cmd Msg )
 setResultAddRider app riderId =
     let
@@ -147,7 +150,7 @@ setResultAddRider app riderId =
         ( { app | resultAdd = Just resultAddWithRiderId }
         , Cmd.none
         )
-
+--}
 
 setResultAddRace : App -> Int -> ( App, Cmd Msg )
 setResultAddRace app raceId =
