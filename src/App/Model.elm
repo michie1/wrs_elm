@@ -30,7 +30,7 @@ type alias App =
     , commentAdd : Maybe Comments.Model.Add
     , now : Maybe Date.Date
     , account : Maybe Riders.Model.Rider
-    , accountLogin : Account.Model.Login
+    , accountLogin : Maybe Account.Model.Login
     --, mdl : Material.Model
     }
 
@@ -56,6 +56,6 @@ initial =
         -- Comments.Model.initialAdd
         Nothing
         Account.Model.initial
-        Account.Model.login
+        Nothing
         --Material.model
     )

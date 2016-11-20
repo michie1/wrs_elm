@@ -1,20 +1,24 @@
 --port module App.Update exposing (update, updateWithStorage, calcRaceId)
 
 
-port module App.Update exposing (update, calcRaceId, urlUpdate)
+port module App.Update exposing (update, calcRaceId)
 
 import App.Model exposing (App)
 import App.Routing
 import App.Msg exposing (Msg(..))
 import App.Commands
+import App.UrlUpdate
+
 import Races.Model exposing (Race)
 import Riders.Model
 import Comments.Model
+import Account.Model
 import Results.Model
+
 import Riders.Update
 import Results.Update
 import Comments.Update
---import Material
+
 import Navigation
 import String
 import Debug
@@ -394,42 +398,51 @@ update msg app =
                 )
 
         UrlUpdate route ->
-            let 
-                bla = Debug.log "bla route" route
-            in
-                urlUpdate route app
+            App.UrlUpdate.urlUpdate route app
 
         NavigateTo route ->
             ( app, Navigation.newUrl <| App.Routing.reverse route )
 
         AccountLogin ->
-            let
-                maybeRider = getRiderByName 
-                                app.accountLogin.name
-                                app.riders
+            case app.accountLogin of
+                Just accountLogin -> 
+                    let
+                        maybeRider = getRiderByName 
+                                        accountLogin.name
+                                        app.riders
 
-            in
-                ( { app | account = maybeRider }
-                , Navigation.newUrl "#home"
-                )
+                    in
+                        ( { app | account = maybeRider }
+                        , Navigation.newUrl "#home"
+                        )
+
+                Nothing ->
+                    ( app, Cmd.none )
 
         AccountLoginName name ->
-            let 
-                previousAccountLogin = app.accountLogin
-                accountLogin = { previousAccountLogin | name = name }
-            in
-                ( { app | accountLogin = accountLogin }
-                , Cmd.none
-                )
+            case app.accountLogin of
+                Just accountLogin ->
+                    let 
+                        nextAccountLogin = { accountLogin | name = name }
+                    in
+                        ( { app | accountLogin = Just nextAccountLogin }
+                        , Cmd.none
+                        )
+                Nothing ->
+                    ( app, Cmd.none )
 
         AccountLoginPassword password ->
-            let 
-                previousAccountLogin = app.accountLogin
-                accountLogin = { previousAccountLogin | password = password }
-            in
-                ( { app | accountLogin = accountLogin }
-                , Cmd.none
-                )
+            case app.accountLogin of
+                Just accountLogin ->
+                    let 
+                        nextAccountLogin = { accountLogin | password = password }
+                    in
+                        ( { app | accountLogin = Just nextAccountLogin }
+                        , Cmd.none
+                        )
+
+                Nothing ->
+                    ( app, Cmd.none )
             
     
 getRiderByName : String -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
@@ -514,97 +527,6 @@ formatDate date =
     toString (numMonth (Date.month date)) ++
     "-" ++
     toString (Date.year date)
-
---urlUpdate : Result String App.Routing.Route -> App -> ( App, Cmd Msg )
-urlUpdate : App.Routing.Route -> App -> ( App, Cmd Msg )
-urlUpdate route app =
-            let
-                -- Trying to do some onUrlLeave, to put some state back to Nothing
-                newApp = case route of
-                            App.Routing.CommentAdd raceId ->
-                                { app | route = route }
-
-                            _ ->
-                                let
-                                    maybeCommentAdd = app.commentAdd
-                                in
-                                    case maybeCommentAdd of
-                                        Just commentAdd ->
-                                            { app | commentAdd = Nothing
-                                                  , route = route
-                                            }
-
-                                        Nothing -> 
-                                            { app | route = route }
-            in
-                case route of
-                    App.Routing.ResultsAdd raceId ->
-                        --(Results.Update.setResultAddRace newApp raceId)
-                        let
-                            resultAdd =
-                                Results.Model.initialAdd
-
-                            name = case app.account of
-                                Just account ->
-                                    account.name
-                                Nothing ->
-                                    ""
-
-                            resultAddWithRaceId =
-                                { resultAdd 
-                                    | raceId = raceId
-                                    , riderName = name
-                                }
-                        in
-                            ( { newApp | resultAdd = Just resultAddWithRaceId }
-                            --, Cmd.none
-                            , App.Commands.fetchForRoute (App.Routing.ResultsAdd raceId)
-                            )
-
-                    App.Routing.CommentAdd raceId ->
-                        --Comments.Update.setRaceId newApp raceId
-                        let
-                            commentAdd =
-                                Comments.Model.initialAdd
-
-                            riderName = (Util.fromJust app.account).name
-
-                            commentAddWithRaceId =
-                                { commentAdd 
-                                    | raceId = raceId
-                                    , riderName = riderName
-                                }
-
-                            a = Debug.log "urlUpdate CommentAdd" riderName
-                            b = Debug.log "urlUpdate CommentAdd" raceId
-                        in
-                            ( { newApp | commentAdd = Just commentAddWithRaceId }
-                            --, Cmd.none
-                            , App.Commands.fetchForRoute (App.Routing.CommentAdd raceId)
-                            )
-    
-                    App.Routing.RacesAdd ->
-                        --( { newApp | raceAdd = Just raceAdd }
-                        let
-                            a = Debug.log "urlUpdate" "RacesAdd"
-                        in
-                            ( newApp, App.Commands.fetchForRoute App.Routing.RacesAdd )
-                        {--
-                        ( newApp
-                          --, Cmd.none
-                        , Cmd.batch
-                            [ setRaceAdd
-                            , Task.perform 
-                                --identity 
-                                identity 
-                                (Task.succeed App.Msg.UpdateMaterialize)
-                            ]
-                        )
-                        --}
-
-                    _ ->
-                        newApp
-                            ! []
 
 
 setRaceAdd : Cmd Msg

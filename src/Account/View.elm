@@ -20,7 +20,7 @@ login app =
                             , onInput App.Msg.AccountLoginName
                             ]
                             []
-                        , label [ for "name" ] [ text ("Name " ++ app.accountLogin.name) ]
+                        , label [ for "name" ] [ text "Name" ]
                         ]
                     ]
                 , div [ class "row" ]

@@ -9,7 +9,9 @@ import App.Model exposing (App)
 import App.Routing
 import App.Msg exposing (Msg(..))
 import App.Update
+import App.UrlUpdate
 import App.View
+
 import Riders.Model
 import Races.Model
 import Results.Model
@@ -61,7 +63,7 @@ init location =
     route = Debug.log "route in init" (App.Routing.routeParser location)
     --initial = App.Model.initial
     --initialWithRoute = { initial | route = route }
-    (app, cmd) = App.Update.urlUpdate route App.Model.initial
+    (app, cmd) = App.UrlUpdate.urlUpdate route App.Model.initial
 
   in 
     --( App.Model.initial, Cmd.none ) --, fetchForRoute route )
