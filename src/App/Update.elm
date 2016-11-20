@@ -92,7 +92,7 @@ update msg app =
                         (calcRaceId app.races)
                         raceAdd.name
                         raceAdd.dateString
-                        Races.Model.Cat_B
+                        Races.Model.Classic
             in
                 ( { app
                     | races = (newRace :: app.races)

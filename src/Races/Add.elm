@@ -91,16 +91,22 @@ render raceAdd =
             --}
             ]
 
+categoryButtonCheck : String -> String -> Bool -> Html App.Msg.Msg
+categoryButtonCheck categoryName categoryText isChecked =
+    p []
+        [ input [ checked isChecked, name "category", type_ "radio", id categoryName ] []
+        , label [ for categoryName ] [ text categoryText ]
+        ]
+
+categoryButton : String -> String -> Html App.Msg.Msg
+categoryButton categoryName categoryText =
+    categoryButtonCheck categoryName categoryText False
 
 categoryButtons : Html App.Msg.Msg
 categoryButtons =
     div []
-        [ p []
-            [ input [ checked True, name "category", type_ "radio", id "cat_a" ] []
-            , label [ for "cat_a" ] [ text "Cat A" ]
-            ]
-        , p []
-            [ input [ name "category", type_ "radio", id "cat_b" ] []
-            , label [ for "cat_b" ] [ text "Cat B" ]
-            ]
+        [ categoryButtonCheck "classic" "Klassieker" True
+        , categoryButton "criterum" "Criterium"
+        , categoryButton "regiocross" "Regiocross"
+        , categoryButton "other" "Other"
         ]

@@ -30,11 +30,17 @@ category : String -> Races.Model.Category
 --Json.Decode.Decoder Races.Model.Category
 category string =
     case string of
-        "Cat_A" ->
-            Races.Model.Cat_A
+        "Klassieker" ->
+            Races.Model.Classic
 
-        "Cat_b" ->
-            Races.Model.Cat_B
+        "Criterium" ->
+            Races.Model.Criterium
+
+        "Regiocross" ->
+            Races.Model.Regiocross
+
+        "Other" ->
+            Races.Model.Other
 
         _ ->
             Races.Model.Unknown

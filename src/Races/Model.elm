@@ -4,8 +4,10 @@ import Date
 
 
 type Category
-    = Cat_A
-    | Cat_B
+    = Classic
+    | Criterium
+    | Regiocross
+    | Other
     | Unknown
 
 
@@ -37,10 +39,8 @@ empty =
 
 initialRaces : List Race
 initialRaces =
-    [ Race 1 "race a" "31-10-2016" Cat_A
-      -- (dateFromString "2016-11-01")
-    , Race 2 "race c" "21-10-2016" Cat_B
-      -- (dateFromString "2016-10-01")
+    [ Race 1 "race a" "31-10-2016" Criterium
+    , Race 2 "race c" "21-10-2016" Other
     ]
 
 
@@ -57,11 +57,17 @@ dateFromString dateString =
 categoryString : Category -> String
 categoryString category =
     case category of
-        Cat_A ->
-            "Cat A"
+        Classic ->
+            "Klassieker"
 
-        Cat_B ->
-            "Cat B"
+        Criterium ->
+            "Criterum"
+
+        Regiocross ->
+            "Regiocross"
+
+        Other ->
+            "Other"  
 
         _ ->
             "Unknown"
