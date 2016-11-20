@@ -10,8 +10,8 @@ import Riders.Model exposing (Rider)
 
 import App.Msg
 import App.Model
-import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, li)
-import Html.Attributes exposing (href)
+import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, li, span, h2, p)
+import Html.Attributes exposing (class, href)
 --import Material.List as List
 --import Material.Options as Options exposing (Style, css)
 --import Material.Typography as Typo
@@ -36,9 +36,9 @@ render app riderId =
     in
         case maybeRider of
             Nothing ->
-                div []
-                    [ --heading "Rider does not exist" 
-                    ]
+                div [] [ h2 [] [ text "Rider" ]
+                       , p [] [ text "Rider does not exist." ]
+                       ]
 
             Just rider ->
                 let
@@ -48,40 +48,23 @@ render app riderId =
                             app.results
                 in
                     div []
-                        [ --heading rider.name
-                        --, info rider
-                         resultsTable rider results app.races
+                        [ h2 [] [ text rider.name ]
+                        , info rider
+                        , resultsTable rider results app.races
                         ]
-
-
-{--
-heading : String -> Html App.Msg.Msg
-heading title =
-    Options.styled
-        Html.p
-        [ Typo.display2 ]
-        [ text title ]
-
-
-li : String -> String -> Html App.Msg.Msg
-li sub value =
-    List.li [ List.withSubtitle ]
-        [ List.content []
-            [ List.subtitle [] [ text sub ]
-            , text value
-            ]
-        ]
-
 
 info : Rider -> Html App.Msg.Msg
 info rider =
-    List.ul []
-        [ li "Name" rider.name
-        , li "Licence" rider.licence
-        , li "Points" rider.name
+    div [ class "row" ]
+        [ div [ class "col s4" ]
+              [ ul [ class "collection" ]
+                    [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text rider.name ] ] 
+                    , li [ class "collection-item" ] [ text "Licence ", span [ class "secondary-content" ] [ text rider.licence ] ]
+                    , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text rider.name ] ]
+                    ]
+              ]
         ]
 
---}
 
 resultsTable : Rider -> List Results.Model.Result -> List Races.Model.Race -> Html msg
 resultsTable rider results races =
@@ -128,6 +111,6 @@ raceRow result races =
                             [ href ("#races/" ++ (toString race.id)) ]
                             [ text race.name ]
                         ]
-                    , td [] [ text race.name ]
+                    , td [] [ text race.date ]
                     , td [] [ text result.result ]
                     ]

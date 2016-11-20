@@ -6,13 +6,14 @@ import App.Model --exposing (Mdl)
 import Races.Model exposing (Race)
 import Riders.Model
 import Results.Model
+import Comments.Model
 
 
 --exposing (Mdl)
 
 import App.Msg
 import App.Routing
-import Html exposing (Html, button, span, li, i, h2, h3, ul, li, a, div, text, table, tbody, thead, tr, td, th)
+import Html exposing (Html, button, span, li, i, h2, h3, ul, li, a, div, text, table, tbody, thead, tr, td, th, br, p)
 import Html.Attributes exposing (href, class, style)
 import Html.Events exposing (onClick, onInput)
 --import Material.List as List
@@ -61,6 +62,7 @@ render app raceId =
                         , h3 [] [ text "Comments" ]
                         , addCommentButton race
                         , Comments.List.render app race
+                        , commentsUl app.comments race app.riders
                         ]
 
 addResultButton : Races.Model.Race -> Html App.Msg.Msg
@@ -157,3 +159,50 @@ riderRow result riders =
                     , td [] [ text result.result ]
                     , td [] [ text (toString result.category) ]
                     ]
+                    
+commentsUl : List Comments.Model.Comment -> Race -> List Riders.Model.Rider -> Html msg
+commentsUl comments race riders =
+    ul [ class "collection" ] 
+         ((filterCommentsByRace comments race)
+                |> List.map
+                    (\comment ->
+                        commentLi comment (getRiderById comment.riderId riders)
+                    )
+            )
+
+
+
+       --[ span [ class "title" ] [ text "
+
+
+commentLi : Comments.Model.Comment -> Maybe Riders.Model.Rider -> Html msg
+commentLi comment maybeRider =
+    case maybeRider of
+        Nothing ->
+            li [] [ text "Rider does not exist." ]
+
+        Just rider ->
+            li [ class "collection-item avatar" ]
+               [ i [ class "material-icons circle red" ] [ text "play_arrow" ]
+               , span [ class "title"] [ text rider.name ]
+               , p [] 
+                   [ span [] [ text "Date" ]
+                   , br [] []
+                   , span [] [ text comment.text ]
+                   ]
+               ]
+
+filterCommentsByRace : List Comments.Model.Comment -> Races.Model.Race -> List Comments.Model.Comment
+filterCommentsByRace comments race =
+    List.filter
+        (\comment -> comment.raceId == race.id)
+        comments
+
+
+getRiderById : Int -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
+getRiderById id riders =
+    List.head
+        (List.filter
+            (\rider -> rider.id == id)
+            riders
+        )
