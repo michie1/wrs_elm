@@ -12,7 +12,7 @@ import Results.Model
 
 import App.Msg
 import App.Routing
-import Html exposing (Html, button, li, i, h2, h3, ul, li, a, div, text, table, tbody, thead, tr, td, th)
+import Html exposing (Html, button, span, li, i, h2, h3, ul, li, a, div, text, table, tbody, thead, tr, td, th)
 import Html.Attributes exposing (href, class, style)
 import Html.Events exposing (onClick, onInput)
 --import Material.List as List
@@ -92,53 +92,18 @@ addCommentButton race =
     --, disabled submitDisabled
     ]
     [ text "Add Comment" ]
-{--
-    Button.render App.Msg.Mdl
-        [ 0 ]
-        mdl
-        [ Button.raised
-        , Button.onClick (App.Msg.GoTo (App.Page.CommentAdd race.id))
-        ]
-        [ text "Add"
-        ]
---}
-
-{--
-heading : String -> Html App.Msg.Msg
-heading title =
-    Options.styled
-        Html.p
-        [ Typo.display2 ]
-        [ text title ]
-
-
-subHeading : String -> Html App.Msg.Msg
-subHeading title =
-    Options.styled
-        Html.p
-        [ Typo.display1 ]
-        [ text title ]
---}
-
-
-{--
-li : String -> String -> Html App.Msg.Msg
-li sub value =
-    li [ withSubtitle ]
-        [ content []
-            [ subtitle [] [ text sub ]
-            , text value
-            ]
-        ]
---}
 
 info : Race -> Html App.Msg.Msg
 info race =
-    ul []
-        [ li [] [ text ("Name " ++ race.name) ]
-        , li [] [ text ("Date " ++ race.name) ]
-        , li [] [ text ("Type " ++ race.name) ]
-        , li [] [ text ("Points " ++ race.name) ]
+    div [ class "row" ]
+        [ div [ class "col s4" ]
+              [ ul [ class "collection" ]
+                    [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text race.name ] ] 
+                    , li [ class "collection-item" ] [ text "Date ", span [ class "secondary-content" ] [ text race.date ] ]
+                    , li [ class "collection-item" ] [ text "Category ", span [ class "secondary-content" ] [ text (toString race.category) ] ]
+                    , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text race.name ] ]
+                    ]
+              ]
         ]
 
 
