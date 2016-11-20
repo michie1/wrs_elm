@@ -454,6 +454,37 @@ update msg app =
 
                 Nothing -> -- Not logged in
                     ( app, Cmd.none )
+
+
+        AccountSignup ->
+            case app.accountSignup of
+                Just accountSignup ->
+                    let 
+                        newRider = Riders.Model.Rider 
+                                        ( (List.length app.riders) + 1)
+                                        accountSignup.name
+                                        "Amateur"
+                    in
+                        ( { app | riders = (newRider :: app.riders) }
+                        , Navigation.newUrl "#home"
+                        )
+
+                Nothing ->
+                    ( app, Cmd.none )
+
+        
+        AccountSignupName name ->
+            case app.accountSignup of
+                Just accountSignup ->
+                    let
+                        nextAccountSignup = { accountSignup | name = name }
+                    in
+                        ( { app | accountSignup = Just nextAccountSignup }
+                        , Cmd.none
+                        )
+
+                Nothing ->
+                    ( app, Cmd.none )
             
     
 getRiderByName : String -> List Riders.Model.Rider -> Maybe Riders.Model.Rider

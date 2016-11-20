@@ -1,4 +1,4 @@
-module Account.View exposing (render, login, logout)
+module Account.View exposing (render, login, logout, signup)
 
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
@@ -80,3 +80,32 @@ render app =
                 [ h2 [] [ text "Account" ]
                 , span [] [ text "Please login to see this page." ]
                 ]
+
+signup : App -> Html App.Msg.Msg
+signup app =
+    div [] 
+        [ h2 [] [ text "Signup" ]
+        , div []
+                [ div [ class "row" ]
+                    [ div [ class "input-field col s6" ]
+                        [ input
+                            [ id "name"
+                            , type_ "text"
+                            , onInput App.Msg.AccountSignupName
+                            ]
+                            []
+                        , label [ for "name" ] [ text "Name" ]
+                        ]
+                    ]
+                ]
+        , button
+            [ class "waves-effect waves-light btn"
+            , type_ "submit"
+            , onClick (App.Msg.AccountSignup)
+            , Html.Attributes.name "action"
+            --, disabled submitDisabled
+            ]
+            [ text "Signup"
+            , i [ class "material-icons right" ] [ text "send" ]
+            ]
+        ]

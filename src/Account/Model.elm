@@ -1,4 +1,4 @@
-module Account.Model exposing (Login, login, initial)
+module Account.Model exposing (Login, login, initial, Signup, signup)
 
 import Riders.Model
 
@@ -7,10 +7,19 @@ type alias Login =
     , password : String
     }
 
+type alias Signup =
+    { name : String 
+    }
+
 login : Login
 login =
     { name = ""
     , password = ""
+    }
+
+signup : Signup
+signup = 
+    { name = ""
     }
 
 initial : Maybe Riders.Model.Rider

@@ -16,12 +16,10 @@ onUrlLeave : App.Routing.Route -> App -> App
 onUrlLeave prevRoute prevApp =
     case prevRoute of
         App.Routing.CommentAdd raceId ->
-            case prevApp.commentAdd of
-                Just commentAdd ->
-                    { prevApp | commentAdd = Nothing }
+            { prevApp | commentAdd = Nothing }
 
-                Nothing ->
-                    prevApp
+        App.Routing.AccountSignup ->
+            { prevApp | accountSignup = Nothing }
 
         _ ->
             prevApp
@@ -100,6 +98,11 @@ onUrlEnter route app =
                     Debug.log "urlUpdate" "RacesAdd"
             in
                 ( app, App.Commands.fetchForRoute App.Routing.RacesAdd )
+
+        App.Routing.AccountSignup ->
+            ( { app | accountSignup = Just Account.Model.signup }
+            , Cmd.none
+            )
 
         _ ->
             ( app, Cmd.none )

@@ -46,6 +46,9 @@ reverse route =
         Account ->
             "#account"
 
+        AccountSignup ->
+            "#account/signup"
+
 type Route
     = Home
     | RidersAdd
@@ -60,6 +63,7 @@ type Route
     | Account
     | AccountLogin
     | AccountLogout
+    | AccountSignup
 
 matchers : Parser (Route -> a) a
 matchers =
@@ -77,6 +81,7 @@ matchers =
         , map Results (s "results")
         , map AccountLogin (s "account" </> s "login")
         , map AccountLogout (s "account" </> s "logout")
+        , map AccountSignup (s "account" </> s "signup")
         , map Account (s "account")
         ]
 

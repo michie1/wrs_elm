@@ -26,28 +26,32 @@ import Account.View
 --import Material.Layout as Layout
 import Util
 
-userLi : App -> Html App.Msg.Msg
+userLi : App -> List (Html App.Msg.Msg)
 userLi app =
     case app.account of
         Just account ->
-            li [] [ a [ href "#account" ] [ text account.name ] ]
+            [ li [] [ a [ href "#account" ] [ text account.name ] ]
+            ]
 
         Nothing ->
-            li [] [ a [ href "#account/login" ] [ text "Login" ] ]
+            [ li [] [ a [ href "#account/login" ] [ text "Login" ] ]
+            , li [] [ a [ href "#account/signup" ] [ text "Signup" ] ]
+            ]
 
 header : App -> Html App.Msg.Msg
 header app =
     nav []
         [ div
-            [ class "nav-wrapper" ]
+            [ class "nav-wrapper blue darken-4" ]
             [ a [ class "brand-logo left", href "#home" ] [ text "WRS" ]
             , ul [ id "nav-mobile", class "right" ]
-                [ userLi app
-                , li [] [ a [ href "#races" ] [ text "Races" ] ]
-                , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
-                , li [] [ a [ href "#results" ] [ text "Results" ] ]
-                  --, li [ ] [ a [ href "#" ] [ text "Reset" ] ]
-                ]
+                ( List.concat [ (userLi app)
+                              , [ li [] [ a [ href "#races" ] [ text "Races" ] ]
+                                , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
+                                , li [] [ a [ href "#results" ] [ text "Results" ] ]
+                                ]
+                              ]
+                )
             ]
         ]
 
@@ -58,22 +62,6 @@ render app =
         [ header app
         , mainView app
         ]
-        {--
-        [ Layout.render Mdl
-            app.mdl
-            [ Layout.fixedHeader ]
-            { header =
-                [ header app ]
-                --header app ]
-            , drawer = []
-            , tabs = ( [], [] )
-            , main = [ mainView app ]
-            }
-        ]
-        --}
-
-
---|> Material.Scheme.top
 
 
 mainView : App -> Html Msg
@@ -185,6 +173,10 @@ viewPage app =
 
         App.Routing.Account ->
             Account.View.render app
+
+    
+        App.Routing.AccountSignup ->
+            Account.View.signup app
 
 
 getRace : Int -> List Races.Model.Race -> Maybe Races.Model.Race
