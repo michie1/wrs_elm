@@ -62,29 +62,36 @@ onUrlEnter route app =
 
         App.Routing.CommentAdd raceId ->
             --Comments.Update.setRaceId app raceId
-            let
-                commentAdd =
-                    Comments.Model.initialAdd
+            case app.account of
+                Just account ->
+                    let
+                        commentAdd =
+                            Comments.Model.initialAdd
 
-                riderName =
-                    (Util.fromJust app.account).name
+                        riderName =
+                            account.name
 
-                commentAddWithRaceId =
-                    { commentAdd
-                        | raceId = raceId
-                        , riderName = riderName
-                    }
+                        commentAddWithRaceId =
+                            { commentAdd
+                                | raceId = raceId
+                                , riderName = riderName
+                            }
 
-                a =
-                    Debug.log "urlUpdate CommentAdd" riderName
+                        a =
+                            Debug.log "urlUpdate CommentAdd" riderName
 
-                b =
-                    Debug.log "urlUpdate CommentAdd" raceId
-            in
-                ( { app | commentAdd = Just commentAddWithRaceId }
-                  --, Cmd.none
-                , App.Commands.fetchForRoute (App.Routing.CommentAdd raceId)
-                )
+                        b =
+                            Debug.log "urlUpdate CommentAdd" raceId
+                    in
+                        ( { app | commentAdd = Just commentAddWithRaceId }
+                          --, Cmd.none
+                        , App.Commands.fetchForRoute (App.Routing.CommentAdd raceId)
+                        )
+
+                Nothing ->
+                    ( app
+                    , Cmd.none
+                    )
 
         App.Routing.RacesAdd ->
             --( { app | raceAdd = Just raceAdd }

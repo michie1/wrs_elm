@@ -443,6 +443,17 @@ update msg app =
 
                 Nothing ->
                     ( app, Cmd.none )
+
+        
+        AccountLogout ->
+            case app.account of
+                Just account ->
+                    ( { app | account = Nothing }
+                    , Navigation.newUrl "#home"
+                    )
+
+                Nothing -> -- Not logged in
+                    ( app, Cmd.none )
             
     
 getRiderByName : String -> List Riders.Model.Rider -> Maybe Riders.Model.Rider

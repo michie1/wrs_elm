@@ -164,9 +164,6 @@ viewPage app =
             let
                 maybeRace =
                     getRace raceId app.races
-
-                commentAdd =
-                    Util.fromJust app.commentAdd
             in
                 case maybeRace of
                     Nothing ->
@@ -177,11 +174,17 @@ viewPage app =
 
                     Just race ->
                         div []
-                            [ Comments.Add.render app commentAdd race app.riders
+                            [ Comments.Add.render app race app.riders
                             ]
 
         App.Routing.AccountLogin ->
             Account.View.login app
+
+        App.Routing.AccountLogout ->
+            Account.View.logout app
+
+        App.Routing.Account ->
+            Account.View.render app
 
 
 getRace : Int -> List Races.Model.Race -> Maybe Races.Model.Race

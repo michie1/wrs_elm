@@ -16,35 +16,40 @@ import Riders.Model exposing (Rider)
 import Comments.Model
 
 
-render : App.Model.App -> Comments.Model.Add -> Races.Model.Race -> List Rider -> Html App.Msg.Msg
-render app add race riders =
+render : App.Model.App -> Races.Model.Race -> List Rider -> Html App.Msg.Msg
+render app race riders =
     case app.account of 
         Nothing ->
-            div [] [ text "Who are you?" ]
+            div [] [ text "Who are you? Please login first." ]
 
         Just account -> 
-            let
-                submitDisabled =
-                    add.text == ""
-            in
-                div []
-                    [ h2 [] [ text ("Comment on " ++ race.name) ]
-                    , div []
-                        [ div [ class "row" ]
-                            [ div [ class "input-field col s6" ]
-                                [ input
-                                    [ id "text"
-                                    , type_ "text"
-                                    , onInput App.Msg.CommentAddSetText
+            case app.commentAdd of
+                Nothing ->
+                    div [] [ text "commentAdd not set in state" ]
+
+                Just commentAdd ->
+                    let
+                        submitDisabled =
+                            commentAdd.text == ""
+                    in
+                        div []
+                            [ h2 [] [ text ("Comment on " ++ race.name) ]
+                            , div []
+                                [ div [ class "row" ]
+                                    [ div [ class "input-field col s6" ]
+                                        [ input
+                                            [ id "text"
+                                            , type_ "text"
+                                            , onInput App.Msg.CommentAddSetText
+                                            ]
+                                            []
+                                        , label [ for "text" ] [ text "Comment" ]
+                                        ]
                                     ]
-                                    []
-                                , label [ for "text" ] [ text "Comment" ]
                                 ]
+                            --, selectRider add.riderIndex riders
+                            , addButton submitDisabled
                             ]
-                        ]
-                    --, selectRider add.riderIndex riders
-                    , addButton submitDisabled
-                    ]
 
 addButton : Bool -> Html App.Msg.Msg
 addButton submitDisabled =

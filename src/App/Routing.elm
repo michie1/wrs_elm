@@ -40,6 +40,11 @@ reverse route =
         AccountLogin ->
             "#account/login"
 
+        AccountLogout ->
+            "#account/logout"
+
+        Account ->
+            "#account"
 
 type Route
     = Home
@@ -52,7 +57,9 @@ type Route
     | Results
     | ResultsAdd Int
     | CommentAdd Int
+    | Account
     | AccountLogin
+    | AccountLogout
 
 matchers : Parser (Route -> a) a
 matchers =
@@ -69,6 +76,8 @@ matchers =
         , map Races (s "races")
         , map Results (s "results")
         , map AccountLogin (s "account" </> s "login")
+        , map AccountLogout (s "account" </> s "logout")
+        , map Account (s "account")
         ]
 
 routeParser : Navigation.Location -> Route

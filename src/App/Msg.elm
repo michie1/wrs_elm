@@ -42,4 +42,5 @@ type Msg
     | AccountLogin
     | AccountLoginName String
     | AccountLoginPassword String
+    | AccountLogout
     --| Mdl (Material.Msg Msg)
