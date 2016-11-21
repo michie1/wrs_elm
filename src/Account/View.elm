@@ -7,49 +7,55 @@ import Account.Model
 import Riders.Model
 
 import Html exposing (Html, h2, h4, i, p, label, button, nav, div, text, span, a, input, ul, li)
-import Html.Attributes exposing (checked, name, class, type_, id, for, class, disabled, href)
+import Html.Attributes exposing (checked, value, name, class, type_, id, for, class, disabled, href)
 import Html.Events exposing (onClick, onInput)
 
 login : App -> Html App.Msg.Msg
 login app =
-    div [] 
-        [ h2 [] [ text "Login" ]
-        , div []
-                [ div [ class "row" ]
-                    [ div [ class "input-field col s6" ]
-                        [ input
-                            [ id "name"
-                            , type_ "text"
-                            , onInput App.Msg.AccountLoginName
+    case app.accountLogin of
+        Just accountLogin -> 
+            div [] 
+                [ h2 [] [ text "Login" ]
+                , div []
+                        [ div [ class "row" ]
+                            [ div [ class "input-field col s6" ]
+                                [ input
+                                    [ id "name"
+                                    , type_ "text"
+                                    , value accountLogin.name
+                                    , onInput App.Msg.AccountLoginName
+                                    ]
+                                    []
+                                , label [ for "name" ] [ text "Name" ]
+                                ]
                             ]
-                            []
-                        , label [ for "name" ] [ text "Name" ]
-                        ]
-                    ]
-                {-- , div [ class "row" ]
-                    [ div [ class "input-field col s6" ]
-                        [ input
-                            [ id "password"
-                            , type_ "password"
-                            , onInput App.Msg.AccountLoginPassword
+                        {-- , div [ class "row" ]
+                            [ div [ class "input-field col s6" ]
+                                [ input
+                                    [ id "password"
+                                    , type_ "password"
+                                    , onInput App.Msg.AccountLoginPassword
+                                    ]
+                                    []
+                                , label [ for "password" ] [ text "Password" ]
+                                ]
                             ]
-                            []
-                        , label [ for "password" ] [ text "Password" ]
+                        --}
                         ]
+                , button
+                    [ class "waves-effect waves-light btn"
+                    , type_ "submit"
+                    , onClick (App.Msg.AccountLogin)
+                    , Html.Attributes.name "action"
+                    --, disabled submitDisabled
                     ]
-                --}
+                    [ text "Login"
+                    , i [ class "material-icons right" ] [ text "send" ]
+                    ]
                 ]
-        , button
-            [ class "waves-effect waves-light btn"
-            , type_ "submit"
-            , onClick (App.Msg.AccountLogin)
-            , Html.Attributes.name "action"
-            --, disabled submitDisabled
-            ]
-            [ text "Login"
-            , i [ class "material-icons right" ] [ text "send" ]
-            ]
-        ]
+
+        Nothing -> 
+            div [] [ text "accountLogin nothing" ]
 
 logout : App -> Html App.Msg.Msg
 logout app = 
@@ -88,32 +94,38 @@ render app =
 
 signup : App -> Html App.Msg.Msg
 signup app =
-    div [] 
-        [ h2 [] [ text "Signup" ]
-        , div []
-                [ div [ class "row" ]
-                    [ div [ class "input-field col s6" ]
-                        [ input
-                            [ id "name"
-                            , type_ "text"
-                            , onInput App.Msg.AccountSignupName
+    case app.accountSignup of
+        Just accountSignup -> 
+            div [] 
+                [ h2 [] [ text "Signup" ]
+                , div []
+                        [ div [ class "row" ]
+                            [ div [ class "input-field col s6" ]
+                                [ input
+                                    [ id "name"
+                                    , type_ "text"
+                                    , value accountSignup.name
+                                    , onInput App.Msg.AccountSignupName
+                                    ]
+                                    []
+                                , label [ for "name" ] [ text "Name" ]
+                                ]
                             ]
-                            []
-                        , label [ for "name" ] [ text "Name" ]
                         ]
+                , button
+                    [ class "waves-effect waves-light btn"
+                    , type_ "submit"
+                    , onClick (App.Msg.AccountSignup)
+                    , Html.Attributes.name "action"
+                    --, disabled submitDisabled
+                    ]
+                    [ text "Signup"
+                    , i [ class "material-icons right" ] [ text "send" ]
                     ]
                 ]
-        , button
-            [ class "waves-effect waves-light btn"
-            , type_ "submit"
-            , onClick (App.Msg.AccountSignup)
-            , Html.Attributes.name "action"
-            --, disabled submitDisabled
-            ]
-            [ text "Signup"
-            , i [ class "material-icons right" ] [ text "send" ]
-            ]
-        ]
+    
+        Nothing -> 
+            div [] [ text "accoutSignup nothing" ]
 
 
 licence : App -> Riders.Model.Rider -> Html App.Msg.Msg

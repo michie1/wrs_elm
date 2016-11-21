@@ -21,6 +21,9 @@ onUrlLeave prevRoute prevApp =
         App.Routing.AccountSignup ->
             { prevApp | accountSignup = Nothing }
 
+        App.Routing.AccountLogin ->
+            { prevApp | accountLogin = Nothing }
+
         App.Routing.RacesAdd ->
             { prevApp | raceAdd = Nothing }
 
@@ -33,8 +36,17 @@ onUrlEnter route app =
     case route of
         App.Routing.AccountLogin ->
             ( { app | accountLogin = Just Account.Model.login }
-            , Cmd.none
+            , App.Commands.fetchForRoute App.Routing.AccountLogin
             )
+
+        App.Routing.AccountLoginName name ->
+            let
+                accountLogin = Account.Model.login
+                nextAccountLogin = { accountLogin | name = name }
+            in
+                ( { app | accountLogin = Just nextAccountLogin }
+                , App.Commands.fetchForRoute App.Routing.AccountLogin
+                )
 
         App.Routing.ResultsAdd raceId ->
             --(Results.Update.setResultAddRace app raceId)

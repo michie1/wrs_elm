@@ -37,6 +37,9 @@ reverse route =
         CommentAdd id ->
             "#races/" ++ (toString id) ++ "/comment"
 
+        AccountLoginName name ->
+            "#account/login/" ++ name
+
         AccountLogin ->
             "#account/login"
 
@@ -61,6 +64,7 @@ type Route
     | ResultsAdd Int
     | CommentAdd Int
     | Account
+    | AccountLoginName String
     | AccountLogin
     | AccountLogout
     | AccountSignup
@@ -79,6 +83,7 @@ matchers =
         , map RacesDetails (s "races" </> int)
         , map Races (s "races")
         , map Results (s "results")
+        , map AccountLoginName (s "account" </> s "login" </> string)
         , map AccountLogin (s "account" </> s "login")
         , map AccountLogout (s "account" </> s "logout")
         , map AccountSignup (s "account" </> s "signup")

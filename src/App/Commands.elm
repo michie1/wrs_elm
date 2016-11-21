@@ -25,6 +25,13 @@ fetchForRoute route =
                         identity 
                         (Task.succeed App.Msg.UpdateMaterialize)
                     ]
+          
+            App.Routing.AccountLogin ->
+                Cmd.batch
+                    [ Task.perform 
+                        identity 
+                        (Task.succeed App.Msg.UpdateMaterialize)
+                    ]
 
             App.Routing.ResultsAdd raceId ->
                     Cmd.batch 

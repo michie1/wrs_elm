@@ -445,9 +445,14 @@ update msg app =
                                         app.riders
 
                     in
-                        ( { app | account = maybeRider }
-                        , Navigation.newUrl "#home"
-                        )
+                        case maybeRider of
+                            Just rider -> 
+                                ( { app | account = maybeRider }
+                                , Navigation.newUrl "#home"
+                                )
+
+                            Nothing ->
+                                ( app, Cmd.none )
 
                 Nothing ->
                     ( app, Cmd.none )
@@ -499,7 +504,7 @@ update msg app =
                                         Riders.Model.Amateurs
                     in
                         ( { app | riders = (newRider :: app.riders) }
-                        , Navigation.newUrl "#account/login"
+                        , Navigation.newUrl ("#account/login/" ++ newRider.name)
                         )
 
                 Nothing ->
