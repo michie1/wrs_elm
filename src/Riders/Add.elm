@@ -17,7 +17,7 @@ type alias RiderAdd =
 
 initial : RiderAdd
 initial =
-    { rider = (Rider 0 "Initial" "")
+    { rider = (Rider 0 "Initial" Riders.Model.Elite)
     }
 
 

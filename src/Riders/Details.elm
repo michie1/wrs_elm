@@ -59,7 +59,7 @@ info rider =
         [ div [ class "col s4" ]
               [ ul [ class "collection" ]
                     [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text rider.name ] ] 
-                    , li [ class "collection-item" ] [ text "Licence ", span [ class "secondary-content" ] [ text rider.licence ] ]
+                    , li [ class "collection-item" ] [ text "Licence ", span [ class "secondary-content" ] [ text (toString rider.licence) ] ]
                     , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text rider.name ] ]
                     ]
               ]

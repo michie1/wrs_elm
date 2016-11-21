@@ -51,4 +51,7 @@ type Msg
 
     | AccountSignup
     | AccountSignupName String
+
+
+    | AccountLicence Riders.Model.Licence
     --| Mdl (Material.Msg Msg)

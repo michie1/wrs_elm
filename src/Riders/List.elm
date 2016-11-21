@@ -58,7 +58,7 @@ riderTable riders =
                                     [ href ("#riders/" ++ (toString rider.id)) ]
                                     [ text rider.name ]
                                 ]
-                            , td [] [ text rider.licence ]
+                            , td [] [ text (toString rider.licence) ]
                             ]
                     )
             )

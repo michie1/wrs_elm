@@ -3,8 +3,11 @@ module Account.View exposing (render, login, logout, signup)
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 
-import Html exposing (Html, h2, i, label, button, nav, div, text, span, a, input, ul, li)
-import Html.Attributes exposing (class, type_, id, for, class, disabled, href)
+import Account.Model
+import Riders.Model
+
+import Html exposing (Html, h2, h4, i, p, label, button, nav, div, text, span, a, input, ul, li)
+import Html.Attributes exposing (checked, name, class, type_, id, for, class, disabled, href)
 import Html.Events exposing (onClick, onInput)
 
 login : App -> Html App.Msg.Msg
@@ -73,6 +76,7 @@ render app =
         Just account ->
             div [] 
                 [ h2 [] [ text "Account" ]
+                , licence app account
                 , logout app
                 ]
 
@@ -110,3 +114,24 @@ signup app =
             , i [ class "material-icons right" ] [ text "send" ]
             ]
         ]
+
+
+licence : App -> Riders.Model.Rider -> Html App.Msg.Msg
+licence app account =
+        div []
+            [ h4 [] [ text "Change Licence" ]
+            , licenceRadio "elite" "Elite" Riders.Model.Elite account.licence
+            , licenceRadio "amateurs" "Amateurs" Riders.Model.Amateurs account.licence
+            , licenceRadio "basislidmaatschap" "Basislidmaatschap" Riders.Model.Basislidmaatschap account.licence
+            , licenceRadio "other" "Other" Riders.Model.Other account.licence
+            ]
+
+licenceRadio : String -> String -> Riders.Model.Licence -> Riders.Model.Licence -> Html App.Msg.Msg
+licenceRadio licenceName licenceText licence currentLicence =
+    let 
+        isChecked = licence == currentLicence
+    in
+        p []
+          [ input [ id licenceName, name "licence", type_ "radio", checked isChecked, onClick (App.Msg.AccountLicence licence) ] []
+          , label [ for licenceName  ] [ text licenceText ]
+          ]

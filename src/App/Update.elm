@@ -496,7 +496,7 @@ update msg app =
                         newRider = Riders.Model.Rider 
                                         ( (List.length app.riders) + 1)
                                         accountSignup.name
-                                        "Amateur"
+                                        Riders.Model.Amateurs
                     in
                         ( { app | riders = (newRider :: app.riders) }
                         , Navigation.newUrl "#account/login"
@@ -518,7 +518,42 @@ update msg app =
 
                 Nothing ->
                     ( app, Cmd.none )
+
+
+        AccountLicence licence ->
+            case app.account of
+                Just account -> 
+                    let
+                        nextAccount = { account | licence = licence }
+                    in
+                        ( { app | account = Just nextAccount
+                                , riders = (updateRiderLicence account.id licence app.riders)
+                          }
+                        , Cmd.none 
+                        )
+
+                Nothing -> 
+                    ( app, Cmd.none )
             
+
+updateRiderLicence : Int -> Riders.Model.Licence -> List Riders.Model.Rider -> List Riders.Model.Rider
+updateRiderLicence riderId licence riders =
+    List.map 
+        (\rider -> 
+            let 
+                riderLicence = case rider.id == riderId of
+                    True -> 
+                        licence
+                    False ->
+                        rider.licence
+            in 
+                { rider | licence = riderLicence }
+        )
+        riders
+
+getRiderById : Int -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
+getRiderById id riders =
+    List.head (List.filter (\rider -> rider.id == id) riders)
     
 getRiderByName : String -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
 getRiderByName name riders =
