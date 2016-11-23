@@ -25,6 +25,7 @@ render race resultAdd riders results =
             not (riderNameExists resultAdd.riderName riders)
             ||
             resultAdd.result == ""
+            -- TODO: button is enabled although result already exists
     in
         div []
             [ h2 [] [ text ("Add result for " ++ race.name) ]

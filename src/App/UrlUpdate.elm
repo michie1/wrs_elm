@@ -57,6 +57,8 @@ onUrlEnter route app =
                 name =
                     case app.account of
                         Just account ->
+                            -- TODO: check if (raceId, name) already exists in app.results, already done in (Update.Autocomplete raceId)
+                            -- Maybe move this part to fetchforRoute part
                             account.name
 
                         Nothing ->
