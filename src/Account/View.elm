@@ -21,6 +21,7 @@ login app =
                             [ div [ class "input-field col s6" ]
                                 [ input
                                     [ id "name"
+                                    , class "autocomplete"
                                     , type_ "text"
                                     , value accountLogin.name
                                     , onInput App.Msg.AccountLoginName

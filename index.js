@@ -10,7 +10,8 @@ var startingState = null;
 
 var elm = Elm.Main.embed(document.getElementById('main'));//, startingState);
 
-$.elm = elm;
+//$.elm = elm;
+
 
 /*
 elm.ports.setStorage.subscribe(function(state) {
@@ -31,9 +32,16 @@ elm.ports.updateMaterialize.subscribe(function () {
   );
 });
 
-elm.ports.autocomplete.subscribe(function (riders) {
+elm.ports.autocomplete.subscribe(function (args) {
+  var [page, riders] = args;
   setTimeout(function () {
-    console.log('autcomplete is called', riders);
+    $.elm = function (value) {
+      elm.ports.setAutocomplete.send([
+        page, 
+        value
+      ]);
+    };
+    console.log('autcomplete is called', page, riders);
     var ridersObj = riders.reduce(function(result, rider) { 
       result[rider] = null;
       return result 

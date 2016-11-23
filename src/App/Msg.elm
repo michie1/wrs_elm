@@ -40,13 +40,19 @@ type Msg
       --(Maybe Date.Date)
     | SetRaceAddToday2 (Maybe Date.Date)
     | UpdateMaterialize
-    | Autocomplete Int
+
+    | Autocomplete Int -- Send 
+    | SetAutocomplete (String, String) -- Receive
+
     | NavigateTo Route
     | UrlUpdate Route
+
 
     | AccountLogin
     | AccountLoginName String
     | AccountLoginPassword String
+    | AccountLoginAutocomplete 
+
     | AccountLogout
 
     | AccountSignup

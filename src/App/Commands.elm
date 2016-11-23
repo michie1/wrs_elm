@@ -30,6 +30,9 @@ fetchForRoute route =
                 Cmd.batch
                     [ Task.perform 
                         identity 
+                        (Task.succeed App.Msg.AccountLoginAutocomplete)
+                    , Task.perform 
+                        identity 
                         (Task.succeed App.Msg.UpdateMaterialize)
                     ]
 
@@ -42,6 +45,7 @@ fetchForRoute route =
                             identity 
                             (Task.succeed App.Msg.UpdateMaterialize)
                         ]
+
 
             _ ->
                 Cmd.none

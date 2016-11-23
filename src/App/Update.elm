@@ -18,6 +18,7 @@ import Results.Model
 import Riders.Update
 import Results.Update
 import Comments.Update
+import Account.Update
 
 import Navigation
 import String
@@ -59,7 +60,7 @@ port resetState : String -> Cmd msg
 
 port updateMaterialize : () -> Cmd msg
 
-port autocomplete : List String -> Cmd msg
+port autocomplete : (String, List String) -> Cmd msg
 
 
 
@@ -202,6 +203,7 @@ update msg app =
                     Results.Update.setResultAddRider app value
         --}
 
+
         SetResultRiderName name ->
             let
                 a = Debug.log "name" name
@@ -317,7 +319,30 @@ update msg app =
                             )
 
             in
-                ( app, autocomplete riders )
+                ( app, autocomplete ("ResultAdd", riders) )
+
+        SetAutocomplete (page, value) ->
+            case page of
+                "ResultAdd" ->
+                    let
+                        a = Debug.log "page" page
+                        b = Debug.log "value" value
+                    in
+                        Results.Update.setRider app value
+
+                
+                "AccountLogin" ->
+                    Account.Update.loginName app value
+
+                _ ->
+                    ( app, Cmd.none )
+            {--
+            case page of
+              "resultAdd" ->
+                 ( app, App.Msg.SetResultRiderName value ) 
+
+              _ -> 
+            --}
 
         SetNow maybeDate ->
             ( { app | now = maybeDate }
@@ -458,16 +483,7 @@ update msg app =
                     ( app, Cmd.none )
 
         AccountLoginName name ->
-            case app.accountLogin of
-                Just accountLogin ->
-                    let 
-                        nextAccountLogin = { accountLogin | name = name }
-                    in
-                        ( { app | accountLogin = Just nextAccountLogin }
-                        , Cmd.none
-                        )
-                Nothing ->
-                    ( app, Cmd.none )
+          Account.Update.loginName app name 
 
         AccountLoginPassword password ->
             case app.accountLogin of
@@ -481,6 +497,12 @@ update msg app =
 
                 Nothing ->
                     ( app, Cmd.none )
+
+        AccountLoginAutocomplete ->
+            let
+                riders = List.map (\rider -> rider.name) app.riders
+            in
+                ( app, autocomplete ("AccountLogin", riders) )
 
         
         AccountLogout ->
@@ -539,6 +561,9 @@ update msg app =
 
                 Nothing -> 
                     ( app, Cmd.none )
+
+
+        
             
 
 updateRiderLicence : Int -> Riders.Model.Licence -> List Riders.Model.Rider -> List Riders.Model.Rider

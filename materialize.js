@@ -3180,9 +3180,10 @@ $(document).ready(function(){
           $autocomplete.on('click', 'li', function () {
             //$input.val($(this).text().trim());
             //$input.trigger('change');
-            var val = $(this).text().trim();
+            var value = $(this).text().trim();
             
-            $.elm.ports.setAutocomplete.send(val);
+            $.elm(value);
+            //$.elm.ports.setAutocomplete.send(val);
               //'{"page":"' + localStorage.getItem('page') + '","bla":"foo"}');
             $autocomplete.empty();
           });
