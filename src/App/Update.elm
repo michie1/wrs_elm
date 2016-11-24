@@ -33,6 +33,7 @@ import Json.Decode -- exposing ((:=))
 
 import App.Decoder
 import Date
+import Time
 import Date.Extra
 import Task
 
@@ -254,17 +255,34 @@ update msg app =
 
         CommentAdd ->
             let
-                ( comment, cmd ) =
-                    Comments.Update.new
-                        ((List.length app.comments) + 1)
-                        app
+                nowTask =
+                    Task.perform
+                        (Just >> App.Msg.CommentAdd2)
+                        Time.now
             in
-                ( { app
-                    | comments = (Debug.log "comment2" comment) :: app.comments
-                    , commentAdd = Nothing
-                  }
-                , cmd
-                )
+                ( app, Cmd.batch [ nowTask ] )
+
+        CommentAdd2 maybeTime ->
+            case maybeTime of
+                Just time ->
+                    let
+                        datetime = (formatTime (Date.fromTime time)) ++" " ++ (formatDate (Date.fromTime time))
+                        ( comment, cmd ) =
+                            Comments.Update.new
+                                ((List.length app.comments) + 1)
+                                datetime
+                                app
+                    in
+                        ( { app
+                            | comments = (Debug.log "comment2" comment) :: app.comments
+                            , commentAdd = Nothing
+                          }
+                        , cmd
+                        )
+
+                Nothing ->
+                    ( app, Cmd.none )
+
     {--
         GoTo page ->
             ( app
@@ -660,6 +678,12 @@ leadingZero value =
         toString value
 
 
+formatTime : Date.Date -> String
+formatTime datetime =
+    toString (Date.hour datetime) ++
+    ":" ++
+    toString (Date.minute datetime)
+
 formatDate : Date.Date -> String
 formatDate date =
     (leadingZero (Date.day date)) ++
@@ -675,5 +699,4 @@ setRaceAdd =
         --(always (App.Msg.SetRaceAdd Nothing)) 
         (Just >> App.Msg.SetRaceAdd) 
         Date.now
-
 

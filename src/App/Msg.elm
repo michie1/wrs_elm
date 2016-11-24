@@ -10,6 +10,7 @@ import Races.Model
 import Results.Model
 import App.Routing exposing (Route(..))
 import Date
+import Time
 
 
 type Msg
@@ -28,6 +29,7 @@ type Msg
     | CommentAddSetText String
     | CommentAddSetRiderName String
     | CommentAdd
+    | CommentAdd2 (Maybe Time.Time)
     | Save
     | Log String
     | SetState String

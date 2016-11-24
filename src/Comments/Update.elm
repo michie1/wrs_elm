@@ -13,8 +13,8 @@ import Riders.Model
 --add : App -> ( App, Cmd Msg )
 
 
-new : Int -> App -> ( Comment, Cmd Msg )
-new id app =
+new : Int -> String -> App -> ( Comment, Cmd Msg )
+new id datetime app =
     let
         commentAdd =
             Util.fromJust app.commentAdd
@@ -28,7 +28,7 @@ new id app =
                     comment =
                         Comment
                             id
-                            "01-02-2013"
+                            datetime -- "01-02-2013"
                             commentAdd.raceId
                             rider.id
                             commentAdd.text
