@@ -117,7 +117,8 @@ update msg app =
                           }
                         , Cmd.none
                         )
-                Nothing -> 
+
+                Nothing ->
                     ( app, Cmd.none )
 
         RaceAddCategory category ->
@@ -147,7 +148,7 @@ update msg app =
                         , Cmd.none
                         )
 
-                Nothing -> 
+                Nothing ->
                     ( app, Cmd.none )
 
         AddRider rider ->
@@ -186,7 +187,7 @@ update msg app =
 
         SetResultAddResult value ->
             case app.resultAdd of
-                Just resultAdd
+                Just resultAdd ->
                     let
                         resultAddWithResult =
                             { resultAdd | result = value }
@@ -195,7 +196,7 @@ update msg app =
                         , Cmd.none
                         )
 
-                Nothing -> 
+                Nothing ->
                     ( app, Cmd.none )
 
         SetResultRiderName name ->
@@ -206,7 +207,7 @@ update msg app =
                 Results.Update.setRider app name
 
         CommentAddSetText text ->
-            case app.commentAdd of 
+            case app.commentAdd of
                 Just commentAdd ->
                     let
                         --account =
@@ -397,6 +398,7 @@ update msg app =
 
                                 Nothing ->
                                     ""
+
                         newRaceAdd =
                             { raceAdd | dateString = dateFormatted }
                     in
@@ -435,6 +437,7 @@ update msg app =
                         ( { app | raceAdd = Just newRaceAdd }
                         , Cmd.none
                         )
+
                 Nothing ->
                     ( app, Cmd.none )
 

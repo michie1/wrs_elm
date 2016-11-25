@@ -78,8 +78,10 @@ setRider app name =
             ( (set app (setRiderNameResultAdd resultAdd name))
             , Cmd.none
             )
+
         Nothing ->
             ( app, Cmd.none )
+
 
 getRiderId : List Riders.Model.Rider -> String -> Int
 getRiderId riders name =
@@ -124,6 +126,7 @@ setResultAddRace app raceId =
 
         Nothing ->
             ( app, Cmd.none )
+
 
 setResultResult : Results.Model.Result -> String -> Results.Model.Result
 setResultResult result value =

@@ -42,9 +42,11 @@ new id datetime app =
                                 Debug.log "New comment" "Rider unknown."
                         in
                             ( (Comment 0 "wrong date" 0 0 "fout"), Cmd.none )
+
         Nothing ->
             -- TODO: return maybe Comment and resolve where new function is used
             ( (Comment 0 "no commentAdd" 0 0 "fout"), Cmd.none )
+
 
 setText : App -> String -> ( App, Cmd Msg )
 setText app text =
@@ -61,8 +63,10 @@ setRaceId app raceId =
     case app.commentAdd of
         Just commentAdd ->
             ( set app (setAddRaceId commentAdd raceId), Cmd.none )
+
         Nothing ->
             ( app, Cmd.none )
+
 
 
 -- Helpers
