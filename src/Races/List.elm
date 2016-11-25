@@ -4,6 +4,7 @@ module Races.List exposing (..)
 
 --import App.Model
 import Races.Model exposing (Race, categoryString)
+import Results.Model
 
 
 --exposing (Mdl)
@@ -24,18 +25,18 @@ import Html.Attributes exposing (href, class)
 --import Material.Table as Table
 
 
-render : List Race -> Html App.Msg.Msg
-render races =
+render : List Race -> List Results.Model.Result -> Html App.Msg.Msg
+render races results =
     div []
         [ h2 [] [ text "races" ]
         , div []
             [ a [ href "#races/add", class "waves-effect waves-light btn" ] [ text "Add race" ] ]
-        , raceTable races
+        , raceTable races results
         ]
 
 
-raceTable : List Race -> Html App.Msg.Msg
-raceTable races =
+raceTable : List Race -> List Results.Model.Result -> Html App.Msg.Msg
+raceTable races results =
     table []
         [ thead []
             [ tr []
@@ -57,8 +58,17 @@ raceTable races =
                                 ]
                             , td [] [ text race.date ]
                             , td [] [ text (categoryString race.category) ]
-                            , td [ ] [ text race.name ]
+                            , td [ ] [ text (toString (countParticipants race.id results)) ]
                             ]
                     )
             )
         ]
+
+countParticipants : Int -> List Results.Model.Result -> Int
+countParticipants raceId results =
+    List.length 
+        ( List.filter
+            (\result -> result.raceId == raceId)
+            results
+        )
+

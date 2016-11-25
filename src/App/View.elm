@@ -96,7 +96,7 @@ viewPage app =
 
         App.Routing.Races ->
             div []
-                [ Races.List.render app.races
+                [ Races.List.render app.races app.results
                 ]
 
         App.Routing.RacesDetails id ->
