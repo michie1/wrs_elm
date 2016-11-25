@@ -43,7 +43,7 @@ type Msg
     | SetRaceAddToday2 (Maybe Date.Date)
     | UpdateMaterialize
 
-    | Autocomplete Int -- Send 
+    | ResultAddAutocomplete Int -- Send 
     | SetAutocomplete (String, String) -- Receive
 
     | NavigateTo Route

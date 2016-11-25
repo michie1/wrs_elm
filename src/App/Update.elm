@@ -318,7 +318,7 @@ update msg app =
             in
                 ( app, updateMaterialize () )
 
-        Autocomplete raceId ->
+        ResultAddAutocomplete raceId ->
             let
                 resultSet = Set.fromList
                                 (List.map 

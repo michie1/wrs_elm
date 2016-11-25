@@ -40,7 +40,7 @@ fetchForRoute route =
                     Cmd.batch 
                         [ Task.perform
                             identity
-                            (Task.succeed (App.Msg.Autocomplete raceId))
+                            (Task.succeed (App.Msg.ResultAddAutocomplete raceId))
                         , Task.perform 
                             identity 
                             (Task.succeed App.Msg.UpdateMaterialize)

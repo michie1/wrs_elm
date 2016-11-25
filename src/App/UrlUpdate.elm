@@ -57,10 +57,12 @@ onUrlEnter route app =
                 name =
                     case app.account of
                         Just account ->
-                            -- TODO: check if (raceId, name) already exists in app.results, already done in (Update.Autocomplete raceId)
-                            -- Maybe move this part to fetchforRoute part
-                            account.name
+                            case resultExists account.id raceId app.results of
+                                False -> 
+                                    account.name
 
+                                True ->
+                                    ""
                         Nothing ->
                             ""
 
@@ -138,3 +140,10 @@ urlUpdate route app =
             { leaveApp | route = route }
     in
         onUrlEnter route routeApp
+
+resultExists : Int -> Int -> List Results.Model.Result -> Bool
+resultExists riderId raceId results =
+    List.length (List.filter
+        (\result -> result.riderId == riderId && result.raceId == raceId)
+        results
+        ) == 1

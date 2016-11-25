@@ -42,7 +42,7 @@ raceTable races =
                 [ th [] [ text "Naam" ]
                 , th [] [ text "Datum" ]
                 , th [] [ text "Soort" ]
-                , th [] [ text "WTOS-renners" ]
+                , th [] [ text "# Participants" ]
                 ]
             ]
         , tbody []
