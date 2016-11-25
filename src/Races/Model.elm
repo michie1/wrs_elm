@@ -58,7 +58,7 @@ categoryString category =
             "Regiocross"
 
         Other ->
-            "Other"  
+            "Other"
 
         _ ->
             "Unknown"

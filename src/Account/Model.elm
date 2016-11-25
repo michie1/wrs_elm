@@ -2,14 +2,17 @@ module Account.Model exposing (Login, login, initial, Signup, signup)
 
 import Riders.Model
 
+
 type alias Login =
     { name : String
     , password : String
     }
 
+
 type alias Signup =
-    { name : String 
+    { name : String
     }
+
 
 login : Login
 login =
@@ -17,12 +20,17 @@ login =
     , password = ""
     }
 
+
 signup : Signup
-signup = 
+signup =
     { name = ""
     }
+
 
 initial : Maybe Riders.Model.Rider
 initial =
     Just (Riders.Model.Rider 2 "Henk" Riders.Model.Amateurs)
-    --Nothing
+
+
+
+--Nothing

@@ -1,9 +1,11 @@
-module App.Model exposing (App, initial)--, Mdl, initial)
+module App.Model exposing (App, initial)
+
+--, Mdl, initial)
 
 import Dict exposing (Dict)
+
+
 --import Material
-
-
 --import App.Msg exposing (Msg(..))
 --import RaceAdd.Msg as RaceAdd
 --import RaceAdd.Model exposing (RaceAdd)
@@ -31,13 +33,15 @@ type alias App =
     , now : Maybe Date.Date
     , account : Maybe Riders.Model.Rider
     , accountLogin : Maybe Account.Model.Login
-    , accountSignup : Maybe Account.Model.Signup
-    --, mdl : Material.Model
+    , accountSignup :
+        Maybe Account.Model.Signup
+        --, mdl : Material.Model
     }
 
 
+
 --type alias Mdl =
-    --Material.Model
+--Material.Model
 
 
 initial : App
@@ -56,9 +60,9 @@ initial =
         Nothing
         -- Comments.Model.initialAdd
         Nothing
-        --Nothing 
+        --Nothing
         Account.Model.initial
         Nothing
         Nothing
-        --Material.model
+     --Material.model
     )

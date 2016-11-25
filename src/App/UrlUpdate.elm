@@ -9,7 +9,6 @@ import App.Commands
 import Account.Model
 import Comments.Model
 import Results.Model
-import Util
 
 
 onUrlLeave : App.Routing.Route -> App -> App
@@ -41,8 +40,11 @@ onUrlEnter route app =
 
         App.Routing.AccountLoginName name ->
             let
-                accountLogin = Account.Model.login
-                nextAccountLogin = { accountLogin | name = name }
+                accountLogin =
+                    Account.Model.login
+
+                nextAccountLogin =
+                    { accountLogin | name = name }
             in
                 ( { app | accountLogin = Just nextAccountLogin }
                 , App.Commands.fetchForRoute App.Routing.AccountLogin
@@ -58,11 +60,12 @@ onUrlEnter route app =
                     case app.account of
                         Just account ->
                             case resultExists account.id raceId app.results of
-                                False -> 
+                                False ->
                                     account.name
 
                                 True ->
                                     ""
+
                         Nothing ->
                             ""
 
@@ -141,9 +144,12 @@ urlUpdate route app =
     in
         onUrlEnter route routeApp
 
+
 resultExists : Int -> Int -> List Results.Model.Result -> Bool
 resultExists riderId raceId results =
-    List.length (List.filter
-        (\result -> result.riderId == riderId && result.raceId == raceId)
-        results
-        ) == 1
+    List.length
+        (List.filter
+            (\result -> result.riderId == riderId && result.raceId == raceId)
+            results
+        )
+        == 1

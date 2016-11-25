@@ -52,6 +52,7 @@ reverse route =
         AccountSignup ->
             "#account/signup"
 
+
 type Route
     = Home
     | RidersAdd
@@ -68,6 +69,7 @@ type Route
     | AccountLogin
     | AccountLogout
     | AccountSignup
+
 
 matchers : Parser (Route -> a) a
 matchers =
@@ -90,8 +92,7 @@ matchers =
         , map Account (s "account")
         ]
 
+
 routeParser : Navigation.Location -> Route
 routeParser location =
-  location |> parseHash matchers |> Maybe.withDefault Home
-
-
+    location |> parseHash matchers |> Maybe.withDefault Home

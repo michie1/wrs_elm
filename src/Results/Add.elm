@@ -4,10 +4,13 @@ import Html exposing (Html, button, div, text, span, label, input, ul, li, h2, i
 import Html.Attributes exposing (class, id, type_, for, disabled, value, name, checked)
 import Html.Events exposing (onInput, onClick, on)
 import Json.Decode as Json
+
+
 --import Material.Button as Button
 --import Material.Textfield as Textfield
 --import Material.Typography as Typo
 --import Material.Options as Options exposing (css)
+
 import App.Msg
 import Results.Model
 import Races.Model
@@ -18,14 +21,16 @@ riderNameExists : String -> List Rider -> Bool
 riderNameExists name riders =
     List.length (List.filter (\rider -> rider.name == name) riders) > 0
 
+
 render : Races.Model.Race -> Results.Model.ResultAdd -> List Rider -> List Results.Model.Result -> Html App.Msg.Msg
 render race resultAdd riders results =
-    let 
-        submitDisabled = 
+    let
+        submitDisabled =
             not (riderNameExists resultAdd.riderName riders)
-            ||
-            resultAdd.result == ""
-            -- TODO: button is enabled although result already exists
+                || resultAdd.result
+                == ""
+
+        -- TODO: button is enabled although result already exists
     in
         div []
             [ h2 [] [ text ("Add result for " ++ race.name) ]
@@ -75,6 +80,7 @@ resultExists results race rider =
         )
         == 1
 
+
 categoryButtonCheck : String -> String -> Results.Model.ResultCategory -> Bool -> Html App.Msg.Msg
 categoryButtonCheck categoryName categoryText category isChecked =
     p []
@@ -82,9 +88,11 @@ categoryButtonCheck categoryName categoryText category isChecked =
         , label [ for categoryName ] [ text categoryText ]
         ]
 
+
 categoryButton : String -> String -> Results.Model.ResultCategory -> Html App.Msg.Msg
 categoryButton categoryName categoryText category =
     categoryButtonCheck categoryName categoryText category False
+
 
 categoryButtons : Html App.Msg.Msg
 categoryButtons =

@@ -15,16 +15,7 @@ import Riders.Add
 import Results.List
 import Results.Add
 import Comments.Add
-
 import Account.View
-
-
---import Material.Scheme
-
---import Material.Options as Options exposing (css)
---import Material.Typography as Typo
---import Material.Layout as Layout
-import Util
 
 userLi : App -> List (Html App.Msg.Msg)
 userLi app =
@@ -38,6 +29,7 @@ userLi app =
             , li [] [ a [ href "#account/signup" ] [ text "Signup" ] ]
             ]
 
+
 header : App -> Html App.Msg.Msg
 header app =
     nav []
@@ -45,12 +37,13 @@ header app =
             [ class "nav-wrapper blue darken-4" ]
             [ a [ class "brand-logo left", href "#home" ] [ text "WRS" ]
             , ul [ id "nav-mobile", class "right" ]
-                ( List.concat [ (userLi app)
-                              , [ li [] [ a [ href "#races" ] [ text "Races" ] ]
-                                , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
-                                , li [] [ a [ href "#results" ] [ text "Results" ] ]
-                                ]
-                              ]
+                (List.concat
+                    [ (userLi app)
+                    , [ li [] [ a [ href "#races" ] [ text "Races" ] ]
+                      , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
+                      , li [] [ a [ href "#results" ] [ text "Results" ] ]
+                      ]
+                    ]
                 )
             ]
         ]
@@ -127,7 +120,6 @@ viewPage app =
                     let
                         maybeRace =
                             getRace raceId app.races
-
                     in
                         case maybeRace of
                             Nothing ->
@@ -138,8 +130,9 @@ viewPage app =
 
                             Just race ->
                                 div []
-                                    [ Results.Add.render race resultAdd app.riders app.results 
+                                    [ Results.Add.render race resultAdd app.riders app.results
                                     ]
+
                 Nothing ->
                     div [] [ text "No resultAdd." ]
 
@@ -172,7 +165,6 @@ viewPage app =
         App.Routing.Account ->
             Account.View.render app
 
-    
         App.Routing.AccountSignup ->
             Account.View.signup app
 

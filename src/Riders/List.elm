@@ -3,13 +3,17 @@ module Riders.List exposing (render)
 import Html exposing (Html, a, div, text, span, input, ul, li, table, td, tr, th, thead, tbody)
 import Html.Attributes exposing (href)
 import Riders.Model exposing (Rider)
+
+
 --import Material.Button as Button
 --import Material.Options as Options exposing (css)
 --import Material.Typography as Typo
 --import Material.Table as Table
+
 import App.Model
 import App.Routing
 import App.Msg
+
 
 {--
 heading : String -> Html App.Msg.Msg
@@ -20,11 +24,12 @@ heading title =
         [ text title ]
 --}
 
+
 render : List Rider -> Html App.Msg.Msg
 render riders =
     div []
         [ --heading "Riders"
-        {--, div []
+          {--, div []
             [ Button.render App.Msg.Mdl
                 [ 0 ]
                 mdl
@@ -35,7 +40,7 @@ render riders =
                 ]
             ]
         --}
-         riderTable riders
+          riderTable riders
         ]
 
 

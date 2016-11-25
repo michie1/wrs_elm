@@ -3,12 +3,17 @@ module Races.Add exposing (render)
 import Html exposing (Html, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
 import Html.Attributes exposing (value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
+
+
 --import Material.Textfield as Textfield
 --import Material.Options as Options exposing (css)
 --import App.Model exposing (Mdl)
+
 import App.Msg
 import Races.Model exposing (Race)
 import App.Msg
+
+
 --import Date
 
 
@@ -71,7 +76,7 @@ render raceAdd =
                         ]
                     ]
                 ]
-            {-- , div []
+              {--, div []
                 [ Textfield.render App.Msg.Mdl
                     [ 2 ]
                     mdl
@@ -91,6 +96,7 @@ render raceAdd =
             --}
             ]
 
+
 categoryButtonCheck : String -> String -> Races.Model.Category -> Bool -> Html App.Msg.Msg
 categoryButtonCheck categoryName categoryText category isChecked =
     p []
@@ -98,9 +104,11 @@ categoryButtonCheck categoryName categoryText category isChecked =
         , label [ for categoryName ] [ text categoryText ]
         ]
 
+
 categoryButton : String -> String -> Races.Model.Category -> Html App.Msg.Msg
 categoryButton categoryName categoryText category =
     categoryButtonCheck categoryName categoryText category False
+
 
 categoryButtons : Html App.Msg.Msg
 categoryButtons =

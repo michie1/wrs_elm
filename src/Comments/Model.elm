@@ -33,10 +33,13 @@ initialComments =
     ]
 
 
+
 --initialAdd : { riderIndex : Int, raceId : Int, text : String }
+
+
 initialAdd : Add
 initialAdd =
     { raceId = 0
-    , riderName = "" 
+    , riderName = ""
     , text = ""
     }

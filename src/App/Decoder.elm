@@ -4,8 +4,10 @@ import Races.Model
 import Results.Model
 import Riders.Model
 import Comments.Model
-import Json.Decode -- exposing ((:=))
+import Json.Decode
 
+
+-- exposing ((:=))
 --import Json.Decode.Extra
 
 
@@ -16,18 +18,29 @@ race =
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "date" Json.Decode.string)
         --(Json.Decode.field "category" decodeCategory)
-        ( Json.Decode.field "category" 
+        (Json.Decode.field "category"
             (Json.Decode.string
-              |> Json.Decode.andThen decodeCategory)
+                |> Json.Decode.andThen decodeCategory
+            )
         )
-        
-        --(Json.Decode.andThen Json.Decode.string decodeCategory))
+
+
+
+--(Json.Decode.andThen Json.Decode.string decodeCategory))
+
 
 decodeCategory : String -> Json.Decode.Decoder Races.Model.Category
-decodeCategory string = Json.Decode.succeed (category string)
+decodeCategory string =
+    Json.Decode.succeed (category string)
+
 
 category : String -> Races.Model.Category
+
+
+
 --Json.Decode.Decoder Races.Model.Category
+
+
 category string =
     case string of
         "Klassieker" ->
@@ -45,8 +58,11 @@ category string =
         _ ->
             Races.Model.Unknown
 
+
 decodeLicence : String -> Json.Decode.Decoder Riders.Model.Licence
-decodeLicence string = Json.Decode.succeed (licence string)
+decodeLicence string =
+    Json.Decode.succeed (licence string)
+
 
 licence : String -> Riders.Model.Licence
 licence string =
@@ -63,15 +79,16 @@ licence string =
         _ ->
             Riders.Model.Other
 
+
 rider : Json.Decode.Decoder Riders.Model.Rider
 rider =
     Json.Decode.map3 Riders.Model.Rider
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "name" Json.Decode.string)
-        (Json.Decode.field "licence" 
-           ( Json.Decode.string
+        (Json.Decode.field "licence"
+            (Json.Decode.string
                 |> Json.Decode.andThen decodeLicence
-           )
+            )
         )
 
 
@@ -84,11 +101,19 @@ comment =
         (Json.Decode.field "riderId" Json.Decode.int)
         (Json.Decode.field "text" Json.Decode.string)
 
+
 decodeResultCategory : String -> Json.Decode.Decoder Results.Model.ResultCategory
-decodeResultCategory string = Json.Decode.succeed (resultCategory string)
+decodeResultCategory string =
+    Json.Decode.succeed (resultCategory string)
+
 
 resultCategory : String -> Results.Model.ResultCategory
+
+
+
 --Json.Decode.Decoder Races.Model.Category
+
+
 resultCategory string =
     case string of
         "amateurs" ->
@@ -106,6 +131,7 @@ resultCategory string =
         _ ->
             Results.Model.Unknown
 
+
 result : Json.Decode.Decoder Results.Model.Result
 result =
     Json.Decode.map5 Results.Model.Result
@@ -113,9 +139,10 @@ result =
         (Json.Decode.field "riderId" Json.Decode.int)
         (Json.Decode.field "raceId" Json.Decode.int)
         (Json.Decode.field "result" Json.Decode.string)
-        ( Json.Decode.field "category" 
+        (Json.Decode.field "category"
             (Json.Decode.string
-              |> Json.Decode.andThen decodeResultCategory)
+                |> Json.Decode.andThen decodeResultCategory
+            )
         )
 
 

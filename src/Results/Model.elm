@@ -2,12 +2,14 @@ module Results.Model exposing (ResultAdd, Result, initialAdd, initialResults, Re
 
 import Riders.Model exposing (Rider)
 
-type ResultCategory 
+
+type ResultCategory
     = Amateurs
     | Basislidmaatschap
     | CatA
     | CatB
     | Unknown
+
 
 type alias Result =
     { id : Int

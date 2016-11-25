@@ -5,11 +5,14 @@ import Html.Attributes exposing (value, class, type_, id, for, class, disabled)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode as Json
 import App.Msg
+
+
 --import App.Model --exposing (Mdl)
 --import Material.Button as Button
 --import Material.Textfield as Textfield
 --import Material.Typography as Typo
 --import Material.Options as Options exposing (css)
+
 import App.Model
 import Races.Model
 import Riders.Model exposing (Rider)
@@ -18,11 +21,11 @@ import Comments.Model
 
 render : App.Model.App -> Races.Model.Race -> List Rider -> Html App.Msg.Msg
 render app race riders =
-    case app.account of 
+    case app.account of
         Nothing ->
             div [] [ text "Who are you? Please login first." ]
 
-        Just account -> 
+        Just account ->
             case app.commentAdd of
                 Nothing ->
                     div [] [ text "commentAdd not set in state" ]
@@ -40,8 +43,8 @@ render app race riders =
                                         [ textarea
                                             [ id "text"
                                             , value commentAdd.text
-                                            , class " materialize-textarea" 
-                                            --, type_ "text"
+                                            , class " materialize-textarea"
+                                              --, type_ "text"
                                             , onInput App.Msg.CommentAddSetText
                                             ]
                                             []
@@ -49,13 +52,14 @@ render app race riders =
                                         ]
                                     ]
                                 ]
-                            --, selectRider add.riderIndex riders
+                              --, selectRider add.riderIndex riders
                             , addButton submitDisabled
                             ]
 
+
 addButton : Bool -> Html App.Msg.Msg
 addButton submitDisabled =
-     button
+    button
         [ class "waves-effect waves-light btn"
         , type_ "submit"
         , onClick (App.Msg.CommentAdd)
@@ -69,9 +73,12 @@ addButton submitDisabled =
 
 selectRider : Int -> List Riders.Model.Rider -> Html App.Msg.Msg
 selectRider selectedIndex riders =
-    div [] 
+    div []
         []
-        {--
+
+
+
+{--
         [ Html.select
             [ onSelect App.Msg.CommentAddSetRiderIndex ]
             (List.map

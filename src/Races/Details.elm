@@ -2,12 +2,15 @@ module Races.Details exposing (..)
 
 --import Races.Msg as Races exposing (Msg(..))
 
-import App.Model --exposing (Mdl)
+import App.Model
+
+
+--exposing (Mdl)
+
 import Races.Model exposing (Race)
 import Riders.Model
 import Results.Model
 import Comments.Model
-
 import Markdown
 
 
@@ -18,11 +21,14 @@ import App.Routing
 import Html exposing (Html, button, span, li, i, h2, h3, ul, li, a, div, text, table, tbody, thead, tr, td, th, br, p)
 import Html.Attributes exposing (href, class, style)
 import Html.Events exposing (onClick, onInput)
+
+
 --import Material.List as List
 --import Material.Button as Button
 --import Material.Options as Options exposing (Style, css)
 --import Material.Typography as Typo
 --import Material.Table as Table
+
 import Comments.List
 
 
@@ -39,7 +45,7 @@ render app raceId =
         case maybeRace of
             Nothing ->
                 div []
-                    [ text "Race does not exist" 
+                    [ text "Race does not exist"
                     ]
 
             Just race ->
@@ -52,7 +58,7 @@ render app raceId =
                     div []
                         [ div []
                             [ div []
-                                [ h2 [] [ text race.name ] 
+                                [ h2 [] [ text race.name ]
                                 , info race
                                 ]
                             , div []
@@ -67,47 +73,47 @@ render app raceId =
                         , commentsUl app.comments race app.riders
                         ]
 
+
 addResultButton : Races.Model.Race -> Html App.Msg.Msg
 addResultButton race =
     button
         [ class "waves-effect waves-light btn"
-        --, type_ "submit"
-        --, onClick App.Msg.AddRace
+          --, type_ "submit"
+          --, onClick App.Msg.AddRace
         , onClick (App.Msg.NavigateTo (App.Routing.ResultsAdd race.id))
-        --, onClick (App.Msg.GoTo (App.Page.CommentAdd race.id))
-        -- Button.onClick (App.Msg.GoTo (App.Page.ResultsAdd race.id))
+          --, onClick (App.Msg.GoTo (App.Page.CommentAdd race.id))
+          -- Button.onClick (App.Msg.GoTo (App.Page.ResultsAdd race.id))
         , Html.Attributes.name "action"
-        --, disabled submitDisabled
+          --, disabled submitDisabled
         ]
         [ text "Add result" ]
 
 
-
-
 addCommentButton : Races.Model.Race -> Html App.Msg.Msg
 addCommentButton race =
-  button
-    [ class "waves-effect waves-light btn"
-    --, type_ "submit"
-    --, onClick App.Msg.AddRace
-    --, onClick (App.Msg.GoTo (App.Page.CommentAdd race.id))
-    , onClick (App.Msg.NavigateTo (App.Routing.CommentAdd race.id))
-    , Html.Attributes.name "action"
-    --, disabled submitDisabled
-    ]
-    [ text "Add Comment" ]
+    button
+        [ class "waves-effect waves-light btn"
+          --, type_ "submit"
+          --, onClick App.Msg.AddRace
+          --, onClick (App.Msg.GoTo (App.Page.CommentAdd race.id))
+        , onClick (App.Msg.NavigateTo (App.Routing.CommentAdd race.id))
+        , Html.Attributes.name "action"
+          --, disabled submitDisabled
+        ]
+        [ text "Add Comment" ]
+
 
 info : Race -> Html App.Msg.Msg
 info race =
     div [ class "row" ]
         [ div [ class "col s4" ]
-              [ ul [ class "collection" ]
-                    [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text race.name ] ] 
-                    , li [ class "collection-item" ] [ text "Date ", span [ class "secondary-content" ] [ text race.date ] ]
-                    , li [ class "collection-item" ] [ text "Category ", span [ class "secondary-content" ] [ text (toString race.category) ] ]
-                    , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text race.name ] ]
-                    ]
-              ]
+            [ ul [ class "collection" ]
+                [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text race.name ] ]
+                , li [ class "collection-item" ] [ text "Date ", span [ class "secondary-content" ] [ text race.date ] ]
+                , li [ class "collection-item" ] [ text "Category ", span [ class "secondary-content" ] [ text (toString race.category) ] ]
+                , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text race.name ] ]
+                ]
+            ]
         ]
 
 
@@ -161,20 +167,21 @@ riderRow result riders =
                     , td [] [ text result.result ]
                     , td [] [ text (toString result.category) ]
                     ]
-                    
+
+
 commentsUl : List Comments.Model.Comment -> Race -> List Riders.Model.Rider -> Html msg
 commentsUl comments race riders =
-    ul [ class "collection" ] 
-            ( List.map
-                    (\comment ->
-                        commentLi comment (getRiderById comment.riderId riders)
-                    )
-                    (filterCommentsByRace comments race)
+    ul [ class "collection" ]
+        (List.map
+            (\comment ->
+                commentLi comment (getRiderById comment.riderId riders)
             )
+            (filterCommentsByRace comments race)
+        )
 
 
 
-       --[ span [ class "title" ] [ text "
+--[ span [ class "title" ] [ text "
 
 
 commentLi : Comments.Model.Comment -> Maybe Riders.Model.Rider -> Html msg
@@ -185,18 +192,19 @@ commentLi comment maybeRider =
 
         Just rider ->
             li [ class "collection-item avatar" ]
-               [ i [ class "material-icons circle red" ] [ text "play_arrow" ]
-               , span [ class "title"] 
-                      [ a [ href ("#riders/" ++ (toString rider.id)) ]
-                          [ text rider.name ]
-                      ]
-               , p [] 
-                   [ span [] [ text comment.datetime ]
-                   , br [] []
-                   --, span [] [ text comment.text ]
-                   , Markdown.toHtml [ class "content"  ] comment.text
-                   ]
-               ]
+                [ i [ class "material-icons circle red" ] [ text "play_arrow" ]
+                , span [ class "title" ]
+                    [ a [ href ("#riders/" ++ (toString rider.id)) ]
+                        [ text rider.name ]
+                    ]
+                , p []
+                    [ span [] [ text comment.datetime ]
+                    , br [] []
+                      --, span [] [ text comment.text ]
+                    , Markdown.toHtml [ class "content" ] comment.text
+                    ]
+                ]
+
 
 filterCommentsByRace : List Comments.Model.Comment -> Races.Model.Race -> List Comments.Model.Comment
 filterCommentsByRace comments race =

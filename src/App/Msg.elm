@@ -1,8 +1,6 @@
 module App.Msg exposing (Msg(..))
 
 --import Material
-
-
 --import Races.Model exposing (Race)
 
 import Riders.Model exposing (Rider)
@@ -23,9 +21,9 @@ type Msg
     | ResultAdd
     | ResultAddCategory Results.Model.ResultCategory
     | SetResultAddResult String
-    --| SetResultRider String
+      --| SetResultRider String
     | SetResultRiderName String
-    --| ResultAddSetRiderId Int
+      --| ResultAddSetRiderId Int
     | CommentAddSetText String
     | CommentAddSetRiderName String
     | CommentAdd
@@ -42,24 +40,21 @@ type Msg
       --(Maybe Date.Date)
     | SetRaceAddToday2 (Maybe Date.Date)
     | UpdateMaterialize
-
-    | ResultAddAutocomplete Int -- Send 
-    | SetAutocomplete (String, String) -- Receive
-
+    | ResultAddAutocomplete Int
+      -- Send
+    | SetAutocomplete ( String, String )
+      -- Receive
     | NavigateTo Route
     | UrlUpdate Route
-
-
     | AccountLogin
     | AccountLoginName String
     | AccountLoginPassword String
-    | AccountLoginAutocomplete 
-
+    | AccountLoginAutocomplete
     | AccountLogout
-
     | AccountSignup
     | AccountSignupName String
-
-
     | AccountLicence Riders.Model.Licence
-    --| Mdl (Material.Msg Msg)
+
+
+
+--| Mdl (Material.Msg Msg)

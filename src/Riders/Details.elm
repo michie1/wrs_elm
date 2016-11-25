@@ -2,7 +2,7 @@ module Riders.Details exposing (..)
 
 --import Riders.Msg as Riders exposing (Msg(..))
 
-import App.Model 
+import App.Model
 import Riders.Model exposing (Rider)
 
 
@@ -12,10 +12,13 @@ import App.Msg
 import App.Model
 import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, li, span, h2, p)
 import Html.Attributes exposing (class, href)
+
+
 --import Material.List as List
 --import Material.Options as Options exposing (Style, css)
 --import Material.Typography as Typo
 --import Material.Table as Table
+
 import Results.Model
 import Races.Model
 
@@ -36,9 +39,10 @@ render app riderId =
     in
         case maybeRider of
             Nothing ->
-                div [] [ h2 [] [ text "Rider" ]
-                       , p [] [ text "Rider does not exist." ]
-                       ]
+                div []
+                    [ h2 [] [ text "Rider" ]
+                    , p [] [ text "Rider does not exist." ]
+                    ]
 
             Just rider ->
                 let
@@ -53,16 +57,17 @@ render app riderId =
                         , resultsTable rider results app.races
                         ]
 
+
 info : Rider -> Html App.Msg.Msg
 info rider =
     div [ class "row" ]
         [ div [ class "col s4" ]
-              [ ul [ class "collection" ]
-                    [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text rider.name ] ] 
-                    , li [ class "collection-item" ] [ text "Licence ", span [ class "secondary-content" ] [ text (toString rider.licence) ] ]
-                    , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text rider.name ] ]
-                    ]
-              ]
+            [ ul [ class "collection" ]
+                [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text rider.name ] ]
+                , li [ class "collection-item" ] [ text "Licence ", span [ class "secondary-content" ] [ text (toString rider.licence) ] ]
+                , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text rider.name ] ]
+                ]
+            ]
         ]
 
 

@@ -3,15 +3,17 @@ port module Main exposing (..)
 --import Dict
 
 import Navigation
+
+
 --import UrlParser exposing (Parser, (</>), map, int, oneOf, s, string)
 --import String
+
 import App.Model exposing (App)
 import App.Routing
 import App.Msg exposing (Msg(..))
 import App.Update
 import App.UrlUpdate
 import App.View
-
 import Riders.Model
 import Races.Model
 import Results.Model
@@ -52,33 +54,37 @@ main =
 
 parser : Navigation.Location -> Msg
 parser location =
-  UrlUpdate (App.Routing.routeParser location)
+    UrlUpdate (App.Routing.routeParser location)
+
+
 
 --init : Result String App.Page.Page -> ( App, Cmd Msg )
 --init result =
-    --urlUpdate result App.Model.initial
+--urlUpdate result App.Model.initial
+
+
 init : Navigation.Location -> ( App, Cmd Msg )
 init location =
-  let 
-    route = Debug.log "route in init" (App.Routing.routeParser location)
-    --initial = App.Model.initial
-    --initialWithRoute = { initial | route = route }
-    (app, cmd) = App.UrlUpdate.urlUpdate route App.Model.initial
+    let
+        route =
+            Debug.log "route in init" (App.Routing.routeParser location)
 
-  in 
-    --( App.Model.initial, Cmd.none ) --, fetchForRoute route )
-    --( App.Model.initial, App.Commands.fetchForRoute route )
-    --( initialWithRoute, App.Commands.fetchForRoute route )
-    (app, cmd)
+        --initial = App.Model.initial
+        --initialWithRoute = { initial | route = route }
+        ( app, cmd ) =
+            App.UrlUpdate.urlUpdate route App.Model.initial
+    in
+        --( App.Model.initial, Cmd.none ) --, fetchForRoute route )
+        --( App.Model.initial, App.Commands.fetchForRoute route )
+        --( initialWithRoute, App.Commands.fetchForRoute route )
+        ( app, cmd )
+
+
 
 -- URL PARSERS - check out evancz/url-parser for fancier URL parsing
-
 --hashParser : Navigation.Location -> Result String App.Page.Page
 --hashParser location =
-    --UrlParser.parse identity pageParser (String.dropLeft 1 location.hash)
-
-
-
+--UrlParser.parse identity pageParser (String.dropLeft 1 location.hash)
 -- MODEL
 {--
 appStateFromFlags : Flags -> App
@@ -117,14 +123,10 @@ init maybeFlags result =
 
 now : Cmd Msg
 now =
-    Task.perform 
-        --(always (App.Msg.SetNow Nothing)) 
-        (Just >> App.Msg.SetNow) 
+    Task.perform
+        --(always (App.Msg.SetNow Nothing))
+        (Just >> App.Msg.SetNow)
         Date.now
-
-
-
-
 
 
 port log : (String -> msg) -> Sub msg
@@ -133,8 +135,11 @@ port log : (String -> msg) -> Sub msg
 port setState : (String -> msg) -> Sub msg
 
 
+
 --port setAutocomplete : (String -> msg) -> Sub msg
-port setAutocomplete : ((String, String) -> msg) -> Sub msg
+
+
+port setAutocomplete : (( String, String ) -> msg) -> Sub msg
 
 
 subscriptions : App -> Sub Msg
@@ -142,7 +147,6 @@ subscriptions app =
     Sub.batch
         --[ log App.Msg.Log
         --, setState App.Msg.SetState
-        [ setAutocomplete App.Msg.SetAutocomplete 
-        --, setAutocomplete App.Msg.SetResultRiderName
+        [ setAutocomplete App.Msg.SetAutocomplete
+          --, setAutocomplete App.Msg.SetResultRiderName
         ]
-        

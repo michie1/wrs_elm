@@ -1,11 +1,12 @@
 module Riders.Model exposing (RiderAdd, Rider, empty, initialRiders, Licence, Licence(..))
 
 
-type Licence 
+type Licence
     = Elite
     | Amateurs
     | Basislidmaatschap
     | Other
+
 
 type alias Rider =
     { id : Int

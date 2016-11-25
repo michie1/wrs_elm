@@ -8,27 +8,24 @@ import App.Routing
 import App.Msg exposing (Msg(..))
 import App.Commands
 import App.UrlUpdate
-
 import Races.Model exposing (Race)
 import Riders.Model
 import Comments.Model
 import Account.Model
 import Results.Model
-
 import Riders.Update
 import Results.Update
 import Comments.Update
 import Account.Update
-
 import Navigation
 import String
 import Debug
 import Array
 import Set
-import Util
-import Json.Decode -- exposing ((:=))
+import Json.Decode
 
 
+-- exposing ((:=))
 --import Json.Encode
 
 import App.Decoder
@@ -52,7 +49,6 @@ port saveState : String -> Cmd msg
 
 
 --port setStorage : StoredApp -> Cmd msg
-
 --port setAutocomplete : String -> Cmd msg
 
 
@@ -61,7 +57,8 @@ port resetState : String -> Cmd msg
 
 port updateMaterialize : () -> Cmd msg
 
-port autocomplete : (String, List String) -> Cmd msg
+
+port autocomplete : ( String, List String ) -> Cmd msg
 
 
 
@@ -86,7 +83,7 @@ update msg app =
     case msg of
         RaceAdd ->
             case app.raceAdd of
-                Just raceAdd -> 
+                Just raceAdd ->
                     let
                         newRace =
                             Races.Model.Race
@@ -94,11 +91,13 @@ update msg app =
                                 raceAdd.name
                                 raceAdd.dateString
                                 raceAdd.category
-                                --Races.Model.Classic
+
+                        --Races.Model.Classic
                     in
                         ( { app
-                            | races = (newRace :: app.races)
-                            --, raceAdd = Nothing
+                            | races =
+                                (newRace :: app.races)
+                                --, raceAdd = Nothing
                           }
                         , Navigation.newUrl ("#races/" ++ (toString newRace.id))
                         )
@@ -107,25 +106,26 @@ update msg app =
                     ( app, Cmd.none )
 
         SetRaceName newName ->
-            let
-                raceAdd =
-                    Util.fromJust app.raceAdd
-
-
-                newRaceAdd =
-                    { raceAdd | name = newName }
-            in
-                ( { app
-                    | raceAdd = Just newRaceAdd
-                  }
-                , Cmd.none
-                )
+            case app.raceAdd of
+                Just raceAdd ->
+                    let
+                        newRaceAdd =
+                            { raceAdd | name = newName }
+                    in
+                        ( { app
+                            | raceAdd = Just newRaceAdd
+                          }
+                        , Cmd.none
+                        )
+                Nothing -> 
+                    ( app, Cmd.none )
 
         RaceAddCategory category ->
             case app.raceAdd of
                 Just raceAdd ->
                     let
-                        nextRaceAdd = { raceAdd | category = category }
+                        nextRaceAdd =
+                            { raceAdd | category = category }
                     in
                         ( { app | raceAdd = Just nextRaceAdd }
                         , Cmd.none
@@ -135,18 +135,20 @@ update msg app =
                     ( app, Cmd.none )
 
         SetRaceDate newDate ->
-            let
-                raceAdd =
-                    Util.fromJust app.raceAdd
+            case app.raceAdd of
+                Just raceAdd ->
+                    let
+                        newRaceAdd =
+                            { raceAdd | dateString = newDate }
+                    in
+                        ( { app
+                            | raceAdd = Just newRaceAdd
+                          }
+                        , Cmd.none
+                        )
 
-                newRaceAdd =
-                    { raceAdd | dateString = newDate }
-            in
-                ( { app
-                    | raceAdd = Just newRaceAdd
-                  }
-                , Cmd.none
-                )
+                Nothing -> 
+                    ( app, Cmd.none )
 
         AddRider rider ->
             Riders.Update.addRider app rider
@@ -172,7 +174,8 @@ update msg app =
             case app.resultAdd of
                 Just resultAdd ->
                     let
-                        nextResultAdd = { resultAdd | category = category }
+                        nextResultAdd =
+                            { resultAdd | category = category }
                     in
                         ( { app | resultAdd = Just nextResultAdd }
                         , Cmd.none
@@ -182,57 +185,60 @@ update msg app =
                     ( app, Cmd.none )
 
         SetResultAddResult value ->
-            --Results.Update.setResultAddResult app value
-            let
-                resultAdd =
-                    Util.fromJust app.resultAdd
+            case app.resultAdd of
+                Just resultAdd
+                    let
+                        resultAddWithResult =
+                            { resultAdd | result = value }
+                    in
+                        ( { app | resultAdd = Just resultAddWithResult }
+                        , Cmd.none
+                        )
 
-                resultAddWithResult =
-                    { resultAdd | result = value }
-            in
-                ( { app | resultAdd = Just resultAddWithResult }
-                , Cmd.none
-                )
-
+                Nothing -> 
+                    ( app, Cmd.none )
 
         SetResultRiderName name ->
             let
-                a = Debug.log "name" name
+                a =
+                    Debug.log "name" name
             in
                 Results.Update.setRider app name
 
         CommentAddSetText text ->
-            let
-                commentAdd =
-                    Util.fromJust app.commentAdd
+            case app.commentAdd of 
+                Just commentAdd ->
+                    let
+                        --account =
+                        --riderId = account.id
+                        commentAddWithText =
+                            { commentAdd
+                                | text =
+                                    text
+                                    --, riderId = riderId
+                            }
+                    in
+                        ( { app | commentAdd = Just commentAddWithText }
+                        , Cmd.none
+                        )
 
-                --account =
-                --    Util.fromJust app.account
-
-                --riderId = account.id
-                    
-                commentAddWithText =
-                    { commentAdd 
-                        | text = text
-                        --, riderId = riderId
-                    }
-            in
-                ( { app | commentAdd = Just commentAddWithText }
-                , Cmd.none
-                )
+                Nothing ->
+                    ( app, Cmd.none )
 
         --Comments.Update.setText app text
         CommentAddSetRiderName riderName ->
-            let
-                commentAdd =
-                    Util.fromJust app.commentAdd
+            case app.commentAdd of
+                Just commentAdd ->
+                    let
+                        commentAddWithRiderName =
+                            { commentAdd | riderName = riderName }
+                    in
+                        ( { app | commentAdd = Just commentAddWithRiderName }
+                        , Cmd.none
+                        )
 
-                commentAddWithRiderName =
-                    { commentAdd | riderName = riderName }
-            in
-                ( { app | commentAdd = Just commentAddWithRiderName }
-                , Cmd.none
-                )
+                Nothing ->
+                    ( app, Cmd.none )
 
         CommentAdd ->
             let
@@ -247,7 +253,9 @@ update msg app =
             case maybeTime of
                 Just time ->
                     let
-                        datetime = (formatTime (Date.fromTime time)) ++" " ++ (formatDate (Date.fromTime time))
+                        datetime =
+                            (formatTime (Date.fromTime time)) ++ " " ++ (formatDate (Date.fromTime time))
+
                         ( comment, cmd ) =
                             Comments.Update.new
                                 ((List.length app.comments) + 1)
@@ -264,13 +272,12 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-    {--
+        {--
         GoTo page ->
             ( app
             , (Navigation.newUrl (App.Page.toHash page))
             )
     --}
-
         Save ->
             ( app
             , saveState (Debug.log "alert message" "message")
@@ -301,48 +308,51 @@ update msg app =
 
         ResultAddAutocomplete raceId ->
             let
-                resultSet = Set.fromList
-                                (List.map 
-                                    (\result -> result.riderId)
-                                    ( List.filter
-                                        (\result -> result.raceId == raceId)
-                                        app.results
-                                    ) 
-                                )
-
-                riders = List.map
-                            (\rider -> rider.name)
+                resultSet =
+                    Set.fromList
+                        (List.map
+                            (\result -> result.riderId)
                             (List.filter
-                                (\rider -> not (Set.member rider.id resultSet))
-                                app.riders
+                                (\result -> result.raceId == raceId)
+                                app.results
                             )
+                        )
 
+                riders =
+                    List.map
+                        (\rider -> rider.name)
+                        (List.filter
+                            (\rider -> not (Set.member rider.id resultSet))
+                            app.riders
+                        )
             in
-                ( app, autocomplete ("ResultAdd", riders) )
+                ( app, autocomplete ( "ResultAdd", riders ) )
 
-        SetAutocomplete (page, value) ->
+        SetAutocomplete ( page, value ) ->
             case page of
                 "ResultAdd" ->
                     let
-                        a = Debug.log "page" page
-                        b = Debug.log "value" value
+                        a =
+                            Debug.log "page" page
+
+                        b =
+                            Debug.log "value" value
                     in
                         Results.Update.setRider app value
 
-                
                 "AccountLogin" ->
                     Account.Update.loginName app value
 
                 _ ->
                     ( app, Cmd.none )
-            {--
+
+        {--
             case page of
               "resultAdd" ->
-                 ( app, App.Msg.SetResultRiderName value ) 
+                 ( app, App.Msg.SetResultRiderName value )
 
-              _ -> 
+              _ ->
             --}
-
         SetNow maybeDate ->
             ( { app | now = maybeDate }
             , Cmd.none
@@ -359,7 +369,7 @@ update msg app =
                             ""
 
                 raceAdd =
-                    Races.Model.Add "" dateFormatted Races.Model.Classic 
+                    Races.Model.Add "" dateFormatted Races.Model.Classic
             in
                 ( { app | raceAdd = Just raceAdd }
                 , Cmd.none
@@ -377,27 +387,25 @@ update msg app =
                 ( app, Cmd.batch [ yesterdayTask, updateMaterialize () ] )
 
         SetRaceAddYesterday2 maybeDate ->
-            let
-                raceAdd =
-                    Util.fromJust app.raceAdd
+            case app.raceAdd of
+                Just raceAdd ->
+                    let
+                        dateFormatted =
+                            case maybeDate of
+                                Just date ->
+                                    formatDate (Date.Extra.add Date.Extra.Day (-1) date)
 
-                today =
-                    Util.fromJust maybeDate
+                                Nothing ->
+                                    ""
+                        newRaceAdd =
+                            { raceAdd | dateString = dateFormatted }
+                    in
+                        ( { app | raceAdd = Just newRaceAdd }
+                        , Cmd.none
+                        )
 
-                dateFormatted =
-                    case maybeDate of
-                        Just date ->
-                            formatDate (Date.Extra.add Date.Extra.Day (-1) date)
-
-                        Nothing ->
-                            ""
-
-                newRaceAdd =
-                    { raceAdd | dateString = dateFormatted }
-            in
-                ( { app | raceAdd = Just newRaceAdd }
-                , Cmd.none
-                )
+                Nothing ->
+                    ( app, Cmd.none )
 
         SetRaceAddToday ->
             let
@@ -410,24 +418,25 @@ update msg app =
                 ( app, Cmd.batch [ todayTask, updateMaterialize () ] )
 
         SetRaceAddToday2 maybeDate ->
-            let
-                raceAdd =
-                    Util.fromJust app.raceAdd
+            case app.raceAdd of
+                Just raceAdd ->
+                    let
+                        dateFormatted =
+                            case maybeDate of
+                                Just date ->
+                                    formatDate date
 
-                dateFormatted =
-                    case maybeDate of
-                        Just date ->
-                            formatDate date
+                                Nothing ->
+                                    ""
 
-                        Nothing ->
-                            ""
-
-                newRaceAdd =
-                    { raceAdd | dateString = dateFormatted }
-            in
-                ( { app | raceAdd = Just newRaceAdd }
-                , Cmd.none
-                )
+                        newRaceAdd =
+                            { raceAdd | dateString = dateFormatted }
+                    in
+                        ( { app | raceAdd = Just newRaceAdd }
+                        , Cmd.none
+                        )
+                Nothing ->
+                    ( app, Cmd.none )
 
         SetState message ->
             let
@@ -462,15 +471,15 @@ update msg app =
 
         AccountLogin ->
             case app.accountLogin of
-                Just accountLogin -> 
+                Just accountLogin ->
                     let
-                        maybeRider = getRiderByName 
-                                        accountLogin.name
-                                        app.riders
-
+                        maybeRider =
+                            getRiderByName
+                                accountLogin.name
+                                app.riders
                     in
                         case maybeRider of
-                            Just rider -> 
+                            Just rider ->
                                 ( { app | account = maybeRider }
                                 , Navigation.newUrl "#home"
                                 )
@@ -482,13 +491,14 @@ update msg app =
                     ( app, Cmd.none )
 
         AccountLoginName name ->
-          Account.Update.loginName app name 
+            Account.Update.loginName app name
 
         AccountLoginPassword password ->
             case app.accountLogin of
                 Just accountLogin ->
-                    let 
-                        nextAccountLogin = { accountLogin | password = password }
+                    let
+                        nextAccountLogin =
+                            { accountLogin | password = password }
                     in
                         ( { app | accountLogin = Just nextAccountLogin }
                         , Cmd.none
@@ -499,11 +509,11 @@ update msg app =
 
         AccountLoginAutocomplete ->
             let
-                riders = List.map (\rider -> rider.name) app.riders
+                riders =
+                    List.map (\rider -> rider.name) app.riders
             in
-                ( app, autocomplete ("AccountLogin", riders) )
+                ( app, autocomplete ( "AccountLogin", riders ) )
 
-        
         AccountLogout ->
             case app.account of
                 Just account ->
@@ -511,18 +521,18 @@ update msg app =
                     , Navigation.newUrl "#home"
                     )
 
-                Nothing -> 
+                Nothing ->
                     ( app, Cmd.none )
-
 
         AccountSignup ->
             case app.accountSignup of
                 Just accountSignup ->
-                    let 
-                        newRider = Riders.Model.Rider 
-                                        ( (List.length app.riders) + 1)
-                                        accountSignup.name
-                                        Riders.Model.Amateurs
+                    let
+                        newRider =
+                            Riders.Model.Rider
+                                ((List.length app.riders) + 1)
+                                accountSignup.name
+                                Riders.Model.Amateurs
                     in
                         ( { app | riders = (newRider :: app.riders) }
                         , Navigation.newUrl ("#account/login/" ++ newRider.name)
@@ -531,12 +541,12 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-        
         AccountSignupName name ->
             case app.accountSignup of
                 Just accountSignup ->
                     let
-                        nextAccountSignup = { accountSignup | name = name }
+                        nextAccountSignup =
+                            { accountSignup | name = name }
                     in
                         ( { app | accountSignup = Just nextAccountSignup }
                         , Cmd.none
@@ -545,45 +555,47 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-
         AccountLicence licence ->
             case app.account of
-                Just account -> 
+                Just account ->
                     let
-                        nextAccount = { account | licence = licence }
+                        nextAccount =
+                            { account | licence = licence }
                     in
-                        ( { app | account = Just nextAccount
-                                , riders = (updateRiderLicence account.id licence app.riders)
+                        ( { app
+                            | account = Just nextAccount
+                            , riders = (updateRiderLicence account.id licence app.riders)
                           }
-                        , Cmd.none 
+                        , Cmd.none
                         )
 
-                Nothing -> 
+                Nothing ->
                     ( app, Cmd.none )
 
 
-        
-            
-
 updateRiderLicence : Int -> Riders.Model.Licence -> List Riders.Model.Rider -> List Riders.Model.Rider
 updateRiderLicence riderId licence riders =
-    List.map 
-        (\rider -> 
-            let 
-                riderLicence = case rider.id == riderId of
-                    True -> 
-                        licence
-                    False ->
-                        rider.licence
-            in 
+    List.map
+        (\rider ->
+            let
+                riderLicence =
+                    case rider.id == riderId of
+                        True ->
+                            licence
+
+                        False ->
+                            rider.licence
+            in
                 { rider | licence = riderLicence }
         )
         riders
 
+
 getRiderById : Int -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
 getRiderById id riders =
     List.head (List.filter (\rider -> rider.id == id) riders)
-    
+
+
 getRiderByName : String -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
 getRiderByName name riders =
     List.head (List.filter (\rider -> rider.name == name) riders)
@@ -661,23 +673,23 @@ leadingZero value =
 
 formatTime : Date.Date -> String
 formatTime datetime =
-    toString (Date.hour datetime) ++
-    ":" ++
-    toString (Date.minute datetime)
+    toString (Date.hour datetime)
+        ++ ":"
+        ++ toString (Date.minute datetime)
+
 
 formatDate : Date.Date -> String
 formatDate date =
-    (leadingZero (Date.day date)) ++
-    "-" ++
-    toString (numMonth (Date.month date)) ++
-    "-" ++
-    toString (Date.year date)
+    (leadingZero (Date.day date))
+        ++ "-"
+        ++ toString (numMonth (Date.month date))
+        ++ "-"
+        ++ toString (Date.year date)
 
 
 setRaceAdd : Cmd Msg
 setRaceAdd =
-    Task.perform 
-        --(always (App.Msg.SetRaceAdd Nothing)) 
-        (Just >> App.Msg.SetRaceAdd) 
+    Task.perform
+        --(always (App.Msg.SetRaceAdd Nothing))
+        (Just >> App.Msg.SetRaceAdd)
         Date.now
-
