@@ -8,6 +8,8 @@ import Riders.Model
 import Results.Model
 import Comments.Model
 
+import Markdown
+
 
 --exposing (Mdl)
 
@@ -191,7 +193,8 @@ commentLi comment maybeRider =
                , p [] 
                    [ span [] [ text comment.datetime ]
                    , br [] []
-                   , span [] [ text comment.text ]
+                   --, span [] [ text comment.text ]
+                   , Markdown.toHtml [ class "content"  ] comment.text
                    ]
                ]
 

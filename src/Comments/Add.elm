@@ -1,6 +1,6 @@
 module Comments.Add exposing (render)
 
-import Html exposing (Html, text, div, h2, button, i, input, label)
+import Html exposing (Html, textarea, text, div, h2, button, i, input, label)
 import Html.Attributes exposing (class, type_, id, for, class, disabled)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode as Json
@@ -37,9 +37,10 @@ render app race riders =
                             , div []
                                 [ div [ class "row" ]
                                     [ div [ class "input-field col s6" ]
-                                        [ input
+                                        [ textarea
                                             [ id "text"
-                                            , type_ "text"
+                                            , class " materialize-textarea" 
+                                            --, type_ "text"
                                             , onInput App.Msg.CommentAddSetText
                                             ]
                                             []
