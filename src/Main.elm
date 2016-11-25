@@ -24,6 +24,7 @@ import Comments.Model
 
 import Task
 import Date
+import Keyboard.Extra
 
 
 --import Alert exposing (subscriptions)
@@ -77,7 +78,13 @@ init location =
         --( App.Model.initial, Cmd.none ) --, fetchForRoute route )
         --( App.Model.initial, App.Commands.fetchForRoute route )
         --( initialWithRoute, App.Commands.fetchForRoute route )
-        ( app, cmd )
+        ( app
+        , Cmd.batch
+            [ cmd
+            , Cmd.map App.Msg.KeyboardMsg (Tuple.second Keyboard.Extra.init)
+            ]
+        )
+        --( app, cmd )
 
 
 
@@ -148,5 +155,7 @@ subscriptions app =
         --[ log App.Msg.Log
         --, setState App.Msg.SetState
         [ setAutocomplete App.Msg.SetAutocomplete
+        , Sub.map KeyboardMsg Keyboard.Extra.subscriptions
+        --, Keyboard.downs KeyDown
           --, setAutocomplete App.Msg.SetResultRiderName
         ]

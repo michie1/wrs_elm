@@ -9,6 +9,8 @@ import Results.Model
 import App.Routing exposing (Route(..))
 import Date
 import Time
+import Keyboard
+import Keyboard.Extra
 
 
 type Msg
@@ -54,6 +56,8 @@ type Msg
     | AccountSignup
     | AccountSignupName String
     | AccountLicence Riders.Model.Licence
+    | KeyDown Keyboard.KeyCode
+    | KeyboardMsg Keyboard.Extra.Msg
 
 
 

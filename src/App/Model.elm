@@ -17,6 +17,7 @@ import Results.Model
 import Comments.Model
 import Date
 import Account.Model
+import Keyboard.Extra
 
 
 type alias App =
@@ -33,9 +34,8 @@ type alias App =
     , now : Maybe Date.Date
     , account : Maybe Riders.Model.Rider
     , accountLogin : Maybe Account.Model.Login
-    , accountSignup :
-        Maybe Account.Model.Signup
-        --, mdl : Material.Model
+    , accountSignup : Maybe Account.Model.Signup
+    , keyboardModel : Keyboard.Extra.Model
     }
 
 
@@ -64,5 +64,6 @@ initial =
         Account.Model.initial
         Nothing
         Nothing
+        (Tuple.first Keyboard.Extra.init)
      --Material.model
     )

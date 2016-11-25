@@ -33,6 +33,7 @@ import Date
 import Time
 import Date.Extra
 import Task
+import Keyboard.Extra
 
 
 type alias StoredApp =
@@ -84,23 +85,27 @@ update msg app =
         RaceAdd ->
             case app.raceAdd of
                 Just raceAdd ->
-                    let
-                        newRace =
-                            Races.Model.Race
-                                (calcRaceId app.races)
-                                raceAdd.name
-                                raceAdd.dateString
-                                raceAdd.category
+                    case raceAdd.name /= "" of
+                        True -> 
+                            let
+                                newRace =
+                                    Races.Model.Race
+                                        (calcRaceId app.races)
+                                        raceAdd.name
+                                        raceAdd.dateString
+                                        raceAdd.category
 
-                        --Races.Model.Classic
-                    in
-                        ( { app
-                            | races =
-                                (newRace :: app.races)
-                                --, raceAdd = Nothing
-                          }
-                        , Navigation.newUrl ("#races/" ++ (toString newRace.id))
-                        )
+                                --Races.Model.Classic
+                            in
+                                ( { app
+                                    | races =
+                                        (newRace :: app.races)
+                                        --, raceAdd = Nothing
+                                  }
+                                , Navigation.newUrl ("#races/" ++ (toString newRace.id))
+                                )
+                        False ->
+                            ( app, Cmd.none )
 
                 Nothing ->
                     ( app, Cmd.none )
@@ -575,6 +580,32 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
+        KeyDown keyCode ->
+            case keyCode of
+                13 ->
+                    let
+                        a =
+                            Debug.log "keyCode" "enter"
+                    in
+                        ( app, Cmd.none )
+
+                _ ->
+                    ( app, Cmd.none )
+
+        KeyboardMsg keyMsg ->
+          let
+            a = Debug.log "keyMsg" keyMsg
+            ( keyboardModel, keyboardCmd ) = Keyboard.Extra.update keyMsg app.keyboardModel
+            cmd = case ( Keyboard.Extra.isPressed Keyboard.Extra.Enter keyboardModel && app.raceAdd /= Nothing ) of
+                True -> 
+                    Task.perform identity (Task.succeed RaceAdd)
+                False ->
+                    Cmd.none
+          in
+            ( { app | keyboardModel = keyboardModel }
+            , cmd
+            -- , Cmd.map KeyboardMsg keyboardCmd TODO: check why it looks like its not needed now
+            )
 
 updateRiderLicence : Int -> Riders.Model.Licence -> List Riders.Model.Rider -> List Riders.Model.Rider
 updateRiderLicence riderId licence riders =
@@ -677,7 +708,9 @@ leadingZero value =
 formatTime : Date.Date -> String
 formatTime datetime =
     toString (Date.hour datetime)
-        ++ ":"
+        -- TODO: use leadingZero
+        ++
+            ":"
         ++ toString (Date.minute datetime)
 
 
