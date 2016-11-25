@@ -45,16 +45,6 @@ initialRaces =
     ]
 
 
-dateFromString : String -> Date.Date
-dateFromString dateString =
-    case Date.fromString dateString of
-        Ok result ->
-            result
-
-        Err errMsg ->
-            Debug.crash "dateFromString invalid date string"
-
-
 categoryString : Category -> String
 categoryString category =
     case category of

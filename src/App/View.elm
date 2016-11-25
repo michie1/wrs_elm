@@ -111,7 +111,6 @@ viewPage app =
                 Nothing ->
                     div [] [ text "RaceAdd nothing" ]
 
-                -- crash?
                 Just raceAdd ->
                     div []
                         [ Races.Add.render raceAdd
@@ -123,30 +122,26 @@ viewPage app =
                 ]
 
         App.Routing.ResultsAdd raceId ->
-            let
-                maybeRace =
-                    getRace raceId app.races
+            case app.resultAdd of
+                Just resultAdd ->
+                    let
+                        maybeRace =
+                            getRace raceId app.races
 
-                --resultAdd = Util.fromJust app.resultAdd
-                resultAdd =
-                    case app.resultAdd of
-                        Nothing ->
-                            Debug.crash "resultAdd shouldn't be Nothing in App.Routing.ResultsAdd."
+                    in
+                        case maybeRace of
+                            Nothing ->
+                                --Navigation.newUrl (App.Page.toHash app.page)
+                                --App.Msg.GoTo app.page
+                                div []
+                                    [ text "Race does not exist. Adding result not possible." ]
 
-                        Just value ->
-                            value
-            in
-                case maybeRace of
-                    Nothing ->
-                        --Navigation.newUrl (App.Page.toHash app.page)
-                        --App.Msg.GoTo app.page
-                        div []
-                            [ text "Race does not exist. Adding result not possible." ]
-
-                    Just race ->
-                        div []
-                            [ Results.Add.render race resultAdd app.riders app.results 
-                            ]
+                            Just race ->
+                                div []
+                                    [ Results.Add.render race resultAdd app.riders app.results 
+                                    ]
+                Nothing ->
+                    div [] [ text "No resultAdd." ]
 
         App.Routing.CommentAdd raceId ->
             let

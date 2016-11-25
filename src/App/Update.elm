@@ -194,31 +194,12 @@ update msg app =
                 , Cmd.none
                 )
 
-        {--
-        SetResultRider newId ->
-            case String.toInt newId of
-                Err msg ->
-                    Debug.crash "Value not an int in SetResultRider"
-
-                Ok value ->
-                    Results.Update.setResultAddRider app value
-        --}
-
 
         SetResultRiderName name ->
             let
                 a = Debug.log "name" name
             in
                 Results.Update.setRider app name
-
-        {--
-        ResultAddSetRiderId index ->
-            let
-                id =
-                    Debug.log "id: " (getRiderIdByIndex index app.riders)
-            in
-                Results.Update.setResultAddRider app id
-        --}
 
         CommentAddSetText text ->
             let

@@ -1,11 +1,2 @@
-module Util exposing (fromJust)
+module Util exposing ()
 
-
-fromJust : Maybe a -> a
-fromJust maybeA =
-    case maybeA of
-        Nothing ->
-            Debug.crash "maybeA should always be Just."
-
-        Just justA ->
-            justA

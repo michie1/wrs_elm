@@ -10,52 +10,35 @@ import Util
 
 addResult : App -> ( Maybe Results.Model.Result, Cmd Msg )
 addResult app =
-    let
-        --resultAdd = Util.fromJust app.resultAdd
-        resultAdd =
-            case app.resultAdd of
+    case app.resultAdd of
+        Just resultAdd ->
+            case (getRiderByName resultAdd.riderName app.riders) of
+                Just rider ->
+                    let
+
+                        result =
+                            Results.Model.Result
+                                (calcResultId app.results)
+                                rider.id
+                                resultAdd.raceId
+                                resultAdd.result
+                                resultAdd.category
+                    in
+                        --if (Debug.log "new result rider id: " result.riderId) == 0 then
+                        --   ( Nothing, Cmd.none )
+                        --else 
+                        if resultExists result app.results then
+                            ( Nothing, Debug.log "result already exists" Cmd.none )
+                        else
+                            ( Just result
+                            , Navigation.newUrl ("#races/" ++ toString (Debug.log "raceId" result.raceId))
+                            )
+
                 Nothing ->
-                    Debug.crash "resultAdd shouldn't be Nothing when addResult is called."
+                    ( Nothing, Cmd.none )
 
-                Just value ->
-                    value
-
-        -- result = resultAdd.result
-        --riderId = Debug.log "riderId: " app.resultAdd.result.
-        {--
-        riderId =
-            if resultAdd.riderId == 0 then
-                (firstRiderId app.riders)
-            else
-                resultAdd.riderId
-        --}
-
-   
-    in
-        case (getRiderByName resultAdd.riderName app.riders) of
-            Just rider ->
-                let
-
-                    result =
-                        Results.Model.Result
-                            (calcResultId app.results)
-                            rider.id
-                            resultAdd.raceId
-                            resultAdd.result
-                            resultAdd.category
-                in
-                    --if (Debug.log "new result rider id: " result.riderId) == 0 then
-                    --   ( Nothing, Cmd.none )
-                    --else 
-                    if resultExists result app.results then
-                        ( Nothing, Debug.log "result already exists" Cmd.none )
-                    else
-                        ( Just result
-                        , Navigation.newUrl ("#races/" ++ toString (Debug.log "raceId" result.raceId))
-                        )
-
-            Nothing ->
-                ( Nothing, Cmd.none )
+        Nothing ->
+            ( Nothing, Cmd.none )
 
 
 getRiderByName : String -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
