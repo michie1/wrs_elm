@@ -230,7 +230,7 @@ commentLi comment maybeRider =
 
         Just rider ->
             li [ class "collection-item avatar" ]
-                [ i [ class "material-icons circle red" ] [ text "play_arrow" ]
+                [ i [ class "material-icons circle red" ] [ text "perm_identity" ]
                 , span [ class "title" ]
                     [ a [ href ("#riders/" ++ (toString rider.id)) ]
                         [ text rider.name ]

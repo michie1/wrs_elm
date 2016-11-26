@@ -67,7 +67,7 @@ render race resultAdd riders results =
                         , onInput App.Msg.ResultAddStrava
                         ]
                         []
-                    , label [ for "rider" ] [ text ("Strava") ]
+                    , label [ for "rider" ] [ text "Strava" ]
                     ]
                 ]
             , div [ class "row" ]
