@@ -3,6 +3,7 @@ module App.Commands exposing (fetchForRoute)
 import App.Msg exposing (Msg)
 import App.Routing exposing (Route)
 import Task
+import Dom
 import Date
 
 
@@ -19,6 +20,7 @@ fetchForRoute route =
                     , Task.perform
                         identity
                         (Task.succeed App.Msg.UpdateMaterialize)
+                    , Task.attempt (always App.Msg.Noop) (Dom.focus "name")
                     ]
 
             App.Routing.CommentAdd raceId ->
@@ -26,6 +28,8 @@ fetchForRoute route =
                     [ Task.perform
                         identity
                         (Task.succeed App.Msg.UpdateMaterialize)
+                    --, Dom.focus "name" |> Task.attempt FocusResult
+                    --, Task.perform identity (Task.succeed (Dom.focus "name"))
                     ]
 
             App.Routing.AccountLogin ->

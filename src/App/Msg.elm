@@ -59,6 +59,8 @@ type Msg
     | KeyDown Keyboard.KeyCode
     | KeyboardMsg Keyboard.Extra.Msg
 
+    | Noop 
+
 
 
 --| Mdl (Material.Msg Msg)

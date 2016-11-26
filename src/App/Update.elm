@@ -34,7 +34,7 @@ import Time
 import Date.Extra
 import Task
 import Keyboard.Extra
-
+import Dom
 
 type alias StoredApp =
     { page : String
@@ -606,6 +606,9 @@ update msg app =
             , cmd
             -- , Cmd.map KeyboardMsg keyboardCmd TODO: check why it looks like its not needed now
             )
+
+        Noop ->
+            ( app, Cmd.none )
 
 updateRiderLicence : Int -> Riders.Model.Licence -> List Riders.Model.Rider -> List Riders.Model.Rider
 updateRiderLicence riderId licence riders =

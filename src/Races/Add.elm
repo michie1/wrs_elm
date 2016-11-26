@@ -1,7 +1,7 @@
 module Races.Add exposing (render)
 
 import Html exposing (Html, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
-import Html.Attributes exposing (value, autofocus, class, name, type_, id, for, checked, disabled)
+import Html.Attributes exposing (autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
 
 
@@ -34,7 +34,11 @@ render raceAdd =
             , div []
                 [ div [ class "row" ]
                     [ div [ class "input-field col s6" ]
-                        [ input [ id "name", type_ "text", onInput App.Msg.SetRaceName ] []
+                        [ input [ id "name"
+                                , type_ "text"
+                                , onInput App.Msg.SetRaceName
+                                , autofocus True 
+                                ] []
                         , label [ for "name" ] [ text ("Name " ++ name) ]
                         ]
                     ]
@@ -74,6 +78,13 @@ render raceAdd =
                         [ text "Add Race"
                         , i [ class "material-icons right" ] [ text "send" ]
                         ]
+                    ]
+               , div [ class "row" ]
+                    [ button
+                        [ class "waves-effect waves-light btn"
+                        , Html.Attributes.name "action"
+                        ]
+                        [ text "Focus" ]
                     ]
                 ]
               {--, div []
