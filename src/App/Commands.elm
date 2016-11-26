@@ -46,10 +46,10 @@ fetchForRoute route =
 
             App.Routing.ResultsAdd raceId ->
                 Cmd.batch
-                    -- [ Task.perform
-                    --    identity
-                    --    (Task.succeed (App.Msg.ResultAddAutocomplete raceId))
-                    [ Task.attempt (always App.Msg.Noop) (Dom.focus "result")
+                    [ Task.perform
+                        identity
+                        (Task.succeed (App.Msg.ResultAddAutocomplete raceId))
+                    , Task.attempt (always App.Msg.Noop) (Dom.focus "result")
                     , Task.perform
                         identity
                         (Task.succeed App.Msg.UpdateMaterialize)
