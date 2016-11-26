@@ -16,11 +16,12 @@ fetchForRoute route =
         case route of
             App.Routing.RacesAdd ->
                 Cmd.batch
-                    [ setRaceAdd
+                    [ 
+                    Task.attempt (always App.Msg.Noop) (Dom.focus "name")
                     , Task.perform
                         identity
                         (Task.succeed App.Msg.UpdateMaterialize)
-                    , Task.attempt (always App.Msg.Noop) (Dom.focus "name")
+                    , setRaceAdd
                     ]
 
             App.Routing.CommentAdd raceId ->
@@ -44,9 +45,10 @@ fetchForRoute route =
 
             App.Routing.ResultsAdd raceId ->
                 Cmd.batch
-                    [ Task.perform
-                        identity
-                        (Task.succeed (App.Msg.ResultAddAutocomplete raceId))
+                    -- [ Task.perform
+                    --    identity
+                    --    (Task.succeed (App.Msg.ResultAddAutocomplete raceId))
+                    [ Task.attempt (always App.Msg.Noop) (Dom.focus "result")
                     , Task.perform
                         identity
                         (Task.succeed App.Msg.UpdateMaterialize)

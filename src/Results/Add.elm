@@ -1,7 +1,7 @@
 module Results.Add exposing (render)
 
 import Html exposing (Html, button, div, text, span, label, input, ul, li, h2, input, i, p)
-import Html.Attributes exposing (class, id, type_, for, disabled, value, name, checked)
+import Html.Attributes exposing (autofocus, class, id, type_, for, disabled, value, name, checked)
 import Html.Events exposing (onInput, onClick, on)
 import Json.Decode as Json
 
@@ -37,7 +37,11 @@ render race resultAdd riders results =
             , div []
                 [ div [ class "row" ]
                     [ div [ class "input-field col s6" ]
-                        [ input [ id "result", type_ "text", onInput App.Msg.SetResultAddResult ] []
+                        [ input [ id "result"
+                                , type_ "text"
+                                , onInput App.Msg.SetResultAddResult
+                                , autofocus True
+                                ] []
                         , label [ for "result" ] [ text "Result" ]
                         ]
                     ]

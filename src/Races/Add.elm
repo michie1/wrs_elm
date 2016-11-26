@@ -24,7 +24,11 @@ render raceAdd =
             raceAdd.name
 
         dateString =
-            raceAdd.dateString
+            case raceAdd.dateString of
+                Just dateString ->
+                    dateString
+                Nothing ->
+                    ""
 
         submitDisabled =
             name == ""
@@ -79,32 +83,7 @@ render raceAdd =
                         , i [ class "material-icons right" ] [ text "send" ]
                         ]
                     ]
-               , div [ class "row" ]
-                    [ button
-                        [ class "waves-effect waves-light btn"
-                        , Html.Attributes.name "action"
-                        ]
-                        [ text "Focus" ]
-                    ]
                 ]
-              {--, div []
-                [ Textfield.render App.Msg.Mdl
-                    [ 2 ]
-                    mdl
-                    [ Textfield.label "Date (MM-DD-YYYY)"
-                    , Textfield.value dateString
-                    , Textfield.floatingLabel
-                    , Textfield.text_
-                    , Textfield.onInput App.Msg.SetRaceDate
-                    , case Date.fromString dateString of
-                        Ok date ->
-                            Options.nop
-
-                        Err errMsg ->
-                            Textfield.error <| "Invalid date"
-                    ]
-                ]
-            --}
             ]
 
 

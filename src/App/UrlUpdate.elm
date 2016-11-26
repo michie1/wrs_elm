@@ -9,6 +9,7 @@ import App.Commands
 import Account.Model
 import Comments.Model
 import Results.Model
+import Races.Model
 
 
 onUrlLeave : App.Routing.Route -> App -> App
@@ -118,8 +119,13 @@ onUrlEnter route app =
             let
                 a =
                     Debug.log "urlUpdate" "RacesAdd"
+                    
+                raceAdd = 
+                    Races.Model.Add "" Nothing Races.Model.Classic
             in
-                ( app, App.Commands.fetchForRoute App.Routing.RacesAdd )
+                ( { app | raceAdd = Just raceAdd }
+                , App.Commands.fetchForRoute App.Routing.RacesAdd
+                )
 
         App.Routing.AccountSignup ->
             ( { app | accountSignup = Just Account.Model.signup }

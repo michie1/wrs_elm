@@ -23,7 +23,7 @@ type alias Race =
 
 type alias Add =
     { name : String
-    , dateString : String
+    , dateString : Maybe String
     , category : Category
     }
 

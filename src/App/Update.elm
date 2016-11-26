@@ -88,11 +88,13 @@ update msg app =
                     case raceAdd.name /= "" of
                         True -> 
                             let
+                                dateString = Maybe.withDefault "" raceAdd.dateString
+
                                 newRace =
                                     Races.Model.Race
                                         (calcRaceId app.races)
                                         raceAdd.name
-                                        raceAdd.dateString
+                                        dateString -- raceAdd.dateString
                                         raceAdd.category
 
                                 --Races.Model.Classic
@@ -145,7 +147,7 @@ update msg app =
                 Just raceAdd ->
                     let
                         newRaceAdd =
-                            { raceAdd | dateString = newDate }
+                            { raceAdd | dateString = Just newDate }
                     in
                         ( { app
                             | raceAdd = Just newRaceAdd
@@ -365,21 +367,28 @@ update msg app =
             )
 
         SetRaceAdd maybeNow ->
-            let
-                dateFormatted =
-                    case maybeNow of
-                        Just now ->
-                            formatDate now
+            case app.raceAdd of
+                Just currentRaceAdd -> 
+                    let
+                        dateFormatted =
+                            case maybeNow of
+                                Just now ->
+                                    formatDate now
 
-                        Nothing ->
-                            ""
+                                Nothing ->
+                                    ""
 
-                raceAdd =
-                    Races.Model.Add "" dateFormatted Races.Model.Classic
-            in
-                ( { app | raceAdd = Just raceAdd }
-                , Cmd.none
-                )
+                        --raceAdd =
+                        -- Races.Model.Add "" (Just dateFormatted) Races.Model.Classic
+                        raceAdd = { currentRaceAdd | 
+                                        dateString = Just dateFormatted }
+                    in
+                        ( { app | raceAdd = Just raceAdd }
+                        , Cmd.none
+                        )
+
+                Nothing ->
+                    ( app, Cmd.none )
 
         SetRaceAddYesterday ->
             let
@@ -405,7 +414,7 @@ update msg app =
                                     ""
 
                         newRaceAdd =
-                            { raceAdd | dateString = dateFormatted }
+                            { raceAdd | dateString = Just dateFormatted }
                     in
                         ( { app | raceAdd = Just newRaceAdd }
                         , Cmd.none
@@ -437,7 +446,7 @@ update msg app =
                                     ""
 
                         newRaceAdd =
-                            { raceAdd | dateString = dateFormatted }
+                            { raceAdd | dateString = Just dateFormatted }
                     in
                         ( { app | raceAdd = Just newRaceAdd }
                         , Cmd.none
