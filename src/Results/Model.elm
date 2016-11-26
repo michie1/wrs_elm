@@ -1,4 +1,4 @@
-module Results.Model exposing (ResultAdd, Result, initialAdd, initialResults, ResultCategory, ResultCategory(..))
+module Results.Model exposing (ResultAdd, Result, initialAdd, initialResults, ResultCategory, ResultCategory(..), categories)
 
 import Riders.Model exposing (Rider)
 
@@ -42,3 +42,11 @@ initialAdd =
 initialResults : List Result
 initialResults =
     [ Result 1 1 1 "9000" CatA ]
+
+categories : List ResultCategory
+categories = [ Amateurs
+             , Basislidmaatschap
+             , CatA
+             , CatB
+             , Unknown
+             ]

@@ -42,7 +42,7 @@ header app =
                     [ (userLi app)
                     , [ li [] [ a [ href "#races" ] [ text "Races" ] ]
                       , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
-                      , li [] [ a [ href "#results" ] [ text "Results" ] ]
+                      --, li [] [ a [ href "#results" ] [ text "Results" ] ]
                       ]
                     ]
                 )

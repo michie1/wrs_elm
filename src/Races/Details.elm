@@ -18,19 +18,13 @@ import Markdown
 
 import App.Msg
 import App.Routing
-import Html exposing (Html, button, span, li, i, h2, h3, ul, li, a, div, text, table, tbody, thead, tr, td, th, br, p)
+import Html exposing (Html, button, span, li, i, h2, h3, h5, ul, li, a, div, text, table, tbody, thead, tr, td, th, br, p)
 import Html.Attributes exposing (href, class, style)
 import Html.Events exposing (onClick, onInput)
 
-
---import Material.List as List
---import Material.Button as Button
---import Material.Options as Options exposing (Style, css)
---import Material.Typography as Typo
---import Material.Table as Table
-
 import Comments.List
 
+import List.Extra
 
 render : App.Model.App -> Int -> Html App.Msg.Msg
 render app raceId =
@@ -119,28 +113,57 @@ info race =
 
 resultsTable : Race -> List Results.Model.Result -> List Riders.Model.Rider -> Html msg
 resultsTable race results riders =
-    table []
-        [ thead []
-            [ tr []
-                [ th [] [ text "id" ]
-                , th [] [ text "Rider" ]
-                , th [] [ text "Date" ]
-                , th [] [ text "Result" ]
-                , th [] [ text "Category" ]
-                ]
-            ]
-        , tbody []
-            (results
-                |> List.map
-                    (\result ->
-                        riderRow result riders
+    let
+        --resultsByCat = Debug.log "categories" (resultsByCategory results)
+        a : String
+        a = "hoi"
+    in
+        div [] 
+            {-- [ table []
+                [ thead []
+                    [ tr []
+                        [ th [] [ text "Rider" ]
+                        , th [] [ text "Result" ]
+                        , th [] [ text "Category" ]
+                        ]
+                    ]
+                , tbody []
+                    (results
+                        |> List.map
+                            (\result ->
+                                resultRow result riders
+                            )
                     )
-            )
-        ]
+                ]
+            --}
+            [ div [] (List.map (\category -> resultsByCategory category results riders) Results.Model.categories)
+            ]
+ 
 
+resultsByCategory : Results.Model.ResultCategory -> List Results.Model.Result -> List Riders.Model.Rider -> Html msg
+resultsByCategory category results riders =
+    let
+        catResults = List.sortBy .result (List.filter (\result -> result.category == category) results)
+    in
+        case List.length catResults of
+            0 ->
+                div [] [] 
+            _ ->
+                div [] [ h5 [ ] [ text (toString category) ]
+                       , table [] 
+                               [   thead []
+                                    [ tr []
+                                        [ th [] [ text "Rider" ]
+                                        , th [] [ text "Result" ]
+                                        , th [] [ text "Category" ]
+                                        ]
+                                    ]
+                               , tbody [] (List.map (\result -> resultRow result riders) catResults)
+                               ]
+                       ]
 
-riderRow : Results.Model.Result -> List Riders.Model.Rider -> Html msg
-riderRow result riders =
+resultRow : Results.Model.Result -> List Riders.Model.Rider -> Html msg
+resultRow result riders =
     let
         maybeRider =
             List.head
@@ -157,13 +180,11 @@ riderRow result riders =
 
             Just rider ->
                 tr []
-                    [ td [] [ text (toString result.id) ]
-                    , td []
+                    [ td []
                         [ a
                             [ href ("#riders/" ++ (toString rider.id)) ]
                             [ text rider.name ]
                         ]
-                    , td [] [ text rider.name ]
                     , td [] [ text result.result ]
                     , td [] [ text (toString result.category) ]
                     ]
