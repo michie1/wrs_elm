@@ -16,8 +16,7 @@ fetchForRoute route =
         case route of
             App.Routing.RacesAdd ->
                 Cmd.batch
-                    [ 
-                    Task.attempt (always App.Msg.Noop) (Dom.focus "name")
+                    [ Task.attempt (always App.Msg.Noop) (Dom.focus "name")
                     , Task.perform
                         identity
                         (Task.succeed App.Msg.UpdateMaterialize)
@@ -26,7 +25,8 @@ fetchForRoute route =
 
             App.Routing.CommentAdd raceId ->
                 Cmd.batch
-                    [ Task.perform
+                    [ Task.attempt (always App.Msg.Noop) (Dom.focus "text")
+                    , Task.perform
                         identity
                         (Task.succeed App.Msg.UpdateMaterialize)
                     --, Dom.focus "name" |> Task.attempt FocusResult
@@ -35,7 +35,8 @@ fetchForRoute route =
 
             App.Routing.AccountLogin ->
                 Cmd.batch
-                    [ Task.perform
+                    [ Task.attempt (always App.Msg.Noop) (Dom.focus "name")
+                    , Task.perform
                         identity
                         (Task.succeed App.Msg.AccountLoginAutocomplete)
                     , Task.perform

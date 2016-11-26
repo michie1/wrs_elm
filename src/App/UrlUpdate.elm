@@ -11,6 +11,8 @@ import Comments.Model
 import Results.Model
 import Races.Model
 
+import Navigation
+
 
 onUrlLeave : App.Routing.Route -> App -> App
 onUrlLeave prevRoute prevApp =
@@ -35,21 +37,31 @@ onUrlEnter : App.Routing.Route -> App -> ( App, Cmd Msg )
 onUrlEnter route app =
     case route of
         App.Routing.AccountLogin ->
-            ( { app | accountLogin = Just Account.Model.login }
-            , App.Commands.fetchForRoute App.Routing.AccountLogin
-            )
+            case app.account of
+                Just account ->
+                    ( app, Navigation.newUrl "#account" )
+
+                Nothing ->
+                    ( { app | accountLogin = Just Account.Model.login }
+                    , App.Commands.fetchForRoute App.Routing.AccountLogin
+                    )
 
         App.Routing.AccountLoginName name ->
-            let
-                accountLogin =
-                    Account.Model.login
+            case app.account of
+                Just account ->
+                    ( app, Navigation.newUrl "#account" )
 
-                nextAccountLogin =
-                    { accountLogin | name = name }
-            in
-                ( { app | accountLogin = Just nextAccountLogin }
-                , App.Commands.fetchForRoute App.Routing.AccountLogin
-                )
+                Nothing ->
+                    let
+                        accountLogin =
+                            Account.Model.login
+
+                        nextAccountLogin =
+                            { accountLogin | name = name }
+                    in
+                        ( { app | accountLogin = Just nextAccountLogin }
+                        , App.Commands.fetchForRoute App.Routing.AccountLogin
+                        )
 
         App.Routing.ResultsAdd raceId ->
             --(Results.Update.setResultAddRace app raceId)

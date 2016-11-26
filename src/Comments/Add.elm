@@ -1,7 +1,7 @@
 module Comments.Add exposing (render)
 
 import Html exposing (Html, textarea, text, div, h2, button, i, input, label)
-import Html.Attributes exposing (value, class, type_, id, for, class, disabled)
+import Html.Attributes exposing (autofocus, value, class, type_, id, for, class, disabled)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode as Json
 import App.Msg
@@ -28,7 +28,7 @@ render app race riders =
         Just account ->
             case app.commentAdd of
                 Nothing ->
-                    div [] [ text "commentAdd not set in state" ]
+                    div [] [ text "commentAdd nothing" ]
 
                 Just commentAdd ->
                     let
@@ -46,6 +46,7 @@ render app race riders =
                                             , class " materialize-textarea"
                                               --, type_ "text"
                                             , onInput App.Msg.CommentAddSetText
+                                            , autofocus True
                                             ]
                                             []
                                         , label [ for "text" ] [ text "Comment" ]
