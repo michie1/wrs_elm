@@ -140,9 +140,14 @@ onUrlEnter route app =
                 )
 
         App.Routing.AccountSignup ->
-            ( { app | accountSignup = Just Account.Model.signup }
-            , Cmd.none
-            )
+            case app.account of
+                Just account ->
+                    ( app, Navigation.newUrl "#account" )
+
+                Nothing ->
+                    ( { app | accountSignup = Just Account.Model.signup }
+                    , Cmd.none
+                    )
 
         _ ->
             ( app, Cmd.none )
