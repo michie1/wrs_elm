@@ -192,6 +192,20 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
+        ResultAddStrava link ->
+            case app.resultAdd of
+                Just resultAdd ->
+                    let
+                        nextResultAdd =
+                            { resultAdd | strava = link }
+                    in
+                        ( { app | resultAdd = Just nextResultAdd }
+                        , Cmd.none
+                        )
+
+                Nothing ->
+                    ( app, Cmd.none )
+
         SetResultAddResult value ->
             case app.resultAdd of
                 Just resultAdd ->

@@ -22,6 +22,7 @@ type Msg
     | SetRiderName String
     | ResultAdd
     | ResultAddCategory Results.Model.ResultCategory
+    | ResultAddStrava String
     | SetResultAddResult String
       --| SetResultRider String
     | SetResultRiderName String

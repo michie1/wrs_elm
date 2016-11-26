@@ -18,8 +18,8 @@ import Markdown
 
 import App.Msg
 import App.Routing
-import Html exposing (Html, button, span, li, i, h2, h3, h5, ul, li, a, div, text, table, tbody, thead, tr, td, th, br, p)
-import Html.Attributes exposing (href, class, style)
+import Html exposing (Html, img, button, span, li, i, h2, h3, h5, ul, li, a, div, text, table, tbody, thead, tr, td, th, br, p)
+import Html.Attributes exposing (target, src, href, class, style)
 import Html.Events exposing (onClick, onInput)
 
 import Comments.List
@@ -63,7 +63,7 @@ render app raceId =
                             ]
                         , h3 [] [ text "Comments" ]
                         , addCommentButton race
-                        , Comments.List.render app race
+                        --, Comments.List.render app race
                         , commentsUl app.comments race app.riders
                         ]
 
@@ -155,7 +155,6 @@ resultsByCategory category results riders =
                                     [ tr []
                                         [ th [] [ text "Rider" ]
                                         , th [] [ text "Result" ]
-                                        , th [] [ text "Category" ]
                                         ]
                                     ]
                                , tbody [] (List.map (\result -> resultRow result riders) catResults)
@@ -185,10 +184,28 @@ resultRow result riders =
                             [ href ("#riders/" ++ (toString rider.id)) ]
                             [ text rider.name ]
                         ]
-                    , td [] [ text result.result ]
-                    , td [] [ text (toString result.category) ]
+                    --, td [] [ text result.result ]
+                    , resultTd result.result result.strava
                     ]
 
+resultTd : String -> Maybe String -> Html msg
+resultTd result maybeStrava =
+    td [] 
+        [ span [] [ text result ]
+        , stravaSpan maybeStrava
+        ]
+
+stravaSpan : Maybe String -> Html msg
+stravaSpan maybeStrava =
+    case maybeStrava of
+        Just strava ->
+            span [ style [("margin-left", "5px")] ] 
+                [ a [ href strava, target "_blank" ] 
+                    [ img [ src "https://d3nn82uaxijpm6.cloudfront.net/favicon-16x16.png" ] [ ]
+                    ]
+                ]
+        Nothing ->
+            span [] []
 
 commentsUl : List Comments.Model.Comment -> Race -> List Riders.Model.Rider -> Html msg
 commentsUl comments race riders =

@@ -134,7 +134,7 @@ resultCategory string =
 
 result : Json.Decode.Decoder Results.Model.Result
 result =
-    Json.Decode.map5 Results.Model.Result
+    Json.Decode.map6 Results.Model.Result
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "riderId" Json.Decode.int)
         (Json.Decode.field "raceId" Json.Decode.int)
@@ -144,6 +144,7 @@ result =
                 |> Json.Decode.andThen decodeResultCategory
             )
         )
+        (Json.Decode.field "strava" (Json.Decode.maybe Json.Decode.string))
 
 
 page : Json.Decode.Decoder String

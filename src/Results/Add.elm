@@ -27,39 +27,49 @@ render race resultAdd riders results =
     let
         submitDisabled =
             not (riderNameExists resultAdd.riderName riders)
-                || resultAdd.result
-                == ""
+                || resultAdd.result == ""
+                || ( resultAdd.strava /= "" && not (String.contains "strava.com" resultAdd.strava) )
 
         -- TODO: button is enabled although result already exists
     in
         div []
             [ h2 [] [ text ("Add result for " ++ race.name) ]
-            , div []
-                [ div [ class "row" ]
-                    [ div [ class "input-field col s6" ]
-                        [ input [ id "result"
-                                , type_ "text"
-                                , onInput App.Msg.SetResultAddResult
-                                , autofocus True
-                                ] []
-                        , label [ for "result" ] [ text "Result" ]
-                        ]
-                    ]
-                , div [ class "row" ]
-                    [ div [ class "input-field col s6" ]
-                        [ input
-                            [ id "rider"
+            , div [ class "row" ]
+                [ div [ class "input-field col s6" ]
+                    [ input [ id "result"
                             , type_ "text"
-                            , value resultAdd.riderName
-                            , onInput App.Msg.SetResultRiderName
-                            , class "autocomplete"
-                            ]
-                            []
-                        , label [ for "rider" ] [ text ("Rider: " ++ resultAdd.riderName) ]
+                            , onInput App.Msg.SetResultAddResult
+                            , autofocus True
+                            ] []
+                    , label [ for "result" ] [ text "Result" ]
+                    ]
+                ]
+            , div [ class "row" ]
+                [ div [ class "input-field col s6" ]
+                    [ input
+                        [ id "rider"
+                        , type_ "text"
+                        , value resultAdd.riderName
+                        , onInput App.Msg.SetResultRiderName
+                        , class "autocomplete"
                         ]
+                        []
+                    , label [ for "rider" ] [ text ("Rider: " ++ resultAdd.riderName) ]
                     ]
                 ]
             , div [ class "row" ] [ categoryButtons ]
+            , div [ class "row" ]
+                [ div [ class "input-field col s6" ]
+                    [ input
+                        [ id "strava"
+                        , type_ "text"
+                        , value resultAdd.strava
+                        , onInput App.Msg.ResultAddStrava
+                        ]
+                        []
+                    , label [ for "rider" ] [ text ("Strava") ]
+                    ]
+                ]
             , div [ class "row" ]
                 [ button
                     [ class "waves-effect waves-light btn"

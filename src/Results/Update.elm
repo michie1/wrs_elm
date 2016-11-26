@@ -20,6 +20,13 @@ addResult app =
             case (getRiderByName resultAdd.riderName app.riders) of
                 Just rider ->
                     let
+                        maybeStrava = case resultAdd.strava of
+                            "" ->
+                                Nothing
+
+                            link ->
+                                Just link
+
                         result =
                             Results.Model.Result
                                 (calcResultId app.results)
@@ -27,6 +34,7 @@ addResult app =
                                 resultAdd.raceId
                                 resultAdd.result
                                 resultAdd.category
+                                maybeStrava
                     in
                         --if (Debug.log "new result rider id: " result.riderId) == 0 then
                         --   ( Nothing, Cmd.none )

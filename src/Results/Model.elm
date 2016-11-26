@@ -17,6 +17,7 @@ type alias Result =
     , raceId : Int
     , result : String
     , category : ResultCategory
+    , strava: Maybe String
     }
 
 
@@ -26,6 +27,7 @@ type alias ResultAdd =
     , riders : List Rider
     , result : String
     , category : ResultCategory
+    , strava : String
     }
 
 
@@ -36,12 +38,13 @@ initialAdd =
     , riders = []
     , result = ""
     , category = Amateurs
+    , strava = ""
     }
 
 
 initialResults : List Result
 initialResults =
-    [ Result 1 1 1 "9000" CatA ]
+    [ Result 1 1 1 "9000" CatA Nothing ]
 
 categories : List ResultCategory
 categories = [ Amateurs
