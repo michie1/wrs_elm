@@ -1,7 +1,7 @@
 module App.View exposing (render)
 
-import Html exposing (Html, h2, button, nav, div, text, span, a, input, ul, li)
-import Html.Attributes exposing (href, id, class)
+import Html exposing (Html, h2, button, nav, div, text, span, a, input, ul, li, node)
+import Html.Attributes exposing (attribute, href, id, class)
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import App.Routing
@@ -60,7 +60,11 @@ render app =
 
 mainView : App -> Html Msg
 mainView app =
-    div [ class "container" ] [ viewPage app ]
+    div [ class "container" ] 
+        [ viewPage app
+        , node "paper-input"
+            [ attribute "label" "Name" ] []
+        ]
 
 
 viewPage : App -> Html Msg
