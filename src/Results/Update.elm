@@ -1,7 +1,6 @@
 module Results.Update
     exposing
-        ( {--setResultAddRider, --}
-          setResultAddRace
+        ( setResultAddRace
         , addResult
         , setRider
         )
@@ -36,9 +35,6 @@ addResult app =
                                 resultAdd.category
                                 maybeStrava
                     in
-                        --if (Debug.log "new result rider id: " result.riderId) == 0 then
-                        --   ( Nothing, Cmd.none )
-                        --else
                         if resultExists result app.results then
                             ( Nothing, Debug.log "result already exists" Cmd.none )
                         else
@@ -127,7 +123,6 @@ setResultAddRace app raceId =
                 resultAddWithRaceId =
                     { resultAdd | raceId = raceId }
             in
-                --( setResultAdd app (setResultRace resultAdd raceId)
                 ( { app | resultAdd = Just resultAddWithRaceId }
                 , Cmd.none
                 )

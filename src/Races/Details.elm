@@ -1,11 +1,7 @@
 module Races.Details exposing (..)
 
---import Races.Msg as Races exposing (Msg(..))
-
 import App.Model
 
-
---exposing (Mdl)
 
 import Races.Model exposing (Race)
 import Riders.Model
@@ -13,8 +9,6 @@ import Results.Model
 import Comments.Model
 import Markdown
 
-
---exposing (Mdl)
 
 import App.Msg
 import App.Routing
@@ -63,7 +57,6 @@ render app raceId =
                             ]
                         , h3 [] [ text "Comments" ]
                         , addCommentButton race
-                        --, Comments.List.render app race
                         , commentsUl app.comments race app.riders
                         ]
 
@@ -72,13 +65,8 @@ addResultButton : Races.Model.Race -> Html App.Msg.Msg
 addResultButton race =
     button
         [ class "waves-effect waves-light btn"
-          --, type_ "submit"
-          --, onClick App.Msg.AddRace
         , onClick (App.Msg.NavigateTo (App.Routing.ResultsAdd race.id))
-          --, onClick (App.Msg.GoTo (App.Page.CommentAdd race.id))
-          -- Button.onClick (App.Msg.GoTo (App.Page.ResultsAdd race.id))
         , Html.Attributes.name "action"
-          --, disabled submitDisabled
         ]
         [ text "Add result" ]
 
@@ -87,12 +75,8 @@ addCommentButton : Races.Model.Race -> Html App.Msg.Msg
 addCommentButton race =
     button
         [ class "waves-effect waves-light btn"
-          --, type_ "submit"
-          --, onClick App.Msg.AddRace
-          --, onClick (App.Msg.GoTo (App.Page.CommentAdd race.id))
         , onClick (App.Msg.NavigateTo (App.Routing.CommentAdd race.id))
         , Html.Attributes.name "action"
-          --, disabled submitDisabled
         ]
         [ text "Add Comment" ]
 
@@ -114,28 +98,10 @@ info race =
 resultsTable : Race -> List Results.Model.Result -> List Riders.Model.Rider -> Html msg
 resultsTable race results riders =
     let
-        --resultsByCat = Debug.log "categories" (resultsByCategory results)
         a : String
         a = "hoi"
     in
         div [] 
-            {-- [ table []
-                [ thead []
-                    [ tr []
-                        [ th [] [ text "Rider" ]
-                        , th [] [ text "Result" ]
-                        , th [] [ text "Category" ]
-                        ]
-                    ]
-                , tbody []
-                    (results
-                        |> List.map
-                            (\result ->
-                                resultRow result riders
-                            )
-                    )
-                ]
-            --}
             [ div [] (List.map (\category -> resultsByCategory category results riders) Results.Model.categories)
             ]
  
@@ -184,7 +150,6 @@ resultRow result riders =
                             [ href ("#riders/" ++ (toString rider.id)) ]
                             [ text rider.name ]
                         ]
-                    --, td [] [ text result.result ]
                     , resultTd result.result result.strava
                     ]
 
@@ -219,9 +184,6 @@ commentsUl comments race riders =
 
 
 
---[ span [ class "title" ] [ text "
-
-
 commentLi : Comments.Model.Comment -> Maybe Riders.Model.Rider -> Html msg
 commentLi comment maybeRider =
     case maybeRider of
@@ -238,7 +200,6 @@ commentLi comment maybeRider =
                 , p []
                     [ span [] [ text comment.datetime ]
                     , br [] []
-                      --, span [] [ text comment.text ]
                     , Markdown.toHtml [ class "content" ] comment.text
                     ]
                 ]

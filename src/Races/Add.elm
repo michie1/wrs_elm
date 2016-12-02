@@ -4,17 +4,9 @@ import Html exposing (Html, p, form, button, div, text, span, input, ul, li, a, 
 import Html.Attributes exposing (autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
 
-
---import Material.Textfield as Textfield
---import Material.Options as Options exposing (css)
---import App.Model exposing (Mdl)
-
 import App.Msg
 import Races.Model exposing (Race)
 import App.Msg
-
-
---import Date
 
 
 render : Races.Model.Add -> Html App.Msg.Msg

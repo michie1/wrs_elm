@@ -7,26 +7,18 @@ import Comments.Model
 import Json.Decode
 
 
--- exposing ((:=))
---import Json.Decode.Extra
-
-
 race : Json.Decode.Decoder Races.Model.Race
 race =
     Json.Decode.map4 Races.Model.Race
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "date" Json.Decode.string)
-        --(Json.Decode.field "category" decodeCategory)
         (Json.Decode.field "category"
             (Json.Decode.string
                 |> Json.Decode.andThen decodeCategory
             )
         )
 
-
-
---(Json.Decode.andThen Json.Decode.string decodeCategory))
 
 
 decodeCategory : String -> Json.Decode.Decoder Races.Model.Category
@@ -37,8 +29,6 @@ decodeCategory string =
 category : String -> Races.Model.Category
 
 
-
---Json.Decode.Decoder Races.Model.Category
 
 
 category string =
@@ -109,9 +99,6 @@ decodeResultCategory string =
 
 resultCategory : String -> Results.Model.ResultCategory
 
-
-
---Json.Decode.Decoder Races.Model.Category
 
 
 resultCategory string =

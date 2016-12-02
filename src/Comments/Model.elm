@@ -34,8 +34,6 @@ initialComments =
 
 
 
---initialAdd : { riderIndex : Int, raceId : Int, text : String }
-
 
 initialAdd : Add
 initialAdd =

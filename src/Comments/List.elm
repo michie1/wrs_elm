@@ -9,8 +9,6 @@ import Html exposing (Html, div, text, a, table, thead, tbody, tr, td, th)
 import Html.Attributes exposing (href)
 
 
---import Material.Table as Table
-
 
 render : App.Model.App -> Races.Model.Race -> Html App.Msg.Msg
 render app race =

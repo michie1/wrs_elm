@@ -1,6 +1,3 @@
---port module App.Update exposing (update, updateWithStorage, calcRaceId)
-
-
 port module App.Update exposing (update, calcRaceId)
 
 import App.Model exposing (App)
@@ -25,9 +22,6 @@ import Set
 import Json.Decode
 
 
--- exposing ((:=))
---import Json.Encode
-
 import App.Decoder
 import Date
 import Time
@@ -48,11 +42,6 @@ type alias StoredApp =
 port saveState : String -> Cmd msg
 
 
-
---port setStorage : StoredApp -> Cmd msg
---port setAutocomplete : String -> Cmd msg
-
-
 port resetState : String -> Cmd msg
 
 
@@ -60,23 +49,6 @@ port updateMaterialize : () -> Cmd msg
 
 
 port autocomplete : ( String, List String ) -> Cmd msg
-
-
-
-{--
-updateWithStorage : Msg -> App -> ( App, Cmd Msg )
-updateWithStorage msg app =
-    let
-        ( newApp, cmds ) =
-            update msg app
-    in
-        ( newApp
-        , Cmd.batch
-            [ setStorage (StoredApp (toString newApp.page) newApp.riders newApp.races newApp.comments newApp.results)
-            , cmds
-            ]
-        )
---}
 
 
 update : Msg -> App -> ( App, Cmd Msg )
@@ -94,15 +66,12 @@ update msg app =
                                     Races.Model.Race
                                         (calcRaceId app.races)
                                         raceAdd.name
-                                        dateString -- raceAdd.dateString
+                                        dateString 
                                         raceAdd.category
-
-                                --Races.Model.Classic
                             in
                                 ( { app
                                     | races =
                                         (newRace :: app.races)
-                                        --, raceAdd = Nothing
                                   }
                                 , Navigation.newUrl ("#races/" ++ (toString newRace.id))
                                 )
@@ -231,13 +200,10 @@ update msg app =
             case app.commentAdd of
                 Just commentAdd ->
                     let
-                        --account =
-                        --riderId = account.id
                         commentAddWithText =
                             { commentAdd
                                 | text =
                                     text
-                                    --, riderId = riderId
                             }
                     in
                         ( { app | commentAdd = Just commentAddWithText }
@@ -247,7 +213,6 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-        --Comments.Update.setText app text
         CommentAddSetRiderName riderName ->
             case app.commentAdd of
                 Just commentAdd ->
@@ -294,16 +259,9 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-        {--
-        GoTo page ->
-            ( app
-            , (Navigation.newUrl (App.Page.toHash page))
-            )
-    --}
         Save ->
             ( app
             , saveState (Debug.log "alert message" "message")
-              --, Cmd.none
             )
 
         Log message ->
@@ -318,9 +276,6 @@ update msg app =
         Reset ->
             ( App.Model.initial, Cmd.none )
 
-        --( app
-        --, (resetState "reset")
-        --)
         UpdateMaterialize ->
             let
                 bla =
@@ -368,13 +323,6 @@ update msg app =
                 _ ->
                     ( app, Cmd.none )
 
-        {--
-            case page of
-              "resultAdd" ->
-                 ( app, App.Msg.SetResultRiderName value )
-
-              _ ->
-            --}
         SetNow maybeDate ->
             ( { app | now = maybeDate }
             , Cmd.none
@@ -392,8 +340,6 @@ update msg app =
                                 Nothing ->
                                     ""
 
-                        --raceAdd =
-                        -- Races.Model.Add "" (Just dateFormatted) Races.Model.Classic
                         raceAdd = { currentRaceAdd | 
                                         dateString = Just dateFormatted }
                     in
@@ -408,11 +354,9 @@ update msg app =
             let
                 yesterdayTask =
                     Task.perform
-                        --(always (App.Msg.SetRaceAddYesterday2 Nothing))
                         (Just >> App.Msg.SetRaceAddYesterday2)
                         Date.now
             in
-                --( app, yesterdayTask )
                 ( app, Cmd.batch [ yesterdayTask, updateMaterialize () ] )
 
         SetRaceAddYesterday2 maybeDate ->
@@ -441,7 +385,6 @@ update msg app =
             let
                 todayTask =
                     Task.perform
-                        --(always (App.Msg.SetRaceAddToday2 Nothing))
                         (Just >> App.Msg.SetRaceAddToday2)
                         Date.now
             in
@@ -490,7 +433,6 @@ update msg app =
                     , comments = comments
                     , results = results
                   }
-                  --, Cmd.none
                 , (Navigation.newUrl ("#" ++ page))
                 )
 
@@ -752,6 +694,5 @@ formatDate date =
 setRaceAdd : Cmd Msg
 setRaceAdd =
     Task.perform
-        --(always (App.Msg.SetRaceAdd Nothing))
         (Just >> App.Msg.SetRaceAdd)
         Date.now

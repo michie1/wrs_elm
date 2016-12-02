@@ -42,7 +42,6 @@ header app =
                     [ (userLi app)
                     , [ li [] [ a [ href "#races" ] [ text "Races" ] ]
                       , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
-                      --, li [] [ a [ href "#results" ] [ text "Results" ] ]
                       ]
                     ]
                 )
@@ -62,8 +61,6 @@ mainView : App -> Html Msg
 mainView app =
     div [ class "container" ] 
         [ viewPage app
-        , node "paper-input"
-            [ attribute "label" "Name" ] []
         ]
 
 
@@ -128,8 +125,6 @@ viewPage app =
                     in
                         case maybeRace of
                             Nothing ->
-                                --Navigation.newUrl (App.Page.toHash app.page)
-                                --App.Msg.GoTo app.page
                                 div []
                                     [ text "Race does not exist. Adding result not possible." ]
 
@@ -148,8 +143,6 @@ viewPage app =
             in
                 case maybeRace of
                     Nothing ->
-                        --Navigation.newUrl (App.Page.toHash app.page)
-                        --App.Msg.GoTo app.page
                         div []
                             [ text "Race does not exist. Adding comment not possible." ]
 

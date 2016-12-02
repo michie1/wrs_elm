@@ -1,7 +1,5 @@
 module App.UrlUpdate exposing (urlUpdate)
 
---urlUpdate : Result String App.Routing.Route -> App -> ( App, Cmd Msg )
-
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import App.Routing
@@ -64,7 +62,6 @@ onUrlEnter route app =
                         )
 
         App.Routing.ResultsAdd raceId ->
-            --(Results.Update.setResultAddRace app raceId)
             let
                 resultAdd =
                     Results.Model.initialAdd
@@ -89,12 +86,10 @@ onUrlEnter route app =
                     }
             in
                 ( { app | resultAdd = Just resultAddWithRaceId }
-                  --, Cmd.none
                 , App.Commands.fetchForRoute (App.Routing.ResultsAdd raceId)
                 )
 
         App.Routing.CommentAdd raceId ->
-            --Comments.Update.setRaceId app raceId
             case app.account of
                 Just account ->
                     let
@@ -117,7 +112,6 @@ onUrlEnter route app =
                             Debug.log "urlUpdate CommentAdd" raceId
                     in
                         ( { app | commentAdd = Just commentAddWithRaceId }
-                          --, Cmd.none
                         , App.Commands.fetchForRoute (App.Routing.CommentAdd raceId)
                         )
 
@@ -127,7 +121,6 @@ onUrlEnter route app =
                     )
 
         App.Routing.RacesAdd ->
-            --( { app | raceAdd = Just raceAdd }
             let
                 a =
                     Debug.log "urlUpdate" "RacesAdd"

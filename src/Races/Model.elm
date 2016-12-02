@@ -15,7 +15,6 @@ type alias Race =
     { id : Int
     , name :
         String
-        --, date : Date.Date
     , date : String
     , category : Category
     }
@@ -27,15 +26,6 @@ type alias Add =
     , category : Category
     }
 
-
-
-{--
-empty : Add
-empty =
-    { name = ""
-    , date = "date"
-    }
---}
 
 
 initialRaces : List Race

@@ -20,7 +20,9 @@ fetchForRoute route =
                     , Task.perform
                         identity
                         (Task.succeed App.Msg.UpdateMaterialize)
-                    , setRaceAdd
+                    , Task.perform
+                        (Just >> App.Msg.SetRaceAdd)
+                        Date.now
                     ]
 
             App.Routing.CommentAdd raceId ->
@@ -57,10 +59,3 @@ fetchForRoute route =
 
             _ ->
                 Cmd.none
-
-
-setRaceAdd : Cmd Msg
-setRaceAdd =
-    Task.perform
-        (Just >> App.Msg.SetRaceAdd)
-        Date.now

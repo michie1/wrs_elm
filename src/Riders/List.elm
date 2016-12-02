@@ -5,42 +5,15 @@ import Html.Attributes exposing (href)
 import Riders.Model exposing (Rider)
 
 
---import Material.Button as Button
---import Material.Options as Options exposing (css)
---import Material.Typography as Typo
---import Material.Table as Table
-
 import App.Model
 import App.Routing
 import App.Msg
 
 
-{--
-heading : String -> Html App.Msg.Msg
-heading title =
-      Options.styled
-        Html.p
-        [ Typo.display2 ]
-        [ text title ]
---}
-
-
 render : List Rider -> Html App.Msg.Msg
 render riders =
     div []
-        [ --heading "Riders"
-          {--, div []
-            [ Button.render App.Msg.Mdl
-                [ 0 ]
-                mdl
-                [ Button.raised
-                , Button.onClick (App.Msg.GoTo App.Page.RidersAdd)
-                ]
-                [ text "Add"
-                ]
-            ]
-        --}
-          riderTable riders
+        [ riderTable riders
         ]
 
 

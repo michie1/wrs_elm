@@ -6,11 +6,6 @@ import Html.Events exposing (onInput, onClick, on)
 import Json.Decode as Json
 
 
---import Material.Button as Button
---import Material.Textfield as Textfield
---import Material.Typography as Typo
---import Material.Options as Options exposing (css)
-
 import App.Msg
 import Results.Model
 import Races.Model

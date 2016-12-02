@@ -1,12 +1,8 @@
 module Riders.Details exposing (..)
 
---import Riders.Msg as Riders exposing (Msg(..))
-
 import App.Model
 import Riders.Model exposing (Rider)
 
-
---exposing (Mdl)
 
 import App.Msg
 import App.Model
@@ -14,17 +10,8 @@ import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, l
 import Html.Attributes exposing (class, href)
 
 
---import Material.List as List
---import Material.Options as Options exposing (Style, css)
---import Material.Typography as Typo
---import Material.Table as Table
-
 import Results.Model
 import Races.Model
-
-
---render : Maybe Rider -> List Results.Model.Result -> Mdl -> Html App.Msg.Msg
---render maybeRider results mdl =
 
 
 render : App.Model.App -> Int -> Html App.Msg.Msg

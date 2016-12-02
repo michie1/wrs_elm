@@ -9,8 +9,7 @@ import App.Msg
 render : List Results.Model.Result -> Html App.Msg.Msg
 render results =
     div []
-        [ --heading "Results"
-          resultsTable results
+        [ resultsTable results
         ]
 
 

@@ -8,10 +8,6 @@ import Comments.Model exposing (Comment, Add, initialAdd)
 import Riders.Model
 
 
--- Exposed
---add : App -> ( App, Cmd Msg )
-
-
 new : Int -> String -> App -> ( Comment, Cmd Msg )
 new id datetime app =
     case app.commentAdd of
@@ -27,7 +23,6 @@ new id datetime app =
                                 Comment
                                     id
                                     datetime
-                                    -- "01-02-2013"
                                     commentAdd.raceId
                                     rider.id
                                     commentAdd.text

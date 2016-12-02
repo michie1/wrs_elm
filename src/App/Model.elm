@@ -1,14 +1,8 @@
 module App.Model exposing (App, initial)
 
---, Mdl, initial)
 
 import Dict exposing (Dict)
 
-
---import Material
---import App.Msg exposing (Msg(..))
---import RaceAdd.Msg as RaceAdd
---import RaceAdd.Model exposing (RaceAdd)
 
 import App.Routing as Routing exposing (Route(..))
 import Races.Model
@@ -39,11 +33,6 @@ type alias App =
     }
 
 
-
---type alias Mdl =
---Material.Model
-
-
 initial : App
 initial =
     (App
@@ -55,15 +44,11 @@ initial =
         Riders.Model.empty
         Results.Model.initialResults
         Nothing
-        -- Results.Model.empty
         Comments.Model.initialComments
         Nothing
-        -- Comments.Model.initialAdd
         Nothing
-        --Nothing
         Account.Model.initial
         Nothing
         Nothing
         (Tuple.first Keyboard.Extra.init)
-     --Material.model
     )

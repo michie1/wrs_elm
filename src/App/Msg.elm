@@ -24,9 +24,7 @@ type Msg
     | ResultAddCategory Results.Model.ResultCategory
     | ResultAddStrava String
     | SetResultAddResult String
-      --| SetResultRider String
     | SetResultRiderName String
-      --| ResultAddSetRiderId Int
     | CommentAddSetText String
     | CommentAddSetRiderName String
     | CommentAdd
@@ -40,13 +38,10 @@ type Msg
     | SetRaceAddYesterday
     | SetRaceAddYesterday2 (Maybe Date.Date)
     | SetRaceAddToday
-      --(Maybe Date.Date)
     | SetRaceAddToday2 (Maybe Date.Date)
     | UpdateMaterialize
     | ResultAddAutocomplete Int
-      -- Send
     | SetAutocomplete ( String, String )
-      -- Receive
     | NavigateTo Route
     | UrlUpdate Route
     | AccountLogin
@@ -62,6 +57,3 @@ type Msg
 
     | Noop 
 
-
-
---| Mdl (Material.Msg Msg)
