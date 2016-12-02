@@ -22,8 +22,19 @@ userLi : App -> List (Html App.Msg.Msg)
 userLi app =
     case app.account of
         Just account ->
-            [ li [] [ a [ href "#account" ] [ text account.name ] ]
-            ]
+            let 
+                content = case account.licence of 
+                            Just licence -> 
+                                [ text account.name ]
+
+                            Nothing ->
+                                [ text account.name
+                                , span [ class "new badge" ] [ text "1" ]
+                                ]
+            in
+                [ li [] [ a [ href "#account" ] content ]
+                ]
+                -- [ text account.name ] ]
 
         Nothing ->
             [ li [] [ a [ href "#account/login" ] [ text "Login" ] ]

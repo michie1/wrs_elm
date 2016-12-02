@@ -44,25 +44,25 @@ category string =
             Races.Model.Unknown
 
 
-decodeLicence : String -> Json.Decode.Decoder Riders.Model.Licence
+decodeLicence : String -> Json.Decode.Decoder (Maybe Riders.Model.Licence)
 decodeLicence string =
     Json.Decode.succeed (licence string)
 
 
-licence : String -> Riders.Model.Licence
+licence : String -> Maybe Riders.Model.Licence
 licence string =
     case string of
         "elite" ->
-            Riders.Model.Elite
+            Just Riders.Model.Elite
 
         "amteurs" ->
-            Riders.Model.Amateurs
+            Just Riders.Model.Amateurs
 
         "basislidmaatschap" ->
-            Riders.Model.Basislidmaatschap
+            Just Riders.Model.Basislidmaatschap
 
         _ ->
-            Riders.Model.Other
+            Nothing
 
 
 rider : Json.Decode.Decoder Riders.Model.Rider
@@ -71,9 +71,7 @@ rider =
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "licence"
-            (Json.Decode.string
-                |> Json.Decode.andThen decodeLicence
-            )
+                (Json.Decode.andThen decodeLicence Json.Decode.string)
         )
 
 

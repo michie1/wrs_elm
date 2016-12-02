@@ -508,7 +508,7 @@ update msg app =
                             Riders.Model.Rider
                                 ((List.length app.riders) + 1)
                                 accountSignup.name
-                                Riders.Model.Amateurs
+                                Nothing
                     in
                         ( { app | riders = (newRider :: app.riders) }
                         , Navigation.newUrl ("#account/login/" ++ newRider.name)
@@ -536,7 +536,7 @@ update msg app =
                 Just account ->
                     let
                         nextAccount =
-                            { account | licence = licence }
+                            { account | licence = Just licence }
                     in
                         ( { app
                             | account = Just nextAccount
@@ -593,7 +593,7 @@ updateRiderLicence riderId licence riders =
                 riderLicence =
                     case rider.id == riderId of
                         True ->
-                            licence
+                            Just licence
 
                         False ->
                             rider.licence

@@ -29,8 +29,4 @@ signup =
 
 initial : Maybe Riders.Model.Rider
 initial =
-    Just (Riders.Model.Rider 2 "Henk" Riders.Model.Amateurs)
-
-
-
---Nothing
+    Just (Riders.Model.Rider 2 "Henk" Nothing)

@@ -142,20 +142,32 @@ signup app =
 
 licence : App -> Riders.Model.Rider -> Html App.Msg.Msg
 licence app account =
-    div []
-        [ h4 [] [ text "Change Licence" ]
-        , licenceRadio "elite" "Elite" Riders.Model.Elite account.licence
-        , licenceRadio "amateurs" "Amateurs" Riders.Model.Amateurs account.licence
-        , licenceRadio "basislidmaatschap" "Basislidmaatschap" Riders.Model.Basislidmaatschap account.licence
-        , licenceRadio "other" "Other" Riders.Model.Other account.licence
-        ]
-
-
-licenceRadio : String -> String -> Riders.Model.Licence -> Riders.Model.Licence -> Html App.Msg.Msg
-licenceRadio licenceName licenceText licence currentLicence =
     let
-        isChecked =
-            licence == currentLicence
+        licenceHeading = case account.licence of
+                    Just account ->
+                        [ text "Change licence" ]
+                    Nothing ->
+                        [ text "Set licence"
+                        , span [ class "new badge" ] [ text "1" ]
+                        ]
+    in
+        div []
+            [ h4 [] licenceHeading
+            , licenceRadio "elite" "Elite" Riders.Model.Elite account.licence
+            , licenceRadio "amateurs" "Amateurs" Riders.Model.Amateurs account.licence
+            , licenceRadio "basislidmaatschap" "Basislidmaatschap" Riders.Model.Basislidmaatschap account.licence
+            , licenceRadio "other" "Other" Riders.Model.Other account.licence
+            ]
+
+
+licenceRadio : String -> String -> Riders.Model.Licence -> Maybe Riders.Model.Licence -> Html App.Msg.Msg
+licenceRadio licenceName licenceText licence maybeCurrentLicence =
+    let
+        isChecked = case maybeCurrentLicence of
+            Just currentLicence ->
+                licence == currentLicence
+            Nothing ->
+                False
     in
         p []
             [ input [ id licenceName, name "licence", type_ "radio", checked isChecked, onClick (App.Msg.AccountLicence licence) ] []

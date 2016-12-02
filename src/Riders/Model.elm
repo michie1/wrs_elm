@@ -11,7 +11,7 @@ type Licence
 type alias Rider =
     { id : Int
     , name : String
-    , licence : Licence
+    , licence : Maybe Licence
     }
 
 
@@ -22,12 +22,12 @@ type alias RiderAdd =
 
 empty : RiderAdd
 empty =
-    { rider = (Rider 0 "empty" Other)
+    { rider = (Rider 0 "empty" (Just Other))
     }
 
 
 initialRiders : List Rider
 initialRiders =
-    [ Rider 1 "Michiel" Elite
-    , Rider 2 "Henk" Amateurs
+    [ Rider 1 "Michiel" (Just Elite)
+    , Rider 2 "Henk" (Just Amateurs)
     ]
