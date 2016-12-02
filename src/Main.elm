@@ -1,8 +1,6 @@
 port module Main exposing (..)
 
 import Navigation
-
-
 import App.Model exposing (App)
 import App.Routing
 import App.Msg exposing (Msg(..))
@@ -13,8 +11,6 @@ import Riders.Model
 import Races.Model
 import Results.Model
 import Comments.Model
-
-
 import Task
 import Date
 import Keyboard.Extra
@@ -26,7 +22,6 @@ type alias Flags =
     , results : List Results.Model.Result
     , comments : List Comments.Model.Comment
     }
-
 
 
 main : Program Never App Msg
@@ -45,7 +40,6 @@ parser location =
     UrlUpdate (App.Routing.routeParser location)
 
 
-
 init : Navigation.Location -> ( App, Cmd Msg )
 init location =
     let
@@ -62,6 +56,7 @@ init location =
             ]
         )
 
+
 now : Cmd Msg
 now =
     Task.perform
@@ -74,7 +69,9 @@ port log : (String -> msg) -> Sub msg
 
 port setState : (String -> msg) -> Sub msg
 
+
 port setAutocomplete : (( String, String ) -> msg) -> Sub msg
+
 
 subscriptions : App -> Sub Msg
 subscriptions app =

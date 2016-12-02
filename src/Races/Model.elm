@@ -27,7 +27,6 @@ type alias Add =
     }
 
 
-
 initialRaces : List Race
 initialRaces =
     [ Race 1 "race a" "31-10-2016" Criterium

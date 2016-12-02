@@ -19,12 +19,13 @@ addResult app =
             case (getRiderByName resultAdd.riderName app.riders) of
                 Just rider ->
                     let
-                        maybeStrava = case resultAdd.strava of
-                            "" ->
-                                Nothing
+                        maybeStrava =
+                            case resultAdd.strava of
+                                "" ->
+                                    Nothing
 
-                            link ->
-                                Just link
+                                link ->
+                                    Just link
 
                         result =
                             Results.Model.Result

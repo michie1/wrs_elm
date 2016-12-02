@@ -1,9 +1,6 @@
 module App.Model exposing (App, initial)
 
-
 import Dict exposing (Dict)
-
-
 import App.Routing as Routing exposing (Route(..))
 import Races.Model
 import Riders.Model

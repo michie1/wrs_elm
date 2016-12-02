@@ -31,8 +31,8 @@ fetchForRoute route =
                     , Task.perform
                         identity
                         (Task.succeed App.Msg.UpdateMaterialize)
-                    --, Dom.focus "name" |> Task.attempt FocusResult
-                    --, Task.perform identity (Task.succeed (Dom.focus "name"))
+                      --, Dom.focus "name" |> Task.attempt FocusResult
+                      --, Task.perform identity (Task.succeed (Dom.focus "name"))
                     ]
 
             App.Routing.AccountLogin ->

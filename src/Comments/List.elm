@@ -9,7 +9,6 @@ import Html exposing (Html, div, text, a, table, thead, tbody, tr, td, th)
 import Html.Attributes exposing (href)
 
 
-
 render : App.Model.App -> Races.Model.Race -> Html App.Msg.Msg
 render app race =
     div []

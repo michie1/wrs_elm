@@ -20,8 +20,6 @@ import Debug
 import Array
 import Set
 import Json.Decode
-
-
 import App.Decoder
 import Date
 import Time
@@ -29,6 +27,7 @@ import Date.Extra
 import Task
 import Keyboard.Extra
 import Dom
+
 
 type alias StoredApp =
     { page : String
@@ -58,15 +57,16 @@ update msg app =
             case app.raceAdd of
                 Just raceAdd ->
                     case raceAdd.name /= "" of
-                        True -> 
+                        True ->
                             let
-                                dateString = Maybe.withDefault "" raceAdd.dateString
+                                dateString =
+                                    Maybe.withDefault "" raceAdd.dateString
 
                                 newRace =
                                     Races.Model.Race
                                         (calcRaceId app.races)
                                         raceAdd.name
-                                        dateString 
+                                        dateString
                                         raceAdd.category
                             in
                                 ( { app
@@ -75,6 +75,7 @@ update msg app =
                                   }
                                 , Navigation.newUrl ("#races/" ++ (toString newRace.id))
                                 )
+
                         False ->
                             ( app, Cmd.none )
 
@@ -330,7 +331,7 @@ update msg app =
 
         SetRaceAdd maybeNow ->
             case app.raceAdd of
-                Just currentRaceAdd -> 
+                Just currentRaceAdd ->
                     let
                         dateFormatted =
                             case maybeNow of
@@ -340,8 +341,10 @@ update msg app =
                                 Nothing ->
                                     ""
 
-                        raceAdd = { currentRaceAdd | 
-                                        dateString = Just dateFormatted }
+                        raceAdd =
+                            { currentRaceAdd
+                                | dateString = Just dateFormatted
+                            }
                     in
                         ( { app | raceAdd = Just raceAdd }
                         , Cmd.none
@@ -558,22 +561,29 @@ update msg app =
                     ( app, Cmd.none )
 
         KeyboardMsg keyMsg ->
-          let
-            a = Debug.log "keyMsg" keyMsg
-            ( keyboardModel, keyboardCmd ) = Keyboard.Extra.update keyMsg app.keyboardModel
-            cmd = case ( Keyboard.Extra.isPressed Keyboard.Extra.Enter keyboardModel && app.raceAdd /= Nothing ) of
-                True -> 
-                    Task.perform identity (Task.succeed RaceAdd)
-                False ->
-                    Cmd.none
-          in
-            ( { app | keyboardModel = keyboardModel }
-            , cmd
-            -- , Cmd.map KeyboardMsg keyboardCmd TODO: check why it looks like its not needed now
-            )
+            let
+                a =
+                    Debug.log "keyMsg" keyMsg
+
+                ( keyboardModel, keyboardCmd ) =
+                    Keyboard.Extra.update keyMsg app.keyboardModel
+
+                cmd =
+                    case (Keyboard.Extra.isPressed Keyboard.Extra.Enter keyboardModel && app.raceAdd /= Nothing) of
+                        True ->
+                            Task.perform identity (Task.succeed RaceAdd)
+
+                        False ->
+                            Cmd.none
+            in
+                ( { app | keyboardModel = keyboardModel }
+                , cmd
+                  -- , Cmd.map KeyboardMsg keyboardCmd TODO: check why it looks like its not needed now
+                )
 
         Noop ->
             ( app, Cmd.none )
+
 
 updateRiderLicence : Int -> Riders.Model.Licence -> List Riders.Model.Rider -> List Riders.Model.Rider
 updateRiderLicence riderId licence riders =

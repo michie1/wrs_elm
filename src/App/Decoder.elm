@@ -20,17 +20,12 @@ race =
         )
 
 
-
 decodeCategory : String -> Json.Decode.Decoder Races.Model.Category
 decodeCategory string =
     Json.Decode.succeed (category string)
 
 
 category : String -> Races.Model.Category
-
-
-
-
 category string =
     case string of
         "Klassieker" ->
@@ -98,9 +93,6 @@ decodeResultCategory string =
 
 
 resultCategory : String -> Results.Model.ResultCategory
-
-
-
 resultCategory string =
     case string of
         "amateurs" ->

@@ -54,6 +54,4 @@ type Msg
     | AccountLicence Riders.Model.Licence
     | KeyDown Keyboard.KeyCode
     | KeyboardMsg Keyboard.Extra.Msg
-
-    | Noop 
-
+    | Noop

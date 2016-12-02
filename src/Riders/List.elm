@@ -3,8 +3,6 @@ module Riders.List exposing (render)
 import Html exposing (Html, a, div, text, span, input, ul, li, table, td, tr, th, thead, tbody)
 import Html.Attributes exposing (href)
 import Riders.Model exposing (Rider)
-
-
 import App.Model
 import App.Routing
 import App.Msg

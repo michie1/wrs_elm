@@ -59,7 +59,7 @@ render app =
 
 mainView : App -> Html Msg
 mainView app =
-    div [ class "container" ] 
+    div [ class "container" ]
         [ viewPage app
         ]
 

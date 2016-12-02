@@ -1,24 +1,19 @@
 module Races.Details exposing (..)
 
 import App.Model
-
-
 import Races.Model exposing (Race)
 import Riders.Model
 import Results.Model
 import Comments.Model
 import Markdown
-
-
 import App.Msg
 import App.Routing
 import Html exposing (Html, img, button, span, li, i, h2, h3, h5, ul, li, a, div, text, table, tbody, thead, tr, td, th, br, p)
 import Html.Attributes exposing (target, src, href, class, style)
 import Html.Events exposing (onClick, onInput)
-
 import Comments.List
-
 import List.Extra
+
 
 render : App.Model.App -> Int -> Html App.Msg.Msg
 render app raceId =
@@ -99,33 +94,38 @@ resultsTable : Race -> List Results.Model.Result -> List Riders.Model.Rider -> H
 resultsTable race results riders =
     let
         a : String
-        a = "hoi"
+        a =
+            "hoi"
     in
-        div [] 
+        div []
             [ div [] (List.map (\category -> resultsByCategory category results riders) Results.Model.categories)
             ]
- 
+
 
 resultsByCategory : Results.Model.ResultCategory -> List Results.Model.Result -> List Riders.Model.Rider -> Html msg
 resultsByCategory category results riders =
     let
-        catResults = List.sortBy .result (List.filter (\result -> result.category == category) results)
+        catResults =
+            List.sortBy .result (List.filter (\result -> result.category == category) results)
     in
         case List.length catResults of
             0 ->
-                div [] [] 
+                div [] []
+
             _ ->
-                div [] [ h5 [ ] [ text (toString category) ]
-                       , table [] 
-                               [   thead []
-                                    [ tr []
-                                        [ th [] [ text "Rider" ]
-                                        , th [] [ text "Result" ]
-                                        ]
-                                    ]
-                               , tbody [] (List.map (\result -> resultRow result riders) catResults)
-                               ]
-                       ]
+                div []
+                    [ h5 [] [ text (toString category) ]
+                    , table []
+                        [ thead []
+                            [ tr []
+                                [ th [] [ text "Rider" ]
+                                , th [] [ text "Result" ]
+                                ]
+                            ]
+                        , tbody [] (List.map (\result -> resultRow result riders) catResults)
+                        ]
+                    ]
+
 
 resultRow : Results.Model.Result -> List Riders.Model.Rider -> Html msg
 resultRow result riders =
@@ -153,24 +153,28 @@ resultRow result riders =
                     , resultTd result.result result.strava
                     ]
 
+
 resultTd : String -> Maybe String -> Html msg
 resultTd result maybeStrava =
-    td [] 
+    td []
         [ span [] [ text result ]
         , stravaSpan maybeStrava
         ]
+
 
 stravaSpan : Maybe String -> Html msg
 stravaSpan maybeStrava =
     case maybeStrava of
         Just strava ->
-            span [ style [("margin-left", "5px")] ] 
-                [ a [ href strava, target "_blank" ] 
-                    [ img [ src "https://d3nn82uaxijpm6.cloudfront.net/favicon-16x16.png" ] [ ]
+            span [ style [ ( "margin-left", "5px" ) ] ]
+                [ a [ href strava, target "_blank" ]
+                    [ img [ src "https://d3nn82uaxijpm6.cloudfront.net/favicon-16x16.png" ] []
                     ]
                 ]
+
         Nothing ->
             span [] []
+
 
 commentsUl : List Comments.Model.Comment -> Race -> List Riders.Model.Rider -> Html msg
 commentsUl comments race riders =
@@ -181,7 +185,6 @@ commentsUl comments race riders =
             )
             (filterCommentsByRace comments race)
         )
-
 
 
 commentLi : Comments.Model.Comment -> Maybe Riders.Model.Rider -> Html msg

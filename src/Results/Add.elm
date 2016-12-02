@@ -4,8 +4,6 @@ import Html exposing (Html, button, div, text, span, label, input, ul, li, h2, i
 import Html.Attributes exposing (autofocus, class, id, type_, for, disabled, value, name, checked)
 import Html.Events exposing (onInput, onClick, on)
 import Json.Decode as Json
-
-
 import App.Msg
 import Results.Model
 import Races.Model
@@ -22,8 +20,9 @@ render race resultAdd riders results =
     let
         submitDisabled =
             not (riderNameExists resultAdd.riderName riders)
-                || resultAdd.result == ""
-                || ( resultAdd.strava /= "" && not (String.contains "strava.com" resultAdd.strava) )
+                || resultAdd.result
+                == ""
+                || (resultAdd.strava /= "" && not (String.contains "strava.com" resultAdd.strava))
 
         -- TODO: button is enabled although result already exists
     in
@@ -31,11 +30,13 @@ render race resultAdd riders results =
             [ h2 [] [ text ("Add result for " ++ race.name) ]
             , div [ class "row" ]
                 [ div [ class "input-field col s6" ]
-                    [ input [ id "result"
-                            , type_ "text"
-                            , onInput App.Msg.SetResultAddResult
-                            , autofocus True
-                            ] []
+                    [ input
+                        [ id "result"
+                        , type_ "text"
+                        , onInput App.Msg.SetResultAddResult
+                        , autofocus True
+                        ]
+                        []
                     , label [ for "result" ] [ text "Result" ]
                     ]
                 ]

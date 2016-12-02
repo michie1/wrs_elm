@@ -3,7 +3,6 @@ module Races.Add exposing (render)
 import Html exposing (Html, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
 import Html.Attributes exposing (autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
-
 import App.Msg
 import Races.Model exposing (Race)
 import App.Msg
@@ -19,6 +18,7 @@ render raceAdd =
             case raceAdd.dateString of
                 Just dateString ->
                     dateString
+
                 Nothing ->
                     ""
 
@@ -30,11 +30,13 @@ render raceAdd =
             , div []
                 [ div [ class "row" ]
                     [ div [ class "input-field col s6" ]
-                        [ input [ id "name"
-                                , type_ "text"
-                                , onInput App.Msg.SetRaceName
-                                , autofocus True 
-                                ] []
+                        [ input
+                            [ id "name"
+                            , type_ "text"
+                            , onInput App.Msg.SetRaceName
+                            , autofocus True
+                            ]
+                            []
                         , label [ for "name" ] [ text ("Name " ++ name) ]
                         ]
                     ]

@@ -33,8 +33,6 @@ initialComments =
     ]
 
 
-
-
 initialAdd : Add
 initialAdd =
     { raceId = 0

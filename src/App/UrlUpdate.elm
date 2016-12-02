@@ -8,7 +8,6 @@ import Account.Model
 import Comments.Model
 import Results.Model
 import Races.Model
-
 import Navigation
 
 
@@ -124,8 +123,8 @@ onUrlEnter route app =
             let
                 a =
                     Debug.log "urlUpdate" "RacesAdd"
-                    
-                raceAdd = 
+
+                raceAdd =
                     Races.Model.Add "" Nothing Races.Model.Classic
             in
                 ( { app | raceAdd = Just raceAdd }

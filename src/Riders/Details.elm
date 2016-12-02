@@ -2,14 +2,10 @@ module Riders.Details exposing (..)
 
 import App.Model
 import Riders.Model exposing (Rider)
-
-
 import App.Msg
 import App.Model
 import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, li, span, h2, p)
 import Html.Attributes exposing (class, href)
-
-
 import Results.Model
 import Races.Model
 
