@@ -40,9 +40,9 @@ header app =
             , ul [ id "nav-mobile", class "right" ]
                 (List.concat
                     [ (userLi app)
-                    , [ li [] [ a [ href "#races" ] [ text "Races" ] ]
-                      , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
-                      ]
+                    --, [ li [] [ a [ href "#races" ] [ text "Races" ] ]
+                      -- , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
+                    --  ]
                     ]
                 )
             ]

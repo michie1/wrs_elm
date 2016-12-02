@@ -25,7 +25,7 @@ raceTable races results =
                 [ th [] [ text "Name" ]
                 , th [] [ text "Date" ]
                 , th [] [ text "Category" ]
-                , th [] [ text "# Participants" ]
+                , th [] [ text "Riders" ]
                 ]
             ]
         , tbody []
