@@ -55,3 +55,6 @@ type Msg
     | KeyDown Keyboard.KeyCode
     | KeyboardMsg Keyboard.Extra.Msg
     | Noop
+    | Input String
+    | Send
+    | NewMessage String

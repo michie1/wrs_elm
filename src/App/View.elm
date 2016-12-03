@@ -2,6 +2,8 @@ module App.View exposing (render)
 
 import Html exposing (Html, h2, button, nav, div, text, span, a, input, ul, li, node)
 import Html.Attributes exposing (attribute, href, id, class)
+import Html.Events exposing (onInput, onClick)
+
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import App.Routing
@@ -67,11 +69,23 @@ render app =
         , mainView app
         ]
 
+viewMessage : String -> Html msg
+viewMessage reponse =
+    div [] [text reponse]
+
+socketView : App -> Html Msg
+socketView app =
+    div [] 
+        [ div [] (List.map viewMessage app.messages)
+        , input [onInput App.Msg.Input] []
+        , button [onClick App.Msg.Send] [text "Send"]
+        ]
 
 mainView : App -> Html Msg
 mainView app =
     div [ class "container" ]
         [ viewPage app
+        , socketView app
         ]
 
 

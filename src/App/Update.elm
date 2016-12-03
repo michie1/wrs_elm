@@ -27,6 +27,7 @@ import Date.Extra
 import Task
 import Keyboard.Extra
 import Dom
+import WebSocket
 
 
 type alias StoredApp =
@@ -584,6 +585,26 @@ update msg app =
         Noop ->
             ( app, Cmd.none )
 
+
+        Input input -> 
+            let
+                newApp = { app | input = input }
+            in 
+                ( newApp, Cmd.none )
+
+        Send ->
+            ( app
+            --, WebSocket.send "ws://echo.websocket.org" app.input
+            , WebSocket.send "ws://localhost:4000/socket/websocket" app.input
+            )
+        
+        NewMessage message ->
+            let
+                messages = message :: app.messages
+            in
+                ( { app | messages = messages }
+                , Cmd.none
+                )
 
 updateRiderLicence : Int -> Riders.Model.Licence -> List Riders.Model.Rider -> List Riders.Model.Rider
 updateRiderLicence riderId licence riders =

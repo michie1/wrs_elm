@@ -27,6 +27,8 @@ type alias App =
     , accountLogin : Maybe Account.Model.Login
     , accountSignup : Maybe Account.Model.Signup
     , keyboardModel : Keyboard.Extra.Model
+    , input : String
+    , messages : List String
     }
 
 
@@ -48,4 +50,6 @@ initial =
         Nothing
         Nothing
         (Tuple.first Keyboard.Extra.init)
+        ""
+        []
     )

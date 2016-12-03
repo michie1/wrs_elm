@@ -14,6 +14,7 @@ import Comments.Model
 import Task
 import Date
 import Keyboard.Extra
+import WebSocket
 
 
 type alias Flags =
@@ -78,4 +79,6 @@ subscriptions app =
     Sub.batch
         [ setAutocomplete App.Msg.SetAutocomplete
         , Sub.map KeyboardMsg Keyboard.Extra.subscriptions
+        --, WebSocket.listen "ws://echo.websocket.org" NewMessage
+        , WebSocket.listen "ws://localhost:4000/socket/websocket" NewMessage
         ]
