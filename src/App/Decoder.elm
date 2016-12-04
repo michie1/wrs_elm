@@ -55,7 +55,7 @@ licence string =
         "elite" ->
             Just Riders.Model.Elite
 
-        "amteurs" ->
+        "amateurs" ->
             Just Riders.Model.Amateurs
 
         "basislidmaatschap" ->

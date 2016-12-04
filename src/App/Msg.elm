@@ -12,6 +12,9 @@ import Time
 import Keyboard
 import Keyboard.Extra
 
+import Phoenix.Socket
+import Json.Encode
+
 
 type Msg
     = RaceAdd
@@ -58,3 +61,7 @@ type Msg
     | Input String
     | Send
     | NewMessage String
+    | PhoenixMsg (Phoenix.Socket.Msg Msg)
+    | ReceiveMessage Json.Encode.Value
+    | ReceiveRiders Json.Encode.Value
+    | HandleSendError Json.Encode.Value

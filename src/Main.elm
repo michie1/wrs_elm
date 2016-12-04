@@ -16,6 +16,8 @@ import Date
 import Keyboard.Extra
 import WebSocket
 
+import Phoenix.Socket
+
 
 type alias Flags =
     { riders : List Riders.Model.Rider
@@ -47,13 +49,16 @@ init location =
         route =
             Debug.log "route in init" (App.Routing.routeParser location)
 
+        ( initialApp, initialCmd ) = App.Model.initial
+
         ( app, cmd ) =
-            App.UrlUpdate.urlUpdate route App.Model.initial
+            App.UrlUpdate.urlUpdate route initialApp
     in
         ( app
         , Cmd.batch
             [ cmd
             , Cmd.map App.Msg.KeyboardMsg (Tuple.second Keyboard.Extra.init)
+            , initialCmd
             ]
         )
 
@@ -80,5 +85,6 @@ subscriptions app =
         [ setAutocomplete App.Msg.SetAutocomplete
         , Sub.map KeyboardMsg Keyboard.Extra.subscriptions
         --, WebSocket.listen "ws://echo.websocket.org" NewMessage
-        , WebSocket.listen "ws://localhost:4000/socket/websocket" NewMessage
+        -- , WebSocket.listen "ws://localhost:4000/socket/websocket" NewMessage
+        , Phoenix.Socket.listen app.phxSocket PhoenixMsg
         ]

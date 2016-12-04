@@ -2,6 +2,7 @@ port module App.Update exposing (update, calcRaceId)
 
 import App.Model exposing (App)
 import App.Routing
+import App.Decoder
 import App.Msg exposing (Msg(..))
 import App.Commands
 import App.UrlUpdate
@@ -29,6 +30,10 @@ import Keyboard.Extra
 import Dom
 import WebSocket
 
+import Phoenix.Socket
+import Phoenix.Push
+
+import Json.Encode
 
 type alias StoredApp =
     { page : String
@@ -276,7 +281,7 @@ update msg app =
                 )
 
         Reset ->
-            ( App.Model.initial, Cmd.none )
+            App.Model.initial
 
         UpdateMaterialize ->
             let
@@ -593,10 +598,50 @@ update msg app =
                 ( newApp, Cmd.none )
 
         Send ->
-            ( app
-            --, WebSocket.send "ws://echo.websocket.org" app.input
-            , WebSocket.send "ws://localhost:4000/socket/websocket" app.input
-            )
+            let
+                payload = Json.Encode.object [ ("body", Json.Encode.string app.input) ]
+                phxPush =
+                    Phoenix.Push.init "riders" "room:lobby"
+                    |> Phoenix.Push.withPayload payload
+                    |> Phoenix.Push.onOk ReceiveRiders
+                    |> Phoenix.Push.onError HandleSendError
+                (phxSocket, phxCmd) = Phoenix.Socket.push phxPush app.phxSocket
+            in
+                ( { app | phxSocket = phxSocket }
+                , Cmd.map PhoenixMsg phxCmd
+                )
+
+        ReceiveRiders message ->
+            let
+                a = Debug.log "message" message
+                resultRiders = 
+                    (Json.Decode.decodeValue
+                        (Json.Decode.field "riders" (Json.Decode.list App.Decoder.rider))
+                        message
+                    )
+                messages = (toString message) :: app.messages
+            in
+                case resultRiders of
+                    Ok riders -> 
+                        ( { app | messages = messages, riders = riders }
+                        , Cmd.none
+                        )
+                    Err _ ->
+                        ( { app | messages = messages }
+                        , Cmd.none
+                        )
+
+        ReceiveMessage message ->
+            let
+                a = Debug.log "message" message
+                messages = (toString message) :: app.messages
+            in
+                ( { app | messages = messages }
+                , Cmd.none
+                )
+
+        HandleSendError _ ->
+           ( app, Cmd.none ) 
         
         NewMessage message ->
             let
@@ -604,6 +649,14 @@ update msg app =
             in
                 ( { app | messages = messages }
                 , Cmd.none
+                )
+
+        PhoenixMsg message ->
+            let
+                ( phxSocket, phxCmd ) = Phoenix.Socket.update message app.phxSocket
+            in
+                ( { app | phxSocket = phxSocket }
+                , Cmd.map PhoenixMsg phxCmd
                 )
 
 updateRiderLicence : Int -> Riders.Model.Licence -> List Riders.Model.Rider -> List Riders.Model.Rider

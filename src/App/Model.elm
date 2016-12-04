@@ -10,6 +10,11 @@ import Date
 import Account.Model
 import Keyboard.Extra
 
+import Phoenix.Socket
+import Phoenix.Channel
+
+import App.Msg
+
 
 type alias App =
     { route : Routing.Route
@@ -29,27 +34,41 @@ type alias App =
     , keyboardModel : Keyboard.Extra.Model
     , input : String
     , messages : List String
+    , messageInProgress : String
+    , phxSocket : Phoenix.Socket.Socket App.Msg.Msg
     }
 
 
-initial : App
+initial : ( App, Cmd App.Msg.Msg )
 initial =
-    (App
-        Home
-        Dict.empty
-        Riders.Model.initialRiders
-        Races.Model.initialRaces
-        Nothing
-        Riders.Model.empty
-        Results.Model.initialResults
-        Nothing
-        Comments.Model.initialComments
-        Nothing
-        Nothing
-        Account.Model.initial
-        Nothing
-        Nothing
-        (Tuple.first Keyboard.Extra.init)
-        ""
-        []
-    )
+    let
+        channel = Phoenix.Channel.init "room:lobby"
+        (initSocket, phxCmd) =
+            Phoenix.Socket.init "ws://localhost:4000/socket/websocket"
+            |> Phoenix.Socket.withDebug
+            |> Phoenix.Socket.on "shout" "room:lobby" App.Msg.ReceiveMessage
+            |> Phoenix.Socket.join channel
+    in
+        (App
+            Home
+            Dict.empty
+            Riders.Model.initialRiders
+            Races.Model.initialRaces
+            Nothing
+            Riders.Model.empty
+            Results.Model.initialResults
+            Nothing
+            Comments.Model.initialComments
+            Nothing
+            Nothing
+            Account.Model.initial
+            Nothing
+            Nothing
+            (Tuple.first Keyboard.Extra.init)
+            ""
+            []
+            ""
+            -- (Phoenix.Socket.init "ws://localhost:4000/socket/websocket")
+            initSocket
+        , Cmd.map App.Msg.PhoenixMsg phxCmd
+        )
