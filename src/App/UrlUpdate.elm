@@ -141,6 +141,8 @@ onUrlEnter route app =
                     , Cmd.none
                     )
 
+        App.Routing.Riders ->
+            ( app, App.Commands.fetchForRoute App.Routing.Riders )
         _ ->
             ( app, Cmd.none )
 

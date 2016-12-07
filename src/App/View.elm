@@ -3,7 +3,6 @@ module App.View exposing (render)
 import Html exposing (Html, h2, button, nav, div, text, span, a, input, ul, li, node)
 import Html.Attributes exposing (attribute, href, id, class)
 import Html.Events exposing (onInput, onClick)
-
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import App.Routing
@@ -24,20 +23,21 @@ userLi : App -> List (Html App.Msg.Msg)
 userLi app =
     case app.account of
         Just account ->
-            let 
-                content = case account.licence of 
-                            Just licence -> 
-                                [ text account.name ]
+            let
+                content =
+                    case account.licence of
+                        Just licence ->
+                            [ text account.name ]
 
-                            Nothing ->
-                                [ text account.name
-                                , span [ class "new badge" ] [ text "1" ]
-                                ]
+                        Nothing ->
+                            [ text account.name
+                            , span [ class "new badge" ] [ text "1" ]
+                            ]
             in
                 [ li [] [ a [ href "#account" ] content ]
                 ]
-                -- [ text account.name ] ]
 
+        -- [ text account.name ] ]
         Nothing ->
             [ li [] [ a [ href "#account/login" ] [ text "Login" ] ]
             , li [] [ a [ href "#account/signup" ] [ text "Signup" ] ]
@@ -53,9 +53,9 @@ header app =
             , ul [ id "nav-mobile", class "right" ]
                 (List.concat
                     [ (userLi app)
-                    --, [ li [] [ a [ href "#races" ] [ text "Races" ] ]
-                      -- , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
-                    --  ]
+                      --, [ li [] [ a [ href "#races" ] [ text "Races" ] ]
+                    , [ li [] [ a [ href "#riders" ] [ text "Riders" ] ] ]
+                      --  ]
                     ]
                 )
             ]
@@ -69,17 +69,20 @@ render app =
         , mainView app
         ]
 
+
 viewMessage : String -> Html msg
 viewMessage reponse =
-    div [] [text reponse]
+    div [] [ text reponse ]
+
 
 socketView : App -> Html Msg
 socketView app =
-    div [] 
+    div []
         [ div [] (List.map viewMessage app.messages)
-        , input [onInput App.Msg.Input] []
-        , button [onClick App.Msg.Send] [text "Send"]
+        , input [ onInput App.Msg.Input ] []
+        , button [ onClick App.Msg.Send ] [ text "Send" ]
         ]
+
 
 mainView : App -> Html Msg
 mainView app =

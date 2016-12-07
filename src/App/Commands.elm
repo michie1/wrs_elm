@@ -57,5 +57,11 @@ fetchForRoute route =
                         (Task.succeed App.Msg.UpdateMaterialize)
                     ]
 
+            App.Routing.Riders ->
+                Cmd.batch 
+                    [ Task.perform
+                        identity
+                        (Task.succeed App.Msg.Send )
+                    ]
             _ ->
                 Cmd.none
