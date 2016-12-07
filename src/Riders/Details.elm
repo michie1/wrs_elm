@@ -12,34 +12,37 @@ import Races.Model
 
 render : App.Model.App -> Int -> Html App.Msg.Msg
 render app riderId =
-    let
-        maybeRider =
-            List.head
-                (List.filter
-                    (\rider -> rider.id == riderId)
-                    app.riders
-                )
-    in
-        case maybeRider of
-            Nothing ->
-                div []
-                    [ h2 [] [ text "Rider" ]
-                    , p [] [ text "Rider does not exist." ]
-                    ]
+    case app.riders of 
+        Just riders ->
+            let
+                maybeRider =
+                    List.head
+                        (List.filter
+                            (\rider -> rider.id == riderId)
+                            riders
+                        )
+            in
+                case maybeRider of
+                    Nothing ->
+                        div []
+                            [ h2 [] [ text "Rider" ]
+                            , p [] [ text "Rider does not exist." ]
+                            ]
 
-            Just rider ->
-                let
-                    results =
-                        List.filter
-                            (\result -> result.riderId == rider.id)
-                            app.results
-                in
-                    div []
-                        [ h2 [] [ text rider.name ]
-                        , info rider
-                        , resultsTable rider results app.races
-                        ]
-
+                    Just rider ->
+                        let
+                            results =
+                                List.filter
+                                    (\result -> result.riderId == rider.id)
+                                    app.results
+                        in
+                            div []
+                                [ h2 [] [ text rider.name ]
+                                , info rider
+                                , resultsTable rider results app.races
+                                ]
+        Nothing ->
+            div [] [ text "No riders loaded." ]
 
 info : Rider -> Html App.Msg.Msg
 info rider =

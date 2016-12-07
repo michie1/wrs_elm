@@ -34,7 +34,6 @@ type Msg
     | CommentAdd2 (Maybe Time.Time)
     | Save
     | Log String
-    | SetState String
     | Reset
     | SetNow (Maybe Date.Date)
     | SetRaceAdd (Maybe Date.Date)

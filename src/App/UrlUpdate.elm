@@ -142,7 +142,13 @@ onUrlEnter route app =
                     )
 
         App.Routing.Riders ->
-            ( app, App.Commands.fetchForRoute App.Routing.Riders )
+            case app.riders of
+                Just riders ->
+                    ( app, Cmd.none )
+
+                Nothing ->
+                    ( app, App.Commands.fetchForRoute App.Routing.Riders )
+
         _ ->
             ( app, Cmd.none )
 

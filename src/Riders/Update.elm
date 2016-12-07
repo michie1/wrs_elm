@@ -8,18 +8,23 @@ import Navigation
 
 addRider : App -> Rider -> ( App, Cmd Msg )
 addRider app rider =
-    let
-        newRider =
-            setRiderId rider app.riders
+    case app.riders of 
+        Just riders  ->
+            let
+                newRider =
+                    setRiderId rider riders
 
-        newApp =
-            setRiderAdd app (clearRiderName app.riderAdd.rider)
-    in
-        ( { newApp
-            | riders = (List.append [ newRider ] app.riders)
-          }
-        , Navigation.newUrl ("#riders/" ++ (toString newRider.id))
-        )
+                newApp =
+                    setRiderAdd app (clearRiderName app.riderAdd.rider)
+            in
+                ( { newApp
+                    | riders = Just (List.append [ newRider ] riders)
+                  }
+                , Navigation.newUrl ("#riders/" ++ (toString newRider.id))
+                )
+
+        Nothing ->
+            ( app, Cmd.none )
 
 
 setRiderAddName : App -> String -> ( App, Cmd Msg )

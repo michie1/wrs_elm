@@ -11,9 +11,13 @@ import Html.Attributes exposing (href)
 
 render : App.Model.App -> Races.Model.Race -> Html App.Msg.Msg
 render app race =
-    div []
-        [ commentsTable app.comments race app.riders
-        ]
+    case app.riders of 
+        Just riders ->
+            div []
+                [ commentsTable app.comments race riders
+                ]
+        Nothing ->
+            div [] [ text "No riders loaded." ]
 
 
 commentsTable : List Comments.Model.Comment -> Races.Model.Race -> List Riders.Model.Rider -> Html App.Msg.Msg

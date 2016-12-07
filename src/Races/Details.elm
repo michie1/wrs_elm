@@ -32,29 +32,32 @@ render app raceId =
                     ]
 
             Just race ->
-                let
-                    results =
-                        List.filter
-                            (\result -> result.raceId == race.id)
-                            app.results
-                in
-                    div []
-                        [ div []
-                            [ div []
-                                [ h2 [] [ text race.name ]
-                                , info race
+                case app.riders of
+                    Just riders ->
+                        let
+                            results =
+                                List.filter
+                                    (\result -> result.raceId == race.id)
+                                    app.results
+                        in
+                            div []
+                                [ div []
+                                    [ div []
+                                        [ h2 [] [ text race.name ]
+                                        , info race
+                                        ]
+                                    , div []
+                                        [ h3 [] [ text "Results" ]
+                                        , addResultButton race
+                                        ]
+                                    , resultsTable race results riders
+                                    ]
+                                , h3 [] [ text "Comments" ]
+                                , addCommentButton race
+                                , commentsUl app.comments race riders
                                 ]
-                            , div []
-                                [ h3 [] [ text "Results" ]
-                                , addResultButton race
-                                ]
-                            , resultsTable race results app.riders
-                            ]
-                        , h3 [] [ text "Comments" ]
-                        , addCommentButton race
-                        , commentsUl app.comments race app.riders
-                        ]
-
+                    Nothing -> 
+                        div [] [ text "No riders loaded." ]
 
 addResultButton : Races.Model.Race -> Html App.Msg.Msg
 addResultButton race =

@@ -101,9 +101,14 @@ viewPage app =
                 ]
 
         App.Routing.Riders ->
-            div []
-                [ Riders.List.render app.riders
-                ]
+            case app.riders of
+                Just riders ->
+                    div []
+                        [ Riders.List.render riders
+                        ]
+
+                Nothing ->
+                    div [] [ text "No riders loaded." ]
 
         App.Routing.RidersAdd ->
             div []
@@ -157,9 +162,14 @@ viewPage app =
                                     [ text "Race does not exist. Adding result not possible." ]
 
                             Just race ->
-                                div []
-                                    [ Results.Add.render race resultAdd app.riders app.results
-                                    ]
+                                case app.riders of
+                                    Just riders ->
+                                        div []
+                                            [ Results.Add.render race resultAdd riders app.results
+                                            ]
+
+                                    Nothing ->
+                                        div [] [ text "No riders loaded." ]
 
                 Nothing ->
                     div [] [ text "No resultAdd." ]
@@ -176,7 +186,7 @@ viewPage app =
 
                     Just race ->
                         div []
-                            [ Comments.Add.render app race app.riders
+                            [ Comments.Add.render app race (Maybe.withDefault [] app.riders)
                             ]
 
         App.Routing.AccountLogin ->

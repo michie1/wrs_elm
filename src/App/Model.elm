@@ -19,7 +19,7 @@ import App.Msg
 type alias App =
     { route : Routing.Route
     , cache : Dict String (List String)
-    , riders : List Riders.Model.Rider
+    , riders : Maybe (List Riders.Model.Rider)
     , races : List Races.Model.Race
     , raceAdd : Maybe Races.Model.Add
     , riderAdd : Riders.Model.RiderAdd
@@ -52,7 +52,7 @@ initial =
         (App
             Home
             Dict.empty
-            Riders.Model.initialRiders
+            Nothing --Riders.Model.initialRiders
             Races.Model.initialRaces
             Nothing
             Riders.Model.empty

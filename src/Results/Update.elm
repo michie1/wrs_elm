@@ -14,41 +14,42 @@ import Navigation
 
 addResult : App -> ( Maybe Results.Model.Result, Cmd Msg )
 addResult app =
-    case app.resultAdd of
-        Just resultAdd ->
-            case (getRiderByName resultAdd.riderName app.riders) of
-                Just rider ->
-                    let
-                        maybeStrava =
-                            case resultAdd.strava of
-                                "" ->
-                                    Nothing
+    case app.riders of
+        Just riders ->
+            case app.resultAdd of
+                Just resultAdd ->
+                    case (getRiderByName resultAdd.riderName riders) of
+                        Just rider ->
+                            let
+                                maybeStrava =
+                                    case resultAdd.strava of
+                                        "" ->
+                                            Nothing
 
-                                link ->
-                                    Just link
+                                        link ->
+                                            Just link
 
-                        result =
-                            Results.Model.Result
-                                (calcResultId app.results)
-                                rider.id
-                                resultAdd.raceId
-                                resultAdd.result
-                                resultAdd.category
-                                maybeStrava
-                    in
-                        if resultExists result app.results then
-                            ( Nothing, Debug.log "result already exists" Cmd.none )
-                        else
-                            ( Just result
-                            , Navigation.newUrl ("#races/" ++ toString (Debug.log "raceId" result.raceId))
-                            )
-
+                                result =
+                                    Results.Model.Result
+                                        (calcResultId app.results)
+                                        rider.id
+                                        resultAdd.raceId
+                                        resultAdd.result
+                                        resultAdd.category
+                                        maybeStrava
+                            in
+                                if resultExists result app.results then
+                                    ( Nothing, Debug.log "result already exists" Cmd.none )
+                                else
+                                    ( Just result
+                                    , Navigation.newUrl ("#races/" ++ toString (Debug.log "raceId" result.raceId))
+                                    )
+                        Nothing ->
+                            ( Nothing, Cmd.none )
                 Nothing ->
                     ( Nothing, Cmd.none )
-
         Nothing ->
             ( Nothing, Cmd.none )
-
 
 getRiderByName : String -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
 getRiderByName name riders =

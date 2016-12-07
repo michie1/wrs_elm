@@ -10,33 +10,39 @@ import Riders.Model
 
 new : Int -> String -> App -> ( Comment, Cmd Msg )
 new id datetime app =
-    case app.commentAdd of
-        Just commentAdd ->
-            let
-                maybeRider =
-                    getRiderByName (Debug.log "riderName" commentAdd.riderName) app.riders
-            in
-                case maybeRider of
-                    Just rider ->
-                        let
-                            comment =
-                                Comment
-                                    id
-                                    datetime
-                                    commentAdd.raceId
-                                    rider.id
-                                    commentAdd.text
-                        in
-                            ( comment
-                            , Navigation.newUrl ("#races/" ++ toString commentAdd.raceId)
-                            )
+    case app.riders of 
+        Just riders ->
+            case app.commentAdd of
+                Just commentAdd ->
+                    let
+                        maybeRider =
+                            getRiderByName (Debug.log "riderName" commentAdd.riderName) riders
+                    in
+                        case maybeRider of
+                            Just rider ->
+                                let
+                                    comment =
+                                        Comment
+                                            id
+                                            datetime
+                                            commentAdd.raceId
+                                            rider.id
+                                            commentAdd.text
+                                in
+                                    ( comment
+                                    , Navigation.newUrl ("#races/" ++ toString commentAdd.raceId)
+                                    )
 
-                    Nothing ->
-                        let
-                            a =
-                                Debug.log "New comment" "Rider unknown."
-                        in
-                            ( (Comment 0 "wrong date" 0 0 "fout"), Cmd.none )
+                            Nothing ->
+                                let
+                                    a =
+                                        Debug.log "New comment" "Rider unknown."
+                                in
+                                    ( (Comment 0 "wrong date" 0 0 "fout"), Cmd.none )
+
+                Nothing ->
+                    -- TODO: return maybe Comment and resolve where new function is used
+                    ( (Comment 0 "no commentAdd" 0 0 "fout"), Cmd.none )
 
         Nothing ->
             -- TODO: return maybe Comment and resolve where new function is used

@@ -301,13 +301,12 @@ update msg app =
                                 app.results
                             )
                         )
-
                 riders =
                     List.map
                         (\rider -> rider.name)
                         (List.filter
                             (\rider -> not (Set.member rider.id resultSet))
-                            app.riders
+                            (Maybe.withDefault [] app.riders)
                         )
             in
                 ( app, autocomplete ( "ResultAdd", riders ) )
@@ -421,30 +420,6 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-        SetState message ->
-            let
-                resultApp =
-                    Json.Decode.decodeString App.Decoder.app message
-
-                { races, riders, comments, results, page } =
-                    Maybe.withDefault
-                        { races = []
-                        , riders = []
-                        , comments = []
-                        , results = []
-                        , page = "home"
-                        }
-                        (Result.toMaybe resultApp)
-            in
-                ( { app
-                    | races = races
-                    , riders = riders
-                    , comments = comments
-                    , results = results
-                  }
-                , (Navigation.newUrl ("#" ++ page))
-                )
-
         UrlUpdate route ->
             App.UrlUpdate.urlUpdate route app
 
@@ -458,7 +433,7 @@ update msg app =
                         maybeRider =
                             getRiderByName
                                 accountLogin.name
-                                app.riders
+                                (Maybe.withDefault [] app.riders)
                     in
                         case maybeRider of
                             Just rider ->
@@ -492,7 +467,7 @@ update msg app =
         AccountLoginAutocomplete ->
             let
                 riders =
-                    List.map (\rider -> rider.name) app.riders
+                    List.map (\rider -> rider.name) (Maybe.withDefault [] app.riders)
             in
                 ( app, autocomplete ( "AccountLogin", riders ) )
 
@@ -512,11 +487,11 @@ update msg app =
                     let
                         newRider =
                             Riders.Model.Rider
-                                ((List.length app.riders) + 1)
+                                ((List.length (Maybe.withDefault [] app.riders)) + 1)
                                 accountSignup.name
                                 Nothing
                     in
-                        ( { app | riders = (newRider :: app.riders) }
+                        ( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
                         , Navigation.newUrl ("#account/login/" ++ newRider.name)
                         )
 
@@ -546,7 +521,7 @@ update msg app =
                     in
                         ( { app
                             | account = Just nextAccount
-                            , riders = (updateRiderLicence account.id licence app.riders)
+                            , riders = Just (updateRiderLicence account.id licence (Maybe.withDefault [] app.riders))
                           }
                         , Cmd.none
                         )
@@ -623,7 +598,7 @@ update msg app =
             in
                 case resultRiders of
                     Ok riders -> 
-                        ( { app | messages = messages, riders = riders }
+                        ( { app | messages = messages, riders = Just riders }
                         , Cmd.none
                         )
                     Err _ ->
