@@ -484,6 +484,7 @@ update msg app =
         AccountSignup ->
             case app.accountSignup of
                 Just accountSignup ->
+                    -- TODO do not add directly, but send websocket to add new rider
                     let
                         newRider =
                             Riders.Model.Rider
@@ -491,12 +492,44 @@ update msg app =
                                 accountSignup.name
                                 Nothing
                     in
-                        ( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
-                        , Navigation.newUrl ("#account/login/" ++ newRider.name)
+                        --( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
+                        -- , Navigation.newUrl ("#account/login/" ++ newRider.name)
+                        --)
+                        ( app
+                        , Cmd.batch 
+                            [ Task.perform
+                                identity
+                                (Task.succeed App.Msg.SocketAccountSignup) 
+                            ]
                         )
+
 
                 Nothing ->
                     ( app, Cmd.none )
+
+        SocketAccountSignup ->
+            case app.accountSignup of
+                Just accountSignup -> 
+                    let
+                        payload = Json.Encode.object [ ("name", Json.Encode.string accountSignup.name ) ]
+                        phxPush =
+                            Phoenix.Push.init "createRider" "room:lobby"
+                            |> Phoenix.Push.withPayload payload
+                            |> Phoenix.Push.onOk SocketAccountSignupResponse
+                            |> Phoenix.Push.onError HandleSendError
+                        (phxSocket, phxCmd) = Phoenix.Socket.push phxPush app.phxSocket
+                    in
+                        ( { app | phxSocket = phxSocket }
+                        , Cmd.map PhoenixMsg phxCmd
+                        )
+                Nothing ->
+                    ( app, Cmd.none )
+
+        SocketAccountSignupResponse response ->
+            let
+                a = Debug.log "response" response
+            in
+                ( app, Cmd.none )
 
         AccountSignupName name ->
             case app.accountSignup of
@@ -572,7 +605,7 @@ update msg app =
             in 
                 ( newApp, Cmd.none )
 
-        Send ->
+        Connect ->
             let
                 payload = Json.Encode.object [ ("body", Json.Encode.string app.input) ]
                 phxPush =

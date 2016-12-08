@@ -80,7 +80,7 @@ socketView app =
     div []
         [ div [] (List.map viewMessage app.messages)
         , input [ onInput App.Msg.Input ] []
-        , button [ onClick App.Msg.Send ] [ text "Send" ]
+        , button [ onClick App.Msg.Connect ] [ text "Send" ]
         ]
 
 

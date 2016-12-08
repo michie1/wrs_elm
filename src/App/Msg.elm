@@ -58,9 +58,11 @@ type Msg
     | KeyboardMsg Keyboard.Extra.Msg
     | Noop
     | Input String
-    | Send
+    | Connect
     | NewMessage String
     | PhoenixMsg (Phoenix.Socket.Msg Msg)
     | ReceiveMessage Json.Encode.Value
     | ReceiveRiders Json.Encode.Value
     | HandleSendError Json.Encode.Value
+    | SocketAccountSignup
+    | SocketAccountSignupResponse Json.Encode.Value
