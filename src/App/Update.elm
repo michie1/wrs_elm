@@ -29,11 +29,11 @@ import Task
 import Keyboard.Extra
 import Dom
 import WebSocket
-
 import Phoenix.Socket
 import Phoenix.Push
-
 import Json.Encode
+import Json.Decode
+
 
 type alias StoredApp =
     { page : String
@@ -301,6 +301,7 @@ update msg app =
                                 app.results
                             )
                         )
+
                 riders =
                     List.map
                         (\rider -> rider.name)
@@ -496,40 +497,50 @@ update msg app =
                         -- , Navigation.newUrl ("#account/login/" ++ newRider.name)
                         --)
                         ( app
-                        , Cmd.batch 
+                        , Cmd.batch
                             [ Task.perform
                                 identity
-                                (Task.succeed App.Msg.SocketAccountSignup) 
+                                (Task.succeed App.Msg.SocketAccountSignup)
                             ]
                         )
-
 
                 Nothing ->
                     ( app, Cmd.none )
 
         SocketAccountSignup ->
             case app.accountSignup of
-                Just accountSignup -> 
+                Just accountSignup ->
                     let
-                        payload = Json.Encode.object [ ("name", Json.Encode.string accountSignup.name ) ]
+                        payload =
+                            Json.Encode.object [ ( "name", Json.Encode.string accountSignup.name ) ]
+
                         phxPush =
                             Phoenix.Push.init "createRider" "room:lobby"
-                            |> Phoenix.Push.withPayload payload
-                            |> Phoenix.Push.onOk SocketAccountSignupResponse
-                            |> Phoenix.Push.onError HandleSendError
-                        (phxSocket, phxCmd) = Phoenix.Socket.push phxPush app.phxSocket
+                                |> Phoenix.Push.withPayload payload
+                                |> Phoenix.Push.onOk SocketAccountSignupResponse
+                                |> Phoenix.Push.onError HandleSendError
+
+                        ( phxSocket, phxCmd ) =
+                            Phoenix.Socket.push phxPush app.phxSocket
                     in
                         ( { app | phxSocket = phxSocket }
                         , Cmd.map PhoenixMsg phxCmd
                         )
+
                 Nothing ->
                     ( app, Cmd.none )
 
-        SocketAccountSignupResponse response ->
+        SocketAccountSignupResponse rawResponse ->
             let
-                a = Debug.log "response" response
+                name = Result.withDefault ""
+                        ( Json.Decode.decodeValue
+                          (Json.Decode.field "name" Json.Decode.string)
+                          rawResponse
+                        )
             in
-                ( app, Cmd.none )
+                ( app
+                , Navigation.newUrl ("#account/login/" ++ name)
+                )
 
         AccountSignupName name ->
             case app.accountSignup of
@@ -598,22 +609,26 @@ update msg app =
         Noop ->
             ( app, Cmd.none )
 
-
-        Input input -> 
+        Input input ->
             let
-                newApp = { app | input = input }
-            in 
+                newApp =
+                    { app | input = input }
+            in
                 ( newApp, Cmd.none )
 
         Connect ->
             let
-                payload = Json.Encode.object [ ("body", Json.Encode.string app.input) ]
+                payload =
+                    Json.Encode.object [ ( "body", Json.Encode.string app.input ) ]
+
                 phxPush =
                     Phoenix.Push.init "riders" "room:lobby"
-                    |> Phoenix.Push.withPayload payload
-                    |> Phoenix.Push.onOk ReceiveRiders
-                    |> Phoenix.Push.onError HandleSendError
-                (phxSocket, phxCmd) = Phoenix.Socket.push phxPush app.phxSocket
+                        |> Phoenix.Push.withPayload payload
+                        |> Phoenix.Push.onOk ReceiveRiders
+                        |> Phoenix.Push.onError HandleSendError
+
+                ( phxSocket, phxCmd ) =
+                    Phoenix.Socket.push phxPush app.phxSocket
             in
                 ( { app | phxSocket = phxSocket }
                 , Cmd.map PhoenixMsg phxCmd
@@ -621,19 +636,24 @@ update msg app =
 
         ReceiveRiders message ->
             let
-                a = Debug.log "message" message
-                resultRiders = 
+                a =
+                    Debug.log "message" message
+
+                resultRiders =
                     (Json.Decode.decodeValue
                         (Json.Decode.field "riders" (Json.Decode.list App.Decoder.rider))
                         message
                     )
-                messages = (toString message) :: app.messages
+
+                messages =
+                    (toString message) :: app.messages
             in
                 case resultRiders of
-                    Ok riders -> 
+                    Ok riders ->
                         ( { app | messages = messages, riders = Just riders }
                         , Cmd.none
                         )
+
                     Err _ ->
                         ( { app | messages = messages }
                         , Cmd.none
@@ -641,19 +661,23 @@ update msg app =
 
         ReceiveMessage message ->
             let
-                a = Debug.log "message" message
-                messages = (toString message) :: app.messages
+                a =
+                    Debug.log "message" message
+
+                messages =
+                    (toString message) :: app.messages
             in
                 ( { app | messages = messages }
                 , Cmd.none
                 )
 
         HandleSendError _ ->
-           ( app, Cmd.none ) 
-        
+            ( app, Cmd.none )
+
         NewMessage message ->
             let
-                messages = message :: app.messages
+                messages =
+                    message :: app.messages
             in
                 ( { app | messages = messages }
                 , Cmd.none
@@ -661,11 +685,13 @@ update msg app =
 
         PhoenixMsg message ->
             let
-                ( phxSocket, phxCmd ) = Phoenix.Socket.update message app.phxSocket
+                ( phxSocket, phxCmd ) =
+                    Phoenix.Socket.update message app.phxSocket
             in
                 ( { app | phxSocket = phxSocket }
                 , Cmd.map PhoenixMsg phxCmd
                 )
+
 
 updateRiderLicence : Int -> Riders.Model.Licence -> List Riders.Model.Rider -> List Riders.Model.Rider
 updateRiderLicence riderId licence riders =
