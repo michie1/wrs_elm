@@ -3,6 +3,7 @@ port module App.Update exposing (update, calcRaceId)
 import App.Model exposing (App)
 import App.Routing
 import App.Decoder
+import App.Encoder
 import App.Msg exposing (Msg(..))
 import App.Commands
 import App.UrlUpdate
@@ -560,12 +561,68 @@ update msg app =
             case app.account of
                 Just account ->
                     let
-                        nextAccount =
+                        nextAccount = 
                             { account | licence = Just licence }
+                    in
+                        --( { app
+                           -- | account = Just nextAccount
+                            --, riders = Just (updateRiderLicence account.id licence (Maybe.withDefault [] app.riders))
+                          --}
+                        --, Cmd.none
+                        --)
+                        ( { app | account = Just nextAccount }
+                        , Cmd.batch
+                            [ Task.perform
+                                identity
+                                (Task.succeed App.Msg.SocketAccountLicence)
+                            ]
+                        )
+
+                Nothing ->
+                    ( app, Cmd.none )
+
+        SocketAccountLicence ->
+            case app.account of
+                Just account ->
+                    let
+                        payload =
+                            --Json.Encode.object [ ( "licence", Json.Encode.string account.licence ) ]
+                            Json.Encode.object [ ( "id", Json.Encode.int account.id ), ( "licence", App.Encoder.licence account.licence ) ]
+
+                        phxPush =
+                            Phoenix.Push.init "updateRider" "room:lobby"
+                                |> Phoenix.Push.withPayload payload
+                                |> Phoenix.Push.onOk SocketAccountLicenceResponse
+                                |> Phoenix.Push.onError HandleSendError
+
+                        ( phxSocket, phxCmd ) =
+                            Phoenix.Socket.push phxPush app.phxSocket
+                    in
+                        ( { app | phxSocket = phxSocket }
+                        , Cmd.map PhoenixMsg phxCmd
+                        )
+
+                Nothing ->
+                    ( app, Cmd.none )
+
+        SocketAccountLicenceResponse rawResponse ->
+          case app.account of
+                Just account ->
+                    let
+                        licence = Debug.log "licence " 
+                            (Result.withDefault ""
+                                ( Json.Decode.decodeValue
+                                  (Json.Decode.field "licence" Json.Decode.string)
+                                  rawResponse
+                                )
+                            )
+                        nextAccount =
+                            -- { account | licence = Just licence }
+                             account 
                     in
                         ( { app
                             | account = Just nextAccount
-                            , riders = Just (updateRiderLicence account.id licence (Maybe.withDefault [] app.riders))
+                            --, riders = Just (updateRiderLicence account.id licence (Maybe.withDefault [] app.riders))
                           }
                         , Cmd.none
                         )
@@ -627,6 +684,7 @@ update msg app =
                         |> Phoenix.Push.onOk ReceiveRiders
                         |> Phoenix.Push.onError HandleSendError
                         -- TODO: listen for createdRider
+                        -- TODO: listen for updatedRider
 
                 ( phxSocket, phxCmd ) =
                     Phoenix.Socket.push phxPush app.phxSocket

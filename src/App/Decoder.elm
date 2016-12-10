@@ -63,7 +63,7 @@ licenceDecoder string =
             Json.Decode.succeed Riders.Model.Basislidmaatschap
 
         _ ->
-            Json.Decode.fail (string ++ " licence does not exists.")
+            Json.Decode.fail <| string ++ " licence does not exists."
 
 
 riderDecoder : Json.Decode.Decoder Riders.Model.Rider
@@ -72,8 +72,9 @@ riderDecoder =
         |> Json.Decode.Pipeline.required "id" Json.Decode.int
         |> Json.Decode.Pipeline.required "name" Json.Decode.string
         |> Json.Decode.Pipeline.required "licence"
-            (Json.Decode.nullable
-                (Json.Decode.string |> Json.Decode.andThen licenceDecoder)
+            ( Json.Decode.string 
+                |> Json.Decode.andThen licenceDecoder 
+                |> Json.Decode.nullable
             )
 
 

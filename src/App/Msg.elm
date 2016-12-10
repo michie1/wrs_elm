@@ -54,6 +54,8 @@ type Msg
     | AccountSignup
     | AccountSignupName String
     | AccountLicence Riders.Model.Licence
+    | SocketAccountLicence
+    | SocketAccountLicenceResponse Json.Encode.Value
     | KeyDown Keyboard.KeyCode
     | KeyboardMsg Keyboard.Extra.Msg
     | Noop
