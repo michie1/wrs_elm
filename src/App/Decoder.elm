@@ -5,6 +5,7 @@ import Results.Model
 import Riders.Model
 import Comments.Model
 import Json.Decode
+import Json.Decode.Pipeline
 
 
 race : Json.Decode.Decoder Races.Model.Race
@@ -49,6 +50,33 @@ decodeLicence string =
     Json.Decode.succeed (licence string)
 
 
+licenceDecoder : String -> Json.Decode.Decoder Riders.Model.Licence
+licenceDecoder string =
+    case string of
+        "elite" ->
+            Json.Decode.succeed Riders.Model.Elite
+
+        "amateurs" ->
+            Json.Decode.succeed Riders.Model.Amateurs
+
+        "basislidmaatschap" ->
+            Json.Decode.succeed Riders.Model.Basislidmaatschap
+
+        _ ->
+            Json.Decode.fail (string ++ " licence does not exists.")
+
+
+riderDecoder : Json.Decode.Decoder Riders.Model.Rider
+riderDecoder =
+    Json.Decode.Pipeline.decode Riders.Model.Rider
+        |> Json.Decode.Pipeline.required "id" Json.Decode.int
+        |> Json.Decode.Pipeline.required "name" Json.Decode.string
+        |> Json.Decode.Pipeline.required "licence"
+            (Json.Decode.nullable
+                (Json.Decode.string |> Json.Decode.andThen licenceDecoder)
+            )
+
+
 licence : String -> Maybe Riders.Model.Licence
 licence string =
     case string of
@@ -71,7 +99,7 @@ rider =
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "licence"
-                (Json.Decode.andThen decodeLicence Json.Decode.string)
+            (Json.Decode.andThen decodeLicence Json.Decode.string)
         )
 
 

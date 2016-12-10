@@ -626,6 +626,7 @@ update msg app =
                         |> Phoenix.Push.withPayload payload
                         |> Phoenix.Push.onOk ReceiveRiders
                         |> Phoenix.Push.onError HandleSendError
+                        -- TODO: listen for createdRider
 
                 ( phxSocket, phxCmd ) =
                     Phoenix.Socket.push phxPush app.phxSocket
@@ -641,7 +642,8 @@ update msg app =
 
                 resultRiders =
                     (Json.Decode.decodeValue
-                        (Json.Decode.field "riders" (Json.Decode.list App.Decoder.rider))
+                        --(Json.Decode.field "riders" (Json.Decode.list App.Decoder.rider))
+                        (Json.Decode.field "riders" (Json.Decode.list App.Decoder.riderDecoder))
                         message
                     )
 
@@ -654,10 +656,13 @@ update msg app =
                         , Cmd.none
                         )
 
-                    Err _ ->
-                        ( { app | messages = messages }
-                        , Cmd.none
-                        )
+                    Err errorMessage ->
+                        let
+                            b = Debug.log "ReceiveRiders" errorMessage
+                        in
+                            ( { app | messages = messages }
+                            , Cmd.none
+                            )
 
         ReceiveMessage message ->
             let
