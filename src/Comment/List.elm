@@ -4,12 +4,12 @@ import App.Model
 import App.Msg
 import Comment.Model
 import Riders.Model
-import Races.Model
+import Race.Model
 import Html exposing (Html, div, text, a, table, thead, tbody, tr, td, th)
 import Html.Attributes exposing (href)
 
 
-render : App.Model.App -> Races.Model.Race -> Html App.Msg.Msg
+render : App.Model.App -> Race.Model.Race -> Html App.Msg.Msg
 render app race =
     case app.riders of 
         Just riders ->
@@ -20,7 +20,7 @@ render app race =
             div [] [ text "No riders loaded." ]
 
 
-commentsTable : List Comment.Model.Comment -> Races.Model.Race -> List Riders.Model.Rider -> Html App.Msg.Msg
+commentsTable : List Comment.Model.Comment -> Race.Model.Race -> List Riders.Model.Rider -> Html App.Msg.Msg
 commentsTable comments race riders =
     table []
         [ thead []
@@ -41,7 +41,7 @@ commentsTable comments race riders =
         ]
 
 
-filterCommentsByRace : List Comment.Model.Comment -> Races.Model.Race -> List Comment.Model.Comment
+filterCommentsByRace : List Comment.Model.Comment -> Race.Model.Race -> List Comment.Model.Comment
 filterCommentsByRace comments race =
     List.filter
         (\comment -> comment.raceId == race.id)

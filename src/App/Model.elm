@@ -2,7 +2,7 @@ module App.Model exposing (App, initial)
 
 import Dict exposing (Dict)
 import App.Routing as Routing exposing (Route(..))
-import Races.Model
+import Race.Model
 import Riders.Model
 import Results.Model
 import Comment.Model
@@ -20,8 +20,8 @@ type alias App =
     { route : Routing.Route
     , cache : Dict String (List String)
     , riders : Maybe (List Riders.Model.Rider)
-    , races : List Races.Model.Race
-    , raceAdd : Maybe Races.Model.Add
+    , races : List Race.Model.Race
+    , raceAdd : Maybe Race.Model.Add
     , riderAdd : Riders.Model.RiderAdd
     , results : List Results.Model.Result
     , resultAdd : Maybe Results.Model.ResultAdd
@@ -55,7 +55,7 @@ initial =
             Home
             Dict.empty
             Nothing --Riders.Model.initialRiders
-            Races.Model.initialRaces
+            Race.Model.initialRaces
             Nothing
             Riders.Model.empty
             Results.Model.initialResults

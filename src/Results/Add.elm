@@ -6,7 +6,7 @@ import Html.Events exposing (onInput, onClick, on)
 import Json.Decode as Json
 import App.Msg
 import Results.Model
-import Races.Model
+import Race.Model
 import Riders.Model exposing (Rider)
 
 
@@ -15,7 +15,7 @@ riderNameExists name riders =
     List.length (List.filter (\rider -> rider.name == name) riders) > 0
 
 
-render : Races.Model.Race -> Results.Model.ResultAdd -> List Rider -> List Results.Model.Result -> Html App.Msg.Msg
+render : Race.Model.Race -> Results.Model.ResultAdd -> List Rider -> List Results.Model.Result -> Html App.Msg.Msg
 render race resultAdd riders results =
     let
         submitDisabled =
@@ -81,7 +81,7 @@ render race resultAdd riders results =
             ]
 
 
-resultExists : List Results.Model.Result -> Races.Model.Race -> Riders.Model.Rider -> Bool
+resultExists : List Results.Model.Result -> Race.Model.Race -> Riders.Model.Rider -> Bool
 resultExists results race rider =
     List.length
         (List.filter

@@ -1,14 +1,14 @@
-module Races.Add exposing (render)
+module Race.Add exposing (render)
 
 import Html exposing (Html, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
 import Html.Attributes exposing (autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
 import App.Msg
-import Races.Model exposing (Race)
+import Race.Model exposing (Race)
 import App.Msg
 
 
-render : Races.Model.Add -> Html App.Msg.Msg
+render : Race.Model.Add -> Html App.Msg.Msg
 render raceAdd =
     let
         name =
@@ -81,7 +81,7 @@ render raceAdd =
             ]
 
 
-categoryButtonCheck : String -> String -> Races.Model.Category -> Bool -> Html App.Msg.Msg
+categoryButtonCheck : String -> String -> Race.Model.Category -> Bool -> Html App.Msg.Msg
 categoryButtonCheck categoryName categoryText category isChecked =
     p []
         [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (App.Msg.RaceAddCategory category) ] []
@@ -89,7 +89,7 @@ categoryButtonCheck categoryName categoryText category isChecked =
         ]
 
 
-categoryButton : String -> String -> Races.Model.Category -> Html App.Msg.Msg
+categoryButton : String -> String -> Race.Model.Category -> Html App.Msg.Msg
 categoryButton categoryName categoryText category =
     categoryButtonCheck categoryName categoryText category False
 
@@ -97,8 +97,8 @@ categoryButton categoryName categoryText category =
 categoryButtons : Html App.Msg.Msg
 categoryButtons =
     div []
-        [ categoryButtonCheck "classic" "Klassieker" Races.Model.Classic True
-        , categoryButton "criterum" "Criterium" Races.Model.Criterium
-        , categoryButton "regiocross" "Regiocross" Races.Model.Regiocross
-        , categoryButton "other" "Other" Races.Model.Other
+        [ categoryButtonCheck "classic" "Klassieker" Race.Model.Classic True
+        , categoryButton "criterum" "Criterium" Race.Model.Criterium
+        , categoryButton "regiocross" "Regiocross" Race.Model.Regiocross
+        , categoryButton "other" "Other" Race.Model.Other
         ]

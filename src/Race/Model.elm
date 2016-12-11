@@ -1,4 +1,4 @@
-module Races.Model exposing (Add, Race, initialRaces, Category, Category(..), categoryString)
+module Race.Model exposing (Add, Race, initialRaces, Category, Category(..), categoryString)
 
 import Date
 

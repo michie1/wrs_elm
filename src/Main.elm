@@ -8,7 +8,7 @@ import App.Update
 import App.UrlUpdate
 import App.View
 import Riders.Model
-import Races.Model
+import Race.Model
 import Results.Model
 import Comment.Model
 import Task
@@ -21,7 +21,7 @@ import Phoenix.Socket
 
 type alias Flags =
     { riders : List Riders.Model.Rider
-    , races : List Races.Model.Race
+    , races : List Race.Model.Race
     , results : List Results.Model.Result
     , comments : List Comment.Model.Comment
     }

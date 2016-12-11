@@ -1,4 +1,4 @@
-module Races.Msg exposing (..)
+module Race.Msg exposing (..)
 
 
 type Msg

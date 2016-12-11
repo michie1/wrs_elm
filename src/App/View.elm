@@ -6,10 +6,10 @@ import Html.Events exposing (onInput, onClick)
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import App.Routing
-import Races.Model exposing (Race)
-import Races.Add
-import Races.List
-import Races.Details
+import Race.Model exposing (Race)
+import Race.Add
+import Race.List
+import Race.Details
 import Riders.List
 import Riders.Details
 import Riders.Add
@@ -124,12 +124,12 @@ viewPage app =
 
         App.Routing.Races ->
             div []
-                [ Races.List.render app.races app.results
+                [ Race.List.render app.races app.results
                 ]
 
         App.Routing.RacesDetails id ->
             div []
-                [ Races.Details.render
+                [ Race.Details.render
                     app
                     id
                 ]
@@ -141,7 +141,7 @@ viewPage app =
 
                 Just raceAdd ->
                     div []
-                        [ Races.Add.render raceAdd
+                        [ Race.Add.render raceAdd
                         ]
 
         App.Routing.Results ->
@@ -205,7 +205,7 @@ viewPage app =
             Account.View.signup app
 
 
-getRace : Int -> List Races.Model.Race -> Maybe Races.Model.Race
+getRace : Int -> List Race.Model.Race -> Maybe Race.Model.Race
 getRace raceId races =
     List.head
         (List.filter

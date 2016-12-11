@@ -6,12 +6,12 @@ import Html.Events exposing (onClick, onInput)
 import Json.Decode as Json
 import App.Msg
 import App.Model
-import Races.Model
+import Race.Model
 import Riders.Model exposing (Rider)
 import Comment.Model
 
 
-render : App.Model.App -> Races.Model.Race -> List Rider -> Html App.Msg.Msg
+render : App.Model.App -> Race.Model.Race -> List Rider -> Html App.Msg.Msg
 render app race riders =
     case app.account of
         Nothing ->

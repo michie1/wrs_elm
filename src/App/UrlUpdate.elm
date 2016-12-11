@@ -7,7 +7,7 @@ import App.Commands
 import Account.Model
 import Comment.Model
 import Results.Model
-import Races.Model
+import Race.Model
 import Navigation
 
 
@@ -125,7 +125,7 @@ onUrlEnter route app =
                     Debug.log "urlUpdate" "RacesAdd"
 
                 raceAdd =
-                    Races.Model.Add "" Nothing Races.Model.Classic
+                    Race.Model.Add "" Nothing Race.Model.Classic
             in
                 ( { app | raceAdd = Just raceAdd }
                 , App.Commands.fetchForRoute App.Routing.RacesAdd

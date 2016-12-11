@@ -1,6 +1,6 @@
 module App.Decoder exposing (..)
 
-import Races.Model
+import Race.Model
 import Results.Model
 import Riders.Model
 import Comment.Model
@@ -8,9 +8,9 @@ import Json.Decode
 import Json.Decode.Pipeline
 
 
-race : Json.Decode.Decoder Races.Model.Race
+race : Json.Decode.Decoder Race.Model.Race
 race =
-    Json.Decode.map4 Races.Model.Race
+    Json.Decode.map4 Race.Model.Race
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "date" Json.Decode.string)
@@ -21,28 +21,28 @@ race =
         )
 
 
-decodeCategory : String -> Json.Decode.Decoder Races.Model.Category
+decodeCategory : String -> Json.Decode.Decoder Race.Model.Category
 decodeCategory string =
     Json.Decode.succeed (category string)
 
 
-category : String -> Races.Model.Category
+category : String -> Race.Model.Category
 category string =
     case string of
         "Klassieker" ->
-            Races.Model.Classic
+            Race.Model.Classic
 
         "Criterium" ->
-            Races.Model.Criterium
+            Race.Model.Criterium
 
         "Regiocross" ->
-            Races.Model.Regiocross
+            Race.Model.Regiocross
 
         "Other" ->
-            Races.Model.Other
+            Race.Model.Other
 
         _ ->
-            Races.Model.Unknown
+            Race.Model.Unknown
 
 
 decodeLicence : String -> Json.Decode.Decoder (Maybe Riders.Model.Licence)
@@ -164,7 +164,7 @@ page =
 type alias App =
     { page : String
     , riders : List Riders.Model.Rider
-    , races : List Races.Model.Race
+    , races : List Race.Model.Race
     , comments : List Comment.Model.Comment
     , results : List Results.Model.Result
     }

@@ -7,7 +7,7 @@ import App.Encoder
 import App.Msg exposing (Msg(..))
 import App.Commands
 import App.UrlUpdate
-import Races.Model exposing (Race)
+import Race.Model exposing (Race)
 import Riders.Model
 import Comment.Model
 import Account.Model
@@ -39,7 +39,7 @@ import Json.Decode
 type alias StoredApp =
     { page : String
     , riders : List Riders.Model.Rider
-    , races : List Races.Model.Race
+    , races : List Race.Model.Race
     , comments : List Comment.Model.Comment
     , results : List Results.Model.Result
     }
@@ -70,7 +70,7 @@ update msg app =
                                     Maybe.withDefault "" raceAdd.dateString
 
                                 newRace =
-                                    Races.Model.Race
+                                    Race.Model.Race
                                         (calcRaceId app.races)
                                         raceAdd.name
                                         dateString

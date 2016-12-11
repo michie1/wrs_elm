@@ -1,7 +1,7 @@
-module Races.Details exposing (..)
+module Race.Details exposing (..)
 
 import App.Model
-import Races.Model exposing (Race)
+import Race.Model exposing (Race)
 import Riders.Model
 import Results.Model
 import Comment.Model
@@ -59,7 +59,7 @@ render app raceId =
                     Nothing -> 
                         div [] [ text "No riders loaded." ]
 
-addResultButton : Races.Model.Race -> Html App.Msg.Msg
+addResultButton : Race.Model.Race -> Html App.Msg.Msg
 addResultButton race =
     button
         [ class "waves-effect waves-light btn"
@@ -69,7 +69,7 @@ addResultButton race =
         [ text "Add result" ]
 
 
-addCommentButton : Races.Model.Race -> Html App.Msg.Msg
+addCommentButton : Race.Model.Race -> Html App.Msg.Msg
 addCommentButton race =
     button
         [ class "waves-effect waves-light btn"
@@ -211,7 +211,7 @@ commentLi comment maybeRider =
                 ]
 
 
-filterCommentsByRace : List Comment.Model.Comment -> Races.Model.Race -> List Comment.Model.Comment
+filterCommentsByRace : List Comment.Model.Comment -> Race.Model.Race -> List Comment.Model.Comment
 filterCommentsByRace comments race =
     List.filter
         (\comment -> comment.raceId == race.id)

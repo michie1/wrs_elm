@@ -4,7 +4,7 @@ module App.Msg exposing (Msg(..))
 --import Races.Model exposing (Race)
 
 import Riders.Model exposing (Rider)
-import Races.Model
+import Race.Model
 import Results.Model
 import App.Routing exposing (Route(..))
 import Date
@@ -20,7 +20,7 @@ type Msg
     = RaceAdd
     | SetRaceName String
     | SetRaceDate String
-    | RaceAddCategory Races.Model.Category
+    | RaceAddCategory Race.Model.Category
     | AddRider Rider
     | SetRiderName String
     | ResultAdd
