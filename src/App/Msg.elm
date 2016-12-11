@@ -68,3 +68,5 @@ type Msg
     | HandleSendError Json.Encode.Value
     | SocketAccountSignup
     | SocketAccountSignupResponse Json.Encode.Value
+    | OnCreatedRider Json.Encode.Value
+    | OnUpdatedRider Json.Encode.Value

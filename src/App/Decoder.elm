@@ -62,6 +62,9 @@ licenceDecoder string =
         "basislidmaatschap" ->
             Json.Decode.succeed Riders.Model.Basislidmaatschap
 
+        "other" ->
+            Json.Decode.succeed Riders.Model.Other
+
         _ ->
             Json.Decode.fail <| string ++ " licence does not exists."
 
