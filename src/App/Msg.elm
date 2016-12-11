@@ -41,14 +41,11 @@ type Msg
     | SetRaceAddToday
     | SetRaceAddToday2 (Maybe Date.Date)
     | UpdateMaterialize
-    | ResultAddAutocomplete Int
-    | SetAutocomplete ( String, String )
     | NavigateTo Route
     | UrlUpdate Route
     | AccountLogin
     | AccountLoginName String
     | AccountLoginPassword String
-    | AccountLoginAutocomplete
     | AccountLogout
     | AccountSignup
     | AccountSignupName String

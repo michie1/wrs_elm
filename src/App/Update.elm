@@ -291,46 +291,6 @@ update msg app =
             in
                 ( app, updateMaterialize () )
 
-        ResultAddAutocomplete raceId ->
-            let
-                resultSet =
-                    Set.fromList
-                        (List.map
-                            (\result -> result.riderId)
-                            (List.filter
-                                (\result -> result.raceId == raceId)
-                                app.results
-                            )
-                        )
-
-                riders =
-                    List.map
-                        (\rider -> rider.name)
-                        (List.filter
-                            (\rider -> not (Set.member rider.id resultSet))
-                            (Maybe.withDefault [] app.riders)
-                        )
-            in
-                ( app, autocomplete ( "ResultAdd", riders ) )
-
-        SetAutocomplete ( page, value ) ->
-            case page of
-                "ResultAdd" ->
-                    let
-                        a =
-                            Debug.log "page" page
-
-                        b =
-                            Debug.log "value" value
-                    in
-                        Result.Update.setRider app value
-
-                "AccountLogin" ->
-                    Account.Update.loginName app value
-
-                _ ->
-                    ( app, Cmd.none )
-
         SetNow maybeDate ->
             ( { app | now = maybeDate }
             , Cmd.none
@@ -465,13 +425,6 @@ update msg app =
 
                 Nothing ->
                     ( app, Cmd.none )
-
-        AccountLoginAutocomplete ->
-            let
-                riders =
-                    List.map (\rider -> rider.name) (Maybe.withDefault [] app.riders)
-            in
-                ( app, autocomplete ( "AccountLogin", riders ) )
 
         AccountLogout ->
             case app.account of
