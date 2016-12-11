@@ -29,8 +29,6 @@ type alias App =
     , account : Maybe Rider.Model.Rider
     , accountLogin : Maybe Account.Model.Login
     , accountSignup : Maybe Account.Model.Signup
-    , keyboardModel : Keyboard.Extra.Model
-    , input : String
     , messages : List String
     , messageInProgress : String
     , phxSocket : Phoenix.Socket.Socket App.Msg.Msg
@@ -67,8 +65,6 @@ initial =
             Account.Model.initial
             Nothing
             Nothing
-            (Tuple.first Keyboard.Extra.init)
-            ""
             []
             ""
             -- (Phoenix.Socket.init "ws://localhost:4000/socket/websocket")

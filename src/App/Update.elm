@@ -618,18 +618,11 @@ update msg app =
         Noop ->
             ( app, Cmd.none )
 
-        Input input ->
-            let
-                newApp =
-                    { app | input = input }
-            in
-                ( newApp, Cmd.none )
-
         Connect ->
             let
                 payload =
                     Json.Encode.object
-                        [ ( "body", Json.Encode.string app.input ) ]
+                        [ ( "body", Json.Encode.string "bodyValue" ) ]
 
                 phxPush =
                     Phoenix.Push.init "riders" "room:lobby"
@@ -639,8 +632,6 @@ update msg app =
                         |>
                             Phoenix.Push.onError HandleSendError
 
-                -- TODO: listen for createdRider
-                -- TODO: listen for updatedRider
                 ( phxSocket, phxCmd ) =
                     Phoenix.Socket.push phxPush app.phxSocket
             in

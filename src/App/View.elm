@@ -75,20 +75,10 @@ viewMessage reponse =
     div [] [ text reponse ]
 
 
-socketView : App -> Html Msg
-socketView app =
-    div []
-        [ div [] (List.map viewMessage app.messages)
-        , input [ onInput App.Msg.Input ] []
-        , button [ onClick App.Msg.Connect ] [ text "Send" ]
-        ]
-
-
 mainView : App -> Html Msg
 mainView app =
     div [ class "container" ]
         [ viewPage app
-          --, socketView app
         ]
 
 

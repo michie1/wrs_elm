@@ -50,7 +50,6 @@ type Msg
     | NavigateTo Route
     | UrlUpdate Route
     | Noop
-    | Input String
     | Connect
     | NewMessage String
     | PhoenixMsg (Phoenix.Socket.Msg Msg)
