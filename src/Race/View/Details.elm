@@ -1,9 +1,9 @@
-module Race.Details exposing (..)
+module Race.View.Details exposing (..)
 
 import App.Model
 import Race.Model exposing (Race)
 import Rider.Model
-import Results.Model
+import Result.Model
 import Comment.Model
 import Markdown
 import App.Msg
@@ -11,7 +11,7 @@ import App.Routing
 import Html exposing (Html, img, button, span, li, i, h2, h3, h5, ul, li, a, div, text, table, tbody, thead, tr, td, th, br, p)
 import Html.Attributes exposing (target, src, href, class, style)
 import Html.Events exposing (onClick, onInput)
-import Comment.List
+import Comment.View.List
 import List.Extra
 
 
@@ -93,7 +93,7 @@ info race =
         ]
 
 
-resultsTable : Race -> List Results.Model.Result -> List Rider.Model.Rider -> Html msg
+resultsTable : Race -> List Result.Model.Result -> List Rider.Model.Rider -> Html msg
 resultsTable race results riders =
     let
         a : String
@@ -101,11 +101,11 @@ resultsTable race results riders =
             "hoi"
     in
         div []
-            [ div [] (List.map (\category -> resultsByCategory category results riders) Results.Model.categories)
+            [ div [] (List.map (\category -> resultsByCategory category results riders) Result.Model.categories)
             ]
 
 
-resultsByCategory : Results.Model.ResultCategory -> List Results.Model.Result -> List Rider.Model.Rider -> Html msg
+resultsByCategory : Result.Model.ResultCategory -> List Result.Model.Result -> List Rider.Model.Rider -> Html msg
 resultsByCategory category results riders =
     let
         catResults =
@@ -130,7 +130,7 @@ resultsByCategory category results riders =
                     ]
 
 
-resultRow : Results.Model.Result -> List Rider.Model.Rider -> Html msg
+resultRow : Result.Model.Result -> List Rider.Model.Rider -> Html msg
 resultRow result riders =
     let
         maybeRider =

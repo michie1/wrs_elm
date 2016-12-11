@@ -5,7 +5,7 @@ module App.Msg exposing (Msg(..))
 
 import Rider.Model exposing (Rider)
 import Race.Model
-import Results.Model
+import Result.Model
 import App.Routing exposing (Route(..))
 import Date
 import Time
@@ -24,7 +24,7 @@ type Msg
     | AddRider Rider
     | SetRiderName String
     | ResultAdd
-    | ResultAddCategory Results.Model.ResultCategory
+    | ResultAddCategory Result.Model.ResultCategory
     | ResultAddStrava String
     | SetResultAddResult String
     | SetResultRiderName String

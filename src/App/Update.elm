@@ -11,9 +11,9 @@ import Race.Model exposing (Race)
 import Rider.Model
 import Comment.Model
 import Account.Model
-import Results.Model
+import Result.Model
 import Rider.Update
-import Results.Update
+import Result.Update
 import Comment.Update
 import Account.Update
 import Navigation
@@ -41,7 +41,7 @@ type alias StoredApp =
     , riders : List Rider.Model.Rider
     , races : List Race.Model.Race
     , comments : List Comment.Model.Comment
-    , results : List Results.Model.Result
+    , results : List Result.Model.Result
     }
 
 
@@ -144,7 +144,7 @@ update msg app =
         ResultAdd ->
             let
                 ( maybeResult, cmd ) =
-                    Results.Update.addResult app
+                    Result.Update.addResult app
             in
                 case maybeResult of
                     Just result ->
@@ -202,7 +202,7 @@ update msg app =
                 a =
                     Debug.log "name" name
             in
-                Results.Update.setRider app name
+                Result.Update.setRider app name
 
         CommentAddSetText text ->
             case app.commentAdd of
@@ -323,7 +323,7 @@ update msg app =
                         b =
                             Debug.log "value" value
                     in
-                        Results.Update.setRider app value
+                        Result.Update.setRider app value
 
                 "AccountLogin" ->
                     Account.Update.loginName app value

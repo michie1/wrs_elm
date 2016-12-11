@@ -7,15 +7,15 @@ import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import App.Routing
 import Race.Model exposing (Race)
-import Race.Add
-import Race.List
-import Race.Details
-import Rider.List
-import Rider.Details
-import Rider.Add
-import Results.List
-import Results.Add
-import Comment.Add
+import Race.View.Add
+import Race.View.List
+import Race.View.Details
+import Rider.View.List
+import Rider.View.Details
+import Rider.View.Add
+import Result.View.List
+import Result.View.Add
+import Comment.View.Add
 import Account.View
 
 
@@ -104,7 +104,7 @@ viewPage app =
             case app.riders of
                 Just riders ->
                     div []
-                        [ Rider.List.render riders
+                        [ Rider.View.List.render riders
                         ]
 
                 Nothing ->
@@ -112,24 +112,24 @@ viewPage app =
 
         App.Routing.RidersAdd ->
             div []
-                [ Rider.Add.render app.riderAdd.rider
+                [ Rider.View.Add.render app.riderAdd.rider
                 ]
 
         App.Routing.RidersDetails id ->
             div []
-                [ Rider.Details.render
+                [ Rider.View.Details.render
                     app
                     id
                 ]
 
         App.Routing.Races ->
             div []
-                [ Race.List.render app.races app.results
+                [ Race.View.List.render app.races app.results
                 ]
 
         App.Routing.RacesDetails id ->
             div []
-                [ Race.Details.render
+                [ Race.View.Details.render
                     app
                     id
                 ]
@@ -141,12 +141,12 @@ viewPage app =
 
                 Just raceAdd ->
                     div []
-                        [ Race.Add.render raceAdd
+                        [ Race.View.Add.render raceAdd
                         ]
 
         App.Routing.Results ->
             div []
-                [ Results.List.render app.results
+                [ Result.View.List.render app.results
                 ]
 
         App.Routing.ResultsAdd raceId ->
@@ -165,7 +165,7 @@ viewPage app =
                                 case app.riders of
                                     Just riders ->
                                         div []
-                                            [ Results.Add.render race resultAdd riders app.results
+                                            [ Result.View.Add.render race resultAdd riders app.results
                                             ]
 
                                     Nothing ->
@@ -186,7 +186,7 @@ viewPage app =
 
                     Just race ->
                         div []
-                            [ Comment.Add.render app race (Maybe.withDefault [] app.riders)
+                            [ Comment.View.Add.render app race (Maybe.withDefault [] app.riders)
                             ]
 
         App.Routing.AccountLogin ->

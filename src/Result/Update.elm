@@ -1,4 +1,4 @@
-module Results.Update
+module Result.Update
     exposing
         ( setResultAddRace
         , addResult
@@ -6,13 +6,13 @@ module Results.Update
         )
 
 import App.Model exposing (App)
-import Results.Model exposing (ResultAdd)
+import Result.Model exposing (ResultAdd)
 import Rider.Model
 import App.Msg exposing (Msg(..))
 import Navigation
 
 
-addResult : App -> ( Maybe Results.Model.Result, Cmd Msg )
+addResult : App -> ( Maybe Result.Model.Result, Cmd Msg )
 addResult app =
     case app.riders of
         Just riders ->
@@ -30,7 +30,7 @@ addResult app =
                                             Just link
 
                                 result =
-                                    Results.Model.Result
+                                    Result.Model.Result
                                         (calcResultId app.results)
                                         rider.id
                                         resultAdd.raceId
@@ -66,7 +66,7 @@ firstRiderId riders =
             rider.id
 
 
-resultExists : Results.Model.Result -> List Results.Model.Result -> Bool
+resultExists : Result.Model.Result -> List Result.Model.Result -> Bool
 resultExists result results =
     (List.length
         (List.filter
@@ -133,26 +133,26 @@ setResultAddRace app raceId =
             ( app, Cmd.none )
 
 
-setResultResult : Results.Model.Result -> String -> Results.Model.Result
+setResultResult : Result.Model.Result -> String -> Result.Model.Result
 setResultResult result value =
     { result | result = value }
 
 
-setResultRider : Results.Model.Result -> Int -> Results.Model.Result
+setResultRider : Result.Model.Result -> Int -> Result.Model.Result
 setResultRider result rider =
     { result | riderId = rider }
 
 
-setResultRace : Results.Model.Result -> Int -> Results.Model.Result
+setResultRace : Result.Model.Result -> Int -> Result.Model.Result
 setResultRace result rider =
     { result | raceId = rider }
 
 
-clearResult : Results.Model.Result -> Results.Model.Result
+clearResult : Result.Model.Result -> Result.Model.Result
 clearResult result =
     setResultResult result ""
 
 
-calcResultId : List Results.Model.Result -> Int
+calcResultId : List Result.Model.Result -> Int
 calcResultId results =
     (List.length results) + 1

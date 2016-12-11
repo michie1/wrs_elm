@@ -1,13 +1,13 @@
-module Race.List exposing (..)
+module Race.View.List exposing (..)
 
 import Race.Model exposing (Race, categoryString)
-import Results.Model
+import Result.Model
 import App.Msg
 import Html exposing (Html, h2, div, text, a, table, tr, td, th, thead, tbody)
 import Html.Attributes exposing (href, class)
 
 
-render : List Race -> List Results.Model.Result -> Html App.Msg.Msg
+render : List Race -> List Result.Model.Result -> Html App.Msg.Msg
 render races results =
     div []
         [ h2 [] [ text "races" ]
@@ -17,7 +17,7 @@ render races results =
         ]
 
 
-raceTable : List Race -> List Results.Model.Result -> Html App.Msg.Msg
+raceTable : List Race -> List Result.Model.Result -> Html App.Msg.Msg
 raceTable races results =
     table []
         [ thead []
@@ -47,7 +47,7 @@ raceTable races results =
         ]
 
 
-countParticipants : Int -> List Results.Model.Result -> Int
+countParticipants : Int -> List Result.Model.Result -> Int
 countParticipants raceId results =
     List.length
         (List.filter

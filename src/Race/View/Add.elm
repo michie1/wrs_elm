@@ -1,4 +1,4 @@
-module Race.Add exposing (render)
+module Race.View.Add exposing (render)
 
 import Html exposing (Html, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
 import Html.Attributes exposing (autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)

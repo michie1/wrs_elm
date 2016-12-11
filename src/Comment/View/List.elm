@@ -1,4 +1,4 @@
-module Comment.List exposing (render)
+module Comment.View.List exposing (render)
 
 import App.Model
 import App.Msg

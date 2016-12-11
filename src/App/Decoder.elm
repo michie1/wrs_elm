@@ -1,7 +1,7 @@
 module App.Decoder exposing (..)
 
 import Race.Model
-import Results.Model
+import Result.Model
 import Rider.Model
 import Comment.Model
 import Json.Decode
@@ -117,33 +117,33 @@ comment =
         (Json.Decode.field "text" Json.Decode.string)
 
 
-decodeResultCategory : String -> Json.Decode.Decoder Results.Model.ResultCategory
+decodeResultCategory : String -> Json.Decode.Decoder Result.Model.ResultCategory
 decodeResultCategory string =
     Json.Decode.succeed (resultCategory string)
 
 
-resultCategory : String -> Results.Model.ResultCategory
+resultCategory : String -> Result.Model.ResultCategory
 resultCategory string =
     case string of
         "amateurs" ->
-            Results.Model.Amateurs
+            Result.Model.Amateurs
 
         "basislidmaatschap" ->
-            Results.Model.Basislidmaatschap
+            Result.Model.Basislidmaatschap
 
         "cata" ->
-            Results.Model.CatA
+            Result.Model.CatA
 
         "catb" ->
-            Results.Model.CatB
+            Result.Model.CatB
 
         _ ->
-            Results.Model.Unknown
+            Result.Model.Unknown
 
 
-result : Json.Decode.Decoder Results.Model.Result
+result : Json.Decode.Decoder Result.Model.Result
 result =
-    Json.Decode.map6 Results.Model.Result
+    Json.Decode.map6 Result.Model.Result
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "riderId" Json.Decode.int)
         (Json.Decode.field "raceId" Json.Decode.int)
@@ -166,7 +166,7 @@ type alias App =
     , riders : List Rider.Model.Rider
     , races : List Race.Model.Race
     , comments : List Comment.Model.Comment
-    , results : List Results.Model.Result
+    , results : List Result.Model.Result
     }
 
 

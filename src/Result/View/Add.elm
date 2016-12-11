@@ -1,11 +1,11 @@
-module Results.Add exposing (render)
+module Result.View.Add exposing (render)
 
 import Html exposing (Html, button, div, text, span, label, input, ul, li, h2, input, i, p)
 import Html.Attributes exposing (autofocus, class, id, type_, for, disabled, value, name, checked)
 import Html.Events exposing (onInput, onClick, on)
 import Json.Decode as Json
 import App.Msg
-import Results.Model
+import Result.Model
 import Race.Model
 import Rider.Model exposing (Rider)
 
@@ -15,7 +15,7 @@ riderNameExists name riders =
     List.length (List.filter (\rider -> rider.name == name) riders) > 0
 
 
-render : Race.Model.Race -> Results.Model.ResultAdd -> List Rider -> List Results.Model.Result -> Html App.Msg.Msg
+render : Race.Model.Race -> Result.Model.ResultAdd -> List Rider -> List Result.Model.Result -> Html App.Msg.Msg
 render race resultAdd riders results =
     let
         submitDisabled =
@@ -81,7 +81,7 @@ render race resultAdd riders results =
             ]
 
 
-resultExists : List Results.Model.Result -> Race.Model.Race -> Rider.Model.Rider -> Bool
+resultExists : List Result.Model.Result -> Race.Model.Race -> Rider.Model.Rider -> Bool
 resultExists results race rider =
     List.length
         (List.filter
@@ -91,7 +91,7 @@ resultExists results race rider =
         == 1
 
 
-categoryButtonCheck : String -> String -> Results.Model.ResultCategory -> Bool -> Html App.Msg.Msg
+categoryButtonCheck : String -> String -> Result.Model.ResultCategory -> Bool -> Html App.Msg.Msg
 categoryButtonCheck categoryName categoryText category isChecked =
     p []
         [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (App.Msg.ResultAddCategory category) ] []
@@ -99,7 +99,7 @@ categoryButtonCheck categoryName categoryText category isChecked =
         ]
 
 
-categoryButton : String -> String -> Results.Model.ResultCategory -> Html App.Msg.Msg
+categoryButton : String -> String -> Result.Model.ResultCategory -> Html App.Msg.Msg
 categoryButton categoryName categoryText category =
     categoryButtonCheck categoryName categoryText category False
 
@@ -107,8 +107,8 @@ categoryButton categoryName categoryText category =
 categoryButtons : Html App.Msg.Msg
 categoryButtons =
     div []
-        [ categoryButtonCheck "amateurs" "Amateurs" Results.Model.Amateurs True
-        , categoryButton "basislidmaatschap" "Basislidmaatschap" Results.Model.Basislidmaatschap
-        , categoryButton "cata" "Cat A" Results.Model.CatA
-        , categoryButton "catb" "Cat B" Results.Model.CatB
+        [ categoryButtonCheck "amateurs" "Amateurs" Result.Model.Amateurs True
+        , categoryButton "basislidmaatschap" "Basislidmaatschap" Result.Model.Basislidmaatschap
+        , categoryButton "cata" "Cat A" Result.Model.CatA
+        , categoryButton "catb" "Cat B" Result.Model.CatB
         ]

@@ -6,7 +6,7 @@ import App.Routing
 import App.Commands
 import Account.Model
 import Comment.Model
-import Results.Model
+import Result.Model
 import Race.Model
 import Navigation
 
@@ -63,7 +63,7 @@ onUrlEnter route app =
         App.Routing.ResultsAdd raceId ->
             let
                 resultAdd =
-                    Results.Model.initialAdd
+                    Result.Model.initialAdd
 
                 name =
                     case app.account of
@@ -168,7 +168,7 @@ urlUpdate route app =
         onUrlEnter route routeApp
 
 
-resultExists : Int -> Int -> List Results.Model.Result -> Bool
+resultExists : Int -> Int -> List Result.Model.Result -> Bool
 resultExists riderId raceId results =
     List.length
         (List.filter

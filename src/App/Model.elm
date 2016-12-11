@@ -4,7 +4,7 @@ import Dict exposing (Dict)
 import App.Routing as Routing exposing (Route(..))
 import Race.Model
 import Rider.Model
-import Results.Model
+import Result.Model
 import Comment.Model
 import Date
 import Account.Model
@@ -23,8 +23,8 @@ type alias App =
     , races : List Race.Model.Race
     , raceAdd : Maybe Race.Model.Add
     , riderAdd : Rider.Model.RiderAdd
-    , results : List Results.Model.Result
-    , resultAdd : Maybe Results.Model.ResultAdd
+    , results : List Result.Model.Result
+    , resultAdd : Maybe Result.Model.ResultAdd
     , comments : List Comment.Model.Comment
     , commentAdd : Maybe Comment.Model.Add
     , now : Maybe Date.Date
@@ -58,7 +58,7 @@ initial =
             Race.Model.initialRaces
             Nothing
             Rider.Model.empty
-            Results.Model.initialResults
+            Result.Model.initialResults
             Nothing
             Comment.Model.initialComments
             Nothing

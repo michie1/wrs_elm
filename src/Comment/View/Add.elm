@@ -1,4 +1,4 @@
-module Comment.Add exposing (render)
+module Comment.View.Add exposing (render)
 
 import Html exposing (Html, p, br, a, span, li, ul, textarea, text, div, h2, button, i, input, label)
 import Html.Attributes exposing (href, autofocus, value, class, type_, id, for, class, disabled)

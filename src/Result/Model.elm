@@ -1,4 +1,4 @@
-module Results.Model exposing (ResultAdd, Result, initialAdd, initialResults, ResultCategory, ResultCategory(..), categories)
+module Result.Model exposing (ResultAdd, Result, initialAdd, initialResults, ResultCategory, ResultCategory(..), categories)
 
 import Rider.Model exposing (Rider)
 

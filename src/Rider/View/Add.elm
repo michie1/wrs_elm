@@ -1,4 +1,4 @@
-module Rider.Add exposing (render)
+module Rider.View.Add exposing (render)
 
 import Html exposing (Html, button, div, text, span, input, ul, li)
 import Rider.Model exposing (Rider)

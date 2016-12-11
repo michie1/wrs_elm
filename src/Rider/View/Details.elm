@@ -1,4 +1,4 @@
-module Rider.Details exposing (..)
+module Rider.View.Details exposing (..)
 
 import App.Model
 import Rider.Model exposing (Rider)
@@ -6,7 +6,7 @@ import App.Msg
 import App.Model
 import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, li, span, h2, p)
 import Html.Attributes exposing (class, href)
-import Results.Model
+import Result.Model
 import Race.Model
 
 
@@ -57,7 +57,7 @@ info rider =
         ]
 
 
-resultsTable : Rider -> List Results.Model.Result -> List Race.Model.Race -> Html msg
+resultsTable : Rider -> List Result.Model.Result -> List Race.Model.Race -> Html msg
 resultsTable rider results races =
     table []
         [ thead []
@@ -78,7 +78,7 @@ resultsTable rider results races =
         ]
 
 
-raceRow : Results.Model.Result -> List Race.Model.Race -> Html msg
+raceRow : Result.Model.Result -> List Race.Model.Race -> Html msg
 raceRow result races =
     let
         maybeRace =
