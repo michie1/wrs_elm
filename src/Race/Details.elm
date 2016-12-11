@@ -2,7 +2,7 @@ module Race.Details exposing (..)
 
 import App.Model
 import Race.Model exposing (Race)
-import Riders.Model
+import Rider.Model
 import Results.Model
 import Comment.Model
 import Markdown
@@ -93,7 +93,7 @@ info race =
         ]
 
 
-resultsTable : Race -> List Results.Model.Result -> List Riders.Model.Rider -> Html msg
+resultsTable : Race -> List Results.Model.Result -> List Rider.Model.Rider -> Html msg
 resultsTable race results riders =
     let
         a : String
@@ -105,7 +105,7 @@ resultsTable race results riders =
             ]
 
 
-resultsByCategory : Results.Model.ResultCategory -> List Results.Model.Result -> List Riders.Model.Rider -> Html msg
+resultsByCategory : Results.Model.ResultCategory -> List Results.Model.Result -> List Rider.Model.Rider -> Html msg
 resultsByCategory category results riders =
     let
         catResults =
@@ -130,7 +130,7 @@ resultsByCategory category results riders =
                     ]
 
 
-resultRow : Results.Model.Result -> List Riders.Model.Rider -> Html msg
+resultRow : Results.Model.Result -> List Rider.Model.Rider -> Html msg
 resultRow result riders =
     let
         maybeRider =
@@ -179,7 +179,7 @@ stravaSpan maybeStrava =
             span [] []
 
 
-commentsUl : List Comment.Model.Comment -> Race -> List Riders.Model.Rider -> Html msg
+commentsUl : List Comment.Model.Comment -> Race -> List Rider.Model.Rider -> Html msg
 commentsUl comments race riders =
     ul [ class "collection" ]
         (List.map
@@ -190,7 +190,7 @@ commentsUl comments race riders =
         )
 
 
-commentLi : Comment.Model.Comment -> Maybe Riders.Model.Rider -> Html msg
+commentLi : Comment.Model.Comment -> Maybe Rider.Model.Rider -> Html msg
 commentLi comment maybeRider =
     case maybeRider of
         Nothing ->
@@ -218,7 +218,7 @@ filterCommentsByRace comments race =
         comments
 
 
-getRiderById : Int -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
+getRiderById : Int -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderById id riders =
     List.head
         (List.filter

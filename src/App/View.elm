@@ -10,9 +10,9 @@ import Race.Model exposing (Race)
 import Race.Add
 import Race.List
 import Race.Details
-import Riders.List
-import Riders.Details
-import Riders.Add
+import Rider.List
+import Rider.Details
+import Rider.Add
 import Results.List
 import Results.Add
 import Comment.Add
@@ -104,7 +104,7 @@ viewPage app =
             case app.riders of
                 Just riders ->
                     div []
-                        [ Riders.List.render riders
+                        [ Rider.List.render riders
                         ]
 
                 Nothing ->
@@ -112,12 +112,12 @@ viewPage app =
 
         App.Routing.RidersAdd ->
             div []
-                [ Riders.Add.render app.riderAdd.rider
+                [ Rider.Add.render app.riderAdd.rider
                 ]
 
         App.Routing.RidersDetails id ->
             div []
-                [ Riders.Details.render
+                [ Rider.Details.render
                     app
                     id
                 ]

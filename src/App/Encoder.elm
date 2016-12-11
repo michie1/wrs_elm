@@ -1,21 +1,21 @@
 module App.Encoder exposing (licence)
 
-import Riders.Model exposing (Licence)
+import Rider.Model exposing (Licence)
 import Json.Encode
 
 licence : Maybe Licence -> Json.Encode.Value
 licence maybeLicence =
     case maybeLicence of
-        Just Riders.Model.Elite ->
+        Just Rider.Model.Elite ->
             Json.Encode.string "elite"
 
-        Just Riders.Model.Amateurs ->
+        Just Rider.Model.Amateurs ->
             Json.Encode.string "amateurs"
 
-        Just Riders.Model.Basislidmaatschap ->
+        Just Rider.Model.Basislidmaatschap ->
             Json.Encode.string "basislidmaatschap"
 
-        Just Riders.Model.Other ->
+        Just Rider.Model.Other ->
             Json.Encode.string "other"
 
         Nothing ->

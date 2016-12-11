@@ -1,7 +1,7 @@
-module Riders.Add exposing (render)
+module Rider.Add exposing (render)
 
 import Html exposing (Html, button, div, text, span, input, ul, li)
-import Riders.Model exposing (Rider)
+import Rider.Model exposing (Rider)
 import App.Msg
 
 
@@ -12,7 +12,7 @@ type alias RiderAdd =
 
 initial : RiderAdd
 initial =
-    { rider = (Rider 0 "Initial" (Just Riders.Model.Elite))
+    { rider = (Rider 0 "Initial" (Just Rider.Model.Elite))
     }
 
 

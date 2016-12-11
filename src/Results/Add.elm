@@ -7,7 +7,7 @@ import Json.Decode as Json
 import App.Msg
 import Results.Model
 import Race.Model
-import Riders.Model exposing (Rider)
+import Rider.Model exposing (Rider)
 
 
 riderNameExists : String -> List Rider -> Bool
@@ -81,7 +81,7 @@ render race resultAdd riders results =
             ]
 
 
-resultExists : List Results.Model.Result -> Race.Model.Race -> Riders.Model.Rider -> Bool
+resultExists : List Results.Model.Result -> Race.Model.Race -> Rider.Model.Rider -> Bool
 resultExists results race rider =
     List.length
         (List.filter

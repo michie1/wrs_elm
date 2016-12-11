@@ -2,7 +2,7 @@ module App.Decoder exposing (..)
 
 import Race.Model
 import Results.Model
-import Riders.Model
+import Rider.Model
 import Comment.Model
 import Json.Decode
 import Json.Decode.Pipeline
@@ -45,33 +45,33 @@ category string =
             Race.Model.Unknown
 
 
-decodeLicence : String -> Json.Decode.Decoder (Maybe Riders.Model.Licence)
+decodeLicence : String -> Json.Decode.Decoder (Maybe Rider.Model.Licence)
 decodeLicence string =
     Json.Decode.succeed (licence string)
 
 
-licenceDecoder : String -> Json.Decode.Decoder Riders.Model.Licence
+licenceDecoder : String -> Json.Decode.Decoder Rider.Model.Licence
 licenceDecoder string =
     case string of
         "elite" ->
-            Json.Decode.succeed Riders.Model.Elite
+            Json.Decode.succeed Rider.Model.Elite
 
         "amateurs" ->
-            Json.Decode.succeed Riders.Model.Amateurs
+            Json.Decode.succeed Rider.Model.Amateurs
 
         "basislidmaatschap" ->
-            Json.Decode.succeed Riders.Model.Basislidmaatschap
+            Json.Decode.succeed Rider.Model.Basislidmaatschap
 
         "other" ->
-            Json.Decode.succeed Riders.Model.Other
+            Json.Decode.succeed Rider.Model.Other
 
         _ ->
             Json.Decode.fail <| string ++ " licence does not exists."
 
 
-riderDecoder : Json.Decode.Decoder Riders.Model.Rider
+riderDecoder : Json.Decode.Decoder Rider.Model.Rider
 riderDecoder =
-    Json.Decode.Pipeline.decode Riders.Model.Rider
+    Json.Decode.Pipeline.decode Rider.Model.Rider
         |> Json.Decode.Pipeline.required "id" Json.Decode.int
         |> Json.Decode.Pipeline.required "name" Json.Decode.string
         |> Json.Decode.Pipeline.required "licence"
@@ -81,25 +81,25 @@ riderDecoder =
             )
 
 
-licence : String -> Maybe Riders.Model.Licence
+licence : String -> Maybe Rider.Model.Licence
 licence string =
     case string of
         "elite" ->
-            Just Riders.Model.Elite
+            Just Rider.Model.Elite
 
         "amateurs" ->
-            Just Riders.Model.Amateurs
+            Just Rider.Model.Amateurs
 
         "basislidmaatschap" ->
-            Just Riders.Model.Basislidmaatschap
+            Just Rider.Model.Basislidmaatschap
 
         _ ->
             Nothing
 
 
-rider : Json.Decode.Decoder Riders.Model.Rider
+rider : Json.Decode.Decoder Rider.Model.Rider
 rider =
-    Json.Decode.map3 Riders.Model.Rider
+    Json.Decode.map3 Rider.Model.Rider
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "licence"
@@ -163,7 +163,7 @@ page =
 
 type alias App =
     { page : String
-    , riders : List Riders.Model.Rider
+    , riders : List Rider.Model.Rider
     , races : List Race.Model.Race
     , comments : List Comment.Model.Comment
     , results : List Results.Model.Result

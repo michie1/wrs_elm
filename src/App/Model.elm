@@ -3,7 +3,7 @@ module App.Model exposing (App, initial)
 import Dict exposing (Dict)
 import App.Routing as Routing exposing (Route(..))
 import Race.Model
-import Riders.Model
+import Rider.Model
 import Results.Model
 import Comment.Model
 import Date
@@ -19,16 +19,16 @@ import App.Msg
 type alias App =
     { route : Routing.Route
     , cache : Dict String (List String)
-    , riders : Maybe (List Riders.Model.Rider)
+    , riders : Maybe (List Rider.Model.Rider)
     , races : List Race.Model.Race
     , raceAdd : Maybe Race.Model.Add
-    , riderAdd : Riders.Model.RiderAdd
+    , riderAdd : Rider.Model.RiderAdd
     , results : List Results.Model.Result
     , resultAdd : Maybe Results.Model.ResultAdd
     , comments : List Comment.Model.Comment
     , commentAdd : Maybe Comment.Model.Add
     , now : Maybe Date.Date
-    , account : Maybe Riders.Model.Rider
+    , account : Maybe Rider.Model.Rider
     , accountLogin : Maybe Account.Model.Login
     , accountSignup : Maybe Account.Model.Signup
     , keyboardModel : Keyboard.Extra.Model
@@ -54,10 +54,10 @@ initial =
         (App
             Home
             Dict.empty
-            Nothing --Riders.Model.initialRiders
+            Nothing --Rider.Model.initialRiders
             Race.Model.initialRaces
             Nothing
-            Riders.Model.empty
+            Rider.Model.empty
             Results.Model.initialResults
             Nothing
             Comment.Model.initialComments

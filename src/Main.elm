@@ -7,7 +7,7 @@ import App.Msg exposing (Msg(..))
 import App.Update
 import App.UrlUpdate
 import App.View
-import Riders.Model
+import Rider.Model
 import Race.Model
 import Results.Model
 import Comment.Model
@@ -20,7 +20,7 @@ import Phoenix.Socket
 
 
 type alias Flags =
-    { riders : List Riders.Model.Rider
+    { riders : List Rider.Model.Rider
     , races : List Race.Model.Race
     , results : List Results.Model.Result
     , comments : List Comment.Model.Comment

@@ -7,7 +7,7 @@ module Results.Update
 
 import App.Model exposing (App)
 import Results.Model exposing (ResultAdd)
-import Riders.Model
+import Rider.Model
 import App.Msg exposing (Msg(..))
 import Navigation
 
@@ -51,12 +51,12 @@ addResult app =
         Nothing ->
             ( Nothing, Cmd.none )
 
-getRiderByName : String -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
+getRiderByName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderByName name riders =
     List.head (List.filter (\rider -> rider.name == name) riders)
 
 
-firstRiderId : List Riders.Model.Rider -> Int
+firstRiderId : List Rider.Model.Rider -> Int
 firstRiderId riders =
     case (List.head riders) of
         Nothing ->
@@ -89,7 +89,7 @@ setRider app name =
             ( app, Cmd.none )
 
 
-getRiderId : List Riders.Model.Rider -> String -> Int
+getRiderId : List Rider.Model.Rider -> String -> Int
 getRiderId riders name =
     let
         maybeRider =

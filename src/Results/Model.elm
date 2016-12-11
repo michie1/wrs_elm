@@ -1,6 +1,6 @@
 module Results.Model exposing (ResultAdd, Result, initialAdd, initialResults, ResultCategory, ResultCategory(..), categories)
 
-import Riders.Model exposing (Rider)
+import Rider.Model exposing (Rider)
 
 
 type ResultCategory

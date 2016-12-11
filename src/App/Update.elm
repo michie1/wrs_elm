@@ -8,11 +8,11 @@ import App.Msg exposing (Msg(..))
 import App.Commands
 import App.UrlUpdate
 import Race.Model exposing (Race)
-import Riders.Model
+import Rider.Model
 import Comment.Model
 import Account.Model
 import Results.Model
-import Riders.Update
+import Rider.Update
 import Results.Update
 import Comment.Update
 import Account.Update
@@ -38,7 +38,7 @@ import Json.Decode
 
 type alias StoredApp =
     { page : String
-    , riders : List Riders.Model.Rider
+    , riders : List Rider.Model.Rider
     , races : List Race.Model.Race
     , comments : List Comment.Model.Comment
     , results : List Results.Model.Result
@@ -136,10 +136,10 @@ update msg app =
                     ( app, Cmd.none )
 
         AddRider rider ->
-            Riders.Update.addRider app rider
+            Rider.Update.addRider app rider
 
         SetRiderName newName ->
-            Riders.Update.setRiderAddName app newName
+            Rider.Update.setRiderAddName app newName
 
         ResultAdd ->
             let
@@ -489,7 +489,7 @@ update msg app =
                     -- TODO do not add directly, but send websocket to add new rider
                     let
                         newRider =
-                            Riders.Model.Rider
+                            Rider.Model.Rider
                                 ((List.length (Maybe.withDefault [] app.riders)) + 1)
                                 accountSignup.name
                                 Nothing
@@ -550,7 +550,7 @@ update msg app =
                 case riderResult of
                     Ok rider ->
                         let
-                            newRider = Riders.Model.Rider
+                            newRider = Rider.Model.Rider
                                         rider.id
                                         rider.name
                                         rider.licence
@@ -657,7 +657,7 @@ update msg app =
                 case riderResult of
                     Ok rider ->
                         let
-                            newRider = Riders.Model.Rider
+                            newRider = Rider.Model.Rider
                                         rider.id
                                         rider.name
                                         rider.licence
@@ -826,7 +826,7 @@ update msg app =
                 )
 
 
-updateRiderLicence : Int -> Maybe Riders.Model.Licence -> List Riders.Model.Rider -> List Riders.Model.Rider
+updateRiderLicence : Int -> Maybe Rider.Model.Licence -> List Rider.Model.Rider -> List Rider.Model.Rider
 updateRiderLicence riderId maybeLicence riders =
     List.map
         (\rider ->
@@ -840,17 +840,17 @@ updateRiderLicence riderId maybeLicence riders =
         riders
 
 
-getRiderById : Int -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
+getRiderById : Int -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderById id riders =
     List.head (List.filter (\rider -> rider.id == id) riders)
 
 
-getRiderByName : String -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
+getRiderByName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderByName name riders =
     List.head (List.filter (\rider -> rider.name == name) riders)
 
 
-getRiderIdByIndex : Int -> List Riders.Model.Rider -> Int
+getRiderIdByIndex : Int -> List Rider.Model.Rider -> Int
 getRiderIdByIndex index riders =
     let
         arrayRiders =

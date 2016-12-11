@@ -3,7 +3,7 @@ module Account.View exposing (render, login, logout, signup)
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import Account.Model
-import Riders.Model
+import Rider.Model
 import Html exposing (Html, h2, h4, i, p, label, button, nav, div, text, span, a, input, ul, li)
 import Html.Attributes exposing (checked, value, name, class, type_, id, for, class, disabled, href)
 import Html.Events exposing (onClick, onInput)
@@ -140,7 +140,7 @@ signup app =
             div [] [ text "accoutSignup nothing" ]
 
 
-licence : App -> Riders.Model.Rider -> Html App.Msg.Msg
+licence : App -> Rider.Model.Rider -> Html App.Msg.Msg
 licence app account =
     let
         licenceHeading = case account.licence of
@@ -153,14 +153,14 @@ licence app account =
     in
         div []
             [ h4 [] licenceHeading
-            , licenceRadio "elite" "Elite" Riders.Model.Elite account.licence
-            , licenceRadio "amateurs" "Amateurs" Riders.Model.Amateurs account.licence
-            , licenceRadio "basislidmaatschap" "Basislidmaatschap" Riders.Model.Basislidmaatschap account.licence
-            , licenceRadio "other" "Other" Riders.Model.Other account.licence
+            , licenceRadio "elite" "Elite" Rider.Model.Elite account.licence
+            , licenceRadio "amateurs" "Amateurs" Rider.Model.Amateurs account.licence
+            , licenceRadio "basislidmaatschap" "Basislidmaatschap" Rider.Model.Basislidmaatschap account.licence
+            , licenceRadio "other" "Other" Rider.Model.Other account.licence
             ]
 
 
-licenceRadio : String -> String -> Riders.Model.Licence -> Maybe Riders.Model.Licence -> Html App.Msg.Msg
+licenceRadio : String -> String -> Rider.Model.Licence -> Maybe Rider.Model.Licence -> Html App.Msg.Msg
 licenceRadio licenceName licenceText licence maybeCurrentLicence =
     let
         isChecked = case maybeCurrentLicence of

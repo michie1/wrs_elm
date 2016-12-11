@@ -3,7 +3,7 @@ module App.Msg exposing (Msg(..))
 --import Material
 --import Races.Model exposing (Race)
 
-import Riders.Model exposing (Rider)
+import Rider.Model exposing (Rider)
 import Race.Model
 import Results.Model
 import App.Routing exposing (Route(..))
@@ -53,7 +53,7 @@ type Msg
     | AccountLogout
     | AccountSignup
     | AccountSignupName String
-    | AccountLicence Riders.Model.Licence
+    | AccountLicence Rider.Model.Licence
     | SocketAccountLicence
     | SocketAccountLicenceResponse Json.Encode.Value
     | KeyDown Keyboard.KeyCode

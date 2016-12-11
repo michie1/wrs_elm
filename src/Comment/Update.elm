@@ -5,7 +5,7 @@ import Array
 import App.Model exposing (App)
 import App.Msg exposing (Msg(..))
 import Comment.Model exposing (Comment, Add, initialAdd)
-import Riders.Model
+import Rider.Model
 
 
 new : Int -> String -> App -> ( Comment, Cmd Msg )
@@ -73,7 +73,7 @@ setRaceId app raceId =
 -- Helpers
 
 
-getRiderIdByIndex : Int -> List Riders.Model.Rider -> Maybe Int
+getRiderIdByIndex : Int -> List Rider.Model.Rider -> Maybe Int
 getRiderIdByIndex index riders =
     let
         arrayRiders =
@@ -120,6 +120,6 @@ set app commentAdd =
     { app | commentAdd = Just commentAdd }
 
 
-getRiderByName : String -> List Riders.Model.Rider -> Maybe Riders.Model.Rider
+getRiderByName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderByName name riders =
     List.head (List.filter (\rider -> rider.name == name) riders)

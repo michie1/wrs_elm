@@ -1,4 +1,4 @@
-module Riders.Model exposing (RiderAdd, Rider, empty, initialRiders, Licence, Licence(..))
+module Rider.Model exposing (RiderAdd, Rider, empty, initialRiders, Licence, Licence(..))
 
 
 type Licence

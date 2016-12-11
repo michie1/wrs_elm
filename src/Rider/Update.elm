@@ -1,7 +1,7 @@
-module Riders.Update exposing (setRiderAddName, addRider)
+module Rider.Update exposing (setRiderAddName, addRider)
 
 import App.Model exposing (App)
-import Riders.Model exposing (Rider, RiderAdd)
+import Rider.Model exposing (Rider, RiderAdd)
 import App.Msg exposing (Msg(..))
 import Navigation
 

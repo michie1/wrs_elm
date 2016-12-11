@@ -7,7 +7,7 @@ import Json.Decode as Json
 import App.Msg
 import App.Model
 import Race.Model
-import Riders.Model exposing (Rider)
+import Rider.Model exposing (Rider)
 import Comment.Model
 
 
@@ -69,7 +69,7 @@ addButton submitDisabled =
         ]
 
 
-selectRider : Int -> List Riders.Model.Rider -> Html App.Msg.Msg
+selectRider : Int -> List Rider.Model.Rider -> Html App.Msg.Msg
 selectRider selectedIndex riders =
     div []
         []

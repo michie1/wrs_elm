@@ -1,6 +1,6 @@
 module Account.Model exposing (Login, login, initial, Signup, signup)
 
-import Riders.Model
+import Rider.Model
 
 
 type alias Login =
@@ -27,7 +27,7 @@ signup =
     }
 
 
-initial : Maybe Riders.Model.Rider
+initial : Maybe Rider.Model.Rider
 initial =
     Nothing
     -- Just (Riders.Model.Rider 2 "Henk" Nothing)
