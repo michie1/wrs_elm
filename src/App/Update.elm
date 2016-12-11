@@ -671,7 +671,6 @@ update msg app =
                 --}
                 case riderResult of
                     Ok rider ->
-                        -- DONE: update account
                          let
                             riders = Debug.log 
                                 "updatedRiders: " 
@@ -696,7 +695,6 @@ update msg app =
                     _ ->
                         ( app, Cmd.none )
 
-                -- TODO: update riders
                 -- TODO: link account to one rider?
 
 

@@ -88,7 +88,7 @@ mainView : App -> Html Msg
 mainView app =
     div [ class "container" ]
         [ viewPage app
-        , socketView app
+        --, socketView app
         ]
 
 
