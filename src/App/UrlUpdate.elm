@@ -40,7 +40,8 @@ onUrlEnter route app =
 
                 Nothing ->
                     ( { app | accountLogin = Just Account.Model.login }
-                    , App.Commands.fetchForRoute App.Routing.AccountLogin -- TODO: Move code from fetchForRoute inside this function.
+                    , App.Commands.fetchForRoute App.Routing.AccountLogin
+                      -- TODO: Move code from fetchForRoute inside this function.
                     )
 
         App.Routing.AccountLoginName name ->

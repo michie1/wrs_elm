@@ -11,7 +11,6 @@ import Date
 import Time
 import Keyboard
 import Keyboard.Extra
-
 import Phoenix.Socket
 import Json.Encode
 

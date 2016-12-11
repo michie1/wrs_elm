@@ -533,10 +533,11 @@ update msg app =
 
         SocketAccountSignupResponse rawResponse ->
             let
-                name = Result.withDefault ""
-                        ( Json.Decode.decodeValue
-                          (Json.Decode.field "name" Json.Decode.string)
-                          rawResponse
+                name =
+                    Result.withDefault ""
+                        (Json.Decode.decodeValue
+                            (Json.Decode.field "name" Json.Decode.string)
+                            rawResponse
                         )
             in
                 ( app
@@ -545,18 +546,20 @@ update msg app =
 
         OnCreatedRider rawResponse ->
             let
-                riderResult = Json.Decode.decodeValue App.Decoder.riderDecoder rawResponse
+                riderResult =
+                    Json.Decode.decodeValue App.Decoder.riderDecoder rawResponse
             in
                 case riderResult of
                     Ok rider ->
                         let
-                            newRider = Rider.Model.Rider
-                                        rider.id
-                                        rider.name
-                                        rider.licence
+                            newRider =
+                                Rider.Model.Rider
+                                    rider.id
+                                    rider.name
+                                    rider.licence
                         in
                             ( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
-                            , Cmd.none 
+                            , Cmd.none
                             )
 
                     _ ->
@@ -580,13 +583,13 @@ update msg app =
             case app.account of
                 Just account ->
                     let
-                        nextAccount = 
+                        nextAccount =
                             { account | licence = Just licence }
                     in
                         --( { app
-                           -- | account = Just nextAccount
-                            --, riders = Just (updateRiderLicence account.id licence (Maybe.withDefault [] app.riders))
-                          --}
+                        -- | account = Just nextAccount
+                        --, riders = Just (updateRiderLicence account.id licence (Maybe.withDefault [] app.riders))
+                        --}
                         --, Cmd.none
                         --)
                         ( { app | account = Just nextAccount }
@@ -625,23 +628,26 @@ update msg app =
                     ( app, Cmd.none )
 
         SocketAccountLicenceResponse rawResponse ->
-          case app.account of
+            case app.account of
                 Just account ->
                     let
-                        licence = Debug.log "licence " 
-                            (Result.withDefault ""
-                                ( Json.Decode.decodeValue
-                                  (Json.Decode.field "licence" Json.Decode.string)
-                                  rawResponse
+                        licence =
+                            Debug.log "licence "
+                                (Result.withDefault ""
+                                    (Json.Decode.decodeValue
+                                        (Json.Decode.field "licence" Json.Decode.string)
+                                        rawResponse
+                                    )
                                 )
-                            )
+
                         nextAccount =
                             -- { account | licence = Just licence }
-                             account 
+                            account
                     in
                         ( { app
-                            | account = Just nextAccount
-                            --, riders = Just (updateRiderLicence account.id licence (Maybe.withDefault [] app.riders))
+                            | account =
+                                Just nextAccount
+                                --, riders = Just (updateRiderLicence account.id licence (Maybe.withDefault [] app.riders))
                           }
                         , Cmd.none
                         )
@@ -651,7 +657,8 @@ update msg app =
 
         OnUpdatedRider rawResponse ->
             let
-                riderResult = Debug.log "riderResult in onUpdatedRider" (Json.Decode.decodeValue App.Decoder.riderDecoder rawResponse)
+                riderResult =
+                    Debug.log "riderResult in onUpdatedRider" (Json.Decode.decodeValue App.Decoder.riderDecoder rawResponse)
             in
                 {--
                 case riderResult of
@@ -663,7 +670,7 @@ update msg app =
                                         rider.licence
                         in
                             ( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
-                            , Cmd.none 
+                            , Cmd.none
                             )
 
                     _ ->
@@ -671,33 +678,36 @@ update msg app =
                 --}
                 case riderResult of
                     Ok rider ->
-                         let
-                            riders = Debug.log 
-                                "updatedRiders: " 
-                                (updateRiderLicence rider.id rider.licence (Maybe.withDefault [] app.riders))
-                            nextAccount = case app.account of
-                                Just account ->
-                                    case account.id == rider.id of
-                                        True ->
-                                            Just { account | licence = rider.licence }
-                                        False ->
-                                            Just account
-                                Nothing ->
-                                    Nothing
+                        let
+                            riders =
+                                Debug.log
+                                    "updatedRiders: "
+                                    (updateRiderLicence rider.id rider.licence (Maybe.withDefault [] app.riders))
+
+                            nextAccount =
+                                case app.account of
+                                    Just account ->
+                                        case account.id == rider.id of
+                                            True ->
+                                                Just { account | licence = rider.licence }
+
+                                            False ->
+                                                Just account
+
+                                    Nothing ->
+                                        Nothing
                         in
-                            (   { app 
+                            ( { app
                                 | riders = Just riders
                                 , account = nextAccount
-                                }
+                              }
                             , Cmd.none
                             )
 
                     _ ->
                         ( app, Cmd.none )
 
-                -- TODO: link account to one rider?
-
-
+        -- TODO: link account to one rider?
         KeyDown keyCode ->
             case keyCode of
                 13 ->
@@ -744,7 +754,7 @@ update msg app =
         Connect ->
             let
                 payload =
-                    Json.Encode.object 
+                    Json.Encode.object
                         [ ( "body", Json.Encode.string app.input ) ]
 
                 phxPush =
@@ -752,10 +762,11 @@ update msg app =
                         |> Phoenix.Push.withPayload payload
                         |> Phoenix.Push.onOk ReceiveRiders
                         -- |> Phoenix.Push.onOk ReceiveMessage
-                        |> Phoenix.Push.onError HandleSendError
-                        -- TODO: listen for createdRider
-                        -- TODO: listen for updatedRider
+                        |>
+                            Phoenix.Push.onError HandleSendError
 
+                -- TODO: listen for createdRider
+                -- TODO: listen for updatedRider
                 ( phxSocket, phxCmd ) =
                     Phoenix.Socket.push phxPush app.phxSocket
             in
@@ -786,7 +797,8 @@ update msg app =
 
                     Err errorMessage ->
                         let
-                            b = Debug.log "ReceiveRiders" errorMessage
+                            b =
+                                Debug.log "ReceiveRiders" errorMessage
                         in
                             ( { app | messages = messages }
                             , Cmd.none

@@ -10,7 +10,7 @@ import Rider.Model
 
 new : Int -> String -> App -> ( Comment, Cmd Msg )
 new id datetime app =
-    case app.riders of 
+    case app.riders of
         Just riders ->
             case app.commentAdd of
                 Just commentAdd ->

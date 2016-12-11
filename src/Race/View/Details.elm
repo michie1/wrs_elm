@@ -56,8 +56,10 @@ render app raceId =
                                 , addCommentButton race
                                 , commentsUl app.comments race riders
                                 ]
-                    Nothing -> 
+
+                    Nothing ->
                         div [] [ text "No riders loaded." ]
+
 
 addResultButton : Race.Model.Race -> Html App.Msg.Msg
 addResultButton race =

@@ -44,12 +44,16 @@ addResult app =
                                     ( Just result
                                     , Navigation.newUrl ("#races/" ++ toString (Debug.log "raceId" result.raceId))
                                     )
+
                         Nothing ->
                             ( Nothing, Cmd.none )
+
                 Nothing ->
                     ( Nothing, Cmd.none )
+
         Nothing ->
             ( Nothing, Cmd.none )
+
 
 getRiderByName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderByName name riders =

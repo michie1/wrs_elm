@@ -75,8 +75,8 @@ riderDecoder =
         |> Json.Decode.Pipeline.required "id" Json.Decode.int
         |> Json.Decode.Pipeline.required "name" Json.Decode.string
         |> Json.Decode.Pipeline.required "licence"
-            ( Json.Decode.string 
-                |> Json.Decode.andThen licenceDecoder 
+            (Json.Decode.string
+                |> Json.Decode.andThen licenceDecoder
                 |> Json.Decode.nullable
             )
 

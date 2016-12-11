@@ -15,7 +15,6 @@ import Task
 import Date
 import Keyboard.Extra
 import WebSocket
-
 import Phoenix.Socket
 
 
@@ -49,7 +48,8 @@ init location =
         route =
             Debug.log "route in init" (App.Routing.routeParser location)
 
-        ( initialApp, initialCmd ) = App.Model.initial
+        ( initialApp, initialCmd ) =
+            App.Model.initial
 
         ( app, cmd ) =
             App.UrlUpdate.urlUpdate route initialApp
@@ -84,7 +84,7 @@ subscriptions app =
     Sub.batch
         [ setAutocomplete App.Msg.SetAutocomplete
         , Sub.map KeyboardMsg Keyboard.Extra.subscriptions
-        --, WebSocket.listen "ws://echo.websocket.org" NewMessage
-        -- , WebSocket.listen "ws://localhost:4000/socket/websocket" NewMessage
+          --, WebSocket.listen "ws://echo.websocket.org" NewMessage
+          -- , WebSocket.listen "ws://localhost:4000/socket/websocket" NewMessage
         , Phoenix.Socket.listen app.phxSocket PhoenixMsg
         ]

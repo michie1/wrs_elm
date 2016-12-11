@@ -46,7 +46,8 @@ fetchForRoute route =
                       --  (Task.succeed App.Msg.UpdateMaterialize)
                     , Task.perform
                         identity
-                        (Task.succeed App.Msg.Connect) -- TODO: Only if list is Nothing
+                        (Task.succeed App.Msg.Connect)
+                      -- TODO: Only if list is Nothing
                     ]
 
             App.Routing.ResultsAdd raceId ->

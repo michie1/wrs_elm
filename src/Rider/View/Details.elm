@@ -12,7 +12,7 @@ import Race.Model
 
 render : App.Model.App -> Int -> Html App.Msg.Msg
 render app riderId =
-    case app.riders of 
+    case app.riders of
         Just riders ->
             let
                 maybeRider =
@@ -41,8 +41,10 @@ render app riderId =
                                 , info rider
                                 , resultsTable rider results app.races
                                 ]
+
         Nothing ->
             div [] [ text "No riders loaded." ]
+
 
 info : Rider -> Html App.Msg.Msg
 info rider =

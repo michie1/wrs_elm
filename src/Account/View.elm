@@ -143,13 +143,15 @@ signup app =
 licence : App -> Rider.Model.Rider -> Html App.Msg.Msg
 licence app account =
     let
-        licenceHeading = case account.licence of
-                    Just account ->
-                        [ text "Change licence" ]
-                    Nothing ->
-                        [ text "Set licence"
-                        , span [ class "new badge" ] [ text "1" ]
-                        ]
+        licenceHeading =
+            case account.licence of
+                Just account ->
+                    [ text "Change licence" ]
+
+                Nothing ->
+                    [ text "Set licence"
+                    , span [ class "new badge" ] [ text "1" ]
+                    ]
     in
         div []
             [ h4 [] licenceHeading
@@ -163,11 +165,13 @@ licence app account =
 licenceRadio : String -> String -> Rider.Model.Licence -> Maybe Rider.Model.Licence -> Html App.Msg.Msg
 licenceRadio licenceName licenceText licence maybeCurrentLicence =
     let
-        isChecked = case maybeCurrentLicence of
-            Just currentLicence ->
-                licence == currentLicence
-            Nothing ->
-                False
+        isChecked =
+            case maybeCurrentLicence of
+                Just currentLicence ->
+                    licence == currentLicence
+
+                Nothing ->
+                    False
     in
         p []
             [ input [ id licenceName, name "licence", type_ "radio", checked isChecked, onClick (App.Msg.AccountLicence licence) ] []

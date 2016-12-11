@@ -8,8 +8,8 @@ import Navigation
 
 addRider : App -> Rider -> ( App, Cmd Msg )
 addRider app rider =
-    case app.riders of 
-        Just riders  ->
+    case app.riders of
+        Just riders ->
             let
                 newRider =
                     setRiderId rider riders

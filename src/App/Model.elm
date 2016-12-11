@@ -9,10 +9,8 @@ import Comment.Model
 import Date
 import Account.Model
 import Keyboard.Extra
-
 import Phoenix.Socket
 import Phoenix.Channel
-
 import App.Msg
 
 
@@ -42,19 +40,22 @@ type alias App =
 initial : ( App, Cmd App.Msg.Msg )
 initial =
     let
-        channel = Phoenix.Channel.init "room:lobby"
-        (initSocket, phxCmd) =
+        channel =
+            Phoenix.Channel.init "room:lobby"
+
+        ( initSocket, phxCmd ) =
             Phoenix.Socket.init "ws://localhost:4000/socket/websocket"
-            |> Phoenix.Socket.withDebug
-            |> Phoenix.Socket.on "shout" "room:lobby" App.Msg.ReceiveMessage
-            |> Phoenix.Socket.on "createdRider" "room:lobby" App.Msg.OnCreatedRider
-            |> Phoenix.Socket.on "updatedRider" "room:lobby" App.Msg.OnUpdatedRider
-            |> Phoenix.Socket.join channel
+                |> Phoenix.Socket.withDebug
+                |> Phoenix.Socket.on "shout" "room:lobby" App.Msg.ReceiveMessage
+                |> Phoenix.Socket.on "createdRider" "room:lobby" App.Msg.OnCreatedRider
+                |> Phoenix.Socket.on "updatedRider" "room:lobby" App.Msg.OnUpdatedRider
+                |> Phoenix.Socket.join channel
     in
-        (App
+        ( App
             Home
             Dict.empty
-            Nothing --Rider.Model.initialRiders
+            Nothing
+            --Rider.Model.initialRiders
             Race.Model.initialRaces
             Nothing
             Rider.Model.empty
