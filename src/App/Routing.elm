@@ -13,25 +13,25 @@ reverse route =
         Riders ->
             "#riders"
 
-        RidersAdd ->
+        RiderAdd ->
             "#riders/add"
 
-        RidersDetails id ->
+        RiderDetails id ->
             "#riders/" ++ toString id
 
         Races ->
             "#races"
 
-        RacesAdd ->
+        RaceAdd ->
             "#races/add"
 
-        RacesDetails id ->
+        RaceDetails id ->
             "#races/" ++ toString id
 
         Results ->
             "#results"
 
-        ResultsAdd id ->
+        ResultAdd id ->
             "#races/" ++ (toString id) ++ "/add"
 
         CommentAdd id ->
@@ -55,14 +55,14 @@ reverse route =
 
 type Route
     = Home
-    | RidersAdd
-    | RidersDetails Int
+    | RiderAdd
+    | RiderDetails Int
     | Riders
-    | RacesAdd
-    | RacesDetails Int
+    | RaceAdd
+    | RaceDetails Int
     | Races
     | Results
-    | ResultsAdd Int
+    | ResultAdd Int
     | CommentAdd Int
     | Account
     | AccountLoginName String
@@ -78,13 +78,13 @@ matchers =
         [ map Races (s "home")
           --, map Home (s "")
         , map Races (s "")
-        , map RidersAdd (s "riders" </> s "add")
-        , map RidersDetails (s "riders" </> int)
+        , map RiderAdd (s "riders" </> s "add")
+        , map RiderDetails (s "riders" </> int)
         , map Riders (s "riders")
-        , map ResultsAdd (s "races" </> int </> s "add")
+        , map ResultAdd (s "races" </> int </> s "add")
         , map CommentAdd (s "races" </> int </> s "comment")
-        , map RacesAdd (s "races" </> s "add")
-        , map RacesDetails (s "races" </> int)
+        , map RaceAdd (s "races" </> s "add")
+        , map RaceDetails (s "races" </> int)
         , map Races (s "races")
         , map Results (s "results")
         , map AccountLoginName (s "account" </> s "login" </> string)

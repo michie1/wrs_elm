@@ -110,12 +110,12 @@ viewPage app =
                 Nothing ->
                     div [] [ text "No riders loaded." ]
 
-        App.Routing.RidersAdd ->
+        App.Routing.RiderAdd ->
             div []
                 [ Rider.View.Add.render app.riderAdd.rider
                 ]
 
-        App.Routing.RidersDetails id ->
+        App.Routing.RiderDetails id ->
             div []
                 [ Rider.View.Details.render
                     app
@@ -127,14 +127,14 @@ viewPage app =
                 [ Race.View.List.render app.races app.results
                 ]
 
-        App.Routing.RacesDetails id ->
+        App.Routing.RaceDetails id ->
             div []
                 [ Race.View.Details.render
                     app
                     id
                 ]
 
-        App.Routing.RacesAdd ->
+        App.Routing.RaceAdd ->
             case app.raceAdd of
                 Nothing ->
                     div [] [ text "RaceAdd nothing" ]
@@ -149,7 +149,7 @@ viewPage app =
                 [ Result.View.List.render app.results
                 ]
 
-        App.Routing.ResultsAdd raceId ->
+        App.Routing.ResultAdd raceId ->
             case app.resultAdd of
                 Just resultAdd ->
                     let

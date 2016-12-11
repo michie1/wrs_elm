@@ -5,7 +5,6 @@ import App.Routing
 import App.Decoder
 import App.Encoder
 import App.Msg exposing (Msg(..))
-import App.Commands
 import App.UrlUpdate
 import Race.Model exposing (Race)
 import Rider.Model

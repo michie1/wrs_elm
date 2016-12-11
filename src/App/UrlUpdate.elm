@@ -1,14 +1,17 @@
 module App.UrlUpdate exposing (urlUpdate)
 
-import App.Msg exposing (Msg(..))
+--import App.Msg exposing (Msg(..))
+import App.Msg exposing (Msg, Msg(..))
 import App.Model exposing (App)
-import App.Routing
-import App.Commands
+import App.Routing exposing (Route)
 import Account.Model
 import Comment.Model
 import Result.Model
 import Race.Model
 import Navigation
+import Task
+import Dom
+import Date
 
 
 onUrlLeave : App.Routing.Route -> App -> App
@@ -23,7 +26,7 @@ onUrlLeave prevRoute prevApp =
         App.Routing.AccountLogin ->
             { prevApp | accountLogin = Nothing }
 
-        App.Routing.RacesAdd ->
+        App.Routing.RaceAdd ->
             { prevApp | raceAdd = Nothing }
 
         _ ->
@@ -40,7 +43,7 @@ onUrlEnter route app =
 
                 Nothing ->
                     ( { app | accountLogin = Just Account.Model.login }
-                    , App.Commands.fetchForRoute App.Routing.AccountLogin
+                    , fetchForRoute App.Routing.AccountLogin
                       -- TODO: Move code from fetchForRoute inside this function.
                     )
 
@@ -58,10 +61,10 @@ onUrlEnter route app =
                             { accountLogin | name = name }
                     in
                         ( { app | accountLogin = Just nextAccountLogin }
-                        , App.Commands.fetchForRoute App.Routing.AccountLogin
+                        , fetchForRoute App.Routing.AccountLogin
                         )
 
-        App.Routing.ResultsAdd raceId ->
+        App.Routing.ResultAdd raceId ->
             let
                 resultAdd =
                     Result.Model.initialAdd
@@ -86,7 +89,7 @@ onUrlEnter route app =
                     }
             in
                 ( { app | resultAdd = Just resultAddWithRaceId }
-                , App.Commands.fetchForRoute (App.Routing.ResultsAdd raceId)
+                , fetchForRoute (App.Routing.ResultAdd raceId)
                 )
 
         App.Routing.CommentAdd raceId ->
@@ -112,7 +115,7 @@ onUrlEnter route app =
                             Debug.log "urlUpdate CommentAdd" raceId
                     in
                         ( { app | commentAdd = Just commentAddWithRaceId }
-                        , App.Commands.fetchForRoute (App.Routing.CommentAdd raceId)
+                        , fetchForRoute (App.Routing.CommentAdd raceId)
                         )
 
                 Nothing ->
@@ -120,7 +123,7 @@ onUrlEnter route app =
                     , Cmd.none
                     )
 
-        App.Routing.RacesAdd ->
+        App.Routing.RaceAdd ->
             let
                 a =
                     Debug.log "urlUpdate" "RacesAdd"
@@ -129,7 +132,7 @@ onUrlEnter route app =
                     Race.Model.Add "" Nothing Race.Model.Classic
             in
                 ( { app | raceAdd = Just raceAdd }
-                , App.Commands.fetchForRoute App.Routing.RacesAdd
+                , fetchForRoute App.Routing.RaceAdd
                 )
 
         App.Routing.AccountSignup ->
@@ -148,7 +151,7 @@ onUrlEnter route app =
                     ( app, Cmd.none )
 
                 Nothing ->
-                    ( app, App.Commands.fetchForRoute App.Routing.Riders )
+                    ( app, fetchForRoute App.Routing.Riders )
 
         _ ->
             ( app, Cmd.none )
@@ -177,3 +180,53 @@ resultExists riderId raceId results =
             results
         )
         == 1
+
+fetchForRoute : Route -> Cmd Msg
+fetchForRoute route =
+    case route of
+        App.Routing.RaceAdd ->
+            Cmd.batch
+                [ Task.attempt (always App.Msg.Noop) (Dom.focus "name")
+                , Task.perform
+                    identity
+                    (Task.succeed App.Msg.UpdateMaterialize)
+                , Task.perform
+                    (Just >> App.Msg.SetRaceAdd)
+                    Date.now
+                ]
+
+        App.Routing.CommentAdd raceId ->
+            Cmd.batch
+                [ Task.attempt (always App.Msg.Noop) (Dom.focus "text")
+                , Task.perform
+                    identity
+                    (Task.succeed App.Msg.UpdateMaterialize)
+                  --, Dom.focus "name" |> Task.attempt FocusResult
+                  --, Task.perform identity (Task.succeed (Dom.focus "name"))
+                ]
+
+        App.Routing.AccountLogin ->
+            Cmd.batch
+                [ Task.perform
+                    identity
+                    (Task.succeed App.Msg.Connect)
+                  -- TODO: Only if list is Nothing
+                ]
+
+        App.Routing.ResultAdd raceId ->
+            Cmd.batch
+                [ Task.attempt (always App.Msg.Noop) (Dom.focus "result")
+                , Task.perform
+                    identity
+                    (Task.succeed App.Msg.UpdateMaterialize)
+                ]
+
+        App.Routing.Riders ->
+            Cmd.batch
+                [ Task.perform
+                    identity
+                    (Task.succeed App.Msg.Connect)
+                ]
+
+        _ ->
+            Cmd.none

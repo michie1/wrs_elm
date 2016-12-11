@@ -65,7 +65,7 @@ addResultButton : Race.Model.Race -> Html App.Msg.Msg
 addResultButton race =
     button
         [ class "waves-effect waves-light btn"
-        , onClick (App.Msg.NavigateTo (App.Routing.ResultsAdd race.id))
+        , onClick (App.Msg.NavigateTo (App.Routing.ResultAdd race.id))
         , Html.Attributes.name "action"
         ]
         [ text "Add result" ]
