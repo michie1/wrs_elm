@@ -5,7 +5,7 @@ import App.Model exposing (App)
 import App.Routing
 import App.Commands
 import Account.Model
-import Comments.Model
+import Comment.Model
 import Results.Model
 import Races.Model
 import Navigation
@@ -93,7 +93,7 @@ onUrlEnter route app =
                 Just account ->
                     let
                         commentAdd =
-                            Comments.Model.initialAdd
+                            Comment.Model.initialAdd
 
                         riderName =
                             account.name

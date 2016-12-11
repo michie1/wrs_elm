@@ -1,4 +1,4 @@
-module Comments.Model exposing (Comment, Add, empty, initialComments, initialAdd)
+module Comment.Model exposing (Comment, Add, empty, initialComments, initialAdd)
 
 
 type alias Comment =

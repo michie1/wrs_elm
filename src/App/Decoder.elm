@@ -3,7 +3,7 @@ module App.Decoder exposing (..)
 import Races.Model
 import Results.Model
 import Riders.Model
-import Comments.Model
+import Comment.Model
 import Json.Decode
 import Json.Decode.Pipeline
 
@@ -107,9 +107,9 @@ rider =
         )
 
 
-comment : Json.Decode.Decoder Comments.Model.Comment
+comment : Json.Decode.Decoder Comment.Model.Comment
 comment =
-    Json.Decode.map5 Comments.Model.Comment
+    Json.Decode.map5 Comment.Model.Comment
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "datetime" Json.Decode.string)
         (Json.Decode.field "raceId" Json.Decode.int)
@@ -165,7 +165,7 @@ type alias App =
     { page : String
     , riders : List Riders.Model.Rider
     , races : List Races.Model.Race
-    , comments : List Comments.Model.Comment
+    , comments : List Comment.Model.Comment
     , results : List Results.Model.Result
     }
 

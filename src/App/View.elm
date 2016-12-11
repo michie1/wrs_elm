@@ -15,7 +15,7 @@ import Riders.Details
 import Riders.Add
 import Results.List
 import Results.Add
-import Comments.Add
+import Comment.Add
 import Account.View
 
 
@@ -186,7 +186,7 @@ viewPage app =
 
                     Just race ->
                         div []
-                            [ Comments.Add.render app race (Maybe.withDefault [] app.riders)
+                            [ Comment.Add.render app race (Maybe.withDefault [] app.riders)
                             ]
 
         App.Routing.AccountLogin ->

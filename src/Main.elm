@@ -10,7 +10,7 @@ import App.View
 import Riders.Model
 import Races.Model
 import Results.Model
-import Comments.Model
+import Comment.Model
 import Task
 import Date
 import Keyboard.Extra
@@ -23,7 +23,7 @@ type alias Flags =
     { riders : List Riders.Model.Rider
     , races : List Races.Model.Race
     , results : List Results.Model.Result
-    , comments : List Comments.Model.Comment
+    , comments : List Comment.Model.Comment
     }
 
 

@@ -1,10 +1,10 @@
-module Comments.Update exposing (new, setText, setRaceId)
+module Comment.Update exposing (new, setText, setRaceId)
 
 import Navigation
 import Array
 import App.Model exposing (App)
 import App.Msg exposing (Msg(..))
-import Comments.Model exposing (Comment, Add, initialAdd)
+import Comment.Model exposing (Comment, Add, initialAdd)
 import Riders.Model
 
 

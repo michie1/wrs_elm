@@ -9,12 +9,12 @@ import App.Commands
 import App.UrlUpdate
 import Races.Model exposing (Race)
 import Riders.Model
-import Comments.Model
+import Comment.Model
 import Account.Model
 import Results.Model
 import Riders.Update
 import Results.Update
-import Comments.Update
+import Comment.Update
 import Account.Update
 import Navigation
 import String
@@ -40,7 +40,7 @@ type alias StoredApp =
     { page : String
     , riders : List Riders.Model.Rider
     , races : List Races.Model.Race
-    , comments : List Comments.Model.Comment
+    , comments : List Comment.Model.Comment
     , results : List Results.Model.Result
     }
 
@@ -252,7 +252,7 @@ update msg app =
                             (formatTime (Date.fromTime time)) ++ " " ++ (formatDate (Date.fromTime time))
 
                         ( comment, cmd ) =
-                            Comments.Update.new
+                            Comment.Update.new
                                 ((List.length app.comments) + 1)
                                 datetime
                                 app

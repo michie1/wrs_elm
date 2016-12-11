@@ -4,14 +4,14 @@ import App.Model
 import Races.Model exposing (Race)
 import Riders.Model
 import Results.Model
-import Comments.Model
+import Comment.Model
 import Markdown
 import App.Msg
 import App.Routing
 import Html exposing (Html, img, button, span, li, i, h2, h3, h5, ul, li, a, div, text, table, tbody, thead, tr, td, th, br, p)
 import Html.Attributes exposing (target, src, href, class, style)
 import Html.Events exposing (onClick, onInput)
-import Comments.List
+import Comment.List
 import List.Extra
 
 
@@ -179,7 +179,7 @@ stravaSpan maybeStrava =
             span [] []
 
 
-commentsUl : List Comments.Model.Comment -> Race -> List Riders.Model.Rider -> Html msg
+commentsUl : List Comment.Model.Comment -> Race -> List Riders.Model.Rider -> Html msg
 commentsUl comments race riders =
     ul [ class "collection" ]
         (List.map
@@ -190,7 +190,7 @@ commentsUl comments race riders =
         )
 
 
-commentLi : Comments.Model.Comment -> Maybe Riders.Model.Rider -> Html msg
+commentLi : Comment.Model.Comment -> Maybe Riders.Model.Rider -> Html msg
 commentLi comment maybeRider =
     case maybeRider of
         Nothing ->
@@ -211,7 +211,7 @@ commentLi comment maybeRider =
                 ]
 
 
-filterCommentsByRace : List Comments.Model.Comment -> Races.Model.Race -> List Comments.Model.Comment
+filterCommentsByRace : List Comment.Model.Comment -> Races.Model.Race -> List Comment.Model.Comment
 filterCommentsByRace comments race =
     List.filter
         (\comment -> comment.raceId == race.id)

@@ -5,7 +5,7 @@ import App.Routing as Routing exposing (Route(..))
 import Races.Model
 import Riders.Model
 import Results.Model
-import Comments.Model
+import Comment.Model
 import Date
 import Account.Model
 import Keyboard.Extra
@@ -25,8 +25,8 @@ type alias App =
     , riderAdd : Riders.Model.RiderAdd
     , results : List Results.Model.Result
     , resultAdd : Maybe Results.Model.ResultAdd
-    , comments : List Comments.Model.Comment
-    , commentAdd : Maybe Comments.Model.Add
+    , comments : List Comment.Model.Comment
+    , commentAdd : Maybe Comment.Model.Add
     , now : Maybe Date.Date
     , account : Maybe Riders.Model.Rider
     , accountLogin : Maybe Account.Model.Login
@@ -60,7 +60,7 @@ initial =
             Riders.Model.empty
             Results.Model.initialResults
             Nothing
-            Comments.Model.initialComments
+            Comment.Model.initialComments
             Nothing
             Nothing
             Account.Model.initial

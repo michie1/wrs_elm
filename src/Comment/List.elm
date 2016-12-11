@@ -1,8 +1,8 @@
-module Comments.List exposing (render)
+module Comment.List exposing (render)
 
 import App.Model
 import App.Msg
-import Comments.Model
+import Comment.Model
 import Riders.Model
 import Races.Model
 import Html exposing (Html, div, text, a, table, thead, tbody, tr, td, th)
@@ -20,7 +20,7 @@ render app race =
             div [] [ text "No riders loaded." ]
 
 
-commentsTable : List Comments.Model.Comment -> Races.Model.Race -> List Riders.Model.Rider -> Html App.Msg.Msg
+commentsTable : List Comment.Model.Comment -> Races.Model.Race -> List Riders.Model.Rider -> Html App.Msg.Msg
 commentsTable comments race riders =
     table []
         [ thead []
@@ -41,7 +41,7 @@ commentsTable comments race riders =
         ]
 
 
-filterCommentsByRace : List Comments.Model.Comment -> Races.Model.Race -> List Comments.Model.Comment
+filterCommentsByRace : List Comment.Model.Comment -> Races.Model.Race -> List Comment.Model.Comment
 filterCommentsByRace comments race =
     List.filter
         (\comment -> comment.raceId == race.id)
@@ -57,7 +57,7 @@ getRiderById id riders =
         )
 
 
-commentRow : Comments.Model.Comment -> Maybe Riders.Model.Rider -> Html App.Msg.Msg
+commentRow : Comment.Model.Comment -> Maybe Riders.Model.Rider -> Html App.Msg.Msg
 commentRow comment maybeRider =
     case maybeRider of
         Nothing ->

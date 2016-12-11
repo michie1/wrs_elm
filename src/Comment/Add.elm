@@ -1,4 +1,4 @@
-module Comments.Add exposing (render)
+module Comment.Add exposing (render)
 
 import Html exposing (Html, p, br, a, span, li, ul, textarea, text, div, h2, button, i, input, label)
 import Html.Attributes exposing (href, autofocus, value, class, type_, id, for, class, disabled)
@@ -8,7 +8,7 @@ import App.Msg
 import App.Model
 import Races.Model
 import Riders.Model exposing (Rider)
-import Comments.Model
+import Comment.Model
 
 
 render : App.Model.App -> Races.Model.Race -> List Rider -> Html App.Msg.Msg
