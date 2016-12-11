@@ -188,9 +188,6 @@ fetchForRoute route =
             Cmd.batch
                 [ Task.attempt (always App.Msg.Noop) (Dom.focus "name")
                 , Task.perform
-                    identity
-                    (Task.succeed App.Msg.UpdateMaterialize)
-                , Task.perform
                     (Just >> App.Msg.SetRaceAdd)
                     Date.now
                 ]
@@ -198,9 +195,6 @@ fetchForRoute route =
         App.Routing.CommentAdd raceId ->
             Cmd.batch
                 [ Task.attempt (always App.Msg.Noop) (Dom.focus "text")
-                , Task.perform
-                    identity
-                    (Task.succeed App.Msg.UpdateMaterialize)
                   --, Dom.focus "name" |> Task.attempt FocusResult
                   --, Task.perform identity (Task.succeed (Dom.focus "name"))
                 ]
@@ -216,9 +210,6 @@ fetchForRoute route =
         App.Routing.ResultAdd raceId ->
             Cmd.batch
                 [ Task.attempt (always App.Msg.Noop) (Dom.focus "result")
-                , Task.perform
-                    identity
-                    (Task.succeed App.Msg.UpdateMaterialize)
                 ]
 
         App.Routing.Riders ->

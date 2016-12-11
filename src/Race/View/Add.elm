@@ -33,7 +33,7 @@ render raceAdd =
                         [ input
                             [ id "name"
                             , type_ "text"
-                            , onInput App.Msg.SetRaceName
+                            , onInput App.Msg.RaceName
                             , autofocus True
                             ]
                             []
@@ -46,7 +46,7 @@ render raceAdd =
                             [ id "date"
                             , type_ "text"
                             , value dateString
-                            , onInput App.Msg.SetRaceDate
+                            , onInput App.Msg.RaceDate
                             ]
                             []
                         , label [ for "date" ] [ text "Date" ]
@@ -55,12 +55,12 @@ render raceAdd =
                 , div [ class "row" ]
                     [ button
                         [ class "waves-effect waves-light btn"
-                        , onClick App.Msg.SetRaceAddYesterday
+                        , onClick App.Msg.RaceAddYesterday
                         ]
                         [ text "Yesterday" ]
                     , button
                         [ class "waves-effect waves-light btn"
-                        , onClick App.Msg.SetRaceAddToday
+                        , onClick App.Msg.RaceAddToday
                         ]
                         [ text "Today" ]
                     ]

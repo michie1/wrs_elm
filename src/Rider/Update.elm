@@ -1,4 +1,4 @@
-module Rider.Update exposing (setRiderAddName, addRider)
+module Rider.Update exposing (setRiderAddName, add)
 
 import App.Model exposing (App)
 import Rider.Model exposing (Rider, RiderAdd)
@@ -6,8 +6,8 @@ import App.Msg exposing (Msg(..))
 import Navigation
 
 
-addRider : App -> Rider -> ( App, Cmd Msg )
-addRider app rider =
+add : App -> Rider -> ( App, Cmd Msg )
+add app rider =
     case app.riders of
         Just riders ->
             let

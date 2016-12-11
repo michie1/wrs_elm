@@ -17,32 +17,25 @@ import Json.Encode
 
 type Msg
     = RaceAdd
-    | SetRaceName String
-    | SetRaceDate String
+    | RaceName String
+    | RaceDate String
     | RaceAddCategory Race.Model.Category
-    | AddRider Rider
-    | SetRiderName String
+    | SetRaceAdd (Maybe Date.Date)
+    | RaceAddYesterday
+    | RaceAddYesterdayWithDate (Maybe Date.Date)
+    | RaceAddToday
+    | RaceAddTodayWithDate (Maybe Date.Date)
+    | RiderAdd Rider
+    | RiderName String
     | ResultAdd
     | ResultAddCategory Result.Model.ResultCategory
     | ResultAddStrava String
-    | SetResultAddResult String
-    | SetResultRiderName String
+    | ResultAddResult String
+    | ResultRiderName String
     | CommentAddSetText String
     | CommentAddSetRiderName String
     | CommentAdd
-    | CommentAdd2 (Maybe Time.Time)
-    | Save
-    | Log String
-    | Reset
-    | SetNow (Maybe Date.Date)
-    | SetRaceAdd (Maybe Date.Date)
-    | SetRaceAddYesterday
-    | SetRaceAddYesterday2 (Maybe Date.Date)
-    | SetRaceAddToday
-    | SetRaceAddToday2 (Maybe Date.Date)
-    | UpdateMaterialize
-    | NavigateTo Route
-    | UrlUpdate Route
+    | CommentAddWithTime (Maybe Time.Time)
     | AccountLogin
     | AccountLoginName String
     | AccountLoginPassword String
@@ -52,8 +45,10 @@ type Msg
     | AccountLicence Rider.Model.Licence
     | SocketAccountLicence
     | SocketAccountLicenceResponse Json.Encode.Value
-    | KeyDown Keyboard.KeyCode
-    | KeyboardMsg Keyboard.Extra.Msg
+    | SocketAccountSignup
+    | SocketAccountSignupResponse Json.Encode.Value
+    | NavigateTo Route
+    | UrlUpdate Route
     | Noop
     | Input String
     | Connect
@@ -62,7 +57,5 @@ type Msg
     | ReceiveMessage Json.Encode.Value
     | ReceiveRiders Json.Encode.Value
     | HandleSendError Json.Encode.Value
-    | SocketAccountSignup
-    | SocketAccountSignupResponse Json.Encode.Value
     | OnCreatedRider Json.Encode.Value
     | OnUpdatedRider Json.Encode.Value

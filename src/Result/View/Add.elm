@@ -33,7 +33,7 @@ render race resultAdd riders results =
                     [ input
                         [ id "result"
                         , type_ "text"
-                        , onInput App.Msg.SetResultAddResult
+                        , onInput App.Msg.ResultAddResult
                         , autofocus True
                         ]
                         []
@@ -46,7 +46,7 @@ render race resultAdd riders results =
                         [ id "rider"
                         , type_ "text"
                         , value resultAdd.riderName
-                        , onInput App.Msg.SetResultRiderName
+                        , onInput App.Msg.ResultRiderName
                         , class "autocomplete"
                         ]
                         []

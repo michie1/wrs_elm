@@ -35,25 +35,7 @@ import Json.Encode
 import Json.Decode
 
 
-type alias StoredApp =
-    { page : String
-    , riders : List Rider.Model.Rider
-    , races : List Race.Model.Race
-    , comments : List Comment.Model.Comment
-    , results : List Result.Model.Result
-    }
 
-
-port saveState : String -> Cmd msg
-
-
-port resetState : String -> Cmd msg
-
-
-port updateMaterialize : () -> Cmd msg
-
-
-port autocomplete : ( String, List String ) -> Cmd msg
 
 
 update : Msg -> App -> ( App, Cmd Msg )
@@ -88,7 +70,7 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-        SetRaceName newName ->
+        RaceName newName ->
             case app.raceAdd of
                 Just raceAdd ->
                     let
@@ -118,7 +100,7 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-        SetRaceDate newDate ->
+        RaceDate newDate ->
             case app.raceAdd of
                 Just raceAdd ->
                     let
@@ -134,10 +116,10 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-        AddRider rider ->
-            Rider.Update.addRider app rider
+        RiderAdd rider ->
+            Rider.Update.add app rider
 
-        SetRiderName newName ->
+        RiderName newName ->
             Rider.Update.setRiderAddName app newName
 
         ResultAdd ->
@@ -182,7 +164,7 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-        SetResultAddResult value ->
+        ResultAddResult value ->
             case app.resultAdd of
                 Just resultAdd ->
                     let
@@ -196,7 +178,7 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-        SetResultRiderName name ->
+        ResultRiderName name ->
             let
                 a =
                     Debug.log "name" name
@@ -238,12 +220,12 @@ update msg app =
             let
                 nowTask =
                     Task.perform
-                        (Just >> App.Msg.CommentAdd2)
+                        (Just >> App.Msg.CommentAddWithTime)
                         Time.now
             in
                 ( app, Cmd.batch [ nowTask ] )
 
-        CommentAdd2 maybeTime ->
+        CommentAddWithTime maybeTime ->
             case maybeTime of
                 Just time ->
                     let
@@ -266,34 +248,7 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-        Save ->
-            ( app
-            , saveState (Debug.log "alert message" "message")
-            )
 
-        Log message ->
-            let
-                m =
-                    Debug.log "message" message
-            in
-                ( app
-                , Cmd.none
-                )
-
-        Reset ->
-            App.Model.initial
-
-        UpdateMaterialize ->
-            let
-                bla =
-                    Debug.log "update Materialize" "bla"
-            in
-                ( app, updateMaterialize () )
-
-        SetNow maybeDate ->
-            ( { app | now = maybeDate }
-            , Cmd.none
-            )
 
         SetRaceAdd maybeNow ->
             case app.raceAdd of
@@ -319,16 +274,16 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-        SetRaceAddYesterday ->
+        RaceAddYesterday ->
             let
                 yesterdayTask =
                     Task.perform
-                        (Just >> App.Msg.SetRaceAddYesterday2)
+                        (Just >> App.Msg.RaceAddYesterdayWithDate)
                         Date.now
             in
-                ( app, Cmd.batch [ yesterdayTask, updateMaterialize () ] )
+                ( app, Cmd.batch [ yesterdayTask] )
 
-        SetRaceAddYesterday2 maybeDate ->
+        RaceAddYesterdayWithDate maybeDate ->
             case app.raceAdd of
                 Just raceAdd ->
                     let
@@ -350,16 +305,16 @@ update msg app =
                 Nothing ->
                     ( app, Cmd.none )
 
-        SetRaceAddToday ->
+        RaceAddToday ->
             let
                 todayTask =
                     Task.perform
-                        (Just >> App.Msg.SetRaceAddToday2)
+                        (Just >> App.Msg.RaceAddTodayWithDate)
                         Date.now
             in
-                ( app, Cmd.batch [ todayTask, updateMaterialize () ] )
+                ( app, Cmd.batch [ todayTask] )
 
-        SetRaceAddToday2 maybeDate ->
+        RaceAddTodayWithDate maybeDate ->
             case app.raceAdd of
                 Just raceAdd ->
                     let
@@ -660,38 +615,6 @@ update msg app =
                         ( app, Cmd.none )
 
         -- TODO: link account to one rider?
-        KeyDown keyCode ->
-            case keyCode of
-                13 ->
-                    let
-                        a =
-                            Debug.log "keyCode" "enter"
-                    in
-                        ( app, Cmd.none )
-
-                _ ->
-                    ( app, Cmd.none )
-
-        KeyboardMsg keyMsg ->
-            let
-                a =
-                    Debug.log "keyMsg" keyMsg
-
-                ( keyboardModel, keyboardCmd ) =
-                    Keyboard.Extra.update keyMsg app.keyboardModel
-
-                cmd =
-                    case (Keyboard.Extra.isPressed Keyboard.Extra.Enter keyboardModel && app.raceAdd /= Nothing) of
-                        True ->
-                            Task.perform identity (Task.succeed RaceAdd)
-
-                        False ->
-                            Cmd.none
-            in
-                ( { app | keyboardModel = keyboardModel }
-                , cmd
-                  -- , Cmd.map KeyboardMsg keyboardCmd TODO: check why it looks like its not needed now
-                )
 
         Noop ->
             ( app, Cmd.none )
