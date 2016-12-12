@@ -20,7 +20,6 @@ type alias App =
     , riders : Maybe (List Rider.Model.Rider)
     , races : List Race.Model.Race
     , raceAdd : Maybe Race.Model.Add
-    , riderAdd : Rider.Model.RiderAdd
     , results : List Result.Model.Result
     , resultAdd : Maybe Result.Model.ResultAdd
     , comments : List Comment.Model.Comment
@@ -53,10 +52,8 @@ initial =
             Home
             Dict.empty
             Nothing
-            --Rider.Model.initialRiders
             Race.Model.initialRaces
             Nothing
-            Rider.Model.empty
             Result.Model.initialResults
             Nothing
             Comment.Model.initialComments
@@ -67,7 +64,6 @@ initial =
             Nothing
             []
             ""
-            -- (Phoenix.Socket.init "ws://localhost:4000/socket/websocket")
             initSocket
         , Cmd.map App.Msg.PhoenixMsg phxCmd
         )

@@ -11,7 +11,6 @@ import Rider.Model
 import Comment.Model
 import Account.Model
 import Result.Model
-import Rider.Update
 import Result.Update
 import Comment.Update
 import Account.Update
@@ -114,12 +113,6 @@ update msg app =
 
                 Nothing ->
                     ( app, Cmd.none )
-
-        RiderAdd rider ->
-            Rider.Update.add app rider
-
-        RiderName newName ->
-            Rider.Update.setRiderAddName app newName
 
         ResultAdd ->
             let

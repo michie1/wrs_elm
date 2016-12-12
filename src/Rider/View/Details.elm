@@ -1,4 +1,4 @@
-module Rider.View.Details exposing (..)
+module Rider.View.Details exposing (render)
 
 import App.Model
 import Rider.Model exposing (Rider)

@@ -13,9 +13,6 @@ reverse route =
         Riders ->
             "#riders"
 
-        RiderAdd ->
-            "#riders/add"
-
         RiderDetails id ->
             "#riders/" ++ toString id
 
@@ -55,7 +52,6 @@ reverse route =
 
 type Route
     = Home
-    | RiderAdd
     | RiderDetails Int
     | Riders
     | RaceAdd
@@ -78,7 +74,6 @@ matchers =
         [ map Races (s "home")
           --, map Home (s "")
         , map Races (s "")
-        , map RiderAdd (s "riders" </> s "add")
         , map RiderDetails (s "riders" </> int)
         , map Riders (s "riders")
         , map ResultAdd (s "races" </> int </> s "add")

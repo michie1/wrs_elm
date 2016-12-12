@@ -25,8 +25,6 @@ type Msg
     | RaceAddYesterdayWithDate (Maybe Date.Date)
     | RaceAddToday
     | RaceAddTodayWithDate (Maybe Date.Date)
-    | RiderAdd Rider
-    | RiderName String
     | ResultAdd
     | ResultAddCategory Result.Model.ResultCategory
     | ResultAddStrava String

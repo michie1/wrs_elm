@@ -12,55 +12,10 @@ import Race.View.List
 import Race.View.Details
 import Rider.View.List
 import Rider.View.Details
-import Rider.View.Add
 import Result.View.List
 import Result.View.Add
 import Comment.View.Add
 import Account.View
-
-
-userLi : App -> List (Html App.Msg.Msg)
-userLi app =
-    case app.account of
-        Just account ->
-            let
-                content =
-                    case account.licence of
-                        Just licence ->
-                            [ text account.name ]
-
-                        Nothing ->
-                            [ text account.name
-                            , span [ class "new badge" ] [ text "1" ]
-                            ]
-            in
-                [ li [] [ a [ href "#account" ] content ]
-                ]
-
-        -- [ text account.name ] ]
-        Nothing ->
-            [ li [] [ a [ href "#account/login" ] [ text "Login" ] ]
-            , li [] [ a [ href "#account/signup" ] [ text "Signup" ] ]
-            ]
-
-
-header : App -> Html App.Msg.Msg
-header app =
-    nav []
-        [ div
-            [ class "nav-wrapper blue darken-4" ]
-            [ a [ class "brand-logo left", href "#home" ] [ text "WRS" ]
-            , ul [ id "nav-mobile", class "right" ]
-                (List.concat
-                    [ (userLi app)
-                      --, [ li [] [ a [ href "#races" ] [ text "Races" ] ]
-                    , [ li [] [ a [ href "#riders" ] [ text "Riders" ] ] ]
-                      --  ]
-                    ]
-                )
-            ]
-        ]
-
 
 render : App -> Html Msg
 render app =
@@ -69,18 +24,11 @@ render app =
         , mainView app
         ]
 
-
-viewMessage : String -> Html msg
-viewMessage reponse =
-    div [] [ text reponse ]
-
-
 mainView : App -> Html Msg
 mainView app =
     div [ class "container" ]
         [ viewPage app
         ]
-
 
 viewPage : App -> Html Msg
 viewPage app =
@@ -100,29 +48,16 @@ viewPage app =
                 Nothing ->
                     div [] [ text "No riders loaded." ]
 
-        App.Routing.RiderAdd ->
-            div []
-                [ Rider.View.Add.render app.riderAdd.rider
-                ]
-
         App.Routing.RiderDetails id ->
-            div []
-                [ Rider.View.Details.render
-                    app
-                    id
-                ]
+            Rider.View.Details.render
+                app
+                id
 
         App.Routing.Races ->
-            div []
-                [ Race.View.List.render app.races app.results
-                ]
+            Race.View.List.render app.races app.results
 
         App.Routing.RaceDetails id ->
-            div []
-                [ Race.View.Details.render
-                    app
-                    id
-                ]
+            Race.View.Details.render app id
 
         App.Routing.RaceAdd ->
             case app.raceAdd of
@@ -135,9 +70,7 @@ viewPage app =
                         ]
 
         App.Routing.Results ->
-            div []
-                [ Result.View.List.render app.results
-                ]
+            Result.View.List.render app.results
 
         App.Routing.ResultAdd raceId ->
             case app.resultAdd of
@@ -193,6 +126,61 @@ viewPage app =
 
         App.Routing.AccountSignup ->
             Account.View.signup app
+
+
+
+userLi : App -> List (Html App.Msg.Msg)
+userLi app =
+    case app.account of
+        Just account ->
+            let
+                content =
+                    case account.licence of
+                        Just licence ->
+                            [ text account.name ]
+
+                        Nothing ->
+                            [ text account.name
+                            , span [ class "new badge" ] [ text "1" ]
+                            ]
+            in
+                [ li [] [ a [ href "#account" ] content ]
+                ]
+
+        Nothing ->
+            [ li [] [ a [ href "#account/login" ] [ text "Login" ] ]
+            , li [] [ a [ href "#account/signup" ] [ text "Signup" ] ]
+            ]
+
+
+header : App -> Html App.Msg.Msg
+header app =
+    nav []
+        [ div
+            [ class "nav-wrapper blue darken-4" ]
+            [ a [ class "brand-logo left", href "#home" ] [ text "WRS" ]
+            , ul [ id "nav-mobile", class "right" ]
+                (List.concat
+                    [ (userLi app)
+                      --, [ li [] [ a [ href "#races" ] [ text "Races" ] ]
+                    , [ li [] [ a [ href "#riders" ] [ text "Riders" ] ] ]
+                      --  ]
+                    ]
+                )
+            ]
+        ]
+
+
+
+
+
+viewMessage : String -> Html msg
+viewMessage reponse =
+    div [] [ text reponse ]
+
+
+
+
 
 
 getRace : Int -> List Race.Model.Race -> Maybe Race.Model.Race

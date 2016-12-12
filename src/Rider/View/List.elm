@@ -10,32 +10,24 @@ import App.Msg
 
 render : List Rider -> Html App.Msg.Msg
 render riders =
-    div []
-        [ riderTable riders
-        ]
-
-
-riderTable : List Rider -> Html msg
-riderTable riders =
     table []
         [ thead []
             [ tr []
-                [ th [] [ text "Naam" ]
-                , th [] [ text "Licentie" ]
+                [ th [] [ text "Name" ]
+                , th [] [ text "Licence" ]
                 ]
             ]
         , tbody []
-            (riders
-                |> List.map
-                    (\rider ->
-                        tr []
-                            [ td []
-                                [ a
-                                    [ href ("#riders/" ++ (toString rider.id)) ]
-                                    [ text rider.name ]
-                                ]
-                            , td [] [ text (toString rider.licence) ]
+            (List.map
+                (\rider ->
+                    tr []
+                        [ td []
+                            [ a [ href ("#riders/" ++ (toString rider.id)) ]
+                                [ text rider.name ]
                             ]
-                    )
+                        , td [] [ text (toString rider.licence) ]
+                        ]
+                )
+                riders
             )
         ]
