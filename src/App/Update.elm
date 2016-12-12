@@ -117,7 +117,7 @@ update msg app =
         ResultAdd ->
             let
                 ( maybeResult, cmd ) =
-                    Result.Update.addResult app
+                    Result.Update.add app
             in
                 case maybeResult of
                     Just result ->
@@ -171,11 +171,7 @@ update msg app =
                     ( app, Cmd.none )
 
         ResultRiderName name ->
-            let
-                a =
-                    Debug.log "name" name
-            in
-                Result.Update.setRider app name
+            Result.Update.riderName app name
 
         CommentAddSetText text ->
             case app.commentAdd of
