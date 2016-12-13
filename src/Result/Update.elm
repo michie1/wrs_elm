@@ -1,7 +1,7 @@
-module Result.Update exposing (add , riderName)
+module Result.Update exposing (add, riderName)
 
 import App.Model exposing (App)
-import Result.Model exposing (ResultAdd)
+import Result.Model exposing (Add)
 import Rider.Model
 import App.Msg exposing (Msg(..))
 import Navigation

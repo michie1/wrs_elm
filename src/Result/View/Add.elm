@@ -15,7 +15,7 @@ riderNameExists name riders =
     List.length (List.filter (\rider -> rider.name == name) riders) > 0
 
 
-render : Race.Model.Race -> Result.Model.ResultAdd -> List Rider -> List Result.Model.Result -> Html App.Msg.Msg
+render : Race.Model.Race -> Result.Model.Add -> List Rider -> List Result.Model.Result -> Html App.Msg.Msg
 render race resultAdd riders results =
     let
         submitDisabled =

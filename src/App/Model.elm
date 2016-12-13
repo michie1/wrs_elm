@@ -21,7 +21,7 @@ type alias App =
     , races : List Race.Model.Race
     , raceAdd : Maybe Race.Model.Add
     , results : List Result.Model.Result
-    , resultAdd : Maybe Result.Model.ResultAdd
+    , resultAdd : Maybe Result.Model.Add
     , comments : List Comment.Model.Comment
     , commentAdd : Maybe Comment.Model.Add
     , now : Maybe Date.Date

@@ -1,4 +1,4 @@
-module Result.Model exposing (ResultAdd, Result, initialAdd, initialResults, ResultCategory, ResultCategory(..), categories)
+module Result.Model exposing (Add, Result, initialAdd, initialResults, ResultCategory, ResultCategory(..), categories)
 
 import Rider.Model exposing (Rider)
 
@@ -21,21 +21,19 @@ type alias Result =
     }
 
 
-type alias ResultAdd =
+type alias Add =
     { raceId : Int
     , riderName : String
-    , riders : List Rider
     , result : String
     , category : ResultCategory
     , strava : String
     }
 
 
-initialAdd : ResultAdd
+initialAdd : Add
 initialAdd =
     { raceId = 0
     , riderName = ""
-    , riders = []
     , result = ""
     , category = Amateurs
     , strava = ""

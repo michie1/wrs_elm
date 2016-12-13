@@ -45,14 +45,15 @@ update msg app =
                     case raceAdd.name /= "" of
                         True ->
                             let
-                                dateString =
-                                    Maybe.withDefault "" raceAdd.dateString
+                                --dateString =
+                                --    Maybe.withDefault "" raceAdd.dateString
 
                                 newRace =
                                     Race.Model.Race
                                         (App.Helpers.calcRaceId app.races)
                                         raceAdd.name
-                                        dateString
+                                        -- dateString
+                                        raceAdd.dateString
                                         raceAdd.category
                             in
                                 ( { app
@@ -103,7 +104,8 @@ update msg app =
                 Just raceAdd ->
                     let
                         newRaceAdd =
-                            { raceAdd | dateString = Just newDate }
+                            --{ raceAdd | dateString = Just newDate }
+                            { raceAdd | dateString = newDate }
                     in
                         ( { app
                             | raceAdd = Just newRaceAdd
@@ -214,20 +216,24 @@ update msg app =
                 ( app, Cmd.batch [ nowTask ] )
 
         CommentAddWithTime maybeTime ->
+            Comment.Update.add app maybeTime
+            {--
             case maybeTime of
                 Just time ->
                     let
                         datetime =
-                            (App.Helpers.formatTime (Date.fromTime time)) ++ " " ++ (App.Helpers.formatDate (Date.fromTime time))
+                            (App.Helpers.formatDate (Date.fromTime time))
+                            ++ " " ++ 
+                            (App.Helpers.formatTime (Date.fromTime time)) 
 
                         ( comment, cmd ) =
-                            Comment.Update.new
+                            Comment.Update.add
                                 ((List.length app.comments) + 1)
                                 datetime
                                 app
                     in
                         ( { app
-                            | comments = (Debug.log "comment2" comment) :: app.comments
+                            | comments = comment :: app.comments
                             , commentAdd = Nothing
                           }
                         , cmd
@@ -235,6 +241,7 @@ update msg app =
 
                 Nothing ->
                     ( app, Cmd.none )
+            --}
 
 
 
@@ -252,7 +259,8 @@ update msg app =
 
                         raceAdd =
                             { currentRaceAdd
-                                | dateString = Just dateFormatted
+                                --| dateString = Just dateFormatted
+                                | dateString = dateFormatted
                             }
                     in
                         ( { app | raceAdd = Just raceAdd }
@@ -284,7 +292,8 @@ update msg app =
                                     ""
 
                         newRaceAdd =
-                            { raceAdd | dateString = Just dateFormatted }
+                            --{ raceAdd | dateString = Just dateFormatted }
+                            { raceAdd | dateString = dateFormatted }
                     in
                         ( { app | raceAdd = Just newRaceAdd }
                         , Cmd.none
@@ -315,7 +324,8 @@ update msg app =
                                     ""
 
                         newRaceAdd =
-                            { raceAdd | dateString = Just dateFormatted }
+                            --{ raceAdd | dateString = Just dateFormatted }
+                            { raceAdd | dateString = dateFormatted }
                     in
                         ( { app | raceAdd = Just newRaceAdd }
                         , Cmd.none

@@ -83,17 +83,15 @@ leadingZero value =
 
 formatTime : Date.Date -> String
 formatTime datetime =
-    toString (Date.hour datetime)
-        -- TODO: use leadingZero
-        ++
-            ":"
-        ++ toString (Date.minute datetime)
+        leadingZero (Date.hour datetime)
+        ++ ":" ++
+        toString (Date.minute datetime)
 
 
 formatDate : Date.Date -> String
 formatDate date =
-    (leadingZero (Date.day date))
+        toString (Date.year date)
+        ++ "-"
         ++ "-"
         ++ toString (numMonth (Date.month date))
-        ++ "-"
-        ++ toString (Date.year date)
+        ++ (leadingZero (Date.day date))

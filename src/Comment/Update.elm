@@ -1,4 +1,4 @@
-module Comment.Update exposing (new, setText, setRaceId)
+module Comment.Update exposing (add)
 
 import Navigation
 import Array
@@ -6,119 +6,71 @@ import App.Model exposing (App)
 import App.Msg exposing (Msg(..))
 import Comment.Model exposing (Comment, Add, initialAdd)
 import Rider.Model
+import Date
+import Time
+import App.Helpers
 
 
-new : Int -> String -> App -> ( Comment, Cmd Msg )
+add : App -> Maybe Time.Time -> ( App, Cmd Msg )
+add app maybeTime =
+    case maybeTime of
+        Just time ->
+            let
+                datetime =
+                    (App.Helpers.formatDate (Date.fromTime time))
+                        ++ " "
+                        ++ (App.Helpers.formatTime (Date.fromTime time))
+
+                maybeComment =
+                    new
+                        ((List.length app.comments) + 1)
+                        datetime
+                        app
+            in
+                case maybeComment of
+                    Just comment ->
+                        ( { app
+                            | comments = comment :: app.comments
+                            , commentAdd = Nothing
+                          }
+                        , Navigation.newUrl ("#races/" ++ toString comment.raceId)
+                        )
+
+                    Nothing ->
+                        ( app, Cmd.none )
+
+        Nothing ->
+            ( app, Cmd.none )
+
+
+new : Int -> String -> App -> Maybe Comment
 new id datetime app =
-    case app.riders of
-        Just riders ->
-            case app.commentAdd of
-                Just commentAdd ->
-                    let
-                        maybeRider =
-                            getRiderByName (Debug.log "riderName" commentAdd.riderName) riders
-                    in
-                        case maybeRider of
-                            Just rider ->
-                                let
-                                    comment =
-                                        Comment
-                                            id
-                                            datetime
-                                            commentAdd.raceId
-                                            rider.id
-                                            commentAdd.text
-                                in
-                                    ( comment
-                                    , Navigation.newUrl ("#races/" ++ toString commentAdd.raceId)
-                                    )
+    Maybe.withDefault 
+        Nothing 
+        (Maybe.map2
+            (\riders commentAdd -> newComment id datetime riders commentAdd)
+            app.riders
+            app.commentAdd
+        )
+   
 
-                            Nothing ->
-                                let
-                                    a =
-                                        Debug.log "New comment" "Rider unknown."
-                                in
-                                    ( (Comment 0 "wrong date" 0 0 "fout"), Cmd.none )
 
-                Nothing ->
-                    -- TODO: return maybe Comment and resolve where new function is used
-                    ( (Comment 0 "no commentAdd" 0 0 "fout"), Cmd.none )
+newComment : Int -> String -> List Rider.Model.Rider -> Comment.Model.Add -> Maybe Comment
+newComment id datetime riders commentAdd =
+    case getRiderByName commentAdd.riderName riders of
+        Just rider ->
+            Just <| Comment
+                id
+                datetime
+                commentAdd.raceId
+                rider.id
+                commentAdd.text
 
         Nothing ->
-            -- TODO: return maybe Comment and resolve where new function is used
-            ( (Comment 0 "no commentAdd" 0 0 "fout"), Cmd.none )
-
-
-setText : App -> String -> ( App, Cmd Msg )
-setText app text =
-    case app.commentAdd of
-        Just commentAdd ->
-            ( set app (setAddText commentAdd text), Cmd.none )
-
-        Nothing ->
-            ( app, Cmd.none )
-
-
-setRaceId : App -> Int -> ( App, Cmd Msg )
-setRaceId app raceId =
-    case app.commentAdd of
-        Just commentAdd ->
-            ( set app (setAddRaceId commentAdd raceId), Cmd.none )
-
-        Nothing ->
-            ( app, Cmd.none )
-
+            Nothing
 
 
 -- Helpers
-
-
-getRiderIdByIndex : Int -> List Rider.Model.Rider -> Maybe Int
-getRiderIdByIndex index riders =
-    let
-        arrayRiders =
-            Array.fromList riders
-
-        maybeRider =
-            Array.get index arrayRiders
-    in
-        case maybeRider of
-            Nothing ->
-                Nothing
-
-            Just rider ->
-                Just rider.id
-
-
-calcId : List Comment -> Int
-calcId comments =
-    (List.length comments) + 1
-
-
-setComments : App -> List Comment -> App
-setComments app comments =
-    { app | comments = comments }
-
-
-setAddText : Add -> String -> Add
-setAddText add text =
-    { add | text = text }
-
-
-setAddRaceId : Add -> Int -> Add
-setAddRaceId add raceId =
-    { add | raceId = raceId }
-
-
-setAddRiderName : Add -> String -> Add
-setAddRiderName add riderName =
-    { add | riderName = riderName }
-
-
-set : App -> Add -> App
-set app commentAdd =
-    { app | commentAdd = Just commentAdd }
-
 
 getRiderByName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderByName name riders =

@@ -13,8 +13,7 @@ type Category
 
 type alias Race =
     { id : Int
-    , name :
-        String
+    , name : String
     , date : String
     , category : Category
     }
@@ -22,7 +21,7 @@ type alias Race =
 
 type alias Add =
     { name : String
-    , dateString : Maybe String
+    , dateString : String
     , category : Category
     }
 

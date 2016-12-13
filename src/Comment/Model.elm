@@ -20,7 +20,7 @@ type alias Add =
 empty : Comment
 empty =
     { id = 0
-    , datetime = "12:13 01-01-1970"
+    , datetime = "1970-01-01 00:00"
     , raceId = 0
     , riderId = 0
     , text = ""
@@ -29,7 +29,7 @@ empty =
 
 initialComments : List Comment
 initialComments =
-    [ Comment 1 "12:13 13-01-2016" 1 1 "Leuk!"
+    [ Comment 1 "2016-01-13 12:13" 1 1 "Leuk!"
     ]
 
 

@@ -1,6 +1,6 @@
 module Result.Helpers exposing (resultExists, calcResultId, getRiderByName)
 
-import Result.Model exposing (ResultAdd)
+import Result.Model exposing (Add)
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import Rider.Model

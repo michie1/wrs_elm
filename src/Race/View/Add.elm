@@ -14,6 +14,7 @@ render raceAdd =
         name =
             raceAdd.name
 
+        {--
         dateString =
             case raceAdd.dateString of
                 Just dateString ->
@@ -21,6 +22,9 @@ render raceAdd =
 
                 Nothing ->
                     ""
+        --}
+
+        dateString = raceAdd.dateString
 
         submitDisabled =
             name == ""
