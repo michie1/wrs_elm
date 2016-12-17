@@ -1,4 +1,4 @@
-module Comment.Update exposing (add)
+module Comment.Update exposing (add, addWithTime, addRiderName, addText)
 
 import Navigation
 import Array
@@ -9,10 +9,41 @@ import Rider.Model
 import Date
 import Time
 import App.Helpers
+import Task
 
 
-add : App -> Maybe Time.Time -> ( App, Cmd Msg )
-add app maybeTime =
+add : App -> ( App, Cmd Msg )
+add app =
+    let
+        nowTask =
+            Task.perform
+                (Just >> App.Msg.CommentAddWithTime)
+                Time.now
+    in
+        ( app, Cmd.batch [ nowTask ] )
+
+
+addText : App -> String -> ( App, Cmd Msg )
+addText app text =
+    case app.commentAdd of
+        Just commentAdd ->
+            let
+                commentAddWithText =
+                    { commentAdd
+                        | text =
+                            text
+                    }
+            in
+                ( { app | commentAdd = Just commentAddWithText }
+                , Cmd.none
+                )
+
+        Nothing ->
+            ( app, Cmd.none )
+
+
+addWithTime : App -> Maybe Time.Time -> ( App, Cmd Msg )
+addWithTime app maybeTime =
     case maybeTime of
         Just time ->
             let
@@ -45,32 +76,50 @@ add app maybeTime =
 
 new : Int -> String -> App -> Maybe Comment
 new id datetime app =
-    Maybe.withDefault 
-        Nothing 
+    Maybe.withDefault
+        Nothing
         (Maybe.map2
             (\riders commentAdd -> newComment id datetime riders commentAdd)
             app.riders
             app.commentAdd
         )
-   
+
+
+addRiderName : App -> String -> ( App, Cmd Msg )
+addRiderName app name =
+    case app.commentAdd of
+        Just commentAdd ->
+            let
+                commentAddWithRiderName =
+                    { commentAdd | riderName = name }
+            in
+                ( { app | commentAdd = Just commentAddWithRiderName }
+                , Cmd.none
+                )
+
+        Nothing ->
+            ( app, Cmd.none )
 
 
 newComment : Int -> String -> List Rider.Model.Rider -> Comment.Model.Add -> Maybe Comment
 newComment id datetime riders commentAdd =
     case getRiderByName commentAdd.riderName riders of
         Just rider ->
-            Just <| Comment
-                id
-                datetime
-                commentAdd.raceId
-                rider.id
-                commentAdd.text
+            Just <|
+                Comment
+                    id
+                    datetime
+                    commentAdd.raceId
+                    rider.id
+                    commentAdd.text
 
         Nothing ->
             Nothing
 
 
+
 -- Helpers
+
 
 getRiderByName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderByName name riders =

@@ -32,7 +32,6 @@ import Phoenix.Socket
 import Phoenix.Push
 import Json.Encode
 import Json.Decode
-
 import App.Helpers
 
 
@@ -47,7 +46,6 @@ update msg app =
                             let
                                 --dateString =
                                 --    Maybe.withDefault "" raceAdd.dateString
-
                                 newRace =
                                     Race.Model.Race
                                         (App.Helpers.calcRaceId app.races)
@@ -176,74 +174,16 @@ update msg app =
             Result.Update.riderName app name
 
         CommentAddSetText text ->
-            case app.commentAdd of
-                Just commentAdd ->
-                    let
-                        commentAddWithText =
-                            { commentAdd
-                                | text =
-                                    text
-                            }
-                    in
-                        ( { app | commentAdd = Just commentAddWithText }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Comment.Update.addText app text
 
         CommentAddSetRiderName riderName ->
-            case app.commentAdd of
-                Just commentAdd ->
-                    let
-                        commentAddWithRiderName =
-                            { commentAdd | riderName = riderName }
-                    in
-                        ( { app | commentAdd = Just commentAddWithRiderName }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Comment.Update.addRiderName app riderName
 
         CommentAdd ->
-            let
-                nowTask =
-                    Task.perform
-                        (Just >> App.Msg.CommentAddWithTime)
-                        Time.now
-            in
-                ( app, Cmd.batch [ nowTask ] )
+            Comment.Update.add app
 
         CommentAddWithTime maybeTime ->
-            Comment.Update.add app maybeTime
-            {--
-            case maybeTime of
-                Just time ->
-                    let
-                        datetime =
-                            (App.Helpers.formatDate (Date.fromTime time))
-                            ++ " " ++ 
-                            (App.Helpers.formatTime (Date.fromTime time)) 
-
-                        ( comment, cmd ) =
-                            Comment.Update.add
-                                ((List.length app.comments) + 1)
-                                datetime
-                                app
-                    in
-                        ( { app
-                            | comments = comment :: app.comments
-                            , commentAdd = Nothing
-                          }
-                        , cmd
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
-            --}
-
-
+            Comment.Update.addWithTime app maybeTime
 
         SetRaceAdd maybeNow ->
             case app.raceAdd of
@@ -259,7 +199,7 @@ update msg app =
 
                         raceAdd =
                             { currentRaceAdd
-                                --| dateString = Just dateFormatted
+                              --| dateString = Just dateFormatted
                                 | dateString = dateFormatted
                             }
                     in
@@ -277,7 +217,7 @@ update msg app =
                         (Just >> App.Msg.RaceAddYesterdayWithDate)
                         Date.now
             in
-                ( app, Cmd.batch [ yesterdayTask] )
+                ( app, Cmd.batch [ yesterdayTask ] )
 
         RaceAddYesterdayWithDate maybeDate ->
             case app.raceAdd of
@@ -309,7 +249,7 @@ update msg app =
                         (Just >> App.Msg.RaceAddTodayWithDate)
                         Date.now
             in
-                ( app, Cmd.batch [ todayTask] )
+                ( app, Cmd.batch [ todayTask ] )
 
         RaceAddTodayWithDate maybeDate ->
             case app.raceAdd of
@@ -613,7 +553,6 @@ update msg app =
                         ( app, Cmd.none )
 
         -- TODO: link account to one rider?
-
         Noop ->
             ( app, Cmd.none )
 
@@ -700,4 +639,3 @@ update msg app =
                 ( { app | phxSocket = phxSocket }
                 , Cmd.map PhoenixMsg phxCmd
                 )
-

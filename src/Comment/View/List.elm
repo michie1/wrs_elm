@@ -33,7 +33,7 @@ commentsTable comments race riders =
                 ]
             ]
         , tbody []
-            ((filterCommentsByRace comments race)
+            ((filterCommentsByRace race comments)
                 |> List.map
                     (\comment ->
                         commentRow comment (getRiderById comment.riderId riders)
@@ -42,20 +42,19 @@ commentsTable comments race riders =
         ]
 
 
-filterCommentsByRace : List Comment.Model.Comment -> Race.Model.Race -> List Comment.Model.Comment
-filterCommentsByRace comments race =
+filterCommentsByRace : Race.Model.Race -> List Comment.Model.Comment -> List Comment.Model.Comment
+filterCommentsByRace race =
     List.filter
         (\comment -> comment.raceId == race.id)
-        comments
 
 
 getRiderById : Int -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderById id riders =
-    List.head
-        (List.filter
-            (\rider -> rider.id == id)
-            riders
-        )
+    List.head 
+        <| List.filter
+                (\rider -> rider.id == id)
+                riders
+        
 
 
 commentRow : Comment.Model.Comment -> Maybe Rider.Model.Rider -> Html App.Msg.Msg

@@ -33,8 +33,7 @@ parser location =
 init : Navigation.Location -> ( App, Cmd Msg )
 init location =
     let
-        route =
-            Debug.log "route in init" (App.Routing.routeParser location)
+        route = App.Routing.routeParser location
 
         ( initialApp, initialCmd ) =
             App.Model.initial
