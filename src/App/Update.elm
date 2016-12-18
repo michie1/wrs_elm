@@ -1,4 +1,4 @@
-port module App.Update exposing (update)
+module App.Update exposing (update)
 
 import App.Model exposing (App)
 import App.Routing
@@ -14,6 +14,7 @@ import Result.Model
 import Result.Update
 import Comment.Update
 import Account.Update
+import Race.Update
 import Navigation
 import String
 import Debug
@@ -39,240 +40,58 @@ update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
     case msg of
         RaceAdd ->
-            case app.raceAdd of
-                Just raceAdd ->
-                    case raceAdd.name /= "" of
-                        True ->
-                            let
-                                --dateString =
-                                --    Maybe.withDefault "" raceAdd.dateString
-                                newRace =
-                                    Race.Model.Race
-                                        (App.Helpers.calcRaceId app.races)
-                                        raceAdd.name
-                                        -- dateString
-                                        raceAdd.dateString
-                                        raceAdd.category
-                            in
-                                ( { app
-                                    | races =
-                                        (newRace :: app.races)
-                                  }
-                                , Navigation.newUrl ("#races/" ++ (toString newRace.id))
-                                )
+            Race.Update.add app
 
-                        False ->
-                            ( app, Cmd.none )
-
-                Nothing ->
-                    ( app, Cmd.none )
-
-        RaceName newName ->
-            case app.raceAdd of
-                Just raceAdd ->
-                    let
-                        newRaceAdd =
-                            { raceAdd | name = newName }
-                    in
-                        ( { app
-                            | raceAdd = Just newRaceAdd
-                          }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+        RaceName name ->
+            Race.Update.addName name app
 
         RaceAddCategory category ->
-            case app.raceAdd of
-                Just raceAdd ->
-                    let
-                        nextRaceAdd =
-                            { raceAdd | category = category }
-                    in
-                        ( { app | raceAdd = Just nextRaceAdd }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Race.Update.addCategory category app
 
         RaceDate newDate ->
-            case app.raceAdd of
-                Just raceAdd ->
-                    let
-                        newRaceAdd =
-                            --{ raceAdd | dateString = Just newDate }
-                            { raceAdd | dateString = newDate }
-                    in
-                        ( { app
-                            | raceAdd = Just newRaceAdd
-                          }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Race.Update.addDate newDate app
 
         ResultAdd ->
-            let
-                ( maybeResult, cmd ) =
-                    Result.Update.add app
-            in
-                case maybeResult of
-                    Just result ->
-                        ( { app | results = result :: app.results }
-                        , cmd
-                        )
-
-                    Nothing ->
-                        ( app, cmd )
+            Result.Update.add app
 
         ResultAddCategory category ->
-            case app.resultAdd of
-                Just resultAdd ->
-                    let
-                        nextResultAdd =
-                            { resultAdd | category = category }
-                    in
-                        ( { app | resultAdd = Just nextResultAdd }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Result.Update.addCategory category app
 
         ResultAddStrava link ->
-            case app.resultAdd of
-                Just resultAdd ->
-                    let
-                        nextResultAdd =
-                            { resultAdd | strava = link }
-                    in
-                        ( { app | resultAdd = Just nextResultAdd }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Result.Update.addStrava link app
 
         ResultAddResult value ->
-            case app.resultAdd of
-                Just resultAdd ->
-                    let
-                        resultAddWithResult =
-                            { resultAdd | result = value }
-                    in
-                        ( { app | resultAdd = Just resultAddWithResult }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Result.Update.addResult value app
 
         ResultRiderName name ->
             Result.Update.riderName app name
 
         CommentAddSetText text ->
-            Comment.Update.addText app text
+            Comment.Update.addText text app
 
         CommentAddSetRiderName riderName ->
-            Comment.Update.addRiderName app riderName
+            Comment.Update.addRiderName riderName app
 
         CommentAdd ->
             Comment.Update.add app
 
         CommentAddWithTime maybeTime ->
-            Comment.Update.addWithTime app maybeTime
+            Comment.Update.addWithTime maybeTime app
 
         SetRaceAdd maybeNow ->
-            case app.raceAdd of
-                Just currentRaceAdd ->
-                    let
-                        dateFormatted =
-                            case maybeNow of
-                                Just now ->
-                                    App.Helpers.formatDate now
-
-                                Nothing ->
-                                    ""
-
-                        raceAdd =
-                            { currentRaceAdd
-                              --| dateString = Just dateFormatted
-                                | dateString = dateFormatted
-                            }
-                    in
-                        ( { app | raceAdd = Just raceAdd }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Race.Update.addSet maybeNow app
 
         RaceAddYesterday ->
-            let
-                yesterdayTask =
-                    Task.perform
-                        (Just >> App.Msg.RaceAddYesterdayWithDate)
-                        Date.now
-            in
-                ( app, Cmd.batch [ yesterdayTask ] )
+            Race.Update.addYesterday app
 
         RaceAddYesterdayWithDate maybeDate ->
-            case app.raceAdd of
-                Just raceAdd ->
-                    let
-                        dateFormatted =
-                            case maybeDate of
-                                Just date ->
-                                    App.Helpers.formatDate (Date.Extra.add Date.Extra.Day (-1) date)
-
-                                Nothing ->
-                                    ""
-
-                        newRaceAdd =
-                            --{ raceAdd | dateString = Just dateFormatted }
-                            { raceAdd | dateString = dateFormatted }
-                    in
-                        ( { app | raceAdd = Just newRaceAdd }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Race.Update.addYesterdayWithDate maybeDate app
 
         RaceAddToday ->
-            let
-                todayTask =
-                    Task.perform
-                        (Just >> App.Msg.RaceAddTodayWithDate)
-                        Date.now
-            in
-                ( app, Cmd.batch [ todayTask ] )
+            Race.Update.addToday app
 
         RaceAddTodayWithDate maybeDate ->
-            case app.raceAdd of
-                Just raceAdd ->
-                    let
-                        dateFormatted =
-                            case maybeDate of
-                                Just date ->
-                                    App.Helpers.formatDate date
-
-                                Nothing ->
-                                    ""
-
-                        newRaceAdd =
-                            --{ raceAdd | dateString = Just dateFormatted }
-                            { raceAdd | dateString = dateFormatted }
-                    in
-                        ( { app | raceAdd = Just newRaceAdd }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Race.Update.addTodayWithDate maybeDate app
 
         UrlUpdate route ->
             App.UrlUpdate.urlUpdate route app
@@ -281,113 +100,27 @@ update msg app =
             ( app, Navigation.newUrl <| App.Routing.reverse route )
 
         AccountLogin ->
-            case app.accountLogin of
-                Just accountLogin ->
-                    let
-                        maybeRider =
-                            App.Helpers.getRiderByName
-                                accountLogin.name
-                                (Maybe.withDefault [] app.riders)
-                    in
-                        case maybeRider of
-                            Just rider ->
-                                ( { app | account = maybeRider }
-                                , Navigation.newUrl "#home"
-                                )
-
-                            Nothing ->
-                                ( app, Cmd.none )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Account.Update.login app
 
         AccountLoginName name ->
-            Account.Update.loginName app name
+            Account.Update.loginName name app
 
         AccountLoginPassword password ->
-            case app.accountLogin of
-                Just accountLogin ->
-                    let
-                        nextAccountLogin =
-                            { accountLogin | password = password }
-                    in
-                        ( { app | accountLogin = Just nextAccountLogin }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Account.Update.loginPassword password app
 
         AccountLogout ->
-            case app.account of
-                Just account ->
-                    ( { app | account = Nothing }
-                    , Navigation.newUrl "#home"
-                    )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Account.Update.logout app
 
         AccountSignup ->
-            case app.accountSignup of
-                Just accountSignup ->
-                    -- TODO do not add directly, but send websocket to add new rider
-                    let
-                        newRider =
-                            Rider.Model.Rider
-                                ((List.length (Maybe.withDefault [] app.riders)) + 1)
-                                accountSignup.name
-                                Nothing
-                    in
-                        --( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
-                        -- , Navigation.newUrl ("#account/login/" ++ newRider.name)
-                        --)
-                        ( app
-                        , Cmd.batch
-                            [ Task.perform
-                                identity
-                                (Task.succeed App.Msg.SocketAccountSignup)
-                            ]
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Account.Update.signup app
 
         SocketAccountSignup ->
-            case app.accountSignup of
-                Just accountSignup ->
-                    let
-                        payload =
-                            Json.Encode.object [ ( "name", Json.Encode.string accountSignup.name ) ]
-
-                        phxPush =
-                            Phoenix.Push.init "createRider" "room:lobby"
-                                |> Phoenix.Push.withPayload payload
-                                |> Phoenix.Push.onOk SocketAccountSignupResponse
-                                |> Phoenix.Push.onError HandleSendError
-
-                        ( phxSocket, phxCmd ) =
-                            Phoenix.Socket.push phxPush app.phxSocket
-                    in
-                        ( { app | phxSocket = phxSocket }
-                        , Cmd.map PhoenixMsg phxCmd
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Account.Update.signupSocket app
+            
 
         SocketAccountSignupResponse rawResponse ->
-            let
-                name =
-                    Result.withDefault ""
-                        (Json.Decode.decodeValue
-                            (Json.Decode.field "name" Json.Decode.string)
-                            rawResponse
-                        )
-            in
-                ( app
-                , Navigation.newUrl ("#account/login/" ++ name)
-                )
+            Account.Update.signupSocketResponse rawResponse app
+          
 
         OnCreatedRider rawResponse ->
             let
@@ -411,116 +144,25 @@ update msg app =
                         ( app, Cmd.none )
 
         AccountSignupName name ->
-            case app.accountSignup of
-                Just accountSignup ->
-                    let
-                        nextAccountSignup =
-                            { accountSignup | name = name }
-                    in
-                        ( { app | accountSignup = Just nextAccountSignup }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Account.Update.signupName name app
+          
 
         AccountLicence licence ->
-            case app.account of
-                Just account ->
-                    let
-                        nextAccount =
-                            { account | licence = Just licence }
-                    in
-                        --( { app
-                        -- | account = Just nextAccount
-                        --, riders = Just (updateRiderLicence account.id licence (Maybe.withDefault [] app.riders))
-                        --}
-                        --, Cmd.none
-                        --)
-                        ( { app | account = Just nextAccount }
-                        , Cmd.batch
-                            [ Task.perform
-                                identity
-                                (Task.succeed App.Msg.SocketAccountLicence)
-                            ]
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Account.Update.settingsLicence licence app
+           
 
         SocketAccountLicence ->
-            case app.account of
-                Just account ->
-                    let
-                        payload =
-                            --Json.Encode.object [ ( "licence", Json.Encode.string account.licence ) ]
-                            Json.Encode.object [ ( "id", Json.Encode.int account.id ), ( "licence", App.Encoder.licence account.licence ) ]
-
-                        phxPush =
-                            Phoenix.Push.init "updateRider" "room:lobby"
-                                |> Phoenix.Push.withPayload payload
-                                |> Phoenix.Push.onOk SocketAccountLicenceResponse
-                                |> Phoenix.Push.onError HandleSendError
-
-                        ( phxSocket, phxCmd ) =
-                            Phoenix.Socket.push phxPush app.phxSocket
-                    in
-                        ( { app | phxSocket = phxSocket }
-                        , Cmd.map PhoenixMsg phxCmd
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Account.Update.settingsLicenceSocket app
+           
 
         SocketAccountLicenceResponse rawResponse ->
-            case app.account of
-                Just account ->
-                    let
-                        licence =
-                            Debug.log "licence "
-                                (Result.withDefault ""
-                                    (Json.Decode.decodeValue
-                                        (Json.Decode.field "licence" Json.Decode.string)
-                                        rawResponse
-                                    )
-                                )
-
-                        nextAccount =
-                            -- { account | licence = Just licence }
-                            account
-                    in
-                        ( { app
-                            | account =
-                                Just nextAccount
-                                --, riders = Just (updateRiderLicence account.id licence (Maybe.withDefault [] app.riders))
-                          }
-                        , Cmd.none
-                        )
-
-                Nothing ->
-                    ( app, Cmd.none )
+            Account.Update.settingsLicenceSocketResponse rawResponse app
 
         OnUpdatedRider rawResponse ->
             let
                 riderResult =
                     Debug.log "riderResult in onUpdatedRider" (Json.Decode.decodeValue App.Decoder.riderDecoder rawResponse)
             in
-                {--
-                case riderResult of
-                    Ok rider ->
-                        let
-                            newRider = Rider.Model.Rider
-                                        rider.id
-                                        rider.name
-                                        rider.licence
-                        in
-                            ( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
-                            , Cmd.none
-                            )
-
-                    _ ->
-                        ( app, Cmd.none )
-                --}
                 case riderResult of
                     Ok rider ->
                         let
@@ -579,12 +221,8 @@ update msg app =
 
         ReceiveRiders message ->
             let
-                a =
-                    Debug.log "message" message
-
                 resultRiders =
                     (Json.Decode.decodeValue
-                        --(Json.Decode.field "riders" (Json.Decode.list App.Decoder.rider))
                         (Json.Decode.field "riders" (Json.Decode.list App.Decoder.riderDecoder))
                         message
                     )

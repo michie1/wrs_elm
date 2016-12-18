@@ -23,8 +23,8 @@ add app =
         ( app, Cmd.batch [ nowTask ] )
 
 
-addText : App -> String -> ( App, Cmd Msg )
-addText app text =
+addText : String -> App -> ( App, Cmd Msg )
+addText text app=
     case app.commentAdd of
         Just commentAdd ->
             let
@@ -42,8 +42,8 @@ addText app text =
             ( app, Cmd.none )
 
 
-addWithTime : App -> Maybe Time.Time -> ( App, Cmd Msg )
-addWithTime app maybeTime =
+addWithTime : Maybe Time.Time -> App -> ( App, Cmd Msg )
+addWithTime maybeTime app =
     case maybeTime of
         Just time ->
             let
@@ -85,8 +85,8 @@ new id datetime app =
         )
 
 
-addRiderName : App -> String -> ( App, Cmd Msg )
-addRiderName app name =
+addRiderName : String -> App -> ( App, Cmd Msg )
+addRiderName name app =
     case app.commentAdd of
         Just commentAdd ->
             let
