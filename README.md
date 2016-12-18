@@ -3,6 +3,7 @@
 Prerequisites: 
  * Node 
  * Npm 
+ * wrs_phoenix
 
 Install elm:
 
@@ -20,7 +21,7 @@ cd wrs_elm
 Install dependencies:
 
 ```sh
-sudo chmod +x install.sh && ./install.sh
+sudo npm install 
 ```
 
 Run dev mode:
@@ -30,3 +31,4 @@ npm run dev
 ```
 
 Check [http://localhost:8080](http://localhost:8080)
+
