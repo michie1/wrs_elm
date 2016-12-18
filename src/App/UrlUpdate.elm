@@ -155,6 +155,17 @@ onUrlEnter route app =
                 Nothing ->
                     ( app, fetchForRoute App.Routing.Riders )
 
+        App.Routing.Races ->
+            let 
+                cmd = Cmd.batch
+                    [ Task.perform
+                        identity
+                        (Task.succeed App.Msg.RacesSocket)
+                    ]
+            in
+                ( app, cmd )
+
+
         _ ->
             ( app, Cmd.none )
 

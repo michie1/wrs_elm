@@ -44,7 +44,6 @@ category string =
         _ ->
             Race.Model.Unknown
 
-
 decodeLicence : String -> Json.Decode.Decoder (Maybe Rider.Model.Licence)
 decodeLicence string =
     Json.Decode.succeed (licence string)
@@ -68,6 +67,15 @@ licenceDecoder string =
         _ ->
             Json.Decode.fail <| string ++ " licence does not exists."
 
+raceCategoryDecoder : String -> Json.Decode.Decoder Race.Model.Category
+raceCategoryDecoder string =
+    case string of
+        "classic" ->
+            Json.Decode.succeed Race.Model.Classic
+
+        _ ->
+            Json.Decode.fail <| string ++ " race category does not exists."
+
 
 riderDecoder : Json.Decode.Decoder Rider.Model.Rider
 riderDecoder =
@@ -80,6 +88,16 @@ riderDecoder =
                 |> Json.Decode.nullable
             )
 
+raceDecoder : Json.Decode.Decoder Race.Model.Race
+raceDecoder =
+    Json.Decode.Pipeline.decode Race.Model.Race
+        |> Json.Decode.Pipeline.required "id" Json.Decode.int
+        |> Json.Decode.Pipeline.required "name" Json.Decode.string
+        |> Json.Decode.Pipeline.required "date" Json.Decode.string
+        |> Json.Decode.Pipeline.required "category"
+            (Json.Decode.string
+                |> Json.Decode.andThen raceCategoryDecoder
+            )
 
 licence : String -> Maybe Rider.Model.Licence
 licence string =

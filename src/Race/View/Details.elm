@@ -22,7 +22,7 @@ render app raceId =
             List.head
                 (List.filter
                     (\race -> race.id == raceId)
-                    app.races
+                    (Maybe.withDefault [] app.races)
                 )
     in
         case maybeRace of

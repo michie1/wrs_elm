@@ -54,7 +54,7 @@ viewPage app =
                 id
 
         App.Routing.Races ->
-            Race.View.List.render app.races app.results
+            Race.View.List.render (Maybe.withDefault [] app.races) app.results
 
         App.Routing.RaceDetails id ->
             Race.View.Details.render app id
@@ -77,7 +77,7 @@ viewPage app =
                 Just resultAdd ->
                     let
                         maybeRace =
-                            getRace raceId app.races
+                            getRace raceId (Maybe.withDefault [] app.races)
                     in
                         case maybeRace of
                             Nothing ->
@@ -100,7 +100,7 @@ viewPage app =
         App.Routing.CommentAdd raceId ->
             let
                 maybeRace =
-                    getRace raceId app.races
+                    getRace raceId (Maybe.withDefault [] app.races)
             in
                 case maybeRace of
                     Nothing ->

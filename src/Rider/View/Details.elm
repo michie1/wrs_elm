@@ -39,7 +39,7 @@ render app riderId =
                             div []
                                 [ h2 [] [ text rider.name ]
                                 , info rider
-                                , resultsTable rider results app.races
+                                , resultsTable rider results (Maybe.withDefault [] app.races)
                                 ]
 
         Nothing ->

@@ -9,7 +9,11 @@ import Date.Extra
 import Task
 import App.Helpers
 import App.Routing
-
+import Phoenix.Socket
+import Phoenix.Push
+import Json.Encode
+import Json.Decode
+import App.Decoder
 
 add : App -> ( App, Cmd Msg )
 add app =
@@ -17,23 +21,22 @@ add app =
         Just raceAdd ->
             case raceAdd.name /= "" of
                 True ->
-                    let
-                        --dateString =
-                        --    Maybe.withDefault "" raceAdd.dateString
-                        newRace =
-                            Race.Model.Race
-                                (App.Helpers.calcRaceId app.races)
-                                raceAdd.name
-                                -- dateString
-                                raceAdd.dateString
-                                raceAdd.category
-                    in
-                        ( { app
-                            | races =
-                                (newRace :: app.races)
-                          }
-                        , App.Helpers.navigate <| App.Routing.RaceDetails newRace.id
-                        )
+                    case app.races of
+                        Just races ->
+                            let
+                                newRace =
+                                    Race.Model.Race
+                                        (App.Helpers.calcRaceId races)
+                                        raceAdd.name
+                                        raceAdd.dateString
+                                        raceAdd.category
+                            in
+                                ( { app | races = Just (newRace :: races) }
+                                , App.Helpers.navigate <| App.Routing.RaceDetails newRace.id
+                                )
+
+                        Nothing ->
+                            ( app, Cmd.none )
 
                 False ->
                     ( app, Cmd.none )
@@ -192,3 +195,46 @@ addTodayWithDate maybeDate app =
 
         Nothing ->
             ( app, Cmd.none )
+
+racesSocket : App -> ( App, Cmd Msg )
+racesSocket app =
+    let
+        _ = Debug.log "races" "socket"
+        payload = Json.Encode.object [ ( "name", Json.Encode.string "hoi" ) ]
+
+        phxPush =
+            Phoenix.Push.init "races" "room:lobby"
+                |> Phoenix.Push.withPayload payload
+                |> Phoenix.Push.onOk RacesSocketResponse
+                |> Phoenix.Push.onError HandleSendError
+
+        ( phxSocket, phxCmd ) =
+            Phoenix.Socket.push phxPush app.phxSocket
+    in
+        ( { app | phxSocket = phxSocket }
+        , Cmd.map PhoenixMsg phxCmd
+        )
+
+racesSocketResponse : Json.Decode.Value -> App -> ( App, Cmd Msg )
+racesSocketResponse message app =
+    let
+        resultRaces =
+            (Json.Decode.decodeValue
+            (Json.Decode.field "races" (Json.Decode.list App.Decoder.raceDecoder))
+            message
+            )
+    in
+        case resultRaces of
+            Ok races ->
+                ( { app | races = Just races }
+                , Cmd.none
+                )
+
+            Err errorMessage ->
+                let
+                    b =
+                        Debug.log "races socket response" errorMessage
+                in
+                    ( app
+                    , Cmd.none
+                    )

@@ -18,7 +18,7 @@ type alias App =
     { route : Routing.Route
     , cache : Dict String (List String)
     , riders : Maybe (List Rider.Model.Rider)
-    , races : List Race.Model.Race
+    , races : Maybe (List Race.Model.Race)
     , raceAdd : Maybe Race.Model.Add
     , results : List Result.Model.Result
     , resultAdd : Maybe Result.Model.Add
@@ -52,7 +52,7 @@ initial =
             Home
             Dict.empty
             Nothing
-            Race.Model.initialRaces
+            (Just Race.Model.initialRaces)
             Nothing
             Result.Model.initialResults
             Nothing

@@ -1,3 +1,4 @@
+
 module Account.Update exposing (signupSocket, signupSocketResponse, logout, login, loginName, loginPassword, signup, signupName, settingsLicenceSocket, settingsLicence, settingsLicenceSocketResponse)
 
 import App.Model exposing (App)

@@ -25,6 +25,8 @@ type Msg
     | RaceAddYesterdayWithDate (Maybe Date.Date)
     | RaceAddToday
     | RaceAddTodayWithDate (Maybe Date.Date)
+    | RacesSocket
+    | RacesSocketResponse Json.Encode.Value
     | ResultAdd
     | ResultAddCategory Result.Model.ResultCategory
     | ResultAddStrava String
