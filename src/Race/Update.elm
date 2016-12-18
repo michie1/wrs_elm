@@ -2,12 +2,13 @@ module Race.Update exposing (..)
 
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
-import Navigation
 import App.Helpers
 import Race.Model
 import Date
 import Date.Extra
 import Task
+import App.Helpers
+import App.Routing
 
 
 add : App -> ( App, Cmd Msg )
@@ -31,7 +32,7 @@ add app =
                             | races =
                                 (newRace :: app.races)
                           }
-                        , Navigation.newUrl ("#races/" ++ (toString newRace.id))
+                        , App.Helpers.navigate <| App.Routing.RaceDetails newRace.id
                         )
 
                 False ->

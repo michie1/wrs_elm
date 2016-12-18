@@ -8,10 +8,11 @@ import Account.Model
 import Comment.Model
 import Result.Model
 import Race.Model
-import Navigation
 import Task
 import Dom
 import Date
+import App.Helpers
+import App.Routing
 
 
 onUrlLeave : App.Routing.Route -> App -> App
@@ -39,7 +40,7 @@ onUrlEnter route app =
         App.Routing.AccountLogin ->
             case app.account of
                 Just account ->
-                    ( app, Navigation.newUrl "#account" )
+                    ( app, App.Helpers.navigate App.Routing.Account )
 
                 Nothing ->
                     ( { app | accountLogin = Just Account.Model.login }
@@ -50,7 +51,7 @@ onUrlEnter route app =
         App.Routing.AccountLoginName name ->
             case app.account of
                 Just account ->
-                    ( app, Navigation.newUrl "#account" )
+                    ( app, App.Helpers.navigate App.Routing.Account )
 
                 Nothing ->
                     let
@@ -139,7 +140,7 @@ onUrlEnter route app =
         App.Routing.AccountSignup ->
             case app.account of
                 Just account ->
-                    ( app, Navigation.newUrl "#account" )
+                    ( app, App.Helpers.navigate App.Routing.Account)
 
                 Nothing ->
                     ( { app | accountSignup = Just Account.Model.signup }

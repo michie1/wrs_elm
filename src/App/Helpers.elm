@@ -4,6 +4,13 @@ import Race.Model exposing (Race)
 import Rider.Model
 import Date
 import Array
+import Navigation
+import App.Msg
+import App.Routing
+
+navigate : App.Routing.Route -> Cmd App.Msg.Msg
+navigate route =
+    Navigation.newUrl <| App.Routing.url route
 
 updateRiderLicence : Int -> Maybe Rider.Model.Licence -> List Rider.Model.Rider -> List Rider.Model.Rider
 updateRiderLicence riderId maybeLicence riders =

@@ -1,6 +1,5 @@
 module Comment.Update exposing (add, addWithTime, addRiderName, addText)
 
-import Navigation
 import Array
 import App.Model exposing (App)
 import App.Msg exposing (Msg(..))
@@ -10,7 +9,7 @@ import Date
 import Time
 import App.Helpers
 import Task
-
+import App.Routing
 
 add : App -> ( App, Cmd Msg )
 add app =
@@ -64,7 +63,7 @@ addWithTime maybeTime app =
                             | comments = comment :: app.comments
                             , commentAdd = Nothing
                           }
-                        , Navigation.newUrl ("#races/" ++ toString comment.raceId)
+                        , App.Helpers.navigate <| App.Routing.RaceDetails comment.raceId
                         )
 
                     Nothing ->

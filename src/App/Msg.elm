@@ -6,7 +6,7 @@ module App.Msg exposing (Msg(..))
 import Rider.Model exposing (Rider)
 import Race.Model
 import Result.Model
-import App.Routing exposing (Route(..))
+import App.Routing 
 import Date
 import Time
 import Keyboard
@@ -45,8 +45,8 @@ type Msg
     | SocketAccountLicenceResponse Json.Encode.Value
     | SocketAccountSignup
     | SocketAccountSignupResponse Json.Encode.Value
-    | NavigateTo Route
-    | UrlUpdate Route
+    | NavigateTo App.Routing.Route
+    | UrlUpdate App.Routing.Route
     | Noop
     | Connect
     | NewMessage String

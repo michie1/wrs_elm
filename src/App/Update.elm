@@ -9,13 +9,11 @@ import App.UrlUpdate
 import Race.Model exposing (Race)
 import Rider.Model
 import Comment.Model
-import Account.Model
 import Result.Model
 import Result.Update
 import Comment.Update
 import Account.Update
 import Race.Update
-import Navigation
 import String
 import Debug
 import Array
@@ -97,7 +95,7 @@ update msg app =
             App.UrlUpdate.urlUpdate route app
 
         NavigateTo route ->
-            ( app, Navigation.newUrl <| App.Routing.reverse route )
+            ( app, App.Helpers.navigate route )
 
         AccountLogin ->
             Account.Update.login app

@@ -2,7 +2,6 @@ module Account.Update exposing (signupSocket, signupSocketResponse, logout, logi
 
 import App.Model exposing (App)
 import App.Msg exposing (Msg(..))
-import Navigation
 import App.Helpers
 import Task
 import Rider.Model
@@ -11,6 +10,7 @@ import Phoenix.Push
 import Json.Encode
 import Json.Decode
 import App.Encoder
+import App.Routing
 
 
 loginName : String -> App -> ( App, Cmd Msg )
@@ -50,7 +50,7 @@ logout app =
     case app.account of
         Just account ->
             ( { app | account = Nothing }
-            , Navigation.newUrl "#home"
+            , App.Helpers.navigate <| App.Routing.Home
             )
 
         Nothing ->
@@ -70,7 +70,7 @@ login app =
                 case maybeRider of
                     Just rider ->
                         ( { app | account = maybeRider }
-                        , Navigation.newUrl "#home"
+                        , App.Helpers.navigate App.Routing.Home
                         )
 
                     Nothing ->
@@ -92,9 +92,6 @@ signup app =
                         accountSignup.name
                         Nothing
             in
-                --( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
-                -- , Navigation.newUrl ("#account/login/" ++ newRider.name)
-                --)
                 ( app
                 , Cmd.batch
                     [ Task.perform
@@ -143,7 +140,7 @@ signupSocketResponse rawResponse app =
                 )
     in
         ( app
-        , Navigation.newUrl ("#account/login/" ++ name)
+        , App.Helpers.navigate <| App.Routing.AccountLoginName name
         )
 
 

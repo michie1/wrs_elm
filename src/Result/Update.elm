@@ -4,8 +4,9 @@ import App.Model exposing (App)
 import Result.Model exposing (Add)
 import Rider.Model
 import App.Msg exposing (Msg(..))
-import Navigation
 import Result.Helpers exposing (..)
+import App.Helpers
+import App.Routing
 
 
 add : App -> ( App, Cmd Msg )
@@ -54,7 +55,7 @@ maybeAdd app =
                                     ( Nothing, Debug.log "result already exists" Cmd.none )
                                 else
                                     ( Just result
-                                    , Navigation.newUrl ("#races/" ++ toString (Debug.log "raceId" result.raceId))
+                                    , App.Helpers.navigate <| App.Routing.RaceDetails result.raceId
                                     )
 
                         Nothing ->

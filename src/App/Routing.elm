@@ -1,11 +1,10 @@
-module App.Routing exposing (Route(..), reverse, routeParser)
+module App.Routing exposing (Route(..), url, routeParser)
 
 import Navigation
 import UrlParser exposing (..)
 
-
-reverse : Route -> String
-reverse route =
+url : Route -> String
+url route =
     case route of
         Home ->
             "#home"
@@ -70,9 +69,7 @@ type Route
 matchers : Parser (Route -> a) a
 matchers =
     oneOf
-        --[ map Home (s "home")
         [ map Races (s "home")
-          --, map Home (s "")
         , map Races (s "")
         , map RiderDetails (s "riders" </> int)
         , map Riders (s "riders")
