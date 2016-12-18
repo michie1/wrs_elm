@@ -115,10 +115,23 @@ update msg app =
         SocketAccountSignup ->
             Account.Update.signupSocket app
             
-
         SocketAccountSignupResponse rawResponse ->
             Account.Update.signupSocketResponse rawResponse app
           
+        AccountSignupName name ->
+            Account.Update.signupName name app
+          
+
+        AccountLicence licence ->
+            Account.Update.settingsLicence licence app
+           
+
+        SocketAccountLicence ->
+            Account.Update.settingsLicenceSocket app
+           
+
+        SocketAccountLicenceResponse rawResponse ->
+            Account.Update.settingsLicenceSocketResponse rawResponse app
 
         OnCreatedRider rawResponse ->
             let
@@ -140,21 +153,6 @@ update msg app =
 
                     _ ->
                         ( app, Cmd.none )
-
-        AccountSignupName name ->
-            Account.Update.signupName name app
-          
-
-        AccountLicence licence ->
-            Account.Update.settingsLicence licence app
-           
-
-        SocketAccountLicence ->
-            Account.Update.settingsLicenceSocket app
-           
-
-        SocketAccountLicenceResponse rawResponse ->
-            Account.Update.settingsLicenceSocketResponse rawResponse app
 
         OnUpdatedRider rawResponse ->
             let
@@ -206,9 +204,7 @@ update msg app =
                     Phoenix.Push.init "riders" "room:lobby"
                         |> Phoenix.Push.withPayload payload
                         |> Phoenix.Push.onOk ReceiveRiders
-                        -- |> Phoenix.Push.onOk ReceiveMessage
-                        |>
-                            Phoenix.Push.onError HandleSendError
+                        |> Phoenix.Push.onError HandleSendError
 
                 ( phxSocket, phxCmd ) =
                     Phoenix.Socket.push phxPush app.phxSocket
@@ -225,8 +221,7 @@ update msg app =
                         message
                     )
 
-                messages =
-                    (toString message) :: app.messages
+                messages = (toString message) :: app.messages
             in
                 case resultRiders of
                     Ok riders ->
@@ -248,8 +243,7 @@ update msg app =
                 a =
                     Debug.log "message" message
 
-                messages =
-                    (toString message) :: app.messages
+                messages = (toString message) :: app.messages
             in
                 ( { app | messages = messages }
                 , Cmd.none

@@ -197,8 +197,6 @@ fetchForRoute route =
         App.Routing.CommentAdd raceId ->
             Cmd.batch
                 [ Task.attempt (always App.Msg.Noop) (Dom.focus "text")
-                  --, Dom.focus "name" |> Task.attempt FocusResult
-                  --, Task.perform identity (Task.succeed (Dom.focus "name"))
                 ]
 
         App.Routing.AccountLogin ->

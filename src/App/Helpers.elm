@@ -99,6 +99,6 @@ formatDate : Date.Date -> String
 formatDate date =
         toString (Date.year date)
         ++ "-"
-        ++ "-"
         ++ toString (numMonth (Date.month date))
+        ++ "-"
         ++ (leadingZero (Date.day date))
