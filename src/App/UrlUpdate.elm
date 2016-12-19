@@ -131,7 +131,7 @@ onUrlEnter route app =
 
                 raceAdd =
                     --Race.Model.Add "" Nothing Race.Model.Classic
-                    Race.Model.Add "" "" Race.Model.Classic
+                    Race.Model.Add "" "" Nothing --Race.Model.Classic
             in
                 ( { app | raceAdd = Just raceAdd }
                 , fetchForRoute App.Routing.RaceAdd
@@ -156,6 +156,16 @@ onUrlEnter route app =
                     ( app, fetchForRoute App.Routing.Riders )
 
         App.Routing.Races ->
+            let 
+                cmd = Cmd.batch
+                    [ Task.perform
+                        identity
+                        (Task.succeed App.Msg.RacesSocket)
+                    ]
+            in
+                ( app, cmd )
+
+        App.Routing.RaceDetails id ->
             let 
                 cmd = Cmd.batch
                     [ Task.perform

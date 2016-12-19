@@ -25,6 +25,7 @@ type Msg
     | RaceAddYesterdayWithDate (Maybe Date.Date)
     | RaceAddToday
     | RaceAddTodayWithDate (Maybe Date.Date)
+    | RaceAddSocketResponse Json.Encode.Value
     | RacesSocket
     | RacesSocketResponse Json.Encode.Value
     | ResultAdd
@@ -57,4 +58,5 @@ type Msg
     | ReceiveRiders Json.Encode.Value
     | HandleSendError Json.Encode.Value
     | OnCreatedRider Json.Encode.Value
+    | OnCreatedRace Json.Encode.Value
     | OnUpdatedRider Json.Encode.Value

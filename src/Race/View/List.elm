@@ -38,7 +38,7 @@ raceTable races results =
                                 [ text race.name ]
                             ]
                         , td [] [ text race.date ]
-                        , td [] [ text (categoryString race.category) ]
+                        , td [] [ text (toString race.category) ]
                         , td [] [ text (toString (countParticipants race.id results)) ]
                         ]
                 )

@@ -15,21 +15,21 @@ type alias Race =
     { id : Int
     , name : String
     , date : String
-    , category : Category
+    , category : Maybe Category
     }
 
 
 type alias Add =
     { name : String
     , dateString : String
-    , category : Category
+    , category : Maybe Category
     }
 
 
 initialRaces : List Race
 initialRaces =
-    [ Race 1 "race a" "31-10-2016" Criterium
-    , Race 2 "race c" "21-10-2016" Other
+    [ Race 1 "race a" "31-10-2016" (Just Criterium)
+    , Race 2 "race c" "21-10-2016" (Just Other)
     ]
 
 

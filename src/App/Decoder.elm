@@ -7,7 +7,7 @@ import Comment.Model
 import Json.Decode
 import Json.Decode.Pipeline
 
-
+{--
 race : Json.Decode.Decoder Race.Model.Race
 race =
     Json.Decode.map4 Race.Model.Race
@@ -19,7 +19,7 @@ race =
                 |> Json.Decode.andThen decodeCategory
             )
         )
-
+--}
 
 decodeCategory : String -> Json.Decode.Decoder Race.Model.Category
 decodeCategory string =
@@ -97,6 +97,7 @@ raceDecoder =
         |> Json.Decode.Pipeline.required "category"
             (Json.Decode.string
                 |> Json.Decode.andThen raceCategoryDecoder
+                |> Json.Decode.nullable
             )
 
 licence : String -> Maybe Rider.Model.Licence
@@ -182,7 +183,7 @@ page =
 type alias App =
     { page : String
     , riders : List Rider.Model.Rider
-    , races : List Race.Model.Race
+    --, races : List Race.Model.Race
     , comments : List Comment.Model.Comment
     , results : List Result.Model.Result
     }
@@ -190,9 +191,9 @@ type alias App =
 
 app : Json.Decode.Decoder App
 app =
-    Json.Decode.map5 App
+    Json.Decode.map4 App
         (Json.Decode.field "page" Json.Decode.string)
         (Json.Decode.field "riders" (Json.Decode.list rider))
-        (Json.Decode.field "races" (Json.Decode.list race))
+        --(Json.Decode.field "races" (Json.Decode.list race))
         (Json.Decode.field "comments" (Json.Decode.list comment))
         (Json.Decode.field "results" (Json.Decode.list result))

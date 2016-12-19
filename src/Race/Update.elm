@@ -23,6 +23,7 @@ add app =
                 True ->
                     case app.races of
                         Just races ->
+                            {--
                             let
                                 newRace =
                                     Race.Model.Race
@@ -34,6 +35,8 @@ add app =
                                 ( { app | races = Just (newRace :: races) }
                                 , App.Helpers.navigate <| App.Routing.RaceDetails newRace.id
                                 )
+                            --}
+                            addSocket app
 
                         Nothing ->
                             ( app, Cmd.none )
@@ -69,7 +72,7 @@ addCategory category app =
         Just raceAdd ->
             let
                 nextRaceAdd =
-                    { raceAdd | category = category }
+                    { raceAdd | category = Just category }
             in
                 ( { app | raceAdd = Just nextRaceAdd }
                 , Cmd.none
@@ -238,3 +241,45 @@ racesSocketResponse message app =
                     ( app
                     , Cmd.none
                     )
+
+
+addSocket : App -> ( App, Cmd Msg )
+addSocket app =
+    case app.raceAdd of
+        Just raceAdd ->
+            let
+                payload =
+                    Json.Encode.object 
+                        [ ( "name", Json.Encode.string raceAdd.name )
+                        , ( "date", Json.Encode.string raceAdd.dateString )
+                        ]
+
+                phxPush =
+                    Phoenix.Push.init "createRace" "room:lobby"
+                        |> Phoenix.Push.withPayload payload
+                        |> Phoenix.Push.onOk RaceAddSocketResponse
+                        |> Phoenix.Push.onError HandleSendError
+
+                ( phxSocket, phxCmd ) =
+                    Phoenix.Socket.push phxPush app.phxSocket
+            in
+                ( { app | phxSocket = phxSocket }
+                , Cmd.map PhoenixMsg phxCmd
+                )
+
+        Nothing ->
+            ( app, Cmd.none )
+
+addSocketResponse : Json.Decode.Value -> App -> ( App, Cmd Msg )
+addSocketResponse rawResponse app =
+    let
+        id =
+            Result.withDefault 0
+                (Json.Decode.decodeValue
+                    (Json.Decode.field "id" Json.Decode.int)
+                    rawResponse
+                )
+    in
+        ( app
+        , App.Helpers.navigate <| App.Routing.RaceDetails id
+        )

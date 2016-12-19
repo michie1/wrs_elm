@@ -40,6 +40,9 @@ update msg app =
         RaceAdd ->
             Race.Update.add app
 
+        RaceAddSocketResponse rawResponse ->
+            Race.Update.addSocketResponse rawResponse app
+
         RaceName name ->
             Race.Update.addName name app
 
@@ -157,6 +160,27 @@ update msg app =
                     _ ->
                         ( app, Cmd.none )
 
+        OnCreatedRace rawResponse ->
+            let
+                raceResult =
+                    Json.Decode.decodeValue App.Decoder.raceDecoder rawResponse
+            in
+                case raceResult of
+                    Ok race ->
+                        let
+                            newRace =
+                                Race.Model.Race
+                                    race.id
+                                    race.name
+                                    race.date
+                                    race.category
+                        in
+                            ( { app | races = Just (newRace :: (Maybe.withDefault [] app.races)) }
+                            , Cmd.none
+                            )
+
+                    _ ->
+                        ( app, Cmd.none )
         OnUpdatedRider rawResponse ->
             let
                 riderResult =
