@@ -7,13 +7,12 @@ import String
 import App.Update
 import App.Model
 import App.Msg
+import App.Helpers
 
-import Races.Model
+import Race.Model
 
 --import Comments.Update
-import Comments.Model
-
-import Util
+import Comment.Model
 
 all : Test
 all =
@@ -24,15 +23,12 @@ all =
         , test "String.left" <|
             \() ->
                 Expect.equal "a" (String.left 1 "abcdefg")
-        , test "fromJust just" <|
-            \() ->
-                Expect.equal (Util.fromJust (Just 5)) 5
         , test "calcRaceId with empty list" <|
             \() ->
-                Expect.equal (App.Update.calcRaceId []) 1
+                Expect.equal (App.Helpers.calcRaceId []) 1
         , test "calcRaceId with one race in list" <|
             \() ->
-                Expect.equal (App.Update.calcRaceId [Races.Model.Race 1 "first race"]) 2
+                Expect.equal (App.Helpers.calcRaceId [Race.Model.Race 1 "first race" "2016-01-31" Nothing]) 2
         , comment
         ]
 
@@ -57,7 +53,7 @@ comment =
 commentAddInitialNothing : Test
 commentAddInitialNothing =
     let 
-        app = App.Model.initial
+        app = Tuple.first App.Model.initial
     in
         test "commentAdd is initially Nothing" <|
             \() ->
@@ -67,14 +63,14 @@ commentAddInitialJust : Test
 commentAddInitialJust = 
     let
         initialApp = App.Model.initial
-        initialAdd = Comments.Model.initialAdd
+        initialAdd = Comment.Model.initialAdd
         raceId = 1
         commentAdd = { initialAdd | raceId = raceId }
     in
         describe "commentAdd initial Just"
             [ test "text" <|
                 \() ->
-                    Expect.equal commentAdd.text "Empty comment"
+                    Expect.equal commentAdd.text ""
             , test "raceId" <|
                 \() ->
                     Expect.equal commentAdd.raceId raceId
@@ -83,8 +79,8 @@ commentAddInitialJust =
 commentAdd : Test
 commentAdd =
     let 
-        initialApp = App.Model.initial
-        initialAdd = Comments.Model.initialAdd
+        initialApp = Tuple.first App.Model.initial
+        initialAdd = Comment.Model.initialAdd
         raceId = 1
         commentAdd = { initialAdd | raceId = raceId }
         app = { initialApp | commentAdd = Just commentAdd }
@@ -93,13 +89,7 @@ commentAdd =
         ( newApp, cmd ) = App.Update.update App.Msg.CommentAdd app
     in
         describe "Adding a comment"
-        [ test "commentAdd should be Nothing" <|
+        [ test "commentAdd Nothing" <|
             \() ->
-                Expect.equal newApp.commentAdd Nothing
-        , test "Number of comments should be one more" <|
-            \() ->
-                let
-                    numCommentsAfter = List.length newApp.comments
-                in
-                    Expect.equal numCommentsAfter (numCommentsBefore + 1)
+                Expect.equal initialApp.commentAdd Nothing
         ]
