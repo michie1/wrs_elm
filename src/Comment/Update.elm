@@ -11,6 +11,7 @@ import App.Helpers
 import Task
 import App.Routing
 
+
 add : App -> ( App, Cmd Msg )
 add app =
     let
@@ -22,23 +23,11 @@ add app =
         ( app, Cmd.batch [ nowTask ] )
 
 
-addText : String -> App -> ( App, Cmd Msg )
-addText text app=
-    case app.commentAdd of
-        Just commentAdd ->
-            let
-                commentAddWithText =
-                    { commentAdd
-                        | text =
-                            text
-                    }
-            in
-                ( { app | commentAdd = Just commentAddWithText }
-                , Cmd.none
-                )
-
-        Nothing ->
-            ( app, Cmd.none )
+addText : String -> Comment.Model.Add -> Comment.Model.Add
+addText text commentAdd =
+    { commentAdd
+        | text = text
+    }
 
 
 addWithTime : Maybe Time.Time -> App -> ( App, Cmd Msg )
@@ -84,21 +73,9 @@ new id datetime app =
         )
 
 
-addRiderName : String -> App -> ( App, Cmd Msg )
-addRiderName name app =
-    case app.commentAdd of
-        Just commentAdd ->
-            let
-                commentAddWithRiderName =
-                    { commentAdd | riderName = name }
-            in
-                ( { app | commentAdd = Just commentAddWithRiderName }
-                , Cmd.none
-                )
-
-        Nothing ->
-            ( app, Cmd.none )
-
+addRiderName : String -> Comment.Model.Add -> Comment.Model.Add
+addRiderName name commentAdd =
+    { commentAdd | riderName = name }
 
 newComment : Int -> String -> List Rider.Model.Rider -> Comment.Model.Add -> Maybe Comment
 newComment id datetime riders commentAdd =

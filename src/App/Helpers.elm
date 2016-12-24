@@ -8,9 +8,11 @@ import Navigation
 import App.Msg
 import App.Routing
 
+
 navigate : App.Routing.Route -> Cmd App.Msg.Msg
 navigate route =
     Navigation.newUrl <| App.Routing.url route
+
 
 updateRiderLicence : Int -> Maybe Rider.Model.Licence -> List Rider.Model.Rider -> List Rider.Model.Rider
 updateRiderLicence riderId maybeLicence riders =
@@ -26,13 +28,9 @@ updateRiderLicence riderId maybeLicence riders =
         riders
 
 
-
-
 getRiderByName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderByName name riders =
     List.head (List.filter (\rider -> rider.name == name) riders)
-
-
 
 
 calcRaceId : List Race -> Int
@@ -90,14 +88,14 @@ leadingZero value =
 
 formatTime : Date.Date -> String
 formatTime datetime =
-        leadingZero (Date.hour datetime)
-        ++ ":" ++
-        toString (Date.minute datetime)
+    leadingZero (Date.hour datetime)
+        ++ ":"
+        ++ toString (Date.minute datetime)
 
 
 formatDate : Date.Date -> String
 formatDate date =
-        toString (Date.year date)
+    toString (Date.year date)
         ++ "-"
         ++ toString (numMonth (Date.month date))
         ++ "-"

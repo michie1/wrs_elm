@@ -15,90 +15,33 @@ import Json.Encode
 import Json.Decode
 import App.Decoder
 
-add : App -> ( App, Cmd Msg )
-add app =
-    case app.raceAdd of
-        Just raceAdd ->
-            case raceAdd.name /= "" of
-                True ->
-                    case app.races of
-                        Just races ->
-                            {--
-                            let
-                                newRace =
-                                    Race.Model.Race
-                                        (App.Helpers.calcRaceId races)
-                                        raceAdd.name
-                                        raceAdd.dateString
-                                        raceAdd.category
-                            in
-                                ( { app | races = Just (newRace :: races) }
-                                , App.Helpers.navigate <| App.Routing.RaceDetails newRace.id
-                                )
-                            --}
-                            addSocket app
 
-                        Nothing ->
-                            ( app, Cmd.none )
+add :
+    Race.Model.Add
+    -> Phoenix.Socket.Socket App.Msg.Msg
+    -> Maybe ( Phoenix.Socket.Socket App.Msg.Msg, Cmd Msg )
+add raceAdd phxSocket =
+    case raceAdd.name /= "" of
+        True ->
+            Just <| addSocket raceAdd phxSocket
 
-                False ->
-                    ( app, Cmd.none )
-
-        Nothing ->
-            ( app, Cmd.none )
+        False ->
+            Nothing
 
 
-addName : String -> App -> ( App, Cmd Msg )
-addName newName app =
-    case app.raceAdd of
-        Just raceAdd ->
-            let
-                newRaceAdd =
-                    { raceAdd | name = newName }
-            in
-                ( { app
-                    | raceAdd = Just newRaceAdd
-                  }
-                , Cmd.none
-                )
-
-        Nothing ->
-            ( app, Cmd.none )
+addName : String -> Race.Model.Add -> Race.Model.Add
+addName newName raceAdd =
+    { raceAdd | name = newName }
 
 
-addCategory : Race.Model.Category -> App -> ( App, Cmd Msg )
-addCategory category app =
-    case app.raceAdd of
-        Just raceAdd ->
-            let
-                nextRaceAdd =
-                    { raceAdd | category = Just category }
-            in
-                ( { app | raceAdd = Just nextRaceAdd }
-                , Cmd.none
-                )
-
-        Nothing ->
-            ( app, Cmd.none )
+addCategory : Race.Model.Category -> Race.Model.Add -> Race.Model.Add
+addCategory category raceAdd =
+    { raceAdd | category = Just category }
 
 
-addDate : String -> App -> ( App, Cmd Msg )
-addDate newDate app =
-    case app.raceAdd of
-        Just raceAdd ->
-            let
-                newRaceAdd =
-                    --{ raceAdd | dateString = Just newDate }
-                    { raceAdd | dateString = newDate }
-            in
-                ( { app
-                    | raceAdd = Just newRaceAdd
-                  }
-                , Cmd.none
-                )
-
-        Nothing ->
-            ( app, Cmd.none )
+addDate : String -> Race.Model.Add -> Race.Model.Add
+addDate newDate raceAdd =
+    { raceAdd | dateString = newDate }
 
 
 addSet : Maybe Date.Date -> App -> ( App, Cmd Msg )
@@ -199,11 +142,15 @@ addTodayWithDate maybeDate app =
         Nothing ->
             ( app, Cmd.none )
 
+
 racesSocket : App -> ( App, Cmd Msg )
 racesSocket app =
     let
-        _ = Debug.log "races" "socket"
-        payload = Json.Encode.object [ ( "name", Json.Encode.string "hoi" ) ]
+        _ =
+            Debug.log "races" "socket"
+
+        payload =
+            Json.Encode.object [ ( "name", Json.Encode.string "hoi" ) ]
 
         phxPush =
             Phoenix.Push.init "races" "room:lobby"
@@ -218,13 +165,14 @@ racesSocket app =
         , Cmd.map PhoenixMsg phxCmd
         )
 
+
 racesSocketResponse : Json.Decode.Value -> App -> ( App, Cmd Msg )
 racesSocketResponse message app =
     let
         resultRaces =
             (Json.Decode.decodeValue
-            (Json.Decode.field "races" (Json.Decode.list App.Decoder.raceDecoder))
-            message
+                (Json.Decode.field "races" (Json.Decode.list App.Decoder.raceDecoder))
+                message
             )
     in
         case resultRaces of
@@ -243,43 +191,34 @@ racesSocketResponse message app =
                     )
 
 
-addSocket : App -> ( App, Cmd Msg )
-addSocket app =
-    case app.raceAdd of
-        Just raceAdd ->
-            let
-                payload =
-                    Json.Encode.object 
-                        [ ( "name", Json.Encode.string raceAdd.name )
-                        , ( "date", Json.Encode.string raceAdd.dateString )
-                        ]
-
-                phxPush =
-                    Phoenix.Push.init "createRace" "room:lobby"
-                        |> Phoenix.Push.withPayload payload
-                        |> Phoenix.Push.onOk RaceAddSocketResponse
-                        |> Phoenix.Push.onError HandleSendError
-
-                ( phxSocket, phxCmd ) =
-                    Phoenix.Socket.push phxPush app.phxSocket
-            in
-                ( { app | phxSocket = phxSocket }
-                , Cmd.map PhoenixMsg phxCmd
-                )
-
-        Nothing ->
-            ( app, Cmd.none )
-
-addSocketResponse : Json.Decode.Value -> App -> ( App, Cmd Msg )
-addSocketResponse rawResponse app =
+addSocket : Race.Model.Add -> Phoenix.Socket.Socket App.Msg.Msg -> ( Phoenix.Socket.Socket App.Msg.Msg, Cmd Msg )
+addSocket raceAdd phxSocket =
     let
-        id =
-            Result.withDefault 0
-                (Json.Decode.decodeValue
-                    (Json.Decode.field "id" Json.Decode.int)
-                    rawResponse
-                )
+        payload =
+            Json.Encode.object
+                [ ( "name", Json.Encode.string raceAdd.name )
+                , ( "date", Json.Encode.string raceAdd.dateString )
+                ]
+
+        phxPush =
+            Phoenix.Push.init "createRace" "room:lobby"
+                |> Phoenix.Push.withPayload payload
+                |> Phoenix.Push.onOk RaceAddSocketResponse
+                |> Phoenix.Push.onError HandleSendError
+
+        ( nextPhxSocket, phxCmd ) =
+            Phoenix.Socket.push phxPush phxSocket
     in
-        ( app
-        , App.Helpers.navigate <| App.Routing.RaceDetails id
+        ( nextPhxSocket
+        , Cmd.map PhoenixMsg phxCmd
         )
+
+
+addSocketResponse : Json.Decode.Value -> Maybe (Cmd Msg)
+addSocketResponse rawResponse =
+    case Json.Decode.decodeValue (Json.Decode.field "id" Json.Decode.int) rawResponse of 
+            Ok id ->
+                Just <| App.Helpers.navigate <| App.Routing.RaceDetails id
+
+            Err _ ->
+                Nothing

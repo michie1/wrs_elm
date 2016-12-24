@@ -3,6 +3,22 @@ module App.Routing exposing (Route(..), url, routeParser)
 import Navigation
 import UrlParser exposing (..)
 
+type Route
+    = Home
+    | RiderDetails Int
+    | Riders
+    | RaceAdd
+    | RaceDetails Int
+    | Races
+    | Results
+    | ResultAdd Int
+    | CommentAdd Int
+    | Account
+    | AccountLoginName String
+    | AccountLogin
+    | AccountLogout
+    | AccountSignup
+
 url : Route -> String
 url route =
     case route of
@@ -47,23 +63,6 @@ url route =
 
         AccountSignup ->
             "#account/signup"
-
-
-type Route
-    = Home
-    | RiderDetails Int
-    | Riders
-    | RaceAdd
-    | RaceDetails Int
-    | Races
-    | Results
-    | ResultAdd Int
-    | CommentAdd Int
-    | Account
-    | AccountLoginName String
-    | AccountLogin
-    | AccountLogout
-    | AccountSignup
 
 
 matchers : Parser (Route -> a) a

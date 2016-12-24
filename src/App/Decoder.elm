@@ -7,19 +7,6 @@ import Comment.Model
 import Json.Decode
 import Json.Decode.Pipeline
 
-{--
-race : Json.Decode.Decoder Race.Model.Race
-race =
-    Json.Decode.map4 Race.Model.Race
-        (Json.Decode.field "id" Json.Decode.int)
-        (Json.Decode.field "name" Json.Decode.string)
-        (Json.Decode.field "date" Json.Decode.string)
-        (Json.Decode.field "category"
-            (Json.Decode.string
-                |> Json.Decode.andThen decodeCategory
-            )
-        )
---}
 
 decodeCategory : String -> Json.Decode.Decoder Race.Model.Category
 decodeCategory string =
