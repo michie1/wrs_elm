@@ -60,21 +60,20 @@ viewPage app =
             Race.View.Details.render app id
 
         App.Routing.RaceAdd ->
-            case app.raceAdd of
-                Nothing ->
-                    div [] [ text "RaceAdd nothing" ]
-
-                Just raceAdd ->
+            case app.page of
+                App.Model.RaceAdd raceAdd->
                     div []
                         [ Race.View.Add.render raceAdd
                         ]
+                _ ->
+                    div [] [ text "RaceAdd nothing" ]
 
         App.Routing.Results ->
             Result.View.List.render app.results
 
         App.Routing.ResultAdd raceId ->
-            case app.resultAdd of
-                Just resultAdd ->
+            case app.page of
+                App.Model.ResultAdd resultAdd ->
                     let
                         maybeRace =
                             getRace raceId (Maybe.withDefault [] app.races)
@@ -94,7 +93,7 @@ viewPage app =
                                     Nothing ->
                                         div [] [ text "No riders loaded." ]
 
-                Nothing ->
+                _ ->
                     div [] [ text "No resultAdd." ]
 
         App.Routing.CommentAdd raceId ->

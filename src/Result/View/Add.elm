@@ -20,9 +20,9 @@ render race resultAdd riders results =
     let
         submitDisabled =
             not (riderNameExists resultAdd.riderName riders)
-                || resultAdd.result
-                == ""
-                || (resultAdd.strava /= "" && not (String.contains "strava.com" resultAdd.strava))
+                || String.isEmpty resultAdd.result
+                || (not (String.isEmpty resultAdd.strava) && 
+                    not (String.contains "strava.com" resultAdd.strava))
 
         -- TODO: button is enabled although result already exists
     in

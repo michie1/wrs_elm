@@ -48,10 +48,7 @@ addWithTime maybeTime app =
             in
                 case maybeComment of
                     Just comment ->
-                        ( { app
-                            | comments = comment :: app.comments
-                            , commentAdd = Nothing
-                          }
+                        ( { app | comments = comment :: app.comments }
                         , App.Helpers.navigate <| App.Routing.RaceDetails comment.raceId
                         )
 
@@ -64,13 +61,15 @@ addWithTime maybeTime app =
 
 new : Int -> String -> App -> Maybe Comment
 new id datetime app =
-    Maybe.withDefault
-        Nothing
-        (Maybe.map2
-            (\riders commentAdd -> newComment id datetime riders commentAdd)
-            app.riders
-            app.commentAdd
-        )
+    case app.page of
+        App.Model.CommentAdd commentAdd ->
+            case app.riders of
+                Just riders ->
+                    newComment id datetime riders commentAdd
+                Nothing ->
+                    Nothing
+        _ ->
+            Nothing
 
 
 addRiderName : String -> Comment.Model.Add -> Comment.Model.Add

@@ -11,8 +11,8 @@ import Html.Events exposing (onClick, onInput)
 
 login : App -> Html App.Msg.Msg
 login app =
-    case app.accountLogin of
-        Just accountLogin ->
+    case app.page of
+        App.Model.AccountLogin accountLogin ->
             div []
                 [ h2 [] [ text "Login" ]
                 , div []
@@ -54,7 +54,7 @@ login app =
                     ]
                 ]
 
-        Nothing ->
+        _ ->
             div [] [ text "accountLogin nothing" ]
 
 
@@ -95,8 +95,8 @@ render app =
 
 signup : App -> Html App.Msg.Msg
 signup app =
-    case app.accountSignup of
-        Just accountSignup ->
+    case app.page of
+        App.Model.AccountSignup accountSignup ->
             let
                 name =
                     String.trim accountSignup.name
@@ -136,7 +136,7 @@ signup app =
                         ]
                     ]
 
-        Nothing ->
+        _ ->
             div [] [ text "accoutSignup nothing" ]
 
 

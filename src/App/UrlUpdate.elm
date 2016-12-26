@@ -18,18 +18,6 @@ import App.Routing
 onUrlLeave : App.Routing.Route -> App -> App
 onUrlLeave prevRoute prevApp =
     case prevRoute of
-        App.Routing.CommentAdd raceId ->
-            { prevApp | commentAdd = Nothing }
-
-        App.Routing.AccountSignup ->
-            { prevApp | accountSignup = Nothing }
-
-        App.Routing.AccountLogin ->
-            { prevApp | accountLogin = Nothing }
-
-        App.Routing.RaceAdd ->
-            { prevApp | raceAdd = Nothing }
-
         _ ->
             prevApp
 
@@ -43,7 +31,7 @@ onUrlEnter route app =
                     ( app, App.Helpers.navigate App.Routing.Account )
 
                 Nothing ->
-                    ( { app | accountLogin = Just Account.Model.login }
+                    ( { app | page = App.Model.AccountLogin Account.Model.login }
                     , fetchForRoute App.Routing.AccountLogin
                       -- TODO: Move code from fetchForRoute inside this function.
                     )
@@ -61,7 +49,7 @@ onUrlEnter route app =
                         nextAccountLogin =
                             { accountLogin | name = name }
                     in
-                        ( { app | accountLogin = Just nextAccountLogin }
+                        ( { app | page = App.Model.AccountLogin nextAccountLogin }
                         , fetchForRoute App.Routing.AccountLogin
                         )
 
@@ -89,7 +77,7 @@ onUrlEnter route app =
                         , riderName = name
                     }
             in
-                ( { app | resultAdd = Just resultAddWithRaceId }
+                ( { app | page = App.Model.ResultAdd resultAddWithRaceId }
                 , fetchForRoute (App.Routing.ResultAdd raceId)
                 )
 
@@ -115,7 +103,7 @@ onUrlEnter route app =
                         b =
                             Debug.log "urlUpdate CommentAdd" raceId
                     in
-                        ( { app | commentAdd = Just commentAddWithRaceId }
+                        ( { app | page = App.Model.CommentAdd commentAddWithRaceId }
                         , fetchForRoute (App.Routing.CommentAdd raceId)
                         )
 
@@ -133,7 +121,7 @@ onUrlEnter route app =
                     --Race.Model.Add "" Nothing Race.Model.Classic
                     Race.Model.Add "" "" Nothing --Race.Model.Classic
             in
-                ( { app | raceAdd = Just raceAdd }
+                ( { app | page = App.Model.RaceAdd raceAdd }
                 , fetchForRoute App.Routing.RaceAdd
                 )
 
@@ -143,7 +131,7 @@ onUrlEnter route app =
                     ( app, App.Helpers.navigate App.Routing.Account)
 
                 Nothing ->
-                    ( { app | accountSignup = Just Account.Model.signup }
+                    ( { app | page = App.Model.AccountSignup Account.Model.signup }
                     , Cmd.none
                     )
 

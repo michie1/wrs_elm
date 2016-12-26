@@ -36,229 +36,237 @@ import App.Helpers
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
+    case maybeUpdate msg app of
+        Just next ->
+            next
+
+        Nothing ->
+            app ! []
+
+
+maybeUpdate : Msg -> App -> Maybe ( App, Cmd Msg )
+maybeUpdate msg app =
     let
-        noop =
-            ( app, Cmd.none )
+        noOp =
+            Nothing
     in
         case msg of
             RaceAdd ->
-                case app.raceAdd of
-                    Just raceAdd ->
+                case app.page of
+                    App.Model.RaceAdd raceAdd ->
                         case Race.Update.add raceAdd app.phxSocket of
                             Just ( phxSocket, nextCmd ) ->
-                                ( { app | phxSocket = phxSocket }
-                                , nextCmd
-                                )
-
-                            Nothing ->
-                                noop
-
-                    Nothing ->
-                        noop
-
-            RaceAddSocketResponse rawResponse ->
-                ( app
-                , Maybe.withDefault Cmd.none <| Race.Update.addSocketResponse rawResponse
-                )
-
-            RaceName name ->
-                ( case app.raceAdd of
-                    Just raceAdd ->
-                        { app
-                            | raceAdd = Just <| Race.Update.addName name raceAdd
-                        }
-
-                    Nothing ->
-                        app
-                , Cmd.none
-                )
-
-            RaceAddCategory category ->
-                ( case app.raceAdd of
-                    Just raceAdd ->
-                        { app
-                            | raceAdd = Just <| Race.Update.addCategory category raceAdd
-                        }
-
-                    Nothing ->
-                        app
-                , Cmd.none
-                )
-
-            RaceDate newDate ->
-                ( case app.raceAdd of
-                    Just raceAdd ->
-                        { app
-                            | raceAdd = Just <| Race.Update.addDate newDate raceAdd
-                        }
-
-                    Nothing ->
-                        app
-                , Cmd.none
-                )
-
-            ResultAdd ->
-                Maybe.withDefault
-                    noop
-                    (Maybe.map2
-                        (\resultAdd riders ->
-                            case Result.Update.add resultAdd riders app.results of
-                                Just ( result, navigateCmd ) ->
-                                    ( { app | results = result :: app.results }
-                                    , navigateCmd
+                                Just <|
+                                    ( { app | phxSocket = phxSocket }
+                                    , nextCmd
                                     )
 
-                                Nothing ->
-                                    noop
-                        )
-                        app.resultAdd
-                        app.riders
-                    )
+                            Nothing ->
+                                noOp
+
+                    _ ->
+                        noOp
+
+            RaceAddSocketResponse rawResponse ->
+                case Race.Update.addSocketResponse rawResponse of
+                    Just cmd ->
+                        Just ( app, cmd )
+
+                    Nothing ->
+                        noOp
+
+            RaceName name ->
+                let
+                    page =
+                        Race.Update.addPage2 msg app.page
+                in
+                    Just <| { app | page = page } ! []
+
+            RaceAddCategory category ->
+                let
+                    page =
+                        Race.Update.addPage2 msg app.page
+                in
+                    Just <| { app | page = page } ! []
+
+            RaceDate newDate ->
+                let
+                    page =
+                        Race.Update.addPage2 msg app.page
+                in
+                    Just <| { app | page = page } ! []
+
+            ResultAdd ->
+                case app.page of
+                    App.Model.ResultAdd resultAdd ->
+                        case app.riders of
+                            Just riders ->
+                                case Result.Update.add resultAdd riders app.results of
+                                    Just ( result, navigateCmd ) ->
+                                        Just <|
+                                            ( { app | results = result :: app.results }
+                                            , navigateCmd
+                                            )
+
+                                    Nothing ->
+                                        noOp
+
+                            Nothing ->
+                                noOp
+
+                    _ ->
+                        noOp
 
             ResultAddCategory category ->
-                ( (case app.resultAdd of
-                    Just resultAdd ->
-                        { app
-                            | resultAdd =
-                                Just <| Result.Update.addCategory category resultAdd
-                        }
+                Just <|
+                    ( (case app.page of
+                        App.Model.ResultAdd resultAdd ->
+                            { app
+                                | page =
+                                    App.Model.ResultAdd <| Result.Update.addCategory category resultAdd
+                            }
 
-                    Nothing ->
-                        app
-                  )
-                , Cmd.none
-                )
+                        _ ->
+                            app
+                      )
+                    , Cmd.none
+                    )
 
             ResultAddStrava link ->
-                ( case app.resultAdd of
-                    Just resultAdd ->
-                        { app
-                            | resultAdd =
-                                Just <| Result.Update.addStrava link resultAdd
-                        }
+                Just <|
+                    ( case app.page of
+                        App.Model.ResultAdd resultAdd ->
+                            { app
+                                | page =
+                                    App.Model.ResultAdd <| Result.Update.addStrava link resultAdd
+                            }
 
-                    Nothing ->
-                        app
-                , Cmd.none
-                )
+                        _ ->
+                            app
+                    , Cmd.none
+                    )
 
             ResultAddResult value ->
-                ( case app.resultAdd of
-                    Just resultAdd ->
-                        { app 
-                            | resultAdd =
-                                Just <| Result.Update.addResult value resultAdd
-                        }
+                Just <|
+                    ( case app.page of
+                        App.Model.ResultAdd resultAdd ->
+                            { app
+                                | page =
+                                    App.Model.ResultAdd <| Result.Update.addResult value resultAdd
+                            }
 
-                    Nothing ->
-                        app
-                , Cmd.none
-                )
+                        _ ->
+                            app
+                    , Cmd.none
+                    )
 
             ResultRiderName name ->
-                ( case app.resultAdd of
-                    Just resultAdd ->
-                        { app
-                            | resultAdd =
-                                Just <| Result.Update.riderName name resultAdd
-                        }
+                Just <|
+                    ( case app.page of
+                        App.Model.ResultAdd resultAdd ->
+                            { app
+                                | page =
+                                    App.Model.ResultAdd <| Result.Update.riderName name resultAdd
+                            }
 
-                    Nothing ->
-                        app
-                , Cmd.none
-                )
+                        _ ->
+                            app
+                    , Cmd.none
+                    )
 
             CommentAddSetText text ->
-                ( case app.commentAdd of
-                    Just commentAdd ->
-                        { app
-                            | commentAdd =
-                                Just <| Comment.Update.addText text commentAdd
-                        }
+                Just <|
+                    ( case app.page of
+                        App.Model.CommentAdd commentAdd ->
+                            { app
+                                | page =
+                                    App.Model.CommentAdd <| Comment.Update.addText text commentAdd
+                            }
 
-                    Nothing ->
-                        app
-                , Cmd.none
-                )
+                        _ ->
+                            app
+                    , Cmd.none
+                    )
 
             CommentAddSetRiderName riderName ->
-                ( case app.commentAdd of
-                    Just commentAdd ->
-                        { app
-                            | commentAdd =
-                                Just <| Comment.Update.addRiderName riderName commentAdd
-                        }
+                Just <|
+                    ( case app.page of
+                        App.Model.CommentAdd commentAdd ->
+                            { app
+                                | page =
+                                    App.Model.CommentAdd <| Comment.Update.addRiderName riderName commentAdd
+                            }
 
-                    Nothing ->
-                        app
-                , Cmd.none
-                )
+                        _ ->
+                            app
+                    , Cmd.none
+                    )
 
             CommentAdd ->
-                Comment.Update.add app
+                Just <| Comment.Update.add app
 
             CommentAddWithTime maybeTime ->
-                Comment.Update.addWithTime maybeTime app
+                Just <| Comment.Update.addWithTime maybeTime app
 
             SetRaceAdd maybeNow ->
-                Race.Update.addSet maybeNow app
+                Just <| Race.Update.addSet maybeNow app
 
             RaceAddYesterday ->
-                Race.Update.addYesterday app
+                Just <| Race.Update.addYesterday app
 
             RaceAddYesterdayWithDate maybeDate ->
-                Race.Update.addYesterdayWithDate maybeDate app
+                Just <| Race.Update.addYesterdayWithDate maybeDate app
 
             RaceAddToday ->
-                Race.Update.addToday app
+                Just <| Race.Update.addToday app
 
             RaceAddTodayWithDate maybeDate ->
-                Race.Update.addTodayWithDate maybeDate app
+                Just <| Race.Update.addTodayWithDate maybeDate app
 
             UrlUpdate route ->
-                App.UrlUpdate.urlUpdate route app
+                Just <| App.UrlUpdate.urlUpdate route app
 
             NavigateTo route ->
-                ( app, App.Helpers.navigate route )
+                Just <| ( app, App.Helpers.navigate route )
 
             AccountLogin ->
-                Account.Update.login app
+                Just <| Account.Update.login app
 
             AccountLoginName name ->
-                Account.Update.loginName name app
+                Just <| Account.Update.loginName name app
 
             AccountLoginPassword password ->
-                Account.Update.loginPassword password app
+                Just <| Account.Update.loginPassword password app
 
             AccountLogout ->
-                Account.Update.logout app
+                Just <| Account.Update.logout app
 
             AccountSignup ->
-                Account.Update.signup app
+                Just <| Account.Update.signup app
 
             SocketAccountSignup ->
-                Account.Update.signupSocket app
+                Just <| Account.Update.signupSocket app
 
             SocketAccountSignupResponse rawResponse ->
-                Account.Update.signupSocketResponse rawResponse app
+                Just <| Account.Update.signupSocketResponse rawResponse app
 
             AccountSignupName name ->
-                Account.Update.signupName name app
+                Just <| Account.Update.signupName name app
 
             AccountLicence licence ->
-                Account.Update.settingsLicence licence app
+                Just <| Account.Update.settingsLicence licence app
 
             SocketAccountLicence ->
-                Account.Update.settingsLicenceSocket app
+                Just <| Account.Update.settingsLicenceSocket app
 
             SocketAccountLicenceResponse rawResponse ->
-                Account.Update.settingsLicenceSocketResponse rawResponse app
+                Just <| Account.Update.settingsLicenceSocketResponse rawResponse app
 
             RacesSocket ->
-                Race.Update.racesSocket app
+                Just <| Race.Update.racesSocket app
 
             RacesSocketResponse rawResponse ->
-                Race.Update.racesSocketResponse rawResponse app
+                Just <| Race.Update.racesSocketResponse rawResponse app
 
             OnCreatedRider rawResponse ->
                 let
@@ -274,12 +282,13 @@ update msg app =
                                         rider.name
                                         rider.licence
                             in
-                                ( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
-                                , Cmd.none
-                                )
+                                Just <|
+                                    ( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
+                                    , Cmd.none
+                                    )
 
                         Err _ ->
-                            noop
+                            noOp
 
             OnCreatedRace rawResponse ->
                 let
@@ -296,12 +305,13 @@ update msg app =
                                         race.date
                                         race.category
                             in
-                                ( { app | races = Just (newRace :: (Maybe.withDefault [] app.races)) }
-                                , Cmd.none
-                                )
+                                Just <|
+                                    ( { app | races = Just (newRace :: (Maybe.withDefault [] app.races)) }
+                                    , Cmd.none
+                                    )
 
                         Err _ ->
-                            noop
+                            noOp
 
             OnUpdatedRider rawResponse ->
                 let
@@ -329,19 +339,20 @@ update msg app =
                                         Nothing ->
                                             Nothing
                             in
-                                ( { app
-                                    | riders = Just riders
-                                    , account = nextAccount
-                                  }
-                                , Cmd.none
-                                )
+                                Just <|
+                                    ( { app
+                                        | riders = Just riders
+                                        , account = nextAccount
+                                      }
+                                    , Cmd.none
+                                    )
 
                         Err _ ->
-                            noop
+                            noOp
 
             -- TODO: link account to one rider?
             Noop ->
-                noop
+                noOp
 
             Connect ->
                 let
@@ -358,9 +369,10 @@ update msg app =
                     ( phxSocket, phxCmd ) =
                         Phoenix.Socket.push phxPush app.phxSocket
                 in
-                    ( { app | phxSocket = phxSocket }
-                    , Cmd.map PhoenixMsg phxCmd
-                    )
+                    Just <|
+                        ( { app | phxSocket = phxSocket }
+                        , Cmd.map PhoenixMsg phxCmd
+                        )
 
             ReceiveRiders message ->
                 let
@@ -375,33 +387,38 @@ update msg app =
                 in
                     case resultRiders of
                         Ok riders ->
-                            ( { app | messages = messages, riders = Just riders }
-                            , Cmd.none
-                            )
+                            Just <|
+                                ( { app | messages = messages, riders = Just riders }
+                                , Cmd.none
+                                )
 
                         Err errorMessage ->
-                            ( { app | messages = messages }
-                            , Cmd.none
-                            )
+                            Just <|
+                                ( { app | messages = messages }
+                                , Cmd.none
+                                )
 
             ReceiveMessage message ->
-                ( { app | messages = (toString message) :: app.messages }
-                , Cmd.none
-                )
+                Just <|
+                    ( { app | messages = (toString message) :: app.messages }
+                    , Cmd.none
+                    )
 
             HandleSendError _ ->
-                noop
+                noOp
 
             NewMessage message ->
-                ( { app | messages = message :: app.messages }
-                , Cmd.none
-                )
+                Just <|
+                    ( { app | messages = message :: app.messages }
+                    , Cmd.none
+                    )
 
             PhoenixMsg message ->
                 let
                     ( phxSocket, phxCmd ) =
                         Phoenix.Socket.update message app.phxSocket
                 in
-                    ( { app | phxSocket = phxSocket }
-                    , Cmd.map PhoenixMsg phxCmd
-                    )
+                    Just <|
+                        ( { app | phxSocket = phxSocket }
+                        , Cmd.map PhoenixMsg phxCmd
+                        )

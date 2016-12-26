@@ -18,11 +18,8 @@ render app race riders =
             div [] [ text "Who are you? Please login first." ]
 
         Just account ->
-            case app.commentAdd of
-                Nothing ->
-                    div [] [ text "commentAdd nothing" ]
-
-                Just commentAdd ->
+            case app.page of
+                App.Model.CommentAdd commentAdd ->
                     let
                         submitDisabled =
                             commentAdd.text == ""
@@ -54,6 +51,8 @@ render app race riders =
                             , addButton submitDisabled
                             ]
 
+                _ ->
+                    div [] [ text "commentAdd nothing" ]
 
 addButton : Bool -> Html App.Msg.Msg
 addButton submitDisabled =

@@ -16,33 +16,33 @@ import App.Routing
 
 loginName : String -> App -> ( App, Cmd Msg )
 loginName name app =
-    case app.accountLogin of
-        Just accountLogin ->
+    case app.page of
+        App.Model.AccountLogin accountLogin ->
             let
                 nextAccountLogin =
                     { accountLogin | name = name }
             in
-                ( { app | accountLogin = Just nextAccountLogin }
+                ( { app | page = App.Model.AccountLogin nextAccountLogin }
                 , Cmd.none
                 )
 
-        Nothing ->
+        _ ->
             ( app, Cmd.none )
 
 
 loginPassword : String -> App -> ( App, Cmd Msg )
 loginPassword password app =
-    case app.accountLogin of
-        Just accountLogin ->
+    case app.page of
+        App.Model.AccountLogin accountLogin ->
             let
                 nextAccountLogin =
                     { accountLogin | password = password }
             in
-                ( { app | accountLogin = Just nextAccountLogin }
+                ( { app | page = App.Model.AccountLogin nextAccountLogin }
                 , Cmd.none
                 )
 
-        Nothing ->
+        _ ->
             ( app, Cmd.none )
 
 
@@ -60,8 +60,8 @@ logout app =
 
 login : App -> ( App, Cmd Msg )
 login app =
-    case app.accountLogin of
-        Just accountLogin ->
+    case app.page of
+        App.Model.AccountLogin accountLogin ->
             let
                 maybeRider =
                     App.Helpers.getRiderByName
@@ -77,14 +77,14 @@ login app =
                     Nothing ->
                         ( app, Cmd.none )
 
-        Nothing ->
+        _ ->
             ( app, Cmd.none )
 
 
 signup : App -> ( App, Cmd Msg )
 signup app =
-    case app.accountSignup of
-        Just accountSignup ->
+    case app.page of
+        App.Model.AccountSignup accountSignup ->
             -- TODO do not add directly, but send websocket to add new rider
             let
                 newRider =
@@ -101,14 +101,14 @@ signup app =
                     ]
                 )
 
-        Nothing ->
+        _ ->
             ( app, Cmd.none )
 
 
 signupSocket : App -> ( App, Cmd Msg )
 signupSocket app =
-    case app.accountSignup of
-        Just accountSignup ->
+    case app.page of
+        App.Model.AccountSignup accountSignup ->
             let
                 payload =
                     Json.Encode.object [ ( "name", Json.Encode.string accountSignup.name ) ]
@@ -126,7 +126,7 @@ signupSocket app =
                 , Cmd.map PhoenixMsg phxCmd
                 )
 
-        Nothing ->
+        _ ->
             ( app, Cmd.none )
 
 
@@ -147,17 +147,17 @@ signupSocketResponse rawResponse app =
 
 signupName : String -> App -> ( App, Cmd Msg )
 signupName name app =
-    case app.accountSignup of
-        Just accountSignup ->
+    case app.page of
+        App.Model.AccountSignup accountSignup ->
             let
                 nextAccountSignup =
                     { accountSignup | name = name }
             in
-                ( { app | accountSignup = Just nextAccountSignup }
+                ( { app | page = App.Model.AccountSignup nextAccountSignup }
                 , Cmd.none
                 )
 
-        Nothing ->
+        _ ->
             ( app, Cmd.none )
 
 

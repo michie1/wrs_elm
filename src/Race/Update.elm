@@ -21,11 +21,48 @@ add :
     -> Phoenix.Socket.Socket App.Msg.Msg
     -> Maybe ( Phoenix.Socket.Socket App.Msg.Msg, Cmd Msg )
 add raceAdd phxSocket =
-    case raceAdd.name /= "" of
-        True ->
+    case String.isEmpty raceAdd.name of
+        False ->
             Just <| addSocket raceAdd phxSocket
 
-        False ->
+        True ->
+            Nothing
+
+addPage2 : App.Msg.Msg -> App.Model.Page -> App.Model.Page
+addPage2 msg page =
+    case page of
+        App.Model.RaceAdd raceAdd ->
+            case msg of
+                RaceName name ->
+                    App.Model.RaceAdd <| addName name raceAdd
+
+                RaceAddCategory category ->
+                    App.Model.RaceAdd <| addCategory category raceAdd
+
+                RaceDate newDate ->
+                    App.Model.RaceAdd <| addDate newDate raceAdd
+
+                _ ->
+                    page
+        _ ->
+            page
+
+
+addPage : App.Msg.Msg -> Maybe Race.Model.Add -> Maybe Race.Model.Add
+addPage msg maybeRaceAdd =
+    case maybeRaceAdd of
+        Just raceAdd ->
+            case msg of
+                RaceName name ->
+                    Just <| addName name raceAdd
+
+                RaceAddCategory category ->
+                    Just <| addCategory category raceAdd
+
+                _ ->
+                    Nothing
+
+        Nothing ->
             Nothing
 
 
@@ -46,8 +83,8 @@ addDate newDate raceAdd =
 
 addSet : Maybe Date.Date -> App -> ( App, Cmd Msg )
 addSet maybeNow app =
-    case app.raceAdd of
-        Just currentRaceAdd ->
+    case app.page of
+        App.Model.RaceAdd currentRaceAdd ->
             let
                 dateFormatted =
                     case maybeNow of
@@ -63,11 +100,11 @@ addSet maybeNow app =
                         | dateString = dateFormatted
                     }
             in
-                ( { app | raceAdd = Just raceAdd }
+                ( { app | page = App.Model.RaceAdd raceAdd }
                 , Cmd.none
                 )
 
-        Nothing ->
+        _ ->
             ( app, Cmd.none )
 
 
@@ -84,8 +121,8 @@ addYesterday app =
 
 addYesterdayWithDate : Maybe Date.Date -> App -> ( App, Cmd Msg )
 addYesterdayWithDate maybeDate app =
-    case app.raceAdd of
-        Just raceAdd ->
+    case app.page of
+        App.Model.RaceAdd currentRaceAdd ->
             let
                 dateFormatted =
                     case maybeDate of
@@ -97,13 +134,13 @@ addYesterdayWithDate maybeDate app =
 
                 newRaceAdd =
                     --{ raceAdd | dateString = Just dateFormatted }
-                    { raceAdd | dateString = dateFormatted }
+                    { currentRaceAdd | dateString = dateFormatted }
             in
-                ( { app | raceAdd = Just newRaceAdd }
+                ( { app | page = App.Model.RaceAdd newRaceAdd }
                 , Cmd.none
                 )
 
-        Nothing ->
+        _ ->
             ( app, Cmd.none )
 
 
@@ -120,8 +157,8 @@ addToday app =
 
 addTodayWithDate : Maybe Date.Date -> App -> ( App, Cmd Msg )
 addTodayWithDate maybeDate app =
-    case app.raceAdd of
-        Just raceAdd ->
+    case app.page of
+        App.Model.RaceAdd currentRaceAdd ->
             let
                 dateFormatted =
                     case maybeDate of
@@ -133,13 +170,13 @@ addTodayWithDate maybeDate app =
 
                 newRaceAdd =
                     --{ raceAdd | dateString = Just dateFormatted }
-                    { raceAdd | dateString = dateFormatted }
+                    { currentRaceAdd | dateString = dateFormatted }
             in
-                ( { app | raceAdd = Just newRaceAdd }
+                ( { app | page = App.Model.RaceAdd newRaceAdd }
                 , Cmd.none
                 )
 
-        Nothing ->
+        _ ->
             ( app, Cmd.none )
 
 
@@ -216,9 +253,9 @@ addSocket raceAdd phxSocket =
 
 addSocketResponse : Json.Decode.Value -> Maybe (Cmd Msg)
 addSocketResponse rawResponse =
-    case Json.Decode.decodeValue (Json.Decode.field "id" Json.Decode.int) rawResponse of 
-            Ok id ->
-                Just <| App.Helpers.navigate <| App.Routing.RaceDetails id
+    case Json.Decode.decodeValue (Json.Decode.field "id" Json.Decode.int) rawResponse of
+        Ok id ->
+            Just <| App.Helpers.navigate <| App.Routing.RaceDetails id
 
-            Err _ ->
-                Nothing
+        Err _ ->
+            Nothing
