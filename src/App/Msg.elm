@@ -29,10 +29,15 @@ type Msg
     | RacesSocket
     | RacesSocketResponse Json.Encode.Value
     | ResultAdd
+    | ResultAddSocketResponse Json.Encode.Value
     | ResultAddCategory Result.Model.ResultCategory
     | ResultAddStrava String
     | ResultAddResult String
     | ResultRiderName String
+    | ResultsSocket
+    | ResultsSocketResponse Json.Encode.Value
+    | RidersSocket
+    | RidersSocketResponse Json.Encode.Value
     | CommentAddSetText String
     | CommentAddSetRiderName String
     | CommentAdd
@@ -54,9 +59,11 @@ type Msg
     | Connect
     | NewMessage String
     | PhoenixMsg (Phoenix.Socket.Msg Msg)
+    | InitResponse Json.Encode.Value
     | ReceiveMessage Json.Encode.Value
     | ReceiveRiders Json.Encode.Value
     | HandleSendError Json.Encode.Value
     | OnCreatedRider Json.Encode.Value
     | OnCreatedRace Json.Encode.Value
+    | OnCreatedResult Json.Encode.Value
     | OnUpdatedRider Json.Encode.Value

@@ -7,14 +7,21 @@ import Html exposing (Html, h2, div, text, a, table, tr, td, th, thead, tbody)
 import Html.Attributes exposing (href, class)
 
 
-render : List Race -> List Result.Model.Result -> Html App.Msg.Msg
-render races results =
+render : Bool -> List Race -> List Result.Model.Result -> Html App.Msg.Msg
+render loggedIn races results =
     div []
         [ h2 [] [ text "races" ]
-        , div []
-            [ a [ href "#races/add", class "waves-effect waves-light btn" ] [ text "Add race" ] ]
+        , addButton loggedIn
         , raceTable races results
         ]
+
+addButton : Bool -> Html App.Msg.Msg
+addButton loggedIn =
+    case loggedIn of
+        True ->
+            div [] [ a [ href "#races/add", class "waves-effect waves-light btn" ] [ text "Add race" ] ]
+        False ->
+            div [] []
 
 
 raceTable : List Race -> List Result.Model.Result -> Html App.Msg.Msg

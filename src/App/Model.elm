@@ -31,7 +31,6 @@ type alias App =
     , now : Maybe Date.Date
     , account : Maybe Rider.Model.Rider
     , messages : List String
-    , messageInProgress : String
     , phxSocket : Phoenix.Socket.Socket App.Msg.Msg
     }
 
@@ -48,12 +47,13 @@ initial =
                 |> Phoenix.Socket.on "shout" "room:lobby" App.Msg.ReceiveMessage
                 |> Phoenix.Socket.on "createdRider" "room:lobby" App.Msg.OnCreatedRider
                 |> Phoenix.Socket.on "createdRace" "room:lobby" App.Msg.OnCreatedRace
+                |> Phoenix.Socket.on "createdResult" "room:lobby" App.Msg.OnCreatedResult
                 |> Phoenix.Socket.on "updatedRider" "room:lobby" App.Msg.OnUpdatedRider
                 |> Phoenix.Socket.join channel
     in
         ( App
             Home
-            NoOp --(RaceAdd (Race.Model.Add "" "" Nothing))
+            NoOp 
             Nothing
             (Just Race.Model.initialRaces)
             Result.Model.initialResults
@@ -61,7 +61,6 @@ initial =
             Nothing
             Account.Model.initial
             []
-            ""
             initSocket
         , Cmd.map App.Msg.PhoenixMsg phxCmd
         )

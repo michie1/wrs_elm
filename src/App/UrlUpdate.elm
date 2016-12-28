@@ -19,7 +19,7 @@ onUrlLeave : App.Routing.Route -> App -> App
 onUrlLeave prevRoute prevApp =
     case prevRoute of
         _ ->
-            prevApp
+            { prevApp | page = App.Model.NoOp }
 
 
 onUrlEnter : App.Routing.Route -> App -> ( App, Cmd Msg )
@@ -118,8 +118,7 @@ onUrlEnter route app =
                     Debug.log "urlUpdate" "RacesAdd"
 
                 raceAdd =
-                    --Race.Model.Add "" Nothing Race.Model.Classic
-                    Race.Model.Add "" "" Nothing --Race.Model.Classic
+                    Race.Model.Add "" "" Race.Model.Classic
             in
                 ( { app | page = App.Model.RaceAdd raceAdd }
                 , fetchForRoute App.Routing.RaceAdd
@@ -153,12 +152,16 @@ onUrlEnter route app =
             in
                 ( app, cmd )
 
+
         App.Routing.RaceDetails id ->
             let 
                 cmd = Cmd.batch
                     [ Task.perform
                         identity
                         (Task.succeed App.Msg.RacesSocket)
+                    , Task.perform
+                        identity
+                        (Task.succeed App.Msg.ResultsSocket)
                     ]
             in
                 ( app, cmd )
@@ -225,8 +228,27 @@ fetchForRoute route =
             Cmd.batch
                 [ Task.perform
                     identity
-                    (Task.succeed App.Msg.Connect)
+                    (Task.succeed App.Msg.RidersSocket)
                 ]
 
+        App.Routing.RaceDetails _ ->
+            Cmd.batch
+                [ Task.perform
+                    identity
+                    (Task.succeed App.Msg.RidersSocket)
+                , Task.perform
+                    identity
+                    (Task.succeed App.Msg.RacesSocket)
+                , Task.perform
+                    identity
+                    (Task.succeed App.Msg.ResultsSocket)
+                ]
+            
+        App.Routing.Races ->
+            Cmd.batch
+                [ Task.perform
+                    identity
+                    (Task.succeed App.Msg.RacesSocket)
+                ]
         _ ->
             Cmd.none

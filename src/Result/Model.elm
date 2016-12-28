@@ -42,7 +42,8 @@ initialAdd =
 
 initialResults : List Result
 initialResults =
-    [ Result 1 1 1 "9000" CatA Nothing ]
+    [] 
+    --[ Result 1 1 1 "9000" CatA Nothing ]
 
 
 categories : List ResultCategory

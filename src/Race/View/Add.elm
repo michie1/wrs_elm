@@ -39,6 +39,7 @@ render raceAdd =
                             , type_ "text"
                             , onInput App.Msg.RaceName
                             , autofocus True
+                            , value name
                             ]
                             []
                         , label [ for "name" ] [ text ("Name " ++ name) ]
@@ -68,7 +69,7 @@ render raceAdd =
                         ]
                         [ text "Today" ]
                     ]
-                , div [ class "row" ] [ categoryButtons ]
+                , div [ class "row" ] [ categoryButtons raceAdd.category ]
                 , div [ class "row" ]
                     [ button
                         [ class "waves-effect waves-light btn"
@@ -85,24 +86,21 @@ render raceAdd =
             ]
 
 
-categoryButtonCheck : String -> String -> Race.Model.Category -> Bool -> Html App.Msg.Msg
-categoryButtonCheck categoryName categoryText category isChecked =
-    p []
-        [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (App.Msg.RaceAddCategory category) ] []
-        , label [ for categoryName ] [ text categoryText ]
-        ]
+categoryButtonCheck : String -> String -> Race.Model.Category -> Race.Model.Category -> Html App.Msg.Msg
+categoryButtonCheck categoryName categoryText categoryModel current =
+    let 
+        isChecked = categoryModel == current 
+    in
+        p []
+            [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (App.Msg.RaceAddCategory categoryModel) ] []
+            , label [ for categoryName ] [ text categoryText ]
+            ]
 
-
-categoryButton : String -> String -> Race.Model.Category -> Html App.Msg.Msg
-categoryButton categoryName categoryText category =
-    categoryButtonCheck categoryName categoryText category False
-
-
-categoryButtons : Html App.Msg.Msg
-categoryButtons =
+categoryButtons : Race.Model.Category -> Html App.Msg.Msg
+categoryButtons current =
     div []
-        [ categoryButtonCheck "classic" "Klassieker" Race.Model.Classic True
-        , categoryButton "criterum" "Criterium" Race.Model.Criterium
-        , categoryButton "regiocross" "Regiocross" Race.Model.Regiocross
-        , categoryButton "other" "Other" Race.Model.Other
+        [ categoryButtonCheck "classic" "Klassieker" Race.Model.Classic current
+        , categoryButtonCheck "criterum" "Criterium" Race.Model.Criterium current
+        , categoryButtonCheck "regiocross" "Regiocross" Race.Model.Regiocross current
+        , categoryButtonCheck "other" "Other" Race.Model.Other current
         ]

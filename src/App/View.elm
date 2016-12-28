@@ -54,19 +54,25 @@ viewPage app =
                 id
 
         App.Routing.Races ->
-            Race.View.List.render (Maybe.withDefault [] app.races) app.results
+            Race.View.List.render (app.account /= Nothing) (Maybe.withDefault [] app.races) app.results
 
         App.Routing.RaceDetails id ->
             Race.View.Details.render app id
 
         App.Routing.RaceAdd ->
-            case app.page of
-                App.Model.RaceAdd raceAdd->
-                    div []
-                        [ Race.View.Add.render raceAdd
-                        ]
-                _ ->
-                    div [] [ text "RaceAdd nothing" ]
+            case app.account of
+                Just _ ->
+                    case app.page of
+                        App.Model.RaceAdd raceAdd->
+                            div []
+                                [ Race.View.Add.render raceAdd
+                                ]
+                        _ ->
+                            div [] [ text "Page not RaceAdd" ]
+                Nothing ->
+                    div 
+                        [] [ text "Please log in." ]
+                        
 
         App.Routing.Results ->
             Result.View.List.render app.results

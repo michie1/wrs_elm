@@ -60,8 +60,36 @@ raceCategoryDecoder string =
         "classic" ->
             Json.Decode.succeed Race.Model.Classic
 
+        "criterum" ->
+            Json.Decode.succeed Race.Model.Criterium
+
+        "regiocross" ->
+            Json.Decode.succeed Race.Model.Regiocross
+
+        "other" ->
+            Json.Decode.succeed Race.Model.Other
+
+        "unknown" ->
+            Json.Decode.succeed Race.Model.Unknown
+
         _ ->
-            Json.Decode.fail <| string ++ " race category does not exists."
+            Json.Decode.succeed Race.Model.Unknown
+
+resultCategoryDecoder : String -> Json.Decode.Decoder Result.Model.ResultCategory
+resultCategoryDecoder string =
+    case string of 
+        "amateurs" ->
+            Json.Decode.succeed Result.Model.Amateurs
+        "basislidmaatschap" ->
+            Json.Decode.succeed Result.Model.Basislidmaatschap
+        "cata" ->
+            Json.Decode.succeed Result.Model.CatA
+        "catb" ->
+            Json.Decode.succeed Result.Model.CatB
+        "unknown" ->
+            Json.Decode.succeed Result.Model.Unknown
+        _ ->
+            Json.Decode.succeed Result.Model.Unknown
 
 
 riderDecoder : Json.Decode.Decoder Rider.Model.Rider
@@ -84,6 +112,21 @@ raceDecoder =
         |> Json.Decode.Pipeline.required "category"
             (Json.Decode.string
                 |> Json.Decode.andThen raceCategoryDecoder
+            )
+
+resultDecoder : Json.Decode.Decoder Result.Model.Result
+resultDecoder =
+    Json.Decode.Pipeline.decode Result.Model.Result
+        |> Json.Decode.Pipeline.required "id" Json.Decode.int
+        |> Json.Decode.Pipeline.required "riderId" Json.Decode.int
+        |> Json.Decode.Pipeline.required "raceId" Json.Decode.int
+        |> Json.Decode.Pipeline.required "result" Json.Decode.string
+        |> Json.Decode.Pipeline.required "category"
+            (Json.Decode.string
+                |> Json.Decode.andThen resultCategoryDecoder
+            )
+        |> Json.Decode.Pipeline.required "strava"
+            (Json.Decode.string
                 |> Json.Decode.nullable
             )
 

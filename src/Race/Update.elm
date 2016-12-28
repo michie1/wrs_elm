@@ -14,6 +14,7 @@ import Phoenix.Push
 import Json.Encode
 import Json.Decode
 import App.Decoder
+import App.Encoder
 
 
 add :
@@ -73,7 +74,7 @@ addName newName raceAdd =
 
 addCategory : Race.Model.Category -> Race.Model.Add -> Race.Model.Add
 addCategory category raceAdd =
-    { raceAdd | category = Just category }
+    { raceAdd | category = category }
 
 
 addDate : String -> Race.Model.Add -> Race.Model.Add
@@ -235,6 +236,7 @@ addSocket raceAdd phxSocket =
             Json.Encode.object
                 [ ( "name", Json.Encode.string raceAdd.name )
                 , ( "date", Json.Encode.string raceAdd.dateString )
+                , ( "category", App.Encoder.raceCategory raceAdd.category )
                 ]
 
         phxPush =

@@ -32,7 +32,7 @@ import Phoenix.Push
 import Json.Encode
 import Json.Decode
 import App.Helpers
-
+import Rider.Update
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
@@ -101,13 +101,12 @@ maybeUpdate msg app =
                     App.Model.ResultAdd resultAdd ->
                         case app.riders of
                             Just riders ->
-                                case Result.Update.add resultAdd riders app.results of
-                                    Just ( result, navigateCmd ) ->
+                                case Result.Update.add resultAdd riders app.results app.phxSocket of
+                                    Just ( phxSocket, phxCmd ) ->
                                         Just <|
-                                            ( { app | results = result :: app.results }
-                                            , navigateCmd
+                                            ( { app | phxSocket = phxSocket }
+                                            , phxCmd
                                             )
-
                                     Nothing ->
                                         noOp
 
@@ -115,6 +114,14 @@ maybeUpdate msg app =
                                 noOp
 
                     _ ->
+                        noOp
+
+            ResultAddSocketResponse rawResponse ->
+                case Result.Update.addSocketResponse rawResponse of
+                    Just navigateCmd ->
+                        Just ( app, navigateCmd )
+
+                    Nothing ->
                         noOp
 
             ResultAddCategory category ->
@@ -173,6 +180,12 @@ maybeUpdate msg app =
                             app
                     , Cmd.none
                     )
+              
+            ResultsSocket ->
+                Just <| Result.Update.resultsSocket app
+
+            ResultsSocketResponse rawResponse ->
+                Just <| Result.Update.resultsSocketResponse rawResponse app
 
             CommentAddSetText text ->
                 Just <|
@@ -268,6 +281,12 @@ maybeUpdate msg app =
             RacesSocketResponse rawResponse ->
                 Just <| Race.Update.racesSocketResponse rawResponse app
 
+            RidersSocket ->
+                Just <| Rider.Update.ridersSocket app
+
+            RidersSocketResponse rawResponse ->
+                Just <| Rider.Update.ridersSocketResponse rawResponse app
+
             OnCreatedRider rawResponse ->
                 let
                     riderResult =
@@ -307,6 +326,31 @@ maybeUpdate msg app =
                             in
                                 Just <|
                                     ( { app | races = Just (newRace :: (Maybe.withDefault [] app.races)) }
+                                    , Cmd.none
+                                    )
+
+                        Err _ ->
+                            noOp
+
+            OnCreatedResult rawResponse ->
+                let
+                    resultResult =
+                        Json.Decode.decodeValue App.Decoder.resultDecoder rawResponse
+                in
+                    case resultResult of
+                        Ok result ->
+                            let
+                                newResult =
+                                    Result.Model.Result
+                                        result.id
+                                        result.riderId
+                                        result.raceId
+                                        result.result
+                                        Result.Model.CatA
+                                        result.strava
+                            in
+                                Just <|
+                                    ( { app | results = newResult :: app.results }
                                     , Cmd.none
                                     )
 
@@ -361,9 +405,9 @@ maybeUpdate msg app =
                             [ ( "body", Json.Encode.string "bodyValue" ) ]
 
                     phxPush =
-                        Phoenix.Push.init "riders" "room:lobby"
+                        Phoenix.Push.init "init" "room:lobby"
                             |> Phoenix.Push.withPayload payload
-                            |> Phoenix.Push.onOk ReceiveRiders
+                            |> Phoenix.Push.onOk InitResponse
                             |> Phoenix.Push.onError HandleSendError
 
                     ( phxSocket, phxCmd ) =
@@ -373,6 +417,9 @@ maybeUpdate msg app =
                         ( { app | phxSocket = phxSocket }
                         , Cmd.map PhoenixMsg phxCmd
                         )
+
+            InitResponse value ->
+                noOp
 
             ReceiveRiders message ->
                 let
