@@ -8,8 +8,6 @@ import App.Decoder
 import Phoenix.Socket
 import Phoenix.Push
 
-
-
 ridersSocket : App -> ( App, Cmd Msg )
 ridersSocket app =
     let
@@ -56,5 +54,3 @@ ridersSocketResponse message app =
                     ( app
                     , Cmd.none
                     )
-
-

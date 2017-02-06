@@ -11,6 +11,7 @@ import Account.Model
 import Keyboard.Extra
 import Phoenix.Socket
 import Phoenix.Channel
+import Phoenix.Push
 import App.Msg
 
 type Page
@@ -32,6 +33,7 @@ type alias App =
     , account : Maybe Rider.Model.Rider
     , messages : List String
     , phxSocket : Phoenix.Socket.Socket App.Msg.Msg
+    , connected : Bool
     }
 
 
@@ -40,6 +42,7 @@ initial =
     let
         channel =
             Phoenix.Channel.init "room:lobby"
+            |> Phoenix.Channel.onJoin (always App.Msg.OnJoin)
 
         ( initSocket, phxCmd ) =
             Phoenix.Socket.init "ws://localhost:4000/socket/websocket"
@@ -62,5 +65,6 @@ initial =
             Account.Model.initial
             []
             initSocket
+            False
         , Cmd.map App.Msg.PhoenixMsg phxCmd
         )

@@ -134,25 +134,6 @@ onUrlEnter route app =
                     , Cmd.none
                     )
 
-        App.Routing.Riders ->
-            case app.riders of
-                Just riders ->
-                    ( app, Cmd.none )
-
-                Nothing ->
-                    ( app, fetchForRoute App.Routing.Riders )
-
-        App.Routing.Races ->
-            let 
-                cmd = Cmd.batch
-                    [ Task.perform
-                        identity
-                        (Task.succeed App.Msg.RacesSocket)
-                    ]
-            in
-                ( app, cmd )
-
-
         App.Routing.RaceDetails id ->
             let 
                 cmd = Cmd.batch
@@ -224,26 +205,6 @@ fetchForRoute route =
                 [ Task.attempt (always App.Msg.Noop) (Dom.focus "result")
                 ]
 
-        App.Routing.Riders ->
-            Cmd.batch
-                [ Task.perform
-                    identity
-                    (Task.succeed App.Msg.RidersSocket)
-                ]
-
-        App.Routing.RaceDetails _ ->
-            Cmd.batch
-                [ Task.perform
-                    identity
-                    (Task.succeed App.Msg.RidersSocket)
-                , Task.perform
-                    identity
-                    (Task.succeed App.Msg.RacesSocket)
-                , Task.perform
-                    identity
-                    (Task.succeed App.Msg.ResultsSocket)
-                ]
-            
         App.Routing.Races ->
             Cmd.batch
                 [ Task.perform

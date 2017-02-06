@@ -59,7 +59,7 @@ type Msg
     | Connect
     | NewMessage String
     | PhoenixMsg (Phoenix.Socket.Msg Msg)
-    | InitResponse Json.Encode.Value
+    | ConnectResponse Json.Encode.Value
     | ReceiveMessage Json.Encode.Value
     | ReceiveRiders Json.Encode.Value
     | HandleSendError Json.Encode.Value
@@ -67,3 +67,5 @@ type Msg
     | OnCreatedRace Json.Encode.Value
     | OnCreatedResult Json.Encode.Value
     | OnUpdatedRider Json.Encode.Value
+    | OnJoinResponse Json.Encode.Value
+    | OnJoin

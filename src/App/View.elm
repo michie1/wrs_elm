@@ -19,10 +19,17 @@ import Account.View
 
 render : App -> Html Msg
 render app =
-    div []
-        [ header app
-        , mainView app
-        ]
+    case app.connected of
+        True ->
+            div []
+                [ header app
+                , mainView app
+                ]
+
+        False ->
+            div [] [ text "Disconnected" ]
+
+
 
 mainView : App -> Html Msg
 mainView app =
