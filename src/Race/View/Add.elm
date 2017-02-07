@@ -54,7 +54,7 @@ render raceAdd =
                             , onInput App.Msg.RaceDate
                             ]
                             []
-                        , label [ for "date" ] [ text "Date" ]
+                        , label [ for "date", class "active" ] [ text "Date" ]
                         ]
                     ]
                 , div [ class "row" ]

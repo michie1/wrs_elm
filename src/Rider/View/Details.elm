@@ -36,7 +36,7 @@ render app riderId =
                                     (\result -> result.riderId == rider.id)
                                     app.results
                         in
-                            div []
+                            div [ class "col s12" ]
                                 [ h2 [] [ text rider.name ]
                                 , info rider
                                 , resultsTable rider results (Maybe.withDefault [] app.races)
@@ -49,12 +49,10 @@ render app riderId =
 info : Rider -> Html App.Msg.Msg
 info rider =
     div [ class "row" ]
-        [ div [ class "col s4" ]
-            [ ul [ class "collection" ]
-                [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text rider.name ] ]
-                , li [ class "collection-item" ] [ text "Licence ", span [ class "secondary-content" ] [ text (toString rider.licence) ] ]
-                , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text rider.name ] ]
-                ]
+        [ ul [ class "collection col s8 m6 l4" ]
+            [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text rider.name ] ]
+            , li [ class "collection-item" ] [ text "Licence ", span [ class "secondary-content" ] [ text (toString rider.licence) ] ]
+            , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text rider.name ] ]
             ]
         ]
 

@@ -58,7 +58,7 @@ initial =
             Home
             NoOp 
             Nothing
-            (Just Race.Model.initialRaces)
+            Nothing
             Result.Model.initialResults
             Comment.Model.initialComments
             Nothing
