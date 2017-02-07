@@ -1,0 +1,23 @@
+{
+  "name": "vaadin-split-layout",
+  "version": "1.0.0-alpha1",
+  "author": "Vaadin Ltd",
+  "license": "Apache-2.0",
+  "repository": "vaadin/vaadin-split-layout",
+  "devDependencies": {
+    "bower": "latest",
+    "eslint-config-vaadin": "github:vaadin/eslint-config-vaadin",
+    "eslint-plugin-html": "^1.7.0",
+    "gemini": "^4.14.3",
+    "gemini-express": "^1.0.0",
+    "gemini-sauce": "^1.0.0",
+    "gulp": "latest",
+    "gulp-eslint": "^3.0.1",
+    "gulp-html-extract": "^0.1.0",
+    "web-component-tester": "^5.0.0",
+    "yargs": "^3.27.0"
+  },
+  "scripts": {
+    "postinstall": "node_modules/.bin/bower install"
+  }
+}

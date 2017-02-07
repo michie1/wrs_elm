@@ -1,0 +1,36 @@
+{
+  "name": "vaadin-split-layout",
+  "description": "Vaadin Split Layout",
+  "authors": [
+    "Vaadin Ltd"
+  ],
+  "keywords": [
+    "web-components",
+    "web-component",
+    "polymer",
+    "Vaadin",
+    "split-panel",
+    "split-layout"
+  ],
+  "main": "vaadin-split-layout.html",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vaadin/vaadin-split-layout"
+  },
+  "dependencies": {
+    "polymer": "^1.7.0",
+    "iron-resizable-behavior": "^1.0.5"
+  },
+  "devDependencies": {
+    "iron-component-page": "^1.1.7",
+    "iron-demo-helpers": "^1.2.5",
+    "web-component-tester": "^5.0.0",
+    "webcomponentsjs": "^0.7.23",
+    "iron-test-helpers": "^1.2.5",
+    "iron-icon": "^1.0.9",
+    "iron-icons": "^1.2.0",
+    "paper-button": "^1.0.14",
+    "elements-demo-resources": "vaadin/elements-demo-resources#master"
+  }
+}

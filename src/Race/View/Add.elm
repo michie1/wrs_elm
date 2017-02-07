@@ -1,7 +1,7 @@
 module Race.View.Add exposing (render)
 
-import Html exposing (Html, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
-import Html.Attributes exposing (autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
+import Html exposing (Html, node, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
+import Html.Attributes exposing (attribute, autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
 import App.Msg
 import Race.Model exposing (Race)
@@ -44,6 +44,9 @@ render raceAdd =
                             []
                         , label [ for "name" ] [ text ("Name " ++ name) ]
                         ]
+                    ]
+                , div [ class "row" ]
+                    [ node "paper-date-picker" [ attribute "label" "Pick a date" ] [] 
                     ]
                 , div [ class "row" ]
                     [ div [ class "input-field col s6" ]
