@@ -69,3 +69,4 @@ type Msg
     | OnUpdatedRider Json.Encode.Value
     | OnJoinResponse Json.Encode.Value
     | OnJoin
+    | DatePicked String

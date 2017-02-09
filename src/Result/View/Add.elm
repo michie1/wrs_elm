@@ -50,7 +50,7 @@ render race resultAdd riders results =
                         , class "autocomplete"
                         ]
                         []
-                    , label [ for "rider" ] [ text ("Rider: " ++ resultAdd.riderName) ]
+                    , label [ for "rider", class "active" ] [ text ("Rider: " ++ resultAdd.riderName) ]
                     ]
                 ]
             , div [ class "row" ] [ categoryButtons ]

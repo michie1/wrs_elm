@@ -31,6 +31,7 @@ render raceAdd =
     in
         div []
             [ h2 [] [ text "Add Race" ]
+            , datepicker dateString
             , div []
                 [ div [ class "row" ]
                     [ div [ class "input-field col s6" ]
@@ -44,9 +45,6 @@ render raceAdd =
                             []
                         , label [ for "name" ] [ text ("Name " ++ name) ]
                         ]
-                    ]
-                , div [ class "row" ]
-                    [ node "paper-date-picker" [ attribute "label" "Pick a date" ] [] 
                     ]
                 , div [ class "row" ]
                     [ div [ class "input-field col s6" ]
@@ -106,4 +104,28 @@ categoryButtons current =
         , categoryButtonCheck "criterum" "Criterium" Race.Model.Criterium current
         , categoryButtonCheck "regiocross" "Regiocross" Race.Model.Regiocross current
         , categoryButtonCheck "other" "Other" Race.Model.Other current
+        ]
+
+
+datepicker : String -> Html App.Msg.Msg
+datepicker dateString =
+    let
+        inputDate = String.join "/" (String.split "-" dateString)
+    in
+        div [ class "row" ]
+        [ span [] [ text inputDate ]
+        -- node "paper-date-picker" 
+          
+    --   [ attribute "date" "2001-01-13" 
+      --   , attribute "locale" "nl-NL"
+        --     ] [] 
+        , node "app-datepicker"
+            [ id "datepicker"
+            , attribute "first-day-of-week" "3"
+            , attribute "format" "yyyy-mm-dd"
+            , attribute "input-date" inputDate
+            , attribute "disable-days" "[]"
+            , attribute "auto-update-date" "true"
+            ]
+            [ ]
         ]

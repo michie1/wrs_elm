@@ -481,3 +481,9 @@ update msg app =
                             (Task.succeed App.Msg.ResultsSocket)
                         ]
                     )
+
+            DatePicked dateString -> 
+                let
+                    _ = Debug.log "datestring" dateString
+                in
+                    ( app, Cmd.none )

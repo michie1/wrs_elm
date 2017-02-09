@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Navigation
 import App.Model exposing (App)
@@ -48,9 +48,13 @@ init location =
             ]
         )
 
+port datepicker : (String -> msg) -> Sub msg
 
 subscriptions : App -> Sub Msg
 subscriptions app =
     Sub.batch
         [ Phoenix.Socket.listen app.phxSocket PhoenixMsg
+        , datepicker App.Msg.DatePicked
         ]
+
+
