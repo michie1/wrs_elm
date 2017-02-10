@@ -483,7 +483,14 @@ update msg app =
                     )
 
             DatePicked dateString -> 
-                let
-                    _ = Debug.log "datestring" dateString
-                in
-                    ( app, Cmd.none )
+                case app.page of
+                    App.Model.RaceAdd raceAdd ->
+                        let
+                                page =
+                                    Race.Update.addPage2 (App.Msg.RaceDate dateString) app.page
+                            -- nextRaceAdd = { raceAdd | dateString = dateString }
+                        in
+                            ( { app | page = page }, Cmd.none )
+            
+                    _ ->
+                        ( app, Cmd.none )

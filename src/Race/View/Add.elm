@@ -14,27 +14,17 @@ render raceAdd =
         name =
             raceAdd.name
 
-        {--
         dateString =
-            case raceAdd.dateString of
-                Just dateString ->
-                    dateString
-
-                Nothing ->
-                    ""
-        --}
-
-        dateString = raceAdd.dateString
+            raceAdd.dateString
 
         submitDisabled =
             name == ""
     in
         div []
             [ h2 [] [ text "Add Race" ]
-            , datepicker dateString
             , div []
                 [ div [ class "row" ]
-                    [ div [ class "input-field col s6" ]
+                    [ div [ class "col s6 input-field" ]
                         [ input
                             [ id "name"
                             , type_ "text"
@@ -43,44 +33,23 @@ render raceAdd =
                             , value name
                             ]
                             []
-                        , label [ for "name" ] [ text ("Name " ++ name) ]
+                        , label [ for "name" ] [ text "Name" ]
                         ]
-                    ]
-                , div [ class "row" ]
-                    [ div [ class "input-field col s6" ]
-                        [ input
-                            [ id "date"
-                            , type_ "text"
-                            , value dateString
-                            , onInput App.Msg.RaceDate
-                            ]
-                            []
-                        , label [ for "date", class "active" ] [ text "Date" ]
-                        ]
-                    ]
-                , div [ class "row" ]
-                    [ button
-                        [ class "waves-effect waves-light btn"
-                        , onClick App.Msg.RaceAddYesterday
-                        ]
-                        [ text "Yesterday" ]
-                    , button
-                        [ class "waves-effect waves-light btn"
-                        , onClick App.Msg.RaceAddToday
-                        ]
-                        [ text "Today" ]
                     ]
                 , div [ class "row" ] [ categoryButtons raceAdd.category ]
+                , div [ class "row" ] [ datepicker dateString ]
                 , div [ class "row" ]
-                    [ button
-                        [ class "waves-effect waves-light btn"
-                        , type_ "submit"
-                        , onClick App.Msg.RaceAdd
-                        , Html.Attributes.name "action"
-                        , disabled submitDisabled
-                        ]
-                        [ text "Add Race"
-                        , i [ class "material-icons right" ] [ text "send" ]
+                    [ div [ class "col s6" ]
+                        [ button
+                            [ class "waves-effect waves-light btn"
+                            , type_ "submit"
+                            , onClick App.Msg.RaceAdd
+                            , Html.Attributes.name "action"
+                            , disabled submitDisabled
+                            ]
+                            [ text "Add Race"
+                            , i [ class "material-icons right" ] [ text "send" ]
+                            ]
                         ]
                     ]
                 ]
@@ -89,18 +58,21 @@ render raceAdd =
 
 categoryButtonCheck : String -> String -> Race.Model.Category -> Race.Model.Category -> Html App.Msg.Msg
 categoryButtonCheck categoryName categoryText categoryModel current =
-    let 
-        isChecked = categoryModel == current 
+    let
+        isChecked =
+            categoryModel == current
     in
         p []
             [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (App.Msg.RaceAddCategory categoryModel) ] []
             , label [ for categoryName ] [ text categoryText ]
             ]
 
+
 categoryButtons : Race.Model.Category -> Html App.Msg.Msg
 categoryButtons current =
-    div []
-        [ categoryButtonCheck "classic" "Klassieker" Race.Model.Classic current
+    div [ class "col s6" ]
+        [ label [ class "active" ] [ text "Category" ]
+        , categoryButtonCheck "classic" "Klassieker" Race.Model.Classic current
         , categoryButtonCheck "criterum" "Criterium" Race.Model.Criterium current
         , categoryButtonCheck "regiocross" "Regiocross" Race.Model.Regiocross current
         , categoryButtonCheck "other" "Other" Race.Model.Other current
@@ -110,22 +82,17 @@ categoryButtons current =
 datepicker : String -> Html App.Msg.Msg
 datepicker dateString =
     let
-        inputDate = String.join "/" (String.split "-" dateString)
+        inputDate =
+            Debug.log "dateString" (String.join "/" (String.split "-" dateString))
     in
-        div [ class "row" ]
-        [ span [] [ text inputDate ]
-        -- node "paper-date-picker" 
-          
-    --   [ attribute "date" "2001-01-13" 
-      --   , attribute "locale" "nl-NL"
-        --     ] [] 
-        , node "app-datepicker"
-            [ id "datepicker"
-            , attribute "first-day-of-week" "3"
-            , attribute "format" "yyyy-mm-dd"
-            , attribute "input-date" inputDate
-            , attribute "disable-days" "[]"
-            , attribute "auto-update-date" "true"
+        div [ class "col s6" ]
+            [ label [ class "active" ] [ text "Date" ]
+            , node "app-datepicker"
+                [ id "datepicker"
+                , attribute "first-day-of-week" "1"
+                , attribute "input-date" inputDate
+                , attribute "disable-days" "[]"
+                , attribute "auto-update-date" "true"
+                ]
+                []
             ]
-            [ ]
-        ]

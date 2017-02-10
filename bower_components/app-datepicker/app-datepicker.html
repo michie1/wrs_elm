@@ -1476,7 +1476,8 @@ Custom property | Description | Default
       enforceDateChange: function () {
         this._setInvalidDate(!1);
         this._computeShowLongDate(this.showLongDate, this.locale);
-        window.elm.ports.datepicker.send(this.date);
+        const elmDateString = this.date.split('/').join('-');
+        window.elm.ports.datepicker.send(elmDateString);
       },
 
       // Accessibility enhancment.
