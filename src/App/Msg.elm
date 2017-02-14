@@ -36,6 +36,8 @@ type Msg
     | ResultRiderName String
     | ResultsSocket
     | ResultsSocketResponse Json.Encode.Value
+    | CommentsSocket
+    | CommentsSocketResponse Json.Encode.Value
     | RidersSocket
     | RidersSocketResponse Json.Encode.Value
     | CommentAddSetText String

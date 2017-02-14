@@ -28,7 +28,7 @@ type alias App =
     , riders : Maybe (List Rider.Model.Rider)
     , races : Maybe (List Race.Model.Race)
     , results : List Result.Model.Result
-    , comments : List Comment.Model.Comment
+    , comments : Maybe (List Comment.Model.Comment)
     , now : Maybe Date.Date
     , account : Maybe Rider.Model.Rider
     , messages : List String
@@ -60,7 +60,7 @@ initial =
             Nothing
             Nothing
             Result.Model.initialResults
-            Comment.Model.initialComments
+            Nothing --Comment.Model.initialComments
             Nothing
             Account.Model.initial
             []

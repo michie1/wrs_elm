@@ -114,6 +114,15 @@ raceDecoder =
                 |> Json.Decode.andThen raceCategoryDecoder
             )
 
+commentDecoder : Json.Decode.Decoder Comment.Model.Comment
+commentDecoder =
+    Json.Decode.Pipeline.decode Comment.Model.Comment
+        |> Json.Decode.Pipeline.required "id" Json.Decode.int
+        |> Json.Decode.Pipeline.required "date" Json.Decode.string
+        |> Json.Decode.Pipeline.required "raceId" Json.Decode.int
+        |> Json.Decode.Pipeline.required "riderId" Json.Decode.int
+        |> Json.Decode.Pipeline.required "text" Json.Decode.string
+
 resultDecoder : Json.Decode.Decoder Result.Model.Result
 resultDecoder =
     Json.Decode.Pipeline.decode Result.Model.Result

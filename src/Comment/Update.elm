@@ -1,4 +1,4 @@
-module Comment.Update exposing (add, addWithTime, addRiderName, addText)
+module Comment.Update exposing (add, addWithTime, addRiderName, addText, commentsSocket, commentsSocketResponse)
 
 import Array
 import App.Model exposing (App)
@@ -10,6 +10,11 @@ import Time
 import App.Helpers
 import Task
 import App.Routing
+import Json.Decode
+import Json.Encode
+import App.Decoder
+import Phoenix.Socket
+import Phoenix.Push
 
 
 add : App -> ( App, Cmd Msg )
@@ -40,17 +45,28 @@ addWithTime maybeTime app =
                         ++ " "
                         ++ (App.Helpers.formatTime (Date.fromTime time))
 
+                id = case app.comments of
+                    Just comments -> 
+                        (List.length comments) + 1
+                    Nothing -> 
+                        1
+
                 maybeComment =
                     new
-                        ((List.length app.comments) + 1)
+                        id
                         datetime
                         app
             in
                 case maybeComment of
                     Just comment ->
-                        ( { app | comments = comment :: app.comments }
-                        , App.Helpers.navigate <| App.Routing.RaceDetails comment.raceId
-                        )
+                        case app.comments of
+                            Just comments -> 
+                                ( { app | comments = Just (comment :: comments) }
+                                , App.Helpers.navigate <| App.Routing.RaceDetails comment.raceId
+                                )
+
+                            Nothing ->
+                                ( app, Cmd.none )
 
                     Nothing ->
                         ( app, Cmd.none )
@@ -92,6 +108,51 @@ newComment id datetime riders commentAdd =
             Nothing
 
 
+commentsSocket : App -> ( App, Cmd Msg )
+commentsSocket app =
+    let
+        _ =
+            Debug.log "comments" "socket"
+
+        payload =
+            Json.Encode.object [ ( "name", Json.Encode.string "hoi" ) ]
+
+        phxPush =
+            Phoenix.Push.init "comments" "room:lobby"
+                |> Phoenix.Push.withPayload payload
+                |> Phoenix.Push.onOk CommentsSocketResponse
+                |> Phoenix.Push.onError HandleSendError
+
+        ( phxSocket, phxCmd ) =
+            Phoenix.Socket.push phxPush app.phxSocket
+    in
+        ( { app | phxSocket = phxSocket }
+        , Cmd.map PhoenixMsg phxCmd
+        )
+        
+commentsSocketResponse : Json.Decode.Value -> App -> ( App, Cmd Msg )
+commentsSocketResponse message app =
+    let
+        resultComments =
+            (Json.Decode.decodeValue
+                (Json.Decode.field "comments" (Json.Decode.list App.Decoder.commentDecoder))
+                message
+            )
+    in
+        case resultComments of
+            Ok comments ->
+                ( { app | comments = Just comments }
+                , Cmd.none
+                )
+
+            Err errorMessage ->
+                let
+                    b =
+                        Debug.log "comments socket response" errorMessage
+                in
+                    ( app
+                    , Cmd.none
+                    )
 
 -- Helpers
 

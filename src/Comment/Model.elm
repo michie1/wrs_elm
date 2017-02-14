@@ -3,7 +3,7 @@ module Comment.Model exposing (Comment, Add, empty, initialComments, initialAdd)
 
 type alias Comment =
     { id : Int
-    , datetime : String
+    , date : String
     , raceId : Int
     , riderId : Int
     , text : String
@@ -20,7 +20,7 @@ type alias Add =
 empty : Comment
 empty =
     { id = 0
-    , datetime = "1970-01-01 00:00"
+    , date = "1970-01-01 00:00"
     , raceId = 0
     , riderId = 0
     , text = ""

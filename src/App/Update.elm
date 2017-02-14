@@ -171,6 +171,12 @@ update msg app =
             ResultsSocketResponse rawResponse ->
                 Result.Update.resultsSocketResponse rawResponse app
 
+            CommentsSocket ->
+                Comment.Update.commentsSocket app
+
+            CommentsSocketResponse rawResponse ->
+                Comment.Update.commentsSocketResponse rawResponse app
+
             CommentAddSetText text ->
                     ( case app.page of
                         App.Model.CommentAdd commentAdd ->
@@ -479,6 +485,9 @@ update msg app =
                         , Task.perform
                             identity
                             (Task.succeed App.Msg.ResultsSocket)
+                        , Task.perform
+                            identity
+                            (Task.succeed App.Msg.CommentsSocket)
                         ]
                     )
 

@@ -34,28 +34,32 @@ render app raceId =
             Just race ->
                 case app.riders of
                     Just riders ->
-                        let
-                            results =
-                                List.filter
-                                    (\result -> result.raceId == race.id)
-                                    app.results
-                        in
-                            div []
-                                [ div []
-                                    [ div []
-                                        [ h2 [] [ text race.name ]
-                                        , info race
+                        case app.comments of
+                            Just comments ->
+                                let
+                                    results =
+                                        List.filter
+                                            (\result -> result.raceId == race.id)
+                                            app.results
+                                in
+                                    div []
+                                        [ div []
+                                            [ div []
+                                                [ h2 [] [ text race.name ]
+                                                , info race
+                                                ]
+                                            , div []
+                                                [ h3 [] [ text "Results" ]
+                                                , addResultButton race
+                                                ]
+                                            , resultsTable race results riders
+                                            ]
+                                        , h3 [] [ text "Comments" ]
+                                        , addCommentButton race
+                                        , commentsUl comments race riders
                                         ]
-                                    , div []
-                                        [ h3 [] [ text "Results" ]
-                                        , addResultButton race
-                                        ]
-                                    , resultsTable race results riders
-                                    ]
-                                , h3 [] [ text "Comments" ]
-                                , addCommentButton race
-                                , commentsUl app.comments race riders
-                                ]
+                            Nothing ->
+                                div [] [ text "No comments loaded." ]
 
                     Nothing ->
                         div [] [ text "No riders loaded." ]
@@ -206,7 +210,7 @@ commentLi comment maybeRider =
                         [ text rider.name ]
                     ]
                 , p []
-                    [ span [] [ text comment.datetime ]
+                    [ span [] [ text comment.date ]
                     , br [] []
                     , Markdown.toHtml [ class "content" ] comment.text
                     ]
