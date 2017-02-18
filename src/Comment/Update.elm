@@ -1,4 +1,4 @@
-module Comment.Update exposing (add, addWithTime, addRiderName, addText, commentsSocket, commentsSocketResponse)
+module Comment.Update exposing (add, addWithTime, addRiderName, addText, commentsSocket, commentsSocketResponse, addSocketResponse)
 
 import Array
 import App.Model exposing (App)
@@ -17,16 +17,55 @@ import Phoenix.Socket
 import Phoenix.Push
 
 
-add : App -> ( App, Cmd Msg )
-add app =
-    let
-        nowTask =
-            Task.perform
-                (Just >> App.Msg.CommentAddWithTime)
-                Time.now
-    in
-        ( app, Cmd.batch [ nowTask ] )
+add :
+    Comment.Model.Add
+    -> List Rider.Model.Rider
+    -> Phoenix.Socket.Socket App.Msg.Msg
+    -> Maybe ( Phoenix.Socket.Socket App.Msg.Msg, Cmd Msg )
+add commentAdd riders phxSocket =
+    case getRiderByName commentAdd.riderName riders of
+        Just rider ->
+            Just <| addSocket commentAdd rider.id phxSocket
+        Nothing ->
+            Nothing
 
+--add : App -> ( App, Cmd Msg )
+--add app =
+--    let
+--        nowTask =
+--            Task.perform
+--                (Just >> App.Msg.CommentAddWithTime)
+--                Time.now
+--    in
+--        ( app, Cmd.batch [ nowTask ] )
+
+addSocket : 
+    Comment.Model.Add 
+    -> Int
+    -> Phoenix.Socket.Socket App.Msg.Msg 
+    -> ( Phoenix.Socket.Socket App.Msg.Msg, Cmd Msg )
+addSocket commentAdd riderId phxSocket =
+    let
+        payload =
+            Json.Encode.object
+                [ ( "riderId", Json.Encode.int riderId )
+                , ( "raceId", Json.Encode.int commentAdd.raceId )
+                , ( "date", Json.Encode.string "2017-01-01 01:23" )
+                , ( "text", Json.Encode.string commentAdd.text )
+                ]
+
+        phxPush =
+            Phoenix.Push.init "createComment" "room:lobby"
+                |> Phoenix.Push.withPayload payload
+                |> Phoenix.Push.onOk CommentAddSocketResponse
+                |> Phoenix.Push.onError HandleSendError
+
+        ( nextPhxSocket, phxCmd ) =
+            Phoenix.Socket.push phxPush phxSocket
+    in
+        ( nextPhxSocket
+        , Cmd.map PhoenixMsg phxCmd
+        )
 
 addText : String -> Comment.Model.Add -> Comment.Model.Add
 addText text commentAdd =
@@ -86,7 +125,6 @@ new id datetime app =
                     Nothing
         _ ->
             Nothing
-
 
 addRiderName : String -> Comment.Model.Add -> Comment.Model.Add
 addRiderName name commentAdd =
@@ -153,6 +191,15 @@ commentsSocketResponse message app =
                     ( app
                     , Cmd.none
                     )
+
+addSocketResponse : Json.Decode.Value -> Maybe (Cmd Msg)
+addSocketResponse rawResponse =
+    case Json.Decode.decodeValue (Json.Decode.field "raceId" Json.Decode.int) rawResponse of
+        Ok raceId ->
+            Just <| App.Helpers.navigate <| App.Routing.RaceDetails raceId
+
+        Err _ ->
+            Nothing
 
 -- Helpers
 

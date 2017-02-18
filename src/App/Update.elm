@@ -164,7 +164,7 @@ update msg app =
                             app
                     , Cmd.none
                     )
-              
+
             ResultsSocket ->
                 Result.Update.resultsSocket app
 
@@ -204,7 +204,31 @@ update msg app =
                     )
 
             CommentAdd ->
-                Comment.Update.add app
+                case app.page of
+                    App.Model.CommentAdd commentAdd ->
+                        case app.riders of
+                            Just riders ->
+                                case Comment.Update.add commentAdd riders app.phxSocket of
+                                    Just ( phxSocket, nextCmd ) ->
+                                            ( { app | phxSocket = phxSocket }
+                                            , nextCmd
+                                            )
+
+                                    Nothing ->
+                                        noOp
+                            Nothing ->
+                                noOp
+                    _ ->
+                        noOp
+                --Comment.Update.add app
+
+            CommentAddSocketResponse rawResponse ->
+                case Comment.Update.addSocketResponse rawResponse of
+                    Just cmd ->
+                        ( app, cmd )
+
+                    Nothing ->
+                        noOp
 
             CommentAddWithTime maybeTime ->
                 Comment.Update.addWithTime maybeTime app
@@ -275,12 +299,12 @@ update msg app =
             RidersSocketResponse rawResponse ->
                 Rider.Update.ridersSocketResponse rawResponse app
 
-            OnJoinResponse rawResponse -> 
+            OnJoinResponse rawResponse ->
                 let
                     _ = Debug.log "OnJoinResponse" rawResponse
                 in
                     ( app, Cmd.none )
-                
+
             OnCreatedRider rawResponse ->
                 let
                     riderResult =
@@ -347,6 +371,30 @@ update msg app =
 
                         Err _ ->
                             noOp
+
+            OnCreatedComment rawResponse ->
+                let
+                    commentResult =
+                        Json.Decode.decodeValue App.Decoder.commentDecoder rawResponse
+                in
+                    case commentResult of
+                        Ok comment ->
+                            let
+                                newComment =
+                                    Comment.Model.Comment
+                                        comment.id
+                                        comment.date
+                                        comment.raceId
+                                        comment.riderId
+                                        comment.text
+                            in
+                                    ( { app | comments = Just (newComment :: (Maybe.withDefault [] app.comments)) }
+                                    , Cmd.none
+                                    )
+
+                        Err _ ->
+                            noOp
+
 
             OnUpdatedRider rawResponse ->
                 let
@@ -470,7 +518,7 @@ update msg app =
                         , Cmd.map PhoenixMsg phxCmd
                         )
 
-            OnJoin ->  
+            OnJoin ->
                 let
                     _ = Debug.log "onJoin" "success"
                 in
@@ -491,7 +539,7 @@ update msg app =
                         ]
                     )
 
-            DatePicked dateString -> 
+            DatePicked dateString ->
                 case app.page of
                     App.Model.RaceAdd raceAdd ->
                         let
@@ -500,6 +548,6 @@ update msg app =
                             -- nextRaceAdd = { raceAdd | dateString = dateString }
                         in
                             ( { app | page = page }, Cmd.none )
-            
+
                     _ ->
                         ( app, Cmd.none )

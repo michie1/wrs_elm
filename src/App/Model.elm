@@ -51,6 +51,7 @@ initial =
                 |> Phoenix.Socket.on "createdRider" "room:lobby" App.Msg.OnCreatedRider
                 |> Phoenix.Socket.on "createdRace" "room:lobby" App.Msg.OnCreatedRace
                 |> Phoenix.Socket.on "createdResult" "room:lobby" App.Msg.OnCreatedResult
+                |> Phoenix.Socket.on "createdComment" "room:lobby" App.Msg.OnCreatedComment
                 |> Phoenix.Socket.on "updatedRider" "room:lobby" App.Msg.OnUpdatedRider
                 |> Phoenix.Socket.join channel
     in

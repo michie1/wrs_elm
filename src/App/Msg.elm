@@ -44,6 +44,7 @@ type Msg
     | CommentAddSetRiderName String
     | CommentAdd
     | CommentAddWithTime (Maybe Time.Time)
+    | CommentAddSocketResponse Json.Encode.Value
     | AccountLogin
     | AccountLoginName String
     | AccountLoginPassword String
@@ -68,6 +69,7 @@ type Msg
     | OnCreatedRider Json.Encode.Value
     | OnCreatedRace Json.Encode.Value
     | OnCreatedResult Json.Encode.Value
+    | OnCreatedComment Json.Encode.Value
     | OnUpdatedRider Json.Encode.Value
     | OnJoinResponse Json.Encode.Value
     | OnJoin
