@@ -11,10 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "elm-hot-loader": "^0.3.7",
+    "elm-webpack-loader": "^3.1.0",
     "webpack": "^1.13.3",
-    "webpack-dev-server": "^1.16.2",
-    "elm-webpack-loader": "^3.0.6",
-    "elm-hot-loader": "^0.3.7"
+    "webpack-dev-server": "^1.16.2"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.8",

@@ -13,7 +13,13 @@ import Html.Attributes exposing (target, src, href, class, style)
 import Html.Events exposing (onClick, onInput)
 import Comment.View.List
 import List.Extra
+import Date.Extra.Format
+import Date.Extra.Config.Config_nl_nl exposing (config)
+import Date
 
+dateFormat : Date.Date -> String
+dateFormat date =
+    Date.Extra.Format.format config "%d-%m-%Y %H:%M" date
 
 render : App.Model.App -> Int -> Html App.Msg.Msg
 render app raceId =
@@ -203,18 +209,25 @@ commentLi comment maybeRider =
             li [] [ text "Rider does not exist." ]
 
         Just rider ->
-            li [ class "collection-item avatar" ]
-                [ i [ class "material-icons circle red" ] [ text "perm_identity" ]
-                , span [ class "title" ]
-                    [ a [ href ("#riders/" ++ (toString rider.id)) ]
-                        [ text rider.name ]
+            let 
+                updatedAt = case comment.updatedAt of
+                    Just updatedAt ->
+                        dateFormat updatedAt
+                    Nothing ->
+                        ""
+            in
+                li [ class "collection-item avatar" ]
+                    [ i [ class "material-icons circle red" ] [ text "perm_identity" ]
+                    , span [ class "title" ]
+                        [ a [ href ("#riders/" ++ (toString rider.id)) ]
+                            [ text rider.name ]
+                        ]
+                    , p []
+                        [ span [] [ text updatedAt ]
+                        , br [] []
+                        , Markdown.toHtml [ class "content" ] comment.text
+                        ]
                     ]
-                , p []
-                    [ span [] [ text comment.updatedAt ]
-                    , br [] []
-                    , Markdown.toHtml [ class "content" ] comment.text
-                    ]
-                ]
 
 
 filterCommentsByRace : List Comment.Model.Comment -> Race.Model.Race -> List Comment.Model.Comment

@@ -5,7 +5,9 @@ import Result.Model
 import Rider.Model
 import Comment.Model
 import Json.Decode
+import Json.Decode.Extra
 import Json.Decode.Pipeline
+import Date
 
 
 decodeCategory : String -> Json.Decode.Decoder Race.Model.Category
@@ -114,12 +116,26 @@ raceDecoder =
                 |> Json.Decode.andThen raceCategoryDecoder
             )
 
+date : Json.Decode.Decoder (Maybe Date.Date)
+date =
+    let
+        convert : String -> Json.Decode.Decoder (Maybe Date.Date)
+        convert raw =
+            case Date.fromString raw of
+                Ok date ->
+                    Json.Decode.succeed <| Just date
+                Err error ->
+                    Json.Decode.succeed Nothing
+    in
+        Json.Decode.string |>
+            Json.Decode.andThen convert
+
 commentDecoder : Json.Decode.Decoder Comment.Model.Comment
 commentDecoder =
     Json.Decode.Pipeline.decode Comment.Model.Comment
         |> Json.Decode.Pipeline.required "id" Json.Decode.int
         |> Json.Decode.Pipeline.required "date" Json.Decode.string
-        |> Json.Decode.Pipeline.required "updatedAt" Json.Decode.string
+        |> Json.Decode.Pipeline.required "updatedAt" date
         |> Json.Decode.Pipeline.required "raceId" Json.Decode.int
         |> Json.Decode.Pipeline.required "riderId" Json.Decode.int
         |> Json.Decode.Pipeline.required "text" Json.Decode.string
@@ -171,7 +187,8 @@ comment =
     Json.Decode.map6 Comment.Model.Comment
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "datetime" Json.Decode.string)
-        (Json.Decode.field "updatedAt" Json.Decode.string)
+        (Json.Decode.field "updatedAt" date)
+        --(Json.Decode.field "updatedAt" Json.Decode.string)
         (Json.Decode.field "raceId" Json.Decode.int)
         (Json.Decode.field "riderId" Json.Decode.int)
         (Json.Decode.field "text" Json.Decode.string)
