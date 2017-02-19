@@ -43,7 +43,6 @@ type Msg
     | CommentAddSetText String
     | CommentAddSetRiderName String
     | CommentAdd
-    | CommentAddWithTime (Maybe Time.Time)
     | CommentAddSocketResponse Json.Encode.Value
     | AccountLogin
     | AccountLoginName String

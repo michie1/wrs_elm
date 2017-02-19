@@ -1,13 +1,9 @@
-module Result.Helpers exposing (resultExists, calcResultId, getRiderByName)
+module Result.Helpers exposing (resultExists, calcResultId)
 
 import Result.Model exposing (Add)
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import Rider.Model
-
-getRiderByName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
-getRiderByName name riders =
-    List.head (List.filter (\rider -> rider.name == name) riders)
 
 
 resultExists : Result.Model.Result -> List Result.Model.Result -> Bool

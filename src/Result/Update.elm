@@ -16,15 +16,10 @@ import Json.Decode
 import App.Encoder
 import App.Decoder
 
--- resultExists : Int -> Int -> List Result.Model.Result -> Bool
--- resultExists riderId raceId results =
--- True
-    
-
 
 add : Result.Model.Add -> List Rider.Model.Rider -> List Result.Model.Result -> (Phoenix.Socket.Socket App.Msg.Msg) -> Maybe ( (Phoenix.Socket.Socket App.Msg.Msg), Cmd Msg)
 add resultAdd riders results phxSocket =
-    case getRiderByName resultAdd.riderName riders of
+    case App.Helpers.getRiderByName resultAdd.riderName riders of
         Just rider ->
             let
                 payload =
@@ -51,16 +46,6 @@ add resultAdd riders results phxSocket =
              
         Nothing ->
             Nothing
-    {--
-                case resultExists result results of
-                    True ->
-                        Nothing
-                    False ->
-                        Just 
-                            ( result
-                            , App.Helpers.navigate <| App.Routing.RaceDetails result.raceId
-                            )
-    --}
 
 
 riderName : String -> Result.Model.Add -> Result.Model.Add

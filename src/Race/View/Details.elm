@@ -210,7 +210,7 @@ commentLi comment maybeRider =
                         [ text rider.name ]
                     ]
                 , p []
-                    [ span [] [ text comment.date ]
+                    [ span [] [ text comment.updatedAt ]
                     , br [] []
                     , Markdown.toHtml [ class "content" ] comment.text
                     ]

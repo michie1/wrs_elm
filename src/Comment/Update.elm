@@ -1,4 +1,4 @@
-module Comment.Update exposing (add, addWithTime, addRiderName, addText, commentsSocket, commentsSocketResponse, addSocketResponse)
+module Comment.Update exposing (add, addRiderName, addText, commentsSocket, commentsSocketResponse, addSocketResponse)
 
 import Array
 import App.Model exposing (App)
@@ -74,77 +74,9 @@ addText text commentAdd =
     }
 
 
-addWithTime : Maybe Time.Time -> App -> ( App, Cmd Msg )
-addWithTime maybeTime app =
-    case maybeTime of
-        Just time ->
-            let
-                datetime =
-                    (App.Helpers.formatDate (Date.fromTime time))
-                        ++ " "
-                        ++ (App.Helpers.formatTime (Date.fromTime time))
-
-                id = case app.comments of
-                    Just comments -> 
-                        (List.length comments) + 1
-                    Nothing -> 
-                        1
-
-                maybeComment =
-                    new
-                        id
-                        datetime
-                        app
-            in
-                case maybeComment of
-                    Just comment ->
-                        case app.comments of
-                            Just comments -> 
-                                ( { app | comments = Just (comment :: comments) }
-                                , App.Helpers.navigate <| App.Routing.RaceDetails comment.raceId
-                                )
-
-                            Nothing ->
-                                ( app, Cmd.none )
-
-                    Nothing ->
-                        ( app, Cmd.none )
-
-        Nothing ->
-            ( app, Cmd.none )
-
-
-new : Int -> String -> App -> Maybe Comment
-new id datetime app =
-    case app.page of
-        App.Model.CommentAdd commentAdd ->
-            case app.riders of
-                Just riders ->
-                    newComment id datetime riders commentAdd
-                Nothing ->
-                    Nothing
-        _ ->
-            Nothing
-
 addRiderName : String -> Comment.Model.Add -> Comment.Model.Add
 addRiderName name commentAdd =
     { commentAdd | riderName = name }
-
-newComment : Int -> String -> List Rider.Model.Rider -> Comment.Model.Add -> Maybe Comment
-newComment id datetime riders commentAdd =
-    case getRiderByName commentAdd.riderName riders of
-        Just rider ->
-            Just <|
-                Comment
-                    id
-                    datetime
-                    commentAdd.raceId
-                    rider.id
-                    commentAdd.text
-
-        Nothing ->
-            Nothing
-
 
 commentsSocket : App -> ( App, Cmd Msg )
 commentsSocket app =

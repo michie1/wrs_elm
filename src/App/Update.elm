@@ -230,9 +230,6 @@ update msg app =
                     Nothing ->
                         noOp
 
-            CommentAddWithTime maybeTime ->
-                Comment.Update.addWithTime maybeTime app
-
             SetRaceAdd maybeNow ->
                 Race.Update.addSet maybeNow app
 
@@ -384,6 +381,7 @@ update msg app =
                                     Comment.Model.Comment
                                         comment.id
                                         comment.date
+                                        comment.updatedAt
                                         comment.raceId
                                         comment.riderId
                                         comment.text
