@@ -118,7 +118,7 @@ onUrlEnter route app =
                     Debug.log "urlUpdate" "RacesAdd"
 
                 raceAdd =
-                    Race.Model.Add "" "" Race.Model.Classic
+                    Race.Model.Add "" Nothing Race.Model.Classic
             in
                 ( { app | page = App.Model.RaceAdd raceAdd }
                 , fetchForRoute App.Routing.RaceAdd

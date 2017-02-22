@@ -21,7 +21,7 @@ type alias Race =
 
 type alias Add =
     { name : String
-    , dateString : String
+    , date: Maybe Date.Date
     , category : Category
     }
 

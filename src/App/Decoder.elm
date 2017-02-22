@@ -134,7 +134,6 @@ commentDecoder : Json.Decode.Decoder Comment.Model.Comment
 commentDecoder =
     Json.Decode.Pipeline.decode Comment.Model.Comment
         |> Json.Decode.Pipeline.required "id" Json.Decode.int
-        |> Json.Decode.Pipeline.required "date" Json.Decode.string
         |> Json.Decode.Pipeline.required "updatedAt" date
         |> Json.Decode.Pipeline.required "raceId" Json.Decode.int
         |> Json.Decode.Pipeline.required "riderId" Json.Decode.int
@@ -184,9 +183,8 @@ rider =
 
 comment : Json.Decode.Decoder Comment.Model.Comment
 comment =
-    Json.Decode.map6 Comment.Model.Comment
+    Json.Decode.map5 Comment.Model.Comment
         (Json.Decode.field "id" Json.Decode.int)
-        (Json.Decode.field "datetime" Json.Decode.string)
         (Json.Decode.field "updatedAt" date)
         --(Json.Decode.field "updatedAt" Json.Decode.string)
         (Json.Decode.field "raceId" Json.Decode.int)

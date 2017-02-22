@@ -380,7 +380,6 @@ update msg app =
                                 newComment =
                                     Comment.Model.Comment
                                         comment.id
-                                        comment.date
                                         comment.updatedAt
                                         comment.raceId
                                         comment.riderId

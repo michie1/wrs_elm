@@ -16,6 +16,9 @@ import Json.Decode
 import App.Decoder
 import App.Encoder
 
+import Date.Extra.Format
+import Date.Extra.Config.Config_nl_nl exposing (config)
+import Date
 
 add :
     Race.Model.Add
@@ -79,7 +82,15 @@ addCategory category raceAdd =
 
 addDate : String -> Race.Model.Add -> Race.Model.Add
 addDate newDate raceAdd =
-    { raceAdd | dateString = newDate }
+    let
+        _ = Debug.log "newDate" newDate
+        date = case Date.fromString newDate of
+            Ok date ->
+                Just date
+            Err _ ->
+                Nothing
+    in
+        { raceAdd | date = date }
 
 
 addSet : Maybe Date.Date -> App -> ( App, Cmd Msg )
@@ -98,7 +109,8 @@ addSet maybeNow app =
                 raceAdd =
                     { currentRaceAdd
                       --| dateString = Just dateFormatted
-                        | dateString = dateFormatted
+                      --| dateString = dateFormatted
+                      | date = maybeNow
                     }
             in
                 ( { app | page = App.Model.RaceAdd raceAdd }
@@ -135,7 +147,7 @@ addYesterdayWithDate maybeDate app =
 
                 newRaceAdd =
                     --{ raceAdd | dateString = Just dateFormatted }
-                    { currentRaceAdd | dateString = dateFormatted }
+                    { currentRaceAdd | date = maybeDate }
             in
                 ( { app | page = App.Model.RaceAdd newRaceAdd }
                 , Cmd.none
@@ -169,9 +181,12 @@ addTodayWithDate maybeDate app =
                         Nothing ->
                             ""
 
+                _ = Debug.log "maybeDate" maybeDate
+
                 newRaceAdd =
                     --{ raceAdd | dateString = Just dateFormatted }
-                    { currentRaceAdd | dateString = dateFormatted }
+                    --{ currentRaceAdd | date = maybeDate, dateString = dateFormatted }
+                    { currentRaceAdd | date = maybeDate }
             in
                 ( { app | page = App.Model.RaceAdd newRaceAdd }
                 , Cmd.none
@@ -228,14 +243,23 @@ racesSocketResponse message app =
                     , Cmd.none
                     )
 
+dateFormat : Date.Date -> String
+dateFormat date =
+    Date.Extra.Format.format config "%Y-%m-%d" date
 
 addSocket : Race.Model.Add -> Phoenix.Socket.Socket App.Msg.Msg -> ( Phoenix.Socket.Socket App.Msg.Msg, Cmd Msg )
 addSocket raceAdd phxSocket =
     let
+        dateString = case raceAdd.date of
+            Just date ->
+                dateFormat date
+            Nothing ->
+                ""
+
         payload =
             Json.Encode.object
                 [ ( "name", Json.Encode.string raceAdd.name )
-                , ( "date", Json.Encode.string raceAdd.dateString )
+                , ( "date", Json.Encode.string dateString )
                 , ( "category", App.Encoder.raceCategory raceAdd.category )
                 ]
 

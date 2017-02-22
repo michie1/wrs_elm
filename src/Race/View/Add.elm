@@ -7,6 +7,13 @@ import App.Msg
 import Race.Model exposing (Race)
 import App.Msg
 
+import Date.Extra.Format
+import Date.Extra.Config.Config_nl_nl exposing (config)
+import Date
+
+dateFormat : Date.Date -> String
+dateFormat date =
+    Date.Extra.Format.format config "%Y-%m-%d" date
 
 render : Race.Model.Add -> Html App.Msg.Msg
 render raceAdd =
@@ -14,11 +21,15 @@ render raceAdd =
         name =
             raceAdd.name
 
-        dateString =
-            raceAdd.dateString
-
         submitDisabled =
             name == ""
+
+        dateString = case raceAdd.date of 
+            Just date ->
+                dateFormat date
+            Nothing ->
+                "1970-01-01"
+
     in
         div []
             [ h2 [] [ text "Add Race" ]
@@ -37,6 +48,8 @@ render raceAdd =
                         ]
                     ]
                 , div [ class "row" ] [ categoryButtons raceAdd.category ]
+                , div [ class "row" ] [ text <| dateString ]
+                , div [ class "row" ] [ text <| toString raceAdd.date ]
                 , div [ class "row" ] [ datepicker dateString ]
                 , div [ class "row" ]
                     [ div [ class "col s6" ]
