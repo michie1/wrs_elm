@@ -14,7 +14,7 @@ type Category
 type alias Race =
     { id : Int
     , name : String
-    , date : String
+    , date : Maybe Date.Date
     , category : Category
     }
 
@@ -27,10 +27,10 @@ type alias Add =
 
 
 initialRaces : List Race
-initialRaces =
-    [ Race 1 "race a" "31-10-2016" Criterium
-    , Race 2 "race c" "21-10-2016" Other
-    ]
+initialRaces = []
+    -- [ Race 1 "race a" "31-10-2016" Criterium
+    -- , Race 2 "race c" "21-10-2016" Other
+    --]
 
 
 categoryString : Category -> String

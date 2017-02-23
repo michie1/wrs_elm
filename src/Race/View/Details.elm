@@ -17,9 +17,13 @@ import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
 
+dateTimeFormat : Date.Date -> String
+dateTimeFormat date =
+    Date.Extra.Format.format config "%d-%m-%Y %H:%M" date
+
 dateFormat : Date.Date -> String
 dateFormat date =
-    Date.Extra.Format.format config "%d-%m-%Y %H:%M" date
+    Date.Extra.Format.format config "%d-%m-%Y" date
 
 render : App.Model.App -> Int -> Html App.Msg.Msg
 render app raceId =
@@ -93,16 +97,23 @@ addCommentButton race =
 
 info : Race -> Html App.Msg.Msg
 info race =
-    div [ class "row" ]
-        [ div [ class "col s4" ]
-            [ ul [ class "collection" ]
-                [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text race.name ] ]
-                , li [ class "collection-item" ] [ text "Date ", span [ class "secondary-content" ] [ text race.date ] ]
-                , li [ class "collection-item" ] [ text "Category ", span [ class "secondary-content" ] [ text (toString race.category) ] ]
-                , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text race.name ] ]
+    let
+        dateString = case race.date of
+            Just date ->
+                dateFormat date
+            Nothing ->
+                "1970-01-01"
+    in
+        div [ class "row" ]
+            [ div [ class "col s4" ]
+                [ ul [ class "collection" ]
+                    [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text race.name ] ]
+                    , li [ class "collection-item" ] [ text "Date ", span [ class "secondary-content" ] [ text dateString ] ]
+                    , li [ class "collection-item" ] [ text "Category ", span [ class "secondary-content" ] [ text (toString race.category) ] ]
+                    , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text race.name ] ]
+                    ]
                 ]
             ]
-        ]
 
 
 resultsTable : Race -> List Result.Model.Result -> List Rider.Model.Rider -> Html msg
@@ -212,7 +223,7 @@ commentLi comment maybeRider =
             let 
                 updatedAt = case comment.updatedAt of
                     Just updatedAt ->
-                        dateFormat updatedAt
+                        dateTimeFormat updatedAt
                     Nothing ->
                         ""
             in

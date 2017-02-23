@@ -245,7 +245,7 @@ racesSocketResponse message app =
 
 dateFormat : Date.Date -> String
 dateFormat date =
-    Date.Extra.Format.format config "%Y-%m-%d" date
+    Date.Extra.Format.format config "%Y-%m-%d 00:00:00" date
 
 addSocket : Race.Model.Add -> Phoenix.Socket.Socket App.Msg.Msg -> ( Phoenix.Socket.Socket App.Msg.Msg, Cmd Msg )
 addSocket raceAdd phxSocket =

@@ -110,7 +110,7 @@ raceDecoder =
     Json.Decode.Pipeline.decode Race.Model.Race
         |> Json.Decode.Pipeline.required "id" Json.Decode.int
         |> Json.Decode.Pipeline.required "name" Json.Decode.string
-        |> Json.Decode.Pipeline.required "date" Json.Decode.string
+        |> Json.Decode.Pipeline.required "date" date
         |> Json.Decode.Pipeline.required "category"
             (Json.Decode.string
                 |> Json.Decode.andThen raceCategoryDecoder

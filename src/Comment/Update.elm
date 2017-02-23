@@ -50,7 +50,6 @@ addSocket commentAdd riderId phxSocket =
             Json.Encode.object
                 [ ( "riderId", Json.Encode.int riderId )
                 , ( "raceId", Json.Encode.int commentAdd.raceId )
-                , ( "date", Json.Encode.string "2017-01-01 01:23" )
                 , ( "text", Json.Encode.string commentAdd.text )
                 ]
 
@@ -130,8 +129,11 @@ addSocketResponse rawResponse =
         Ok raceId ->
             Just <| App.Helpers.navigate <| App.Routing.RaceDetails raceId
 
-        Err _ ->
-            Nothing
+        Err error ->
+            let
+                _ = Debug.log "addSocketResponse error" error
+            in
+                Nothing
 
 -- Helpers
 

@@ -102,6 +102,6 @@ raceRow result races =
                             [ href ("#races/" ++ (toString race.id)) ]
                             [ text race.name ]
                         ]
-                    , td [] [ text race.date ]
+                    , td [] [ text <| toString race.date ]
                     , td [] [ text result.result ]
                     ]

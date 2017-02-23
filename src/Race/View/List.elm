@@ -5,7 +5,13 @@ import Result.Model
 import App.Msg
 import Html exposing (Html, h2, div, text, a, table, tr, td, th, thead, tbody)
 import Html.Attributes exposing (href, class)
+import Date
+import Date.Extra.Format
+import Date.Extra.Config.Config_nl_nl exposing (config)
 
+dateFormat : Date.Date -> String
+dateFormat date =
+    Date.Extra.Format.format config "%d-%m-%Y" date
 
 render : Bool -> List Race -> List Result.Model.Result -> Html App.Msg.Msg
 render loggedIn races results =
@@ -38,16 +44,23 @@ raceTable races results =
         , tbody []
             (List.map
                 (\race ->
-                    tr []
-                        [ td []
-                            [ a
-                                [ href ("#races/" ++ (toString race.id)) ]
-                                [ text race.name ]
+                    let
+                        dateString = case race.date of
+                            Just date ->
+                                dateFormat date
+                            Nothing ->
+                                "1970-01-01"
+                    in
+                        tr []
+                            [ td []
+                                [ a
+                                    [ href ("#races/" ++ (toString race.id)) ]
+                                    [ text race.name ]
+                                ]
+                            , td [] [ text <| dateString ]
+                            , td [] [ text (toString race.category) ]
+                            , td [] [ text (toString (countParticipants race.id results)) ]
                             ]
-                        , td [] [ text race.date ]
-                        , td [] [ text (toString race.category) ]
-                        , td [] [ text (toString (countParticipants race.id results)) ]
-                        ]
                 )
                 races
             )
