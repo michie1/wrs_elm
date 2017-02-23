@@ -6,14 +6,15 @@ import Html.Events exposing (onClick, onInput)
 import App.Msg
 import Race.Model exposing (Race)
 import App.Msg
-
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
 
+
 dateFormat : Date.Date -> String
 dateFormat date =
     Date.Extra.Format.format config "%Y-%m-%d" date
+
 
 render : Race.Model.Add -> Html App.Msg.Msg
 render raceAdd =
@@ -24,12 +25,13 @@ render raceAdd =
         submitDisabled =
             name == ""
 
-        dateString = case raceAdd.date of 
-            Just date ->
-                dateFormat date
-            Nothing ->
-                "1970-01-01"
+        dateString =
+            case raceAdd.date of
+                Just date ->
+                    dateFormat date
 
+                Nothing ->
+                    "1970-01-01"
     in
         div []
             [ h2 [] [ text "Add Race" ]

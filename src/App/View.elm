@@ -17,6 +17,7 @@ import Result.View.Add
 import Comment.View.Add
 import Account.View
 
+
 render : App -> Html Msg
 render app =
     case app.connected of
@@ -30,12 +31,12 @@ render app =
             div [] [ text "Disconnected" ]
 
 
-
 mainView : App -> Html Msg
 mainView app =
     div [ class "container" ]
         [ viewPage app
         ]
+
 
 viewPage : App -> Html Msg
 viewPage app =
@@ -70,16 +71,18 @@ viewPage app =
             case app.account of
                 Just _ ->
                     case app.page of
-                        App.Model.RaceAdd raceAdd->
+                        App.Model.RaceAdd raceAdd ->
                             div []
                                 [ Race.View.Add.render raceAdd
                                 ]
+
                         _ ->
                             div [] [ text "Page not RaceAdd" ]
+
                 Nothing ->
-                    div 
-                        [] [ text "Please log in." ]
-                        
+                    div
+                        []
+                        [ text "Please log in." ]
 
         App.Routing.Results ->
             Result.View.List.render app.results
@@ -140,7 +143,6 @@ viewPage app =
             Account.View.signup app
 
 
-
 userLi : App -> List (Html App.Msg.Msg)
 userLi app =
     case app.account of
@@ -183,16 +185,9 @@ header app =
         ]
 
 
-
-
-
 viewMessage : String -> Html msg
 viewMessage reponse =
     div [] [ text reponse ]
-
-
-
-
 
 
 getRace : Int -> List Race.Model.Race -> Maybe Race.Model.Race

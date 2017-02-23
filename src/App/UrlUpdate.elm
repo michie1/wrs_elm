@@ -1,6 +1,7 @@
 module App.UrlUpdate exposing (urlUpdate)
 
 --import App.Msg exposing (Msg(..))
+
 import App.Msg exposing (Msg, Msg(..))
 import App.Model exposing (App)
 import App.Routing exposing (Route)
@@ -127,7 +128,7 @@ onUrlEnter route app =
         App.Routing.AccountSignup ->
             case app.account of
                 Just account ->
-                    ( app, App.Helpers.navigate App.Routing.Account)
+                    ( app, App.Helpers.navigate App.Routing.Account )
 
                 Nothing ->
                     ( { app | page = App.Model.AccountSignup Account.Model.signup }
@@ -135,18 +136,18 @@ onUrlEnter route app =
                     )
 
         App.Routing.RaceDetails id ->
-            let 
-                cmd = Cmd.batch
-                    [ Task.perform
-                        identity
-                        (Task.succeed App.Msg.RacesSocket)
-                    , Task.perform
-                        identity
-                        (Task.succeed App.Msg.ResultsSocket)
-                    ]
+            let
+                cmd =
+                    Cmd.batch
+                        [ Task.perform
+                            identity
+                            (Task.succeed App.Msg.RacesSocket)
+                        , Task.perform
+                            identity
+                            (Task.succeed App.Msg.ResultsSocket)
+                        ]
             in
                 ( app, cmd )
-
 
         _ ->
             ( app, Cmd.none )
@@ -175,6 +176,7 @@ resultExists riderId raceId results =
             results
         )
         == 1
+
 
 fetchForRoute : Route -> Cmd Msg
 fetchForRoute route =
@@ -211,5 +213,6 @@ fetchForRoute route =
                     identity
                     (Task.succeed App.Msg.RacesSocket)
                 ]
+
         _ ->
             Cmd.none

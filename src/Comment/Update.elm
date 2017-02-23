@@ -26,8 +26,11 @@ add commentAdd riders phxSocket =
     case getRiderByName commentAdd.riderName riders of
         Just rider ->
             Just <| addSocket commentAdd rider.id phxSocket
+
         Nothing ->
             Nothing
+
+
 
 --add : App -> ( App, Cmd Msg )
 --add app =
@@ -39,10 +42,11 @@ add commentAdd riders phxSocket =
 --    in
 --        ( app, Cmd.batch [ nowTask ] )
 
-addSocket : 
-    Comment.Model.Add 
+
+addSocket :
+    Comment.Model.Add
     -> Int
-    -> Phoenix.Socket.Socket App.Msg.Msg 
+    -> Phoenix.Socket.Socket App.Msg.Msg
     -> ( Phoenix.Socket.Socket App.Msg.Msg, Cmd Msg )
 addSocket commentAdd riderId phxSocket =
     let
@@ -66,6 +70,7 @@ addSocket commentAdd riderId phxSocket =
         , Cmd.map PhoenixMsg phxCmd
         )
 
+
 addText : String -> Comment.Model.Add -> Comment.Model.Add
 addText text commentAdd =
     { commentAdd
@@ -76,6 +81,7 @@ addText text commentAdd =
 addRiderName : String -> Comment.Model.Add -> Comment.Model.Add
 addRiderName name commentAdd =
     { commentAdd | riderName = name }
+
 
 commentsSocket : App -> ( App, Cmd Msg )
 commentsSocket app =
@@ -98,7 +104,8 @@ commentsSocket app =
         ( { app | phxSocket = phxSocket }
         , Cmd.map PhoenixMsg phxCmd
         )
-        
+
+
 commentsSocketResponse : Json.Decode.Value -> App -> ( App, Cmd Msg )
 commentsSocketResponse message app =
     let
@@ -123,6 +130,7 @@ commentsSocketResponse message app =
                     , Cmd.none
                     )
 
+
 addSocketResponse : Json.Decode.Value -> Maybe (Cmd Msg)
 addSocketResponse rawResponse =
     case Json.Decode.decodeValue (Json.Decode.field "raceId" Json.Decode.int) rawResponse of
@@ -131,9 +139,12 @@ addSocketResponse rawResponse =
 
         Err error ->
             let
-                _ = Debug.log "addSocketResponse error" error
+                _ =
+                    Debug.log "addSocketResponse error" error
             in
                 Nothing
+
+
 
 -- Helpers
 

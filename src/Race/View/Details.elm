@@ -17,13 +17,16 @@ import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
 
+
 dateTimeFormat : Date.Date -> String
 dateTimeFormat date =
     Date.Extra.Format.format config "%d-%m-%Y %H:%M" date
 
+
 dateFormat : Date.Date -> String
 dateFormat date =
     Date.Extra.Format.format config "%d-%m-%Y" date
+
 
 render : App.Model.App -> Int -> Html App.Msg.Msg
 render app raceId =
@@ -68,6 +71,7 @@ render app raceId =
                                         , addCommentButton race
                                         , commentsUl comments race riders
                                         ]
+
                             Nothing ->
                                 div [] [ text "No comments loaded." ]
 
@@ -98,11 +102,13 @@ addCommentButton race =
 info : Race -> Html App.Msg.Msg
 info race =
     let
-        dateString = case race.date of
-            Just date ->
-                dateFormat date
-            Nothing ->
-                "1970-01-01"
+        dateString =
+            case race.date of
+                Just date ->
+                    dateFormat date
+
+                Nothing ->
+                    "1970-01-01"
     in
         div [ class "row" ]
             [ div [ class "col s4" ]
@@ -220,12 +226,14 @@ commentLi comment maybeRider =
             li [] [ text "Rider does not exist." ]
 
         Just rider ->
-            let 
-                updatedAt = case comment.updatedAt of
-                    Just updatedAt ->
-                        dateTimeFormat updatedAt
-                    Nothing ->
-                        ""
+            let
+                updatedAt =
+                    case comment.updatedAt of
+                        Just updatedAt ->
+                            dateTimeFormat updatedAt
+
+                        Nothing ->
+                            ""
             in
                 li [ class "collection-item avatar" ]
                     [ i [ class "material-icons circle red" ] [ text "perm_identity" ]

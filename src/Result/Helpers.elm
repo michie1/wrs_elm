@@ -16,6 +16,7 @@ resultExists result results =
     )
         /= 0
 
+
 calcResultId : List Result.Model.Result -> Int
 calcResultId results =
     (List.length results) + 1

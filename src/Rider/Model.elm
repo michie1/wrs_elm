@@ -13,4 +13,3 @@ type alias Rider =
     , name : String
     , licence : Maybe Licence
     }
-

@@ -54,6 +54,7 @@ render app race riders =
                 _ ->
                     div [] [ text "commentAdd nothing" ]
 
+
 addButton : Bool -> Html App.Msg.Msg
 addButton submitDisabled =
     button

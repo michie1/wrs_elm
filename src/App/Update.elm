@@ -34,6 +34,7 @@ import Json.Decode
 import App.Helpers
 import Rider.Update
 
+
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
     let
@@ -46,9 +47,9 @@ update msg app =
                     App.Model.RaceAdd raceAdd ->
                         case Race.Update.add raceAdd app.phxSocket of
                             Just ( phxSocket, nextCmd ) ->
-                                    ( { app | phxSocket = phxSocket }
-                                    , nextCmd
-                                    )
+                                ( { app | phxSocket = phxSocket }
+                                , nextCmd
+                                )
 
                             Nothing ->
                                 noOp
@@ -92,9 +93,10 @@ update msg app =
                             Just riders ->
                                 case Result.Update.add resultAdd riders app.results app.phxSocket of
                                     Just ( phxSocket, phxCmd ) ->
-                                            ( { app | phxSocket = phxSocket }
-                                            , phxCmd
-                                            )
+                                        ( { app | phxSocket = phxSocket }
+                                        , phxCmd
+                                        )
+
                                     Nothing ->
                                         noOp
 
@@ -113,57 +115,57 @@ update msg app =
                         noOp
 
             ResultAddCategory category ->
-                    ( (case app.page of
-                        App.Model.ResultAdd resultAdd ->
-                            { app
-                                | page =
-                                    App.Model.ResultAdd <| Result.Update.addCategory category resultAdd
-                            }
+                ( (case app.page of
+                    App.Model.ResultAdd resultAdd ->
+                        { app
+                            | page =
+                                App.Model.ResultAdd <| Result.Update.addCategory category resultAdd
+                        }
 
-                        _ ->
-                            app
-                      )
-                    , Cmd.none
-                    )
+                    _ ->
+                        app
+                  )
+                , Cmd.none
+                )
 
             ResultAddStrava link ->
-                    ( case app.page of
-                        App.Model.ResultAdd resultAdd ->
-                            { app
-                                | page =
-                                    App.Model.ResultAdd <| Result.Update.addStrava link resultAdd
-                            }
+                ( case app.page of
+                    App.Model.ResultAdd resultAdd ->
+                        { app
+                            | page =
+                                App.Model.ResultAdd <| Result.Update.addStrava link resultAdd
+                        }
 
-                        _ ->
-                            app
-                    , Cmd.none
-                    )
+                    _ ->
+                        app
+                , Cmd.none
+                )
 
             ResultAddResult value ->
-                    ( case app.page of
-                        App.Model.ResultAdd resultAdd ->
-                            { app
-                                | page =
-                                    App.Model.ResultAdd <| Result.Update.addResult value resultAdd
-                            }
+                ( case app.page of
+                    App.Model.ResultAdd resultAdd ->
+                        { app
+                            | page =
+                                App.Model.ResultAdd <| Result.Update.addResult value resultAdd
+                        }
 
-                        _ ->
-                            app
-                    , Cmd.none
-                    )
+                    _ ->
+                        app
+                , Cmd.none
+                )
 
             ResultRiderName name ->
-                    ( case app.page of
-                        App.Model.ResultAdd resultAdd ->
-                            { app
-                                | page =
-                                    App.Model.ResultAdd <| Result.Update.riderName name resultAdd
-                            }
+                ( case app.page of
+                    App.Model.ResultAdd resultAdd ->
+                        { app
+                            | page =
+                                App.Model.ResultAdd <| Result.Update.riderName name resultAdd
+                        }
 
-                        _ ->
-                            app
-                    , Cmd.none
-                    )
+                    _ ->
+                        app
+                , Cmd.none
+                )
 
             ResultsSocket ->
                 Result.Update.resultsSocket app
@@ -178,30 +180,30 @@ update msg app =
                 Comment.Update.commentsSocketResponse rawResponse app
 
             CommentAddSetText text ->
-                    ( case app.page of
-                        App.Model.CommentAdd commentAdd ->
-                            { app
-                                | page =
-                                    App.Model.CommentAdd <| Comment.Update.addText text commentAdd
-                            }
+                ( case app.page of
+                    App.Model.CommentAdd commentAdd ->
+                        { app
+                            | page =
+                                App.Model.CommentAdd <| Comment.Update.addText text commentAdd
+                        }
 
-                        _ ->
-                            app
-                    , Cmd.none
-                    )
+                    _ ->
+                        app
+                , Cmd.none
+                )
 
             CommentAddSetRiderName riderName ->
-                    ( case app.page of
-                        App.Model.CommentAdd commentAdd ->
-                            { app
-                                | page =
-                                    App.Model.CommentAdd <| Comment.Update.addRiderName riderName commentAdd
-                            }
+                ( case app.page of
+                    App.Model.CommentAdd commentAdd ->
+                        { app
+                            | page =
+                                App.Model.CommentAdd <| Comment.Update.addRiderName riderName commentAdd
+                        }
 
-                        _ ->
-                            app
-                    , Cmd.none
-                    )
+                    _ ->
+                        app
+                , Cmd.none
+                )
 
             CommentAdd ->
                 case app.page of
@@ -210,18 +212,20 @@ update msg app =
                             Just riders ->
                                 case Comment.Update.add commentAdd riders app.phxSocket of
                                     Just ( phxSocket, nextCmd ) ->
-                                            ( { app | phxSocket = phxSocket }
-                                            , nextCmd
-                                            )
+                                        ( { app | phxSocket = phxSocket }
+                                        , nextCmd
+                                        )
 
                                     Nothing ->
                                         noOp
+
                             Nothing ->
                                 noOp
+
                     _ ->
                         noOp
-                --Comment.Update.add app
 
+            --Comment.Update.add app
             CommentAddSocketResponse rawResponse ->
                 case Comment.Update.addSocketResponse rawResponse of
                     Just cmd ->
@@ -298,7 +302,8 @@ update msg app =
 
             OnJoinResponse rawResponse ->
                 let
-                    _ = Debug.log "OnJoinResponse" rawResponse
+                    _ =
+                        Debug.log "OnJoinResponse" rawResponse
                 in
                     ( app, Cmd.none )
 
@@ -316,9 +321,9 @@ update msg app =
                                         rider.name
                                         rider.licence
                             in
-                                    ( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
-                                    , Cmd.none
-                                    )
+                                ( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
+                                , Cmd.none
+                                )
 
                         Err _ ->
                             noOp
@@ -338,9 +343,9 @@ update msg app =
                                         race.date
                                         race.category
                             in
-                                    ( { app | races = Just (newRace :: (Maybe.withDefault [] app.races)) }
-                                    , Cmd.none
-                                    )
+                                ( { app | races = Just (newRace :: (Maybe.withDefault [] app.races)) }
+                                , Cmd.none
+                                )
 
                         Err _ ->
                             noOp
@@ -362,9 +367,9 @@ update msg app =
                                         Result.Model.CatA
                                         result.strava
                             in
-                                    ( { app | results = newResult :: app.results }
-                                    , Cmd.none
-                                    )
+                                ( { app | results = newResult :: app.results }
+                                , Cmd.none
+                                )
 
                         Err _ ->
                             noOp
@@ -385,13 +390,12 @@ update msg app =
                                         comment.riderId
                                         comment.text
                             in
-                                    ( { app | comments = Just (newComment :: (Maybe.withDefault [] app.comments)) }
-                                    , Cmd.none
-                                    )
+                                ( { app | comments = Just (newComment :: (Maybe.withDefault [] app.comments)) }
+                                , Cmd.none
+                                )
 
                         Err _ ->
                             noOp
-
 
             OnUpdatedRider rawResponse ->
                 let
@@ -419,12 +423,12 @@ update msg app =
                                         Nothing ->
                                             Nothing
                             in
-                                    ( { app
-                                        | riders = Just riders
-                                        , account = nextAccount
-                                      }
-                                    , Cmd.none
-                                    )
+                                ( { app
+                                    | riders = Just riders
+                                    , account = nextAccount
+                                  }
+                                , Cmd.none
+                                )
 
                         Err _ ->
                             noOp
@@ -448,20 +452,22 @@ update msg app =
                     ( phxSocket, phxCmd ) =
                         Phoenix.Socket.push phxPush app.phxSocket
 
-                    _ = Debug.log "Connect" "connect"
+                    _ =
+                        Debug.log "Connect" "connect"
                 in
-                        ( { app | phxSocket = phxSocket }
-                        , Cmd.map PhoenixMsg phxCmd
-                        )
+                    ( { app | phxSocket = phxSocket }
+                    , Cmd.map PhoenixMsg phxCmd
+                    )
 
             ConnectResponse value ->
                 let
-                    _ = Debug.log "ConnectResponse" value
+                    _ =
+                        Debug.log "ConnectResponse" value
                 in
                     ( { app | connected = True }
-                    , ( Task.perform
-                            identity
-                            (Task.succeed App.Msg.RidersSocket)
+                    , (Task.perform
+                        identity
+                        (Task.succeed App.Msg.RidersSocket)
                       )
                     )
 
@@ -478,49 +484,51 @@ update msg app =
                 in
                     case resultRiders of
                         Ok riders ->
-                                ( { app | messages = messages, riders = Just riders }
-                                , Cmd.none
-                                )
+                            ( { app | messages = messages, riders = Just riders }
+                            , Cmd.none
+                            )
 
                         Err errorMessage ->
-                                ( { app | messages = messages }
-                                , Cmd.none
-                                )
+                            ( { app | messages = messages }
+                            , Cmd.none
+                            )
 
             ReceiveMessage message ->
                 let
-                    _ = Debug.log "receiveMessage" message
+                    _ =
+                        Debug.log "receiveMessage" message
                 in
-                        --( { app | messages = (toString message) :: app.messages }
-                        --( { app | connected = True }
-                        ( app
-                        , Cmd.none
-                        )
+                    --( { app | messages = (toString message) :: app.messages }
+                    --( { app | connected = True }
+                    ( app
+                    , Cmd.none
+                    )
 
             HandleSendError _ ->
                 noOp
 
             NewMessage message ->
-                    ( { app | messages = message :: app.messages }
-                    , Cmd.none
-                    )
+                ( { app | messages = message :: app.messages }
+                , Cmd.none
+                )
 
             PhoenixMsg message ->
                 let
                     ( phxSocket, phxCmd ) =
                         Phoenix.Socket.update message app.phxSocket
                 in
-                        --( { app | connected = True, phxSocket = phxSocket }
-                        ( { app | phxSocket = phxSocket }
-                        , Cmd.map PhoenixMsg phxCmd
-                        )
+                    --( { app | connected = True, phxSocket = phxSocket }
+                    ( { app | phxSocket = phxSocket }
+                    , Cmd.map PhoenixMsg phxCmd
+                    )
 
             OnJoin ->
                 let
-                    _ = Debug.log "onJoin" "success"
+                    _ =
+                        Debug.log "onJoin" "success"
                 in
                     ( { app | connected = True }
-                    ,  Cmd.batch
+                    , Cmd.batch
                         [ Task.perform
                             identity
                             (Task.succeed App.Msg.RidersSocket)
@@ -540,8 +548,9 @@ update msg app =
                 case app.page of
                     App.Model.RaceAdd raceAdd ->
                         let
-                                page =
-                                    Race.Update.addPage2 (App.Msg.RaceDate dateString) app.page
+                            page =
+                                Race.Update.addPage2 (App.Msg.RaceDate dateString) app.page
+
                             -- nextRaceAdd = { raceAdd | dateString = dateString }
                         in
                             ( { app | page = page }, Cmd.none )

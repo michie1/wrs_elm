@@ -14,6 +14,7 @@ import Phoenix.Channel
 import Phoenix.Push
 import App.Msg
 
+
 type Page
     = RaceAdd Race.Model.Add
     | AccountLogin Account.Model.Login
@@ -21,6 +22,7 @@ type Page
     | ResultAdd Result.Model.Add
     | CommentAdd Comment.Model.Add
     | NoOp
+
 
 type alias App =
     { route : Routing.Route
@@ -42,7 +44,7 @@ initial =
     let
         channel =
             Phoenix.Channel.init "room:lobby"
-            |> Phoenix.Channel.onJoin (always App.Msg.OnJoin)
+                |> Phoenix.Channel.onJoin (always App.Msg.OnJoin)
 
         ( initSocket, phxCmd ) =
             Phoenix.Socket.init "ws://localhost:4000/socket/websocket"
@@ -57,11 +59,12 @@ initial =
     in
         ( App
             Home
-            NoOp 
+            NoOp
             Nothing
             Nothing
             Result.Model.initialResults
-            Nothing --Comment.Model.initialComments
+            Nothing
+            --Comment.Model.initialComments
             Nothing
             Account.Model.initial
             []

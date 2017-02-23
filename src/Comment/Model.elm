@@ -2,9 +2,10 @@ module Comment.Model exposing (Comment, Add, empty, initialComments, initialAdd)
 
 import Date
 
+
 type alias Comment =
     { id : Int
-    , updatedAt: Maybe Date.Date
+    , updatedAt : Maybe Date.Date
     , raceId : Int
     , riderId : Int
     , text : String
@@ -30,7 +31,7 @@ empty =
 
 initialComments : List Comment
 initialComments =
-    [ ]
+    []
 
 
 initialAdd : Add

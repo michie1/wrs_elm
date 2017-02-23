@@ -33,6 +33,7 @@ category string =
         _ ->
             Race.Model.Unknown
 
+
 decodeLicence : String -> Json.Decode.Decoder (Maybe Rider.Model.Licence)
 decodeLicence string =
     Json.Decode.succeed (licence string)
@@ -56,6 +57,7 @@ licenceDecoder string =
         _ ->
             Json.Decode.fail <| string ++ " licence does not exists."
 
+
 raceCategoryDecoder : String -> Json.Decode.Decoder Race.Model.Category
 raceCategoryDecoder string =
     case string of
@@ -77,19 +79,25 @@ raceCategoryDecoder string =
         _ ->
             Json.Decode.succeed Race.Model.Unknown
 
+
 resultCategoryDecoder : String -> Json.Decode.Decoder Result.Model.ResultCategory
 resultCategoryDecoder string =
-    case string of 
+    case string of
         "amateurs" ->
             Json.Decode.succeed Result.Model.Amateurs
+
         "basislidmaatschap" ->
             Json.Decode.succeed Result.Model.Basislidmaatschap
+
         "cata" ->
             Json.Decode.succeed Result.Model.CatA
+
         "catb" ->
             Json.Decode.succeed Result.Model.CatB
+
         "unknown" ->
             Json.Decode.succeed Result.Model.Unknown
+
         _ ->
             Json.Decode.succeed Result.Model.Unknown
 
@@ -105,6 +113,7 @@ riderDecoder =
                 |> Json.Decode.nullable
             )
 
+
 raceDecoder : Json.Decode.Decoder Race.Model.Race
 raceDecoder =
     Json.Decode.Pipeline.decode Race.Model.Race
@@ -116,6 +125,7 @@ raceDecoder =
                 |> Json.Decode.andThen raceCategoryDecoder
             )
 
+
 date : Json.Decode.Decoder (Maybe Date.Date)
 date =
     let
@@ -124,11 +134,13 @@ date =
             case Date.fromString raw of
                 Ok date ->
                     Json.Decode.succeed <| Just date
+
                 Err error ->
                     Json.Decode.succeed Nothing
     in
-        Json.Decode.string |>
-            Json.Decode.andThen convert
+        Json.Decode.string
+            |> Json.Decode.andThen convert
+
 
 commentDecoder : Json.Decode.Decoder Comment.Model.Comment
 commentDecoder =
@@ -138,6 +150,7 @@ commentDecoder =
         |> Json.Decode.Pipeline.required "raceId" Json.Decode.int
         |> Json.Decode.Pipeline.required "riderId" Json.Decode.int
         |> Json.Decode.Pipeline.required "text" Json.Decode.string
+
 
 resultDecoder : Json.Decode.Decoder Result.Model.Result
 resultDecoder =
@@ -154,6 +167,7 @@ resultDecoder =
             (Json.Decode.string
                 |> Json.Decode.nullable
             )
+
 
 licence : String -> Maybe Rider.Model.Licence
 licence string =
@@ -238,8 +252,9 @@ page =
 
 type alias App =
     { page : String
-    , riders : List Rider.Model.Rider
-    --, races : List Race.Model.Race
+    , riders :
+        List Rider.Model.Rider
+        --, races : List Race.Model.Race
     , comments : List Comment.Model.Comment
     , results : List Result.Model.Result
     }

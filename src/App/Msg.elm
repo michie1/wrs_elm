@@ -6,7 +6,7 @@ module App.Msg exposing (Msg(..))
 import Rider.Model exposing (Rider)
 import Race.Model
 import Result.Model
-import App.Routing 
+import App.Routing
 import Date
 import Time
 import Keyboard

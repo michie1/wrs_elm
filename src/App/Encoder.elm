@@ -24,31 +24,40 @@ licence maybeLicence =
         Nothing ->
             Json.Encode.null
 
+
 raceCategory : Race.Model.Category -> Json.Encode.Value
 raceCategory category =
-    case category of 
+    case category of
         Race.Model.Classic ->
             Json.Encode.string "classic"
 
         Race.Model.Criterium ->
             Json.Encode.string "criterum"
+
         Race.Model.Regiocross ->
             Json.Encode.string "regiocross"
+
         Race.Model.Other ->
             Json.Encode.string "other"
+
         Race.Model.Unknown ->
             Json.Encode.string "unknown"
 
+
 resultCategory : Result.Model.ResultCategory -> Json.Encode.Value
 resultCategory category =
-    case category of 
+    case category of
         Result.Model.Amateurs ->
             Json.Encode.string "amateurs"
+
         Result.Model.Basislidmaatschap ->
             Json.Encode.string "basislidmaatschap"
+
         Result.Model.CatA ->
             Json.Encode.string "cata"
+
         Result.Model.CatB ->
             Json.Encode.string "catb"
+
         Result.Model.Unknown ->
             Json.Encode.string "unknown"

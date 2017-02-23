@@ -14,6 +14,7 @@ import Comment.Model
 import WebSocket
 import Phoenix.Socket
 
+
 main : Program Never App Msg
 main =
     Navigation.program
@@ -33,7 +34,8 @@ parser location =
 init : Navigation.Location -> ( App, Cmd Msg )
 init location =
     let
-        route = App.Routing.routeParser location
+        route =
+            App.Routing.routeParser location
 
         ( initialApp, initialCmd ) =
             App.Model.initial
@@ -48,7 +50,9 @@ init location =
             ]
         )
 
+
 port datepicker : (String -> msg) -> Sub msg
+
 
 subscriptions : App -> Sub Msg
 subscriptions app =
@@ -56,5 +60,3 @@ subscriptions app =
         [ Phoenix.Socket.listen app.phxSocket PhoenixMsg
         , datepicker App.Msg.DatePicked
         ]
-
-

@@ -18,6 +18,7 @@ render app race =
                     div []
                         [ commentsTable comments race riders
                         ]
+
                 Nothing ->
                     div [] [ text "No comments loaded." ]
 
@@ -54,11 +55,10 @@ filterCommentsByRace race =
 
 getRiderById : Int -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderById id riders =
-    List.head 
-        <| List.filter
-                (\rider -> rider.id == id)
-                riders
-        
+    List.head <|
+        List.filter
+            (\rider -> rider.id == id)
+            riders
 
 
 commentRow : Comment.Model.Comment -> Maybe Rider.Model.Rider -> Html App.Msg.Msg

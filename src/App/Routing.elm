@@ -3,6 +3,7 @@ module App.Routing exposing (Route(..), url, routeParser)
 import Navigation
 import UrlParser exposing (..)
 
+
 type Route
     = Home
     | RiderDetails Int
@@ -18,6 +19,7 @@ type Route
     | AccountLogin
     | AccountLogout
     | AccountSignup
+
 
 url : Route -> String
 url route =

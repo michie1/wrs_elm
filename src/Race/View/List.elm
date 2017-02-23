@@ -9,9 +9,11 @@ import Date
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 
+
 dateFormat : Date.Date -> String
 dateFormat date =
     Date.Extra.Format.format config "%d-%m-%Y" date
+
 
 render : Bool -> List Race -> List Result.Model.Result -> Html App.Msg.Msg
 render loggedIn races results =
@@ -21,11 +23,13 @@ render loggedIn races results =
         , raceTable races results
         ]
 
+
 addButton : Bool -> Html App.Msg.Msg
 addButton loggedIn =
     case loggedIn of
         True ->
             div [] [ a [ href "#races/add", class "waves-effect waves-light btn" ] [ text "Add race" ] ]
+
         False ->
             div [] []
 
@@ -45,11 +49,13 @@ raceTable races results =
             (List.map
                 (\race ->
                     let
-                        dateString = case race.date of
-                            Just date ->
-                                dateFormat date
-                            Nothing ->
-                                "1970-01-01"
+                        dateString =
+                            case race.date of
+                                Just date ->
+                                    dateFormat date
+
+                                Nothing ->
+                                    "1970-01-01"
                     in
                         tr []
                             [ td []

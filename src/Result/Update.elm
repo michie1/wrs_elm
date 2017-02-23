@@ -7,17 +7,15 @@ import App.Msg exposing (Msg(..))
 import Result.Helpers exposing (..)
 import App.Helpers
 import App.Routing
-
 import Phoenix.Socket
 import Phoenix.Push
-
 import Json.Encode
 import Json.Decode
 import App.Encoder
 import App.Decoder
 
 
-add : Result.Model.Add -> List Rider.Model.Rider -> List Result.Model.Result -> (Phoenix.Socket.Socket App.Msg.Msg) -> Maybe ( (Phoenix.Socket.Socket App.Msg.Msg), Cmd Msg)
+add : Result.Model.Add -> List Rider.Model.Rider -> List Result.Model.Result -> Phoenix.Socket.Socket App.Msg.Msg -> Maybe ( Phoenix.Socket.Socket App.Msg.Msg, Cmd Msg )
 add resultAdd riders results phxSocket =
     case App.Helpers.getRiderByName resultAdd.riderName riders of
         Just rider ->
@@ -40,10 +38,11 @@ add resultAdd riders results phxSocket =
                 ( nextPhxSocket, phxCmd ) =
                     Phoenix.Socket.push phxPush phxSocket
             in
-                Just <| ( nextPhxSocket
-                , Cmd.map PhoenixMsg phxCmd
-                )
-             
+                Just <|
+                    ( nextPhxSocket
+                    , Cmd.map PhoenixMsg phxCmd
+                    )
+
         Nothing ->
             Nothing
 
@@ -70,20 +69,24 @@ addResult : String -> Result.Model.Add -> Result.Model.Add
 addResult value resultAdd =
     { resultAdd | result = value }
 
+
 addSocketResponse : Json.Decode.Value -> Maybe (Cmd Msg)
 addSocketResponse rawResponse =
     case Json.Decode.decodeValue (Json.Decode.field "raceId" Json.Decode.int) rawResponse of
         Ok id ->
             let
-                _ = Debug.log "raceId" id
+                _ =
+                    Debug.log "raceId" id
             in
                 Just <| App.Helpers.navigate <| App.Routing.RaceDetails id
 
         Err error ->
             let
-                _ = Debug.log "addSocketResponse Err" error
+                _ =
+                    Debug.log "addSocketResponse Err" error
             in
                 Nothing
+
 
 resultsSocket : App -> ( App, Cmd Msg )
 resultsSocket app =
@@ -131,5 +134,3 @@ resultsSocketResponse message app =
                     ( app
                     , Cmd.none
                     )
-
-

@@ -8,6 +8,14 @@ import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, l
 import Html.Attributes exposing (class, href)
 import Result.Model
 import Race.Model
+import Date
+import Date.Extra.Format
+import Date.Extra.Config.Config_nl_nl exposing (config)
+
+
+dateFormat : Date.Date -> String
+dateFormat date =
+    Date.Extra.Format.format config "%d-%m-%Y" date
 
 
 render : App.Model.App -> Int -> Html App.Msg.Msg
@@ -95,13 +103,22 @@ raceRow result races =
                     ]
 
             Just race ->
-                tr []
-                    [ td [] [ text (toString result.id) ]
-                    , td []
-                        [ a
-                            [ href ("#races/" ++ (toString race.id)) ]
-                            [ text race.name ]
+                let
+                    dateString =
+                        case race.date of
+                            Just date ->
+                                dateFormat date
+
+                            Nothing ->
+                                "1970-01-01"
+                in
+                    tr []
+                        [ td [] [ text (toString result.id) ]
+                        , td []
+                            [ a
+                                [ href ("#races/" ++ (toString race.id)) ]
+                                [ text race.name ]
+                            ]
+                        , td [] [ text <| dateString ]
+                        , td [] [ text result.result ]
                         ]
-                    , td [] [ text <| toString race.date ]
-                    , td [] [ text result.result ]
-                    ]
