@@ -11,6 +11,7 @@ import Race.Model
 import Date
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
+import App.Helpers
 
 
 dateFormat : Date.Date -> String
@@ -22,45 +23,52 @@ render : App.Model.App -> Int -> Html App.Msg.Msg
 render app riderId =
     case app.riders of
         Just riders ->
-            let
-                maybeRider =
-                    List.head
-                        (List.filter
-                            (\rider -> rider.id == riderId)
-                            riders
-                        )
-            in
-                case maybeRider of
-                    Nothing ->
-                        div []
-                            [ h2 [] [ text "Rider" ]
-                            , p [] [ text "Rider does not exist." ]
-                            ]
+            case app.races of
+                Just races ->
+                    let
+                        maybeRider =
+                            List.head
+                                (List.filter
+                                    (\rider -> rider.id == riderId)
+                                    riders
+                                )
+                    in
+                        case maybeRider of
+                            Nothing ->
+                                div []
+                                    [ h2 [] [ text "Rider" ]
+                                    , p [] [ text "Rider does not exist." ]
+                                    ]
 
-                    Just rider ->
-                        let
-                            results =
-                                List.filter
-                                    (\result -> result.riderId == rider.id)
-                                    app.results
-                        in
-                            div [ class "col s12" ]
-                                [ h2 [] [ text rider.name ]
-                                , info rider
-                                , resultsTable rider results (Maybe.withDefault [] app.races)
-                                ]
+                            Just rider ->
+                                let
+                                    results =
+                                        List.filter
+                                            (\result -> result.riderId == rider.id)
+                                            app.results
+                                            
+                                    points = App.Helpers.getPointsByResults results races
+                                in
+                                    div [ class "col s12" ]
+                                        [ h2 [] [ text rider.name ]
+                                        , info rider points
+                                        , resultsTable rider results (Maybe.withDefault [] app.races)
+                                        ]
+                Nothing ->
+                    div [] [ text "No races loaded." ]
 
         Nothing ->
             div [] [ text "No riders loaded." ]
 
 
-info : Rider -> Html App.Msg.Msg
-info rider =
+
+info : Rider -> Int -> Html App.Msg.Msg
+info rider points =
     div [ class "row" ]
         [ ul [ class "collection col s8 m6 l4" ]
             [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text rider.name ] ]
             , li [ class "collection-item" ] [ text "Licence ", span [ class "secondary-content" ] [ text (toString rider.licence) ] ]
-            , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text rider.name ] ]
+            , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text <| toString points ] ]
             ]
         ]
 
@@ -73,6 +81,7 @@ resultsTable rider results races =
                 [ th [] [ text "id" ]
                 , th [] [ text "Race" ]
                 , th [] [ text "Date" ]
+                , th [] [ text "Points" ]
                 , th [] [ text "Result" ]
                 ]
             ]
@@ -120,5 +129,6 @@ raceRow result races =
                                 [ text race.name ]
                             ]
                         , td [] [ text <| dateString ]
+                        , td [] [ text <| toString <| App.Helpers.getPointsByResult result races ]
                         , td [] [ text result.result ]
                         ]

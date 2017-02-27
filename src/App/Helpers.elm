@@ -7,7 +7,7 @@ import Array
 import Navigation
 import App.Msg
 import App.Routing
-
+import Result.Model
 
 navigate : App.Routing.Route -> Cmd App.Msg.Msg
 navigate route =
@@ -100,3 +100,45 @@ formatDate date =
         ++ toString (numMonth (Date.month date))
         ++ "-"
         ++ (leadingZero (Date.day date))
+
+
+getPointsByResults : List Result.Model.Result -> List Race.Model.Race -> Int
+getPointsByResults results races =
+    List.sum <|
+        List.map
+        (\result -> getPointsByResult result races )
+        results
+
+getPointsByResult : Result.Model.Result -> List Race.Model.Race -> Int
+getPointsByResult result races =
+    case getRaceById result.raceId races of
+        Just race ->
+            getPointsByCategory race.category
+    
+        Nothing ->
+            0
+    
+getPointsByCategory :  Race.Model.Category -> Int
+getPointsByCategory category =
+    case category of
+        Race.Model.Classic ->
+            4
+        Race.Model.Criterium ->
+            3
+
+        Race.Model.Regiocross ->
+            2
+
+        Race.Model.Other ->
+            0
+
+        Race.Model.Unknown ->
+            0
+
+
+getRaceById : Int -> List Race.Model.Race -> Maybe Race.Model.Race
+getRaceById raceId races =
+    List.head <|
+        List.filter
+            (\race -> race.id == raceId)
+            races

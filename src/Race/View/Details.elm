@@ -16,7 +16,7 @@ import List.Extra
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
-
+import App.Helpers
 
 dateTimeFormat : Date.Date -> String
 dateTimeFormat date =
@@ -116,7 +116,7 @@ info race =
                     [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text race.name ] ]
                     , li [ class "collection-item" ] [ text "Date ", span [ class "secondary-content" ] [ text dateString ] ]
                     , li [ class "collection-item" ] [ text "Category ", span [ class "secondary-content" ] [ text (toString race.category) ] ]
-                    , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text race.name ] ]
+                    , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text <| toString <| App.Helpers.getPointsByCategory race.category ] ]
                     ]
                 ]
             ]
