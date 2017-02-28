@@ -1,6 +1,7 @@
 module Race.Model exposing (Add, Race, initialRaces, Category, Category(..), categoryString)
 
 import Date
+import Ui.Calendar
 
 
 type Category
@@ -21,8 +22,8 @@ type alias Race =
 
 type alias Add =
     { name : String
-    , date : Maybe Date.Date
     , category : Category
+    , calendar : Ui.Calendar.Model
     }
 
 

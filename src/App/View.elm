@@ -16,7 +16,8 @@ import Result.View.List
 import Result.View.Add
 import Comment.View.Add
 import Account.View
-
+import Ui.Ratings
+import Ui.Calendar
 
 render : App -> Html Msg
 render app =
@@ -35,6 +36,7 @@ mainView : App -> Html Msg
 mainView app =
     div [ class "container" ]
         [ viewPage app
+        -- , Html.map Ratings (Ui.Ratings.view app.ratings)
         ]
 
 
@@ -52,7 +54,8 @@ viewPage app =
                     case app.races of
                         Just races ->
                             div []
-                                [ Rider.View.List.render riders app.results races
+                                [ h2 [] [ text "Riders" ]
+                                , Rider.View.List.render riders app.results races
                                 ]
                         Nothing ->
                             div [] [ text "No races loaded." ]
@@ -176,11 +179,12 @@ header app =
     nav []
         [ div
             [ class "nav-wrapper blue darken-4" ]
-            [ a [ class "brand-logo left", href "#home" ] [ text "WRS" ]
+            [ a [ class "brand-logo left", href "#races" ] [ text "WRS" ]
             , ul [ id "nav-mobile", class "right" ]
                 (List.concat
                     [ (userLi app)
                       --, [ li [] [ a [ href "#races" ] [ text "Races" ] ]
+                    , [ li [] [ a [ href "#races" ] [ text "Races" ] ] ]
                     , [ li [] [ a [ href "#riders" ] [ text "Riders" ] ] ]
                       --  ]
                     ]

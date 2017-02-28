@@ -13,6 +13,8 @@ import Phoenix.Socket
 import Phoenix.Channel
 import Phoenix.Push
 import App.Msg
+import Ui.Ratings
+import Ui.Calendar
 
 
 type Page
@@ -36,6 +38,7 @@ type alias App =
     , messages : List String
     , phxSocket : Phoenix.Socket.Socket App.Msg.Msg
     , connected : Bool
+    , ratings : Ui.Ratings.Model
     }
 
 
@@ -70,5 +73,6 @@ initial =
             []
             initSocket
             False
+            (Ui.Ratings.init () |> Ui.Ratings.size 10)
         , Cmd.map App.Msg.PhoenixMsg phxCmd
         )

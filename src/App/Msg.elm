@@ -13,6 +13,8 @@ import Keyboard
 import Keyboard.Extra
 import Phoenix.Socket
 import Json.Encode
+import Ui.Ratings
+import Ui.Calendar
 
 
 type Msg
@@ -20,11 +22,6 @@ type Msg
     | RaceName String
     | RaceDate String
     | RaceAddCategory Race.Model.Category
-    | SetRaceAdd (Maybe Date.Date)
-    | RaceAddYesterday
-    | RaceAddYesterdayWithDate (Maybe Date.Date)
-    | RaceAddToday
-    | RaceAddTodayWithDate (Maybe Date.Date)
     | RaceAddSocketResponse Json.Encode.Value
     | RacesSocket
     | RacesSocketResponse Json.Encode.Value
@@ -73,3 +70,5 @@ type Msg
     | OnJoinResponse Json.Encode.Value
     | OnJoin
     | DatePicked String
+    | Ratings Ui.Ratings.Msg
+    | Calendar Ui.Calendar.Msg

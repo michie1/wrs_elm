@@ -9,6 +9,7 @@ import App.Msg
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
+import Ui.Calendar
 
 
 dateFormat : Date.Date -> String
@@ -25,13 +26,7 @@ render raceAdd =
         submitDisabled =
             name == ""
 
-        dateString =
-            case raceAdd.date of
-                Just date ->
-                    dateFormat date
-
-                Nothing ->
-                    "1970-01-01"
+        dateString = dateFormat raceAdd.calendar.value
     in
         div []
             [ h2 [] [ text "Add Race" ]
@@ -50,9 +45,7 @@ render raceAdd =
                         ]
                     ]
                 , div [ class "row" ] [ categoryButtons raceAdd.category ]
-                , div [ class "row" ] [ text <| dateString ]
-                , div [ class "row" ] [ text <| toString raceAdd.date ]
-                , div [ class "row" ] [ datepicker dateString ]
+                , div [] [ Html.map App.Msg.Calendar (Ui.Calendar.view "en_us" raceAdd.calendar) ]
                 , div [ class "row" ]
                     [ div [ class "col s6" ]
                         [ button

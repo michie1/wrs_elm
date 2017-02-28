@@ -70,7 +70,7 @@ url route =
 matchers : Parser (Route -> a) a
 matchers =
     oneOf
-        [ map Races (s "home")
+        [ map Races (s "races")
         , map Races (s "")
         , map RiderDetails (s "riders" </> int)
         , map Riders (s "riders")
@@ -90,4 +90,5 @@ matchers =
 
 routeParser : Navigation.Location -> Route
 routeParser location =
-    location |> parseHash matchers |> Maybe.withDefault Home
+    location |> parseHash matchers |> Maybe.withDefault Races
+    -- location |> parseHash matchers |> Maybe.withDefault Home

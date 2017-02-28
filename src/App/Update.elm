@@ -33,7 +33,8 @@ import Json.Encode
 import Json.Decode
 import App.Helpers
 import Rider.Update
-
+import Ui.Ratings
+import Ui.Calendar
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
@@ -233,21 +234,6 @@ update msg app =
 
                     Nothing ->
                         noOp
-
-            SetRaceAdd maybeNow ->
-                Race.Update.addSet maybeNow app
-
-            RaceAddYesterday ->
-                Race.Update.addYesterday app
-
-            RaceAddYesterdayWithDate maybeDate ->
-                Race.Update.addYesterdayWithDate maybeDate app
-
-            RaceAddToday ->
-                Race.Update.addToday app
-
-            RaceAddTodayWithDate maybeDate ->
-                Race.Update.addTodayWithDate maybeDate app
 
             UrlUpdate route ->
                 App.UrlUpdate.urlUpdate route app
@@ -557,3 +543,27 @@ update msg app =
 
                     _ ->
                         ( app, Cmd.none )
+
+            Ratings msg_ ->
+                let 
+                    ( ratings, cmd ) =
+                        Ui.Ratings.update msg_ app.ratings
+                in
+                    ( { app | ratings = ratings }
+                    , Cmd.map Ratings cmd
+                    )
+
+            Calendar msg_ ->
+                case app.page of
+                    App.Model.RaceAdd raceAdd ->
+                        let 
+                            ( calendar, cmd ) =
+                                Ui.Calendar.update msg_ raceAdd.calendar
+
+                            nextRaceAdd = App.Model.RaceAdd { raceAdd | calendar = calendar }
+                        in
+                            ( { app | page = nextRaceAdd }
+                            , Cmd.map Calendar cmd
+                            )
+                    _ ->
+                        noOp

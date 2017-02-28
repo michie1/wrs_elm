@@ -14,6 +14,7 @@ import Dom
 import Date
 import App.Helpers
 import App.Routing
+import Ui.Calendar
 
 
 onUrlLeave : App.Routing.Route -> App -> App
@@ -119,7 +120,7 @@ onUrlEnter route app =
                     Debug.log "urlUpdate" "RacesAdd"
 
                 raceAdd =
-                    Race.Model.Add "" Nothing Race.Model.Classic
+                    Race.Model.Add "" Race.Model.Classic (Ui.Calendar.init ())
             in
                 ( { app | page = App.Model.RaceAdd raceAdd }
                 , fetchForRoute App.Routing.RaceAdd
@@ -184,9 +185,6 @@ fetchForRoute route =
         App.Routing.RaceAdd ->
             Cmd.batch
                 [ Task.attempt (always App.Msg.Noop) (Dom.focus "name")
-                , Task.perform
-                    (Just >> App.Msg.SetRaceAdd)
-                    Date.now
                 ]
 
         App.Routing.CommentAdd raceId ->

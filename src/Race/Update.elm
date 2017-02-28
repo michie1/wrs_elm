@@ -44,9 +44,6 @@ addPage2 msg page =
                 RaceAddCategory category ->
                     App.Model.RaceAdd <| addCategory category raceAdd
 
-                RaceDate newDate ->
-                    App.Model.RaceAdd <| addDate newDate raceAdd
-
                 _ ->
                     page
 
@@ -82,125 +79,7 @@ addCategory category raceAdd =
     { raceAdd | category = category }
 
 
-addDate : String -> Race.Model.Add -> Race.Model.Add
-addDate newDate raceAdd =
-    let
-        _ =
-            Debug.log "newDate" newDate
 
-        date =
-            case Date.fromString newDate of
-                Ok date ->
-                    Just date
-
-                Err _ ->
-                    Nothing
-    in
-        { raceAdd | date = date }
-
-
-addSet : Maybe Date.Date -> App -> ( App, Cmd Msg )
-addSet maybeNow app =
-    case app.page of
-        App.Model.RaceAdd currentRaceAdd ->
-            let
-                dateFormatted =
-                    case maybeNow of
-                        Just now ->
-                            App.Helpers.formatDate now
-
-                        Nothing ->
-                            ""
-
-                raceAdd =
-                    { currentRaceAdd
-                      --| dateString = Just dateFormatted
-                      --| dateString = dateFormatted
-                        | date = maybeNow
-                    }
-            in
-                ( { app | page = App.Model.RaceAdd raceAdd }
-                , Cmd.none
-                )
-
-        _ ->
-            ( app, Cmd.none )
-
-
-addYesterday : App -> ( App, Cmd Msg )
-addYesterday app =
-    let
-        yesterdayTask =
-            Task.perform
-                (Just >> App.Msg.RaceAddYesterdayWithDate)
-                Date.now
-    in
-        ( app, Cmd.batch [ yesterdayTask ] )
-
-
-addYesterdayWithDate : Maybe Date.Date -> App -> ( App, Cmd Msg )
-addYesterdayWithDate maybeDate app =
-    case app.page of
-        App.Model.RaceAdd currentRaceAdd ->
-            let
-                dateFormatted =
-                    case maybeDate of
-                        Just date ->
-                            App.Helpers.formatDate (Date.Extra.add Date.Extra.Day (-1) date)
-
-                        Nothing ->
-                            ""
-
-                newRaceAdd =
-                    --{ raceAdd | dateString = Just dateFormatted }
-                    { currentRaceAdd | date = maybeDate }
-            in
-                ( { app | page = App.Model.RaceAdd newRaceAdd }
-                , Cmd.none
-                )
-
-        _ ->
-            ( app, Cmd.none )
-
-
-addToday : App -> ( App, Cmd Msg )
-addToday app =
-    let
-        todayTask =
-            Task.perform
-                (Just >> App.Msg.RaceAddTodayWithDate)
-                Date.now
-    in
-        ( app, Cmd.batch [ todayTask ] )
-
-
-addTodayWithDate : Maybe Date.Date -> App -> ( App, Cmd Msg )
-addTodayWithDate maybeDate app =
-    case app.page of
-        App.Model.RaceAdd currentRaceAdd ->
-            let
-                dateFormatted =
-                    case maybeDate of
-                        Just date ->
-                            App.Helpers.formatDate date
-
-                        Nothing ->
-                            ""
-
-                _ =
-                    Debug.log "maybeDate" maybeDate
-
-                newRaceAdd =
-                    --{ raceAdd | dateString = Just dateFormatted }
-                    --{ currentRaceAdd | date = maybeDate, dateString = dateFormatted }
-                    { currentRaceAdd | date = maybeDate }
-            in
-                ( { app | page = App.Model.RaceAdd newRaceAdd }
-                , Cmd.none
-                )
-
-        _ ->
-            ( app, Cmd.none )
 
 
 racesSocket : App -> ( App, Cmd Msg )
@@ -259,6 +138,7 @@ dateFormat date =
 addSocket : Race.Model.Add -> Phoenix.Socket.Socket App.Msg.Msg -> ( Phoenix.Socket.Socket App.Msg.Msg, Cmd Msg )
 addSocket raceAdd phxSocket =
     let
+        {--
         dateString =
             case raceAdd.date of
                 Just date ->
@@ -266,6 +146,10 @@ addSocket raceAdd phxSocket =
 
                 Nothing ->
                     ""
+        --}
+        dateString = 
+            dateFormat raceAdd.calendar.value
+
 
         payload =
             Json.Encode.object

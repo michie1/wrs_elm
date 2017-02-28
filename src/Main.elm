@@ -1,4 +1,4 @@
-port module Main exposing (..)
+module Main exposing (..)
 
 import Navigation
 import App.Model exposing (App)
@@ -13,6 +13,7 @@ import Result.Model
 import Comment.Model
 import WebSocket
 import Phoenix.Socket
+import Ui.Ratings
 
 
 main : Program Never App Msg
@@ -51,12 +52,8 @@ init location =
         )
 
 
-port datepicker : (String -> msg) -> Sub msg
-
-
 subscriptions : App -> Sub Msg
 subscriptions app =
     Sub.batch
         [ Phoenix.Socket.listen app.phxSocket PhoenixMsg
-        , datepicker App.Msg.DatePicked
         ]

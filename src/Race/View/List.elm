@@ -18,7 +18,7 @@ dateFormat date =
 render : Bool -> List Race -> List Result.Model.Result -> Html App.Msg.Msg
 render loggedIn races results =
     div []
-        [ h2 [] [ text "races" ]
+        [ h2 [] [ text "Races" ]
         , addButton loggedIn
         , raceTable races results
         ]
