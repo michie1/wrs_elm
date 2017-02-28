@@ -142,3 +142,13 @@ getRaceById raceId races =
         List.filter
             (\race -> race.id == raceId)
             races
+
+getPointsByRiderId : Int -> List Result.Model.Result -> List Race.Model.Race -> Int
+getPointsByRiderId riderId results races =
+    getPointsByResults (
+            ( List.filter
+                (\result -> result.riderId == riderId)
+                results
+            )
+        )
+        races
