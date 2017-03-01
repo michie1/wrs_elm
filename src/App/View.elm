@@ -95,29 +95,35 @@ viewPage app =
             Result.View.List.render app.results
 
         App.Routing.ResultAdd raceId ->
-            case app.page of
-                App.Model.ResultAdd resultAdd ->
-                    let
-                        maybeRace =
-                            getRace raceId (Maybe.withDefault [] app.races)
-                    in
-                        case maybeRace of
-                            Nothing ->
-                                div []
-                                    [ text "Race does not exist. Adding result not possible." ]
-
-                            Just race ->
-                                case app.riders of
-                                    Just riders ->
-                                        div []
-                                            [ Result.View.Add.render race resultAdd riders app.results
-                                            ]
-
+            case app.account of
+                Just _ ->
+                    case app.page of
+                        App.Model.ResultAdd resultAdd ->
+                            let
+                                maybeRace =
+                                    getRace raceId (Maybe.withDefault [] app.races)
+                            in
+                                case maybeRace of
                                     Nothing ->
-                                        div [] [ text "No riders loaded." ]
+                                        div []
+                                            [ text "Race does not exist. Adding result not possible." ]
 
-                _ ->
-                    div [] [ text "No resultAdd." ]
+                                    Just race ->
+                                        case app.riders of
+                                            Just riders ->
+                                                div []
+                                                    [ Result.View.Add.render race resultAdd riders app.results
+                                                    ]
+
+                                            Nothing ->
+                                                div [] [ text "No riders loaded." ]
+
+                        _ ->
+                            div [] [ text "No resultAdd." ]
+                Nothing ->
+                    div
+                        []
+                        [ text "Please log in." ]
 
         App.Routing.CommentAdd raceId ->
             let

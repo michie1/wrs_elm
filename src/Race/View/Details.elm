@@ -37,6 +37,12 @@ render app raceId =
                     (\race -> race.id == raceId)
                     (Maybe.withDefault [] app.races)
                 )
+
+        loggedIn = case app.account of
+            Just _ ->
+                True
+            Nothing ->
+                False
     in
         case maybeRace of
             Nothing ->
@@ -63,12 +69,12 @@ render app raceId =
                                                 ]
                                             , div []
                                                 [ h3 [] [ text "Results" ]
-                                                , addResultButton race
+                                                , addResultButton race loggedIn
                                                 ]
                                             , resultsTable race results riders
                                             ]
                                         , h3 [] [ text "Comments" ]
-                                        , addCommentButton race
+                                        , addCommentButton race loggedIn
                                         , commentsUl comments race riders
                                         ]
 
@@ -79,24 +85,29 @@ render app raceId =
                         div [] [ text "No riders loaded." ]
 
 
-addResultButton : Race.Model.Race -> Html App.Msg.Msg
-addResultButton race =
-    button
-        [ class "waves-effect waves-light btn"
-        , onClick (App.Msg.NavigateTo (App.Routing.ResultAdd race.id))
-        , Html.Attributes.name "action"
-        ]
-        [ text "Add result" ]
+addResultButton : Race.Model.Race -> Bool -> Html App.Msg.Msg
+addResultButton race show =
+    if show then
+        button [ class "waves-effect waves-light btn"
+            , onClick (App.Msg.NavigateTo (App.Routing.ResultAdd race.id))
+            , Html.Attributes.name "action"
+            ]
+                [ text "Add result" ]
+    else
+        span [] []
 
 
-addCommentButton : Race.Model.Race -> Html App.Msg.Msg
-addCommentButton race =
-    button
-        [ class "waves-effect waves-light btn"
-        , onClick (App.Msg.NavigateTo (App.Routing.CommentAdd race.id))
-        , Html.Attributes.name "action"
-        ]
-        [ text "Add Comment" ]
+addCommentButton : Race.Model.Race -> Bool -> Html App.Msg.Msg
+addCommentButton race show =
+    if show then
+        button
+            [ class "waves-effect waves-light btn"
+            , onClick (App.Msg.NavigateTo (App.Routing.CommentAdd race.id))
+            , Html.Attributes.name "action"
+            ]
+            [ text "Add Comment" ]
+    else
+        span [] []
 
 
 info : Race -> Html App.Msg.Msg
