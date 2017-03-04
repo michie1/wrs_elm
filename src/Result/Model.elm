@@ -1,6 +1,7 @@
 module Result.Model exposing (Add, Result, initialAdd, initialResults, ResultCategory, ResultCategory(..), categories)
 
 import Rider.Model exposing (Rider)
+import Ui.Chooser
 
 
 type ResultCategory
@@ -23,20 +24,22 @@ type alias Result =
 
 type alias Add =
     { raceId : Int
-    , riderName : String
     , result : String
     , category : ResultCategory
     , strava : String
+    , chooser : Ui.Chooser.Model
     }
-
 
 initialAdd : Add
 initialAdd =
     { raceId = 0
-    , riderName = ""
     , result = ""
     , category = Amateurs
     , strava = ""
+    , chooser = ( Ui.Chooser.init ()
+                    |> Ui.Chooser.closeOnSelect True
+                    |> Ui.Chooser.searchable True
+                    )
     }
 
 

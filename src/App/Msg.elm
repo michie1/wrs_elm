@@ -15,6 +15,7 @@ import Phoenix.Socket
 import Json.Encode
 import Ui.Ratings
 import Ui.Calendar
+import Ui.Chooser
 
 
 type Msg
@@ -30,7 +31,6 @@ type Msg
     | ResultAddCategory Result.Model.ResultCategory
     | ResultAddStrava String
     | ResultAddResult String
-    | ResultRiderName String
     | ResultsSocket
     | ResultsSocketResponse Json.Encode.Value
     | CommentsSocket
@@ -72,3 +72,4 @@ type Msg
     | DatePicked String
     | Ratings Ui.Ratings.Msg
     | Calendar Ui.Calendar.Msg
+    | Chooser Ui.Chooser.Msg

@@ -35,6 +35,7 @@ import App.Helpers
 import Rider.Update
 import Ui.Ratings
 import Ui.Calendar
+import Ui.Chooser
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
@@ -148,19 +149,6 @@ update msg app =
                         { app
                             | page =
                                 App.Model.ResultAdd <| Result.Update.addResult value resultAdd
-                        }
-
-                    _ ->
-                        app
-                , Cmd.none
-                )
-
-            ResultRiderName name ->
-                ( case app.page of
-                    App.Model.ResultAdd resultAdd ->
-                        { app
-                            | page =
-                                App.Model.ResultAdd <| Result.Update.riderName name resultAdd
                         }
 
                     _ ->
@@ -567,3 +555,22 @@ update msg app =
                             )
                     _ ->
                         noOp
+
+
+            Chooser msg_ ->
+                case app.page of
+                    App.Model.ResultAdd resultAdd ->
+                        let
+                            ( chooser, cmd ) =
+                                Ui.Chooser.update msg_ resultAdd.chooser
+
+
+                            nextResultAdd = App.Model.ResultAdd { resultAdd | chooser = chooser }
+                        in
+                            ( { app | page = nextResultAdd }
+                            , Cmd.map Chooser cmd
+                            )
+                    _ ->
+                        noOp
+
+                

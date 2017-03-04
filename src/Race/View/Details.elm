@@ -18,6 +18,7 @@ import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
 import App.Helpers
 
+
 dateTimeFormat : Date.Date -> String
 dateTimeFormat date =
     Date.Extra.Format.format config "%d-%m-%Y %H:%M" date
@@ -38,11 +39,13 @@ render app raceId =
                     (Maybe.withDefault [] app.races)
                 )
 
-        loggedIn = case app.account of
-            Just _ ->
-                True
-            Nothing ->
-                False
+        loggedIn =
+            case app.account of
+                Just _ ->
+                    True
+
+                Nothing ->
+                    False
     in
         case maybeRace of
             Nothing ->
@@ -88,11 +91,12 @@ render app raceId =
 addResultButton : Race.Model.Race -> Bool -> Html App.Msg.Msg
 addResultButton race show =
     if show then
-        button [ class "waves-effect waves-light btn"
+        button
+            [ class "waves-effect waves-light btn"
             , onClick (App.Msg.NavigateTo (App.Routing.ResultAdd race.id))
             , Html.Attributes.name "action"
             ]
-                [ text "Add result" ]
+            [ text "Add result" ]
     else
         span [] []
 
@@ -135,21 +139,22 @@ info race =
 
 resultsTable : Race -> List Result.Model.Result -> List Rider.Model.Rider -> Html msg
 resultsTable race results riders =
-    let
-        a : String
-        a =
-            "hoi"
-    in
-        div []
-            [ div [] (List.map (\category -> resultsByCategory category results riders) Result.Model.categories)
-            ]
+    div [] <|
+        List.map
+            (\category -> resultsByCategory category results riders)
+            Result.Model.categories
 
 
 resultsByCategory : Result.Model.ResultCategory -> List Result.Model.Result -> List Rider.Model.Rider -> Html msg
 resultsByCategory category results riders =
     let
         catResults =
-            List.sortBy .result (List.filter (\result -> result.category == category) results)
+            List.sortBy
+                .result
+            <|
+                List.filter
+                    (\result -> result.category == category)
+                    results
     in
         case List.length catResults of
             0 ->
@@ -165,7 +170,8 @@ resultsByCategory category results riders =
                                 , th [] [ text "Result" ]
                                 ]
                             ]
-                        , tbody [] (List.map (\result -> resultRow result riders) catResults)
+                        , tbody [] <|
+                            List.map (\result -> resultRow result riders) catResults
                         ]
                     ]
 

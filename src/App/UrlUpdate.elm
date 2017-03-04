@@ -15,7 +15,7 @@ import Date
 import App.Helpers
 import App.Routing
 import Ui.Calendar
-
+import Ui.Chooser
 
 onUrlLeave : App.Routing.Route -> App -> App
 onUrlLeave prevRoute prevApp =
@@ -56,32 +56,85 @@ onUrlEnter route app =
                         )
 
         App.Routing.ResultAdd raceId ->
-            let
-                resultAdd =
-                    Result.Model.initialAdd
+            case app.account of
+                Nothing ->
+                    ( app, Cmd.none )
 
-                name =
-                    case app.account of
-                        Just account ->
-                            case resultExists account.id raceId app.results of
-                                False ->
-                                    account.name
-
-                                True ->
-                                    ""
-
+                Just account ->
+                    case app.riders of
                         Nothing ->
-                            ""
+                            ( app, Cmd.none )
 
-                resultAddWithRaceId =
-                    { resultAdd
-                        | raceId = raceId
-                        , riderName = name
-                    }
-            in
-                ( { app | page = App.Model.ResultAdd resultAddWithRaceId }
-                , fetchForRoute (App.Routing.ResultAdd raceId)
-                )
+                        Just riders ->
+                            let
+                                resultAdd =
+                                    Result.Model.initialAdd
+
+                                {--
+                                name =
+                                    case app.account of
+                                        Just account ->
+                                            case resultExists account.id raceId app.results of
+                                                False ->
+                                                    account.name
+
+                                                True ->
+                                                    ""
+
+                                        Nothing ->
+                                            ""
+                                --}
+
+                                filteredRiders =
+                                    List.filter
+                                        (\rider -> not <| resultExists rider.id raceId app.results)
+                                        riders
+
+                                items : List Ui.Chooser.Item
+                                items =
+                                    List.map
+                                        (\rider -> 
+                                            { id = toString rider.id
+                                            , label = rider.name
+                                            , value = toString rider.id 
+                                            }
+                                        )
+                                        filteredRiders
+
+                                accountInFilteredRiders =
+                                    List.length 
+                                        (
+                                            ( List.filter 
+                                                (\rider ->
+                                                    rider.id == account.id
+                                                )
+                                                filteredRiders
+                                            )
+                                        ) 
+                                        == 1
+
+                                chooser = 
+                                    case accountInFilteredRiders of
+                                        True ->
+                                            resultAdd.chooser |>
+                                            Ui.Chooser.items items |> 
+                                            Ui.Chooser.setValue (toString account.id)
+
+                                        False ->
+                                            resultAdd.chooser |>
+                                            Ui.Chooser.items items
+                                
+
+                                resultAddWithRaceId =
+                                    { resultAdd
+                                        | raceId = raceId
+                                        , chooser = chooser
+                                    }
+                            in
+                                ( { app | page = App.Model.ResultAdd resultAddWithRaceId }
+                                , fetchForRoute (App.Routing.ResultAdd raceId)
+                                )
+
 
         App.Routing.CommentAdd raceId ->
             case app.account of

@@ -32,6 +32,13 @@ getRiderByName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderByName name riders =
     List.head (List.filter (\rider -> rider.name == name) riders)
 
+getRiderByResultId : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
+getRiderByResultId stringId riders =
+    case String.toInt stringId of
+        Ok id ->
+            List.head (List.filter (\rider -> rider.id == id) riders)
+        Err _ ->
+            Nothing
 
 calcRaceId : List Race -> Int
 calcRaceId races =

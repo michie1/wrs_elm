@@ -1,4 +1,4 @@
-module Result.Update exposing (add, addCategory, riderName, addStrava, addResult, addSocketResponse, resultsSocket, resultsSocketResponse)
+module Result.Update exposing (add, addCategory, addStrava, addResult, addSocketResponse, resultsSocket, resultsSocketResponse)
 
 import App.Model exposing (App)
 import Result.Model exposing (Add)
@@ -13,45 +13,48 @@ import Json.Encode
 import Json.Decode
 import App.Encoder
 import App.Decoder
+import Set
 
 
 add : Result.Model.Add -> List Rider.Model.Rider -> List Result.Model.Result -> Phoenix.Socket.Socket App.Msg.Msg -> Maybe ( Phoenix.Socket.Socket App.Msg.Msg, Cmd Msg )
 add resultAdd riders results phxSocket =
-    case App.Helpers.getRiderByName resultAdd.riderName riders of
-        Just rider ->
-            let
-                payload =
-                    Json.Encode.object
-                        [ ( "riderId", Json.Encode.int rider.id )
-                        , ( "raceId", Json.Encode.int resultAdd.raceId )
-                        , ( "result", Json.Encode.string resultAdd.result )
-                        , ( "category", App.Encoder.resultCategory resultAdd.category )
-                        , ( "strava", Json.Encode.string resultAdd.strava )
-                        ]
+    -- case App.Helpers.getRiderByName resultAdd.riderName riders of
+    --case App.Helpers.getRiderByResultId "1" riders of
+    --    Just rider ->
+    case resultAdd.chooser.selected |> Set.toList |> List.head of
+        Just riderIdString ->
+            case String.toInt riderIdString of
+                Err val ->
+                    Nothing
 
-                phxPush =
-                    Phoenix.Push.init "createResult" "room:lobby"
-                        |> Phoenix.Push.withPayload payload
-                        |> Phoenix.Push.onOk ResultAddSocketResponse
-                        |> Phoenix.Push.onError HandleSendError
+                Ok riderId -> 
+                   let
+                       payload =
+                            Json.Encode.object
+                                [ ( "riderId", Json.Encode.int riderId )
+                                , ( "raceId", Json.Encode.int resultAdd.raceId )
+                                , ( "result", Json.Encode.string resultAdd.result )
+                                , ( "category", App.Encoder.resultCategory resultAdd.category )
+                                , ( "strava", Json.Encode.string resultAdd.strava )
+                                ]
 
-                ( nextPhxSocket, phxCmd ) =
-                    Phoenix.Socket.push phxPush phxSocket
-            in
-                Just <|
-                    ( nextPhxSocket
-                    , Cmd.map PhoenixMsg phxCmd
-                    )
+                       phxPush =
+                            Phoenix.Push.init "createResult" "room:lobby"
+                                |> Phoenix.Push.withPayload payload
+                                |> Phoenix.Push.onOk ResultAddSocketResponse
+                                |> Phoenix.Push.onError HandleSendError
+
+                       ( nextPhxSocket, phxCmd ) =
+                            Phoenix.Socket.push phxPush phxSocket
+                   in
+                        Just <|
+                        ( nextPhxSocket
+                        , Cmd.map PhoenixMsg phxCmd
+                        )
 
         Nothing ->
             Nothing
-
-
-riderName : String -> Result.Model.Add -> Result.Model.Add
-riderName name resultAdd =
-    { resultAdd | riderName = name }
-
-
+     
 addCategory :
     Result.Model.ResultCategory
     -> Result.Model.Add

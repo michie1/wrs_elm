@@ -8,6 +8,8 @@ import App.Msg
 import Result.Model
 import Race.Model
 import Rider.Model exposing (Rider)
+import Ui.Chooser
+import Set
 
 
 riderNameExists : String -> List Rider -> Bool
@@ -15,15 +17,52 @@ riderNameExists name riders =
     List.length (List.filter (\rider -> rider.name == name) riders) > 0
 
 
+
+--resultExists : Int -> Int -> List Result.Model.Result -> Bool
+--resultExists raceId riderId results =
+--True
+
+
 render : Race.Model.Race -> Result.Model.Add -> List Rider -> List Result.Model.Result -> Html App.Msg.Msg
 render race resultAdd riders results =
     let
         submitDisabled =
-            not (riderNameExists resultAdd.riderName riders)
-                || String.isEmpty resultAdd.result
+            --not (riderNameExists resultAdd.riderName riders)
+            -- ||
+            String.isEmpty resultAdd.result
                 || (not (String.isEmpty resultAdd.strava)
                         && not (String.contains "strava.com" resultAdd.strava)
                    )
+
+        filteredRiders =
+            List.filter
+                (\rider -> not <| resultExists rider race results)
+                riders
+
+        items : List Ui.Chooser.Item
+        items =
+            List.map
+                (\rider -> 
+                    { id = toString rider.id
+                    , label = rider.name
+                    , value = toString rider.id 
+                    }
+                )
+                filteredRiders
+
+        chooser =
+            case List.head items of
+                Just head ->
+                    let
+                        _ = Debug.log "head.id" (toString head.id)
+                    in
+                        resultAdd.chooser
+                            --|> Ui.Chooser.items items
+                            -- |> Ui.Chooser.setValue (head.value)
+
+                Nothing ->
+                    resultAdd.chooser 
+                        -- |> Ui.Chooser.items items
 
         -- TODO: button is enabled although result already exists
     in
@@ -43,15 +82,8 @@ render race resultAdd riders results =
                 ]
             , div [ class "row" ]
                 [ div [ class "input-field col s6" ]
-                    [ input
-                        [ id "rider"
-                        , type_ "text"
-                        , value resultAdd.riderName
-                        , onInput App.Msg.ResultRiderName
-                        , class "autocomplete"
-                        ]
-                        []
-                    , label [ for "rider", class "active" ] [ text ("Rider: " ++ resultAdd.riderName) ]
+                    [ div [] [ Html.map App.Msg.Chooser (Ui.Chooser.view chooser) ]
+                    , label [ for "rider", class "active" ] [ text "Rider" ]
                     ]
                 ]
             , div [ class "row" ] [ categoryButtons ]
@@ -82,8 +114,8 @@ render race resultAdd riders results =
             ]
 
 
-resultExists : List Result.Model.Result -> Race.Model.Race -> Rider.Model.Rider -> Bool
-resultExists results race rider =
+resultExists : Rider.Model.Rider -> Race.Model.Race -> List Result.Model.Result -> Bool
+resultExists rider race results =
     List.length
         (List.filter
             (\result -> race.id == result.raceId && rider.id == result.riderId)
