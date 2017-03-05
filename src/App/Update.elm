@@ -161,12 +161,14 @@ update msg app =
 
             ResultsSocketResponse rawResponse ->
                 Result.Update.resultsSocketResponse rawResponse app
+                -- TODO: do urlUpdate again
 
             CommentsSocket ->
                 Comment.Update.commentsSocket app
 
             CommentsSocketResponse rawResponse ->
                 Comment.Update.commentsSocketResponse rawResponse app
+                -- TODO: do urlUpdate again
 
             CommentAddSetText text ->
                 ( case app.page of
@@ -267,12 +269,14 @@ update msg app =
 
             RacesSocketResponse rawResponse ->
                 Race.Update.racesSocketResponse rawResponse app
+                -- TODO: do urlUpdate again
 
             RidersSocket ->
                 Rider.Update.ridersSocket app
 
             RidersSocketResponse rawResponse ->
                 Rider.Update.ridersSocketResponse rawResponse app
+                -- TODO: do urlUpdate again
 
             OnJoinResponse rawResponse ->
                 let

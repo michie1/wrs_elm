@@ -14,6 +14,7 @@ import Json.Decode
 import App.Encoder
 import App.Decoder
 import Set
+import App.UrlUpdate
 
 
 add : Result.Model.Add -> List Rider.Model.Rider -> List Result.Model.Result -> Phoenix.Socket.Socket App.Msg.Msg -> Maybe ( Phoenix.Socket.Socket App.Msg.Msg, Cmd Msg )
@@ -125,9 +126,17 @@ resultsSocketResponse message app =
     in
         case resultResults of
             Ok results ->
-                ( { app | results = results }
-                , Cmd.none
-                )
+                case app.page of
+                    App.Model.NoOp ->
+                        -- App.UrlUpdate.onUrlEnter (App.Routing.ResultAdd 1) { app | results = results }
+                        ( { app | results = results }
+                        , Cmd.none
+                        )
+    
+                    _ ->
+                        ( { app | results = results }
+                        , Cmd.none
+                        )
 
             Err errorMessage ->
                 let

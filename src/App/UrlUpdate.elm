@@ -1,4 +1,4 @@
-module App.UrlUpdate exposing (urlUpdate)
+module App.UrlUpdate exposing (urlUpdate, onUrlEnter)
 
 --import App.Msg exposing (Msg(..))
 
@@ -58,12 +58,18 @@ onUrlEnter route app =
         App.Routing.ResultAdd raceId ->
             case app.account of
                 Nothing ->
-                    ( app, Cmd.none )
+                    let
+                        _ = Debug.log "nothing" "app.account"
+                    in
+                        ( app, Cmd.none )
 
                 Just account ->
                     case app.riders of
                         Nothing ->
-                            ( app, Cmd.none )
+                            let
+                                _ = Debug.log "nothing" "app.riders"
+                            in
+                                ( app, Cmd.none )
 
                         Just riders ->
                             let

@@ -7,7 +7,8 @@ import Json.Encode
 import App.Decoder
 import Phoenix.Socket
 import Phoenix.Push
-
+import App.Routing
+import App.UrlUpdate
 
 ridersSocket : App -> ( App, Cmd Msg )
 ridersSocket app =
@@ -43,9 +44,21 @@ ridersSocketResponse message app =
     in
         case resultResults of
             Ok riders ->
-                ( { app | riders = Just riders }
-                , Cmd.none
-                )
+                case app.page of
+                    App.Model.NoOp ->
+                        case app.route of
+                            App.Routing.ResultAdd raceId ->
+                                App.UrlUpdate.onUrlEnter (App.Routing.ResultAdd raceId) { app | riders = Just riders }
+
+                            _ ->
+                                ( { app | riders = Just riders }
+                                , Cmd.none
+                                )
+    
+                    _ ->
+                        ( { app | riders = Just riders }
+                        , Cmd.none
+                        )
 
             Err errorMessage ->
                 let
