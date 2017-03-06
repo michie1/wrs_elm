@@ -32,6 +32,10 @@ getRiderByName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderByName name riders =
     List.head (List.filter (\rider -> rider.name == name) riders)
 
+getRiderByLowerCaseName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
+getRiderByLowerCaseName name riders =
+    List.head (List.filter (\rider -> (String.toLower rider.name) == (String.toLower name)) riders)
+
 getRiderByResultId : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderByResultId stringId riders =
     case String.toInt stringId of

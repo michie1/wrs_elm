@@ -63,7 +63,7 @@ login app =
         App.Model.AccountLogin accountLogin ->
             let
                 maybeRider =
-                    App.Helpers.getRiderByName
+                    App.Helpers.getRiderByLowerCaseName
                         accountLogin.name
                         (Maybe.withDefault [] app.riders)
             in

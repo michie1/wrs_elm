@@ -8,51 +8,69 @@ import Html exposing (Html, h2, h4, i, p, label, button, nav, div, text, span, a
 import Html.Attributes exposing (checked, value, name, class, type_, id, for, class, disabled, href)
 import Html.Events exposing (onClick, onInput)
 
+riderNameExists : String -> List Rider.Model.Rider -> Bool
+riderNameExists riderName riders =
+    List.length
+        (  List.filter 
+            (\rider -> (String.toLower rider.name) == (String.toLower riderName))
+            riders
+        )
+        == 1
+
 
 login : App -> Html App.Msg.Msg
 login app =
     case app.page of
         App.Model.AccountLogin accountLogin ->
-            div []
-                [ h2 [] [ text "Login" ]
-                , div []
-                    [ div [ class "row" ]
-                        [ div [ class "input-field col s6" ]
-                            [ input
-                                [ id "name"
-                                , class "autocomplete"
-                                , type_ "text"
-                                , value accountLogin.name
-                                , onInput App.Msg.AccountLoginName
-                                ]
-                                []
-                            , label [ for "name" ] [ text "Name" ]
-                            ]
-                        ]
-                      {--, div [ class "row" ]
+            let
+                submitDisabled =
+                    case app.riders of
+                        Just riders ->
+                            not <| riderNameExists accountLogin.name riders
+
+                        Nothing ->
+                            False
+            in
+                div []
+                    [ h2 [] [ text "Login" ]
+                    , div []
+                        [ div [ class "row" ]
                             [ div [ class "input-field col s6" ]
                                 [ input
-                                    [ id "password"
-                                    , type_ "password"
-                                    , onInput App.Msg.AccountLoginPassword
+                                    [ id "name"
+                                    , class "autocomplete"
+                                    , type_ "text"
+                                    , value accountLogin.name
+                                    , onInput App.Msg.AccountLoginName
                                     ]
                                     []
-                                , label [ for "password" ] [ text "Password" ]
+                                , label [ for "name" ] [ text "Name" ]
                                 ]
                             ]
-                        --}
+                          {--, div [ class "row" ]
+                                [ div [ class "input-field col s6" ]
+                                    [ input
+                                        [ id "password"
+                                        , type_ "password"
+                                        , onInput App.Msg.AccountLoginPassword
+                                        ]
+                                        []
+                                    , label [ for "password" ] [ text "Password" ]
+                                    ]
+                                ]
+                            --}
+                        ]
+                    , button
+                        [ class "waves-effect waves-light btn"
+                        , type_ "submit"
+                        , onClick (App.Msg.AccountLogin)
+                        , Html.Attributes.name "action"
+                        , disabled submitDisabled
+                        ]
+                        [ text "Login"
+                        , i [ class "material-icons right" ] [ text "send" ]
+                        ]
                     ]
-                , button
-                    [ class "waves-effect waves-light btn"
-                    , type_ "submit"
-                    , onClick (App.Msg.AccountLogin)
-                    , Html.Attributes.name "action"
-                      --, disabled submitDisabled
-                    ]
-                    [ text "Login"
-                    , i [ class "material-icons right" ] [ text "send" ]
-                    ]
-                ]
 
         _ ->
             div [] [ text "accountLogin nothing" ]
