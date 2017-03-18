@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --hot --inline",
-    "build": "webpack"
+    "build": "elm-make src/Main.elm --output dist/wrs.js"
   },
   "author": "",
   "license": "ISC",
