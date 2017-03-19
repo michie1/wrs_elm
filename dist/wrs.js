@@ -24978,7 +24978,7 @@ var _user$project$App_Model$initial = function () {
 								'room:lobby',
 								_user$project$App_Msg$ReceiveMessage,
 								_fbonetti$elm_phoenix_socket$Phoenix_Socket$withDebug(
-									_fbonetti$elm_phoenix_socket$Phoenix_Socket$init('ws://localhost:4000/socket/websocket')))))))));
+									_fbonetti$elm_phoenix_socket$Phoenix_Socket$init('ws://phx.fastfox.nl/socket/websocket')))))))));
 	var initSocket = _p0._0;
 	var phxCmd = _p0._1;
 	return {
