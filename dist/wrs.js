@@ -24792,6 +24792,7 @@ var _user$project$App_Msg$Ratings = function (a) {
 var _user$project$App_Msg$DatePicked = function (a) {
 	return {ctor: 'DatePicked', _0: a};
 };
+var _user$project$App_Msg$OnError = {ctor: 'OnError'};
 var _user$project$App_Msg$OnJoin = {ctor: 'OnJoin'};
 var _user$project$App_Msg$OnJoinResponse = function (a) {
 	return {ctor: 'OnJoinResponse', _0: a};
@@ -24941,9 +24942,12 @@ var _user$project$App_Model$App = function (a) {
 var _user$project$App_Model$NoOp = {ctor: 'NoOp'};
 var _user$project$App_Model$initial = function () {
 	var channel = A2(
-		_fbonetti$elm_phoenix_socket$Phoenix_Channel$onJoin,
-		_elm_lang$core$Basics$always(_user$project$App_Msg$OnJoin),
-		_fbonetti$elm_phoenix_socket$Phoenix_Channel$init('room:lobby'));
+		_fbonetti$elm_phoenix_socket$Phoenix_Channel$onError,
+		_elm_lang$core$Basics$always(_user$project$App_Msg$OnError),
+		A2(
+			_fbonetti$elm_phoenix_socket$Phoenix_Channel$onJoin,
+			_elm_lang$core$Basics$always(_user$project$App_Msg$OnJoin),
+			_fbonetti$elm_phoenix_socket$Phoenix_Channel$init('room:lobby')));
 	var _p0 = A2(
 		_fbonetti$elm_phoenix_socket$Phoenix_Socket$join,
 		channel,
@@ -27715,8 +27719,11 @@ var _user$project$App_Update$update = F2(
 						{phxSocket: phxSocket}),
 					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$PhoenixMsg, phxCmd)
 				};
+			case 'OnError':
+				var _p38 = A2(_elm_lang$core$Debug$log, 'OnError', 'error');
+				return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'OnJoin':
-				var _p38 = A2(_elm_lang$core$Debug$log, 'onJoin', 'success');
+				var _p39 = A2(_elm_lang$core$Debug$log, 'onJoin', 'success');
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -27754,8 +27761,8 @@ var _user$project$App_Update$update = F2(
 						})
 				};
 			case 'DatePicked':
-				var _p39 = app.page;
-				if (_p39.ctor === 'RaceAdd') {
+				var _p40 = app.page;
+				if (_p40.ctor === 'RaceAdd') {
 					var page = A2(
 						_user$project$Race_Update$addPage2,
 						_user$project$App_Msg$RaceDate(_p0._0),
@@ -27771,9 +27778,9 @@ var _user$project$App_Update$update = F2(
 					return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			case 'Ratings':
-				var _p40 = A2(_gdotdesign$elm_ui$Ui_Ratings$update, _p0._0, app.ratings);
-				var ratings = _p40._0;
-				var cmd = _p40._1;
+				var _p41 = A2(_gdotdesign$elm_ui$Ui_Ratings$update, _p0._0, app.ratings);
+				var ratings = _p41._0;
+				var cmd = _p41._1;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -27782,15 +27789,15 @@ var _user$project$App_Update$update = F2(
 					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$Ratings, cmd)
 				};
 			case 'Calendar':
-				var _p41 = app.page;
-				if (_p41.ctor === 'RaceAdd') {
-					var _p43 = _p41._0;
-					var _p42 = A2(_gdotdesign$elm_ui$Ui_Calendar$update, _p0._0, _p43.calendar);
-					var calendar = _p42._0;
-					var cmd = _p42._1;
+				var _p42 = app.page;
+				if (_p42.ctor === 'RaceAdd') {
+					var _p44 = _p42._0;
+					var _p43 = A2(_gdotdesign$elm_ui$Ui_Calendar$update, _p0._0, _p44.calendar);
+					var calendar = _p43._0;
+					var cmd = _p43._1;
 					var nextRaceAdd = _user$project$App_Model$RaceAdd(
 						_elm_lang$core$Native_Utils.update(
-							_p43,
+							_p44,
 							{calendar: calendar}));
 					return {
 						ctor: '_Tuple2',
@@ -27803,15 +27810,15 @@ var _user$project$App_Update$update = F2(
 					return noOp;
 				}
 			default:
-				var _p44 = app.page;
-				if (_p44.ctor === 'ResultAdd') {
-					var _p46 = _p44._0;
-					var _p45 = A2(_gdotdesign$elm_ui$Ui_Chooser$update, _p0._0, _p46.chooser);
-					var chooser = _p45._0;
-					var cmd = _p45._1;
+				var _p45 = app.page;
+				if (_p45.ctor === 'ResultAdd') {
+					var _p47 = _p45._0;
+					var _p46 = A2(_gdotdesign$elm_ui$Ui_Chooser$update, _p0._0, _p47.chooser);
+					var chooser = _p46._0;
+					var cmd = _p46._1;
 					var nextResultAdd = _user$project$App_Model$ResultAdd(
 						_elm_lang$core$Native_Utils.update(
-							_p46,
+							_p47,
 							{chooser: chooser}));
 					return {
 						ctor: '_Tuple2',
