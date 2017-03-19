@@ -50,7 +50,8 @@ initial =
                 |> Phoenix.Channel.onJoin (always App.Msg.OnJoin)
 
         ( initSocket, phxCmd ) =
-            Phoenix.Socket.init "ws://localhost:4000/socket/websocket"
+            -- Phoenix.Socket.init "ws://localhost:4000/socket/websocket"
+            Phoenix.Socket.init "ws://phx.fastfox.nl/socket/websocket"
                 |> Phoenix.Socket.withDebug
                 |> Phoenix.Socket.on "shout" "room:lobby" App.Msg.ReceiveMessage
                 |> Phoenix.Socket.on "createdRider" "room:lobby" App.Msg.OnCreatedRider
