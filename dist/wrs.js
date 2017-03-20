@@ -24792,7 +24792,6 @@ var _user$project$App_Msg$Ratings = function (a) {
 var _user$project$App_Msg$DatePicked = function (a) {
 	return {ctor: 'DatePicked', _0: a};
 };
-var _user$project$App_Msg$OnError = {ctor: 'OnError'};
 var _user$project$App_Msg$OnJoin = {ctor: 'OnJoin'};
 var _user$project$App_Msg$OnJoinResponse = function (a) {
 	return {ctor: 'OnJoinResponse', _0: a};
@@ -24914,6 +24913,10 @@ var _user$project$App_Msg$RaceName = function (a) {
 };
 var _user$project$App_Msg$RaceAdd = {ctor: 'RaceAdd'};
 
+var _user$project$App_Flags$Flags = function (a) {
+	return {wsUrl: a};
+};
+
 var _user$project$App_Model$App = function (a) {
 	return function (b) {
 		return function (c) {
@@ -24940,14 +24943,11 @@ var _user$project$App_Model$App = function (a) {
 	};
 };
 var _user$project$App_Model$NoOp = {ctor: 'NoOp'};
-var _user$project$App_Model$initial = function () {
+var _user$project$App_Model$initial = function (flags) {
 	var channel = A2(
-		_fbonetti$elm_phoenix_socket$Phoenix_Channel$onError,
-		_elm_lang$core$Basics$always(_user$project$App_Msg$OnError),
-		A2(
-			_fbonetti$elm_phoenix_socket$Phoenix_Channel$onJoin,
-			_elm_lang$core$Basics$always(_user$project$App_Msg$OnJoin),
-			_fbonetti$elm_phoenix_socket$Phoenix_Channel$init('room:lobby')));
+		_fbonetti$elm_phoenix_socket$Phoenix_Channel$onJoin,
+		_elm_lang$core$Basics$always(_user$project$App_Msg$OnJoin),
+		_fbonetti$elm_phoenix_socket$Phoenix_Channel$init('room:lobby'));
 	var _p0 = A2(
 		_fbonetti$elm_phoenix_socket$Phoenix_Socket$join,
 		channel,
@@ -24982,7 +24982,7 @@ var _user$project$App_Model$initial = function () {
 								'room:lobby',
 								_user$project$App_Msg$ReceiveMessage,
 								_fbonetti$elm_phoenix_socket$Phoenix_Socket$withDebug(
-									_fbonetti$elm_phoenix_socket$Phoenix_Socket$init('ws://phx.fastfox.nl/socket/websocket')))))))));
+									_fbonetti$elm_phoenix_socket$Phoenix_Socket$init(flags.wsUrl)))))))));
 	var initSocket = _p0._0;
 	var phxCmd = _p0._1;
 	return {
@@ -24996,7 +24996,7 @@ var _user$project$App_Model$initial = function () {
 					{ctor: '_Tuple0'}))),
 		_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$PhoenixMsg, phxCmd)
 	};
-}();
+};
 var _user$project$App_Model$CommentAdd = function (a) {
 	return {ctor: 'CommentAdd', _0: a};
 };
@@ -27719,11 +27719,8 @@ var _user$project$App_Update$update = F2(
 						{phxSocket: phxSocket}),
 					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$PhoenixMsg, phxCmd)
 				};
-			case 'OnError':
-				var _p38 = A2(_elm_lang$core$Debug$log, 'OnError', 'error');
-				return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'OnJoin':
-				var _p39 = A2(_elm_lang$core$Debug$log, 'onJoin', 'success');
+				var _p38 = A2(_elm_lang$core$Debug$log, 'onJoin', 'success');
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -27761,8 +27758,8 @@ var _user$project$App_Update$update = F2(
 						})
 				};
 			case 'DatePicked':
-				var _p40 = app.page;
-				if (_p40.ctor === 'RaceAdd') {
+				var _p39 = app.page;
+				if (_p39.ctor === 'RaceAdd') {
 					var page = A2(
 						_user$project$Race_Update$addPage2,
 						_user$project$App_Msg$RaceDate(_p0._0),
@@ -27778,9 +27775,9 @@ var _user$project$App_Update$update = F2(
 					return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			case 'Ratings':
-				var _p41 = A2(_gdotdesign$elm_ui$Ui_Ratings$update, _p0._0, app.ratings);
-				var ratings = _p41._0;
-				var cmd = _p41._1;
+				var _p40 = A2(_gdotdesign$elm_ui$Ui_Ratings$update, _p0._0, app.ratings);
+				var ratings = _p40._0;
+				var cmd = _p40._1;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -27789,15 +27786,15 @@ var _user$project$App_Update$update = F2(
 					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$Ratings, cmd)
 				};
 			case 'Calendar':
-				var _p42 = app.page;
-				if (_p42.ctor === 'RaceAdd') {
-					var _p44 = _p42._0;
-					var _p43 = A2(_gdotdesign$elm_ui$Ui_Calendar$update, _p0._0, _p44.calendar);
-					var calendar = _p43._0;
-					var cmd = _p43._1;
+				var _p41 = app.page;
+				if (_p41.ctor === 'RaceAdd') {
+					var _p43 = _p41._0;
+					var _p42 = A2(_gdotdesign$elm_ui$Ui_Calendar$update, _p0._0, _p43.calendar);
+					var calendar = _p42._0;
+					var cmd = _p42._1;
 					var nextRaceAdd = _user$project$App_Model$RaceAdd(
 						_elm_lang$core$Native_Utils.update(
-							_p44,
+							_p43,
 							{calendar: calendar}));
 					return {
 						ctor: '_Tuple2',
@@ -27810,15 +27807,15 @@ var _user$project$App_Update$update = F2(
 					return noOp;
 				}
 			default:
-				var _p45 = app.page;
-				if (_p45.ctor === 'ResultAdd') {
-					var _p47 = _p45._0;
-					var _p46 = A2(_gdotdesign$elm_ui$Ui_Chooser$update, _p0._0, _p47.chooser);
-					var chooser = _p46._0;
-					var cmd = _p46._1;
+				var _p44 = app.page;
+				if (_p44.ctor === 'ResultAdd') {
+					var _p46 = _p44._0;
+					var _p45 = A2(_gdotdesign$elm_ui$Ui_Chooser$update, _p0._0, _p46.chooser);
+					var chooser = _p45._0;
+					var cmd = _p45._1;
 					var nextResultAdd = _user$project$App_Model$ResultAdd(
 						_elm_lang$core$Native_Utils.update(
-							_p47,
+							_p46,
 							{chooser: chooser}));
 					return {
 						ctor: '_Tuple2',
@@ -31237,37 +31234,45 @@ var _user$project$Main$subscriptions = function (app) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Main$init = function (location) {
-	var _p0 = _user$project$App_Model$initial;
-	var initialApp = _p0._0;
-	var initialCmd = _p0._1;
-	var route = _user$project$App_Routing$routeParser(location);
-	var _p1 = A2(_user$project$App_UrlUpdate$urlUpdate, route, initialApp);
-	var app = _p1._0;
-	var cmd = _p1._1;
-	return {
-		ctor: '_Tuple2',
-		_0: app,
-		_1: _elm_lang$core$Platform_Cmd$batch(
-			{
-				ctor: '::',
-				_0: cmd,
-				_1: {
+var _user$project$Main$init = F2(
+	function (flags, location) {
+		var _p0 = _user$project$App_Model$initial(flags);
+		var initialApp = _p0._0;
+		var initialCmd = _p0._1;
+		var route = _user$project$App_Routing$routeParser(location);
+		var _p1 = A2(_user$project$App_UrlUpdate$urlUpdate, route, initialApp);
+		var app = _p1._0;
+		var cmd = _p1._1;
+		return {
+			ctor: '_Tuple2',
+			_0: app,
+			_1: _elm_lang$core$Platform_Cmd$batch(
+				{
 					ctor: '::',
-					_0: initialCmd,
-					_1: {ctor: '[]'}
-				}
-			})
-	};
-};
+					_0: cmd,
+					_1: {
+						ctor: '::',
+						_0: initialCmd,
+						_1: {ctor: '[]'}
+					}
+				})
+		};
+	});
 var _user$project$Main$parser = function (location) {
 	return _user$project$App_Msg$UrlUpdate(
 		_user$project$App_Routing$routeParser(location));
 };
 var _user$project$Main$main = A2(
-	_elm_lang$navigation$Navigation$program,
+	_elm_lang$navigation$Navigation$programWithFlags,
 	_user$project$Main$parser,
-	{init: _user$project$Main$init, update: _user$project$App_Update$update, subscriptions: _user$project$Main$subscriptions, view: _user$project$App_View$render})();
+	{init: _user$project$Main$init, update: _user$project$App_Update$update, subscriptions: _user$project$Main$subscriptions, view: _user$project$App_View$render})(
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (wsUrl) {
+			return _elm_lang$core$Json_Decode$succeed(
+				{wsUrl: wsUrl});
+		},
+		A2(_elm_lang$core$Json_Decode$field, 'wsUrl', _elm_lang$core$Json_Decode$string)));
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
