@@ -11,6 +11,9 @@
     <script src="wrs.js"></script>
     <script>
       var app = Elm.Main.embed(document.getElementById('main'));
+      Elm.Main.embed(document.getElementById('main'), {
+        wsUrl: "ws://phx.fastfox.nl/socket/websocket"
+      });
     </script> 
   </body>
 </html>

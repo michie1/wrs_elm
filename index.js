@@ -1,4 +1,8 @@
 'use strict';
 
 var Elm = require('./src/Main');
-var elm = Elm.Main.embed(document.getElementById('main'));
+Elm.Main.embed(document.getElementById('main'), {
+	//wsUrl: "ws://phx.fastfox.nl/socket/websocket"
+	wsUrl: "ws://localhost:4000/socket/websocket"
+});
+

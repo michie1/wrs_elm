@@ -15,7 +15,7 @@ import Phoenix.Push
 import App.Msg
 import Ui.Ratings
 import Ui.Calendar
-import Config
+import App.Flags exposing (Flags)
 
 
 type Page
@@ -43,8 +43,8 @@ type alias App =
     }
 
 
-initial : ( App, Cmd App.Msg.Msg )
-initial =
+initial : Flags -> ( App, Cmd App.Msg.Msg )
+initial flags =
     let
         channel =
             Phoenix.Channel.init "room:lobby"
@@ -52,7 +52,7 @@ initial =
 
         ( initSocket, phxCmd ) =
             Phoenix.Socket.init 
-                Config.wsUrl
+                flags.wsUrl
                 |> Phoenix.Socket.withDebug
                 |> Phoenix.Socket.on "shout" "room:lobby" App.Msg.ReceiveMessage
                 |> Phoenix.Socket.on "createdRider" "room:lobby" App.Msg.OnCreatedRider

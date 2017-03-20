@@ -14,11 +14,11 @@ import Comment.Model
 import WebSocket
 import Phoenix.Socket
 import Ui.Ratings
+import App.Flags exposing (Flags)
 
-
-main : Program Never App Msg
+main : Program Flags App Msg
 main =
-    Navigation.program
+    Navigation.programWithFlags
         parser
         { init = init
         , update = App.Update.update
@@ -32,14 +32,14 @@ parser location =
     UrlUpdate (App.Routing.routeParser location)
 
 
-init : Navigation.Location -> ( App, Cmd Msg )
-init location =
+init : Flags -> Navigation.Location -> ( App, Cmd Msg )
+init flags location =
     let
         route =
             App.Routing.routeParser location
 
         ( initialApp, initialCmd ) =
-            App.Model.initial
+            App.Model.initial flags
 
         ( app, cmd ) =
             App.UrlUpdate.urlUpdate route initialApp
