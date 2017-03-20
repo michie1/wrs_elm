@@ -5,12 +5,14 @@
     <title>WRS</title>
       <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <link rel="stylesheet" href="assets/materialize.css">
+
+      <script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+      <script src="materialize.js"></script>
   </head>
   <body>
     <div id="main"></div>
     <script src="wrs.js"></script>
     <script>
-      var app = Elm.Main.embed(document.getElementById('main'));
       Elm.Main.embed(document.getElementById('main'), {
         wsUrl: "ws://phx.fastfox.nl/socket/websocket"
       });
