@@ -55,7 +55,8 @@ licenceDecoder string =
             Json.Decode.succeed Rider.Model.Other
 
         _ ->
-            Json.Decode.fail <| string ++ " licence does not exists."
+            Json.Decode.succeed Rider.Model.Other
+            -- Json.Decode.fail <| string ++ " licence does not exists."
 
 
 raceCategoryDecoder : String -> Json.Decode.Decoder Race.Model.Category
