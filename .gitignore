@@ -7,6 +7,4 @@ npm-debug.log
 tags
 build
 icon?family=Material+Icons
-jquery-2.1.1.min.js
 materialize.min.css
-src/Config.elm
