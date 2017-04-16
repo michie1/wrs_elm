@@ -155,6 +155,11 @@ viewPage app =
         App.Routing.AccountSignup ->
             Account.View.signup app
 
+        App.Routing.StravaCode maybeCode ->
+            div [] []
+            -- ( app, Cmd.none )
+            --Account.View.stravaCode app
+
 
 userLi : App -> List (Html App.Msg.Msg)
 userLi app =

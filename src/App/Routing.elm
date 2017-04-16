@@ -19,6 +19,7 @@ type Route
     | AccountLogin
     | AccountLogout
     | AccountSignup
+    | StravaCode (String)
 
 
 url : Route -> String
@@ -66,6 +67,8 @@ url route =
         AccountSignup ->
             "#account/signup"
 
+        StravaCode code ->
+            "#account/login/strava/code"
 
 matchers : Parser (Route -> a) a
 matchers =
@@ -80,6 +83,7 @@ matchers =
         , map RaceDetails (s "races" </> int)
         , map Races (s "races")
         , map Results (s "results")
+        , map StravaCode (s "account" </> s "login" </> s "strava" </> string) -- paramString does not work with hash
         , map AccountLoginName (s "account" </> s "login" </> string)
         , map AccountLogin (s "account" </> s "login")
         , map AccountLogout (s "account" </> s "logout")
@@ -90,5 +94,7 @@ matchers =
 
 routeParser : Navigation.Location -> Route
 routeParser location =
-    location |> parseHash matchers |> Maybe.withDefault Races
+    location 
+        |> parseHash matchers 
+        |> Maybe.withDefault Races
     -- location |> parseHash matchers |> Maybe.withDefault Home

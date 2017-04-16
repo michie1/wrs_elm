@@ -53,7 +53,7 @@ initial flags =
         ( initSocket, phxCmd ) =
             Phoenix.Socket.init 
                 flags.wsUrl
-                |> Phoenix.Socket.withDebug
+                -- |> Phoenix.Socket.withDebug
                 |> Phoenix.Socket.on "shout" "room:lobby" App.Msg.ReceiveMessage
                 |> Phoenix.Socket.on "createdRider" "room:lobby" App.Msg.OnCreatedRider
                 |> Phoenix.Socket.on "createdRace" "room:lobby" App.Msg.OnCreatedRace

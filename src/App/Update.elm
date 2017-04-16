@@ -1,4 +1,4 @@
-module App.Update exposing (update)
+port module App.Update exposing (update)
 
 import App.Model exposing (App)
 import App.Routing
@@ -36,6 +36,10 @@ import Rider.Update
 import Ui.Ratings
 import Ui.Calendar
 import Ui.Chooser
+import Navigation
+
+port setLocalStorage : (String, String) -> Cmd msg
+port getLocalStorage : String -> Cmd msg
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
@@ -577,4 +581,29 @@ update msg app =
                     _ ->
                         noOp
 
-                
+            StravaAuthorize -> 
+                ( app, Navigation.load "https://www.strava.com/oauth/authorize?client_id=1596&response_type=code&redirect_uri=http://localhost:8080/%23account/login/strava/code" ) --&approval_prompt=force" )
+
+            StravaReceiveAccessToken rawResponse -> 
+                let
+                    bodyResult =
+                        Json.Decode.decodeValue (Json.Decode.field "body" Json.Decode.string) rawResponse 
+                    bla = case bodyResult of
+                        Ok body ->
+                            Json.Decode.decodeString (Json.Decode.field "access_token" Json.Decode.string) body
+                        Err err ->
+                            let
+                                _ = Debug.log "err" err
+                            in
+                                Ok ""
+                in
+                    case bla of
+                        Ok accessToken ->
+                            ( app, setLocalStorage ("accessToken", accessToken) )
+
+                        Err err ->
+                            let
+                                _ = Debug.log "err" err
+                            in
+                                ( app, Cmd.none )
+

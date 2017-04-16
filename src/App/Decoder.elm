@@ -1,5 +1,6 @@
 module App.Decoder exposing (..)
 
+import App.Model
 import Race.Model
 import Result.Model
 import Rider.Model
@@ -125,7 +126,6 @@ raceDecoder =
             (Json.Decode.string
                 |> Json.Decode.andThen raceCategoryDecoder
             )
-
 
 date : Json.Decode.Decoder (Maybe Date.Date)
 date =

@@ -16,7 +16,7 @@ import Json.Encode
 import Ui.Ratings
 import Ui.Calendar
 import Ui.Chooser
-
+import Http
 
 type Msg
     = RaceAdd
@@ -73,3 +73,5 @@ type Msg
     | Ratings Ui.Ratings.Msg
     | Calendar Ui.Calendar.Msg
     | Chooser Ui.Chooser.Msg
+    | StravaAuthorize
+    | StravaReceiveAccessToken Json.Encode.Value

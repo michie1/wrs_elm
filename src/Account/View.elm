@@ -32,7 +32,16 @@ login app =
                             False
             in
                 div []
-                    [ h2 [] [ text "Login" ]
+                    [ h2 [] [ text "Strava Login" ]
+                    , button
+                        [ class "waves-effect waves-light btn"
+                        , type_ "submit"
+                        , onClick (App.Msg.StravaAuthorize)
+                        ]
+                        [ text "Login"
+                        , i [ class "material-icons right" ] [ text "send" ]
+                        ]
+                    , h2 [] [ text "Login" ]
                     , div []
                         [ div [ class "row" ]
                             [ div [ class "input-field col s6" ]
