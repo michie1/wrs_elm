@@ -37,44 +37,23 @@ type alias App =
     , now : Maybe Date.Date
     , account : Maybe Rider.Model.Rider
     , messages : List String
-    , phxSocket : Phoenix.Socket.Socket App.Msg.Msg
-    , connected : Bool
     , ratings : Ui.Ratings.Model
     }
 
 
 initial : Flags -> ( App, Cmd App.Msg.Msg )
 initial flags =
-    let
-        channel =
-            Phoenix.Channel.init "room:lobby"
-                |> Phoenix.Channel.onJoin (always App.Msg.OnJoin)
-
-        ( initSocket, phxCmd ) =
-            Phoenix.Socket.init 
-                flags.wsUrl
-                -- |> Phoenix.Socket.withDebug
-                |> Phoenix.Socket.on "shout" "room:lobby" App.Msg.ReceiveMessage
-                |> Phoenix.Socket.on "createdRider" "room:lobby" App.Msg.OnCreatedRider
-                |> Phoenix.Socket.on "createdRace" "room:lobby" App.Msg.OnCreatedRace
-                |> Phoenix.Socket.on "createdResult" "room:lobby" App.Msg.OnCreatedResult
-                |> Phoenix.Socket.on "createdComment" "room:lobby" App.Msg.OnCreatedComment
-                |> Phoenix.Socket.on "updatedRider" "room:lobby" App.Msg.OnUpdatedRider
-                |> Phoenix.Socket.join channel
-    in
-        ( App
-            Home
-            NoOp
-            Nothing
-            Nothing
-            Result.Model.initialResults
-            Nothing
-            --Comment.Model.initialComments
-            Nothing
-            Account.Model.initial
-            []
-            initSocket
-            False
-            (Ui.Ratings.init () |> Ui.Ratings.size 10)
-        , Cmd.map App.Msg.PhoenixMsg phxCmd
+    ( App
+    Home
+    NoOp
+    Nothing
+    Nothing
+    Result.Model.initialResults
+    Nothing
+    --Comment.Model.initialComments
+    Nothing
+    Account.Model.initial
+        []
+        (Ui.Ratings.init () |> Ui.Ratings.size 10)
+        , Cmd.none
         )

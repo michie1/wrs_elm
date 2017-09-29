@@ -8,10 +8,11 @@ import Html exposing (Html, h2, h4, i, p, label, button, nav, div, text, span, a
 import Html.Attributes exposing (checked, value, name, class, type_, id, for, class, disabled, href)
 import Html.Events exposing (onClick, onInput)
 
+
 riderNameExists : String -> List Rider.Model.Rider -> Bool
 riderNameExists riderName riders =
     List.length
-        (  List.filter 
+        (List.filter
             (\rider -> (String.toLower rider.name) == (String.toLower riderName))
             riders
         )
@@ -144,7 +145,7 @@ signup app =
                                     [ id "name"
                                     , type_ "text"
                                     , value name
-                                    , onInput App.Msg.AccountSignupName
+                                      --, onInput App.Msg.AccountSignupName
                                     ]
                                     []
                                 , label [ for "name" ] [ text "Name" ]

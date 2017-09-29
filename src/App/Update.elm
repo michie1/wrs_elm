@@ -26,9 +26,6 @@ import Date.Extra
 import Task
 import Keyboard.Extra
 import Dom
-import WebSocket
-import Phoenix.Socket
-import Phoenix.Push
 import Json.Encode
 import Json.Decode
 import App.Helpers
@@ -51,24 +48,8 @@ update msg app =
             RaceAdd ->
                 case app.page of
                     App.Model.RaceAdd raceAdd ->
-                        case Race.Update.add raceAdd app.phxSocket of
-                            Just ( phxSocket, nextCmd ) ->
-                                ( { app | phxSocket = phxSocket }
-                                , nextCmd
-                                )
-
-                            Nothing ->
-                                noOp
-
-                    _ ->
                         noOp
-
-            RaceAddSocketResponse rawResponse ->
-                case Race.Update.addSocketResponse rawResponse of
-                    Just cmd ->
-                        ( app, cmd )
-
-                    Nothing ->
+                    _ ->
                         noOp
 
             RaceName name ->
@@ -97,27 +78,13 @@ update msg app =
                     App.Model.ResultAdd resultAdd ->
                         case app.riders of
                             Just riders ->
-                                case Result.Update.add resultAdd riders app.results app.phxSocket of
-                                    Just ( phxSocket, phxCmd ) ->
-                                        ( { app | phxSocket = phxSocket }
-                                        , phxCmd
-                                        )
-
-                                    Nothing ->
-                                        noOp
+                                -- case Result.Update.add resultAdd riders app.results
+                                noOp
 
                             Nothing ->
                                 noOp
 
                     _ ->
-                        noOp
-
-            ResultAddSocketResponse rawResponse ->
-                case Result.Update.addSocketResponse rawResponse of
-                    Just navigateCmd ->
-                        ( app, navigateCmd )
-
-                    Nothing ->
                         noOp
 
             ResultAddCategory category ->
@@ -160,20 +127,6 @@ update msg app =
                 , Cmd.none
                 )
 
-            ResultsSocket ->
-                Result.Update.resultsSocket app
-
-            ResultsSocketResponse rawResponse ->
-                Result.Update.resultsSocketResponse rawResponse app
-                -- TODO: do urlUpdate again
-
-            CommentsSocket ->
-                Comment.Update.commentsSocket app
-
-            CommentsSocketResponse rawResponse ->
-                Comment.Update.commentsSocketResponse rawResponse app
-                -- TODO: do urlUpdate again
-
             CommentAddSetText text ->
                 ( case app.page of
                     App.Model.CommentAdd commentAdd ->
@@ -205,28 +158,12 @@ update msg app =
                     App.Model.CommentAdd commentAdd ->
                         case app.riders of
                             Just riders ->
-                                case Comment.Update.add commentAdd riders app.phxSocket of
-                                    Just ( phxSocket, nextCmd ) ->
-                                        ( { app | phxSocket = phxSocket }
-                                        , nextCmd
-                                        )
-
-                                    Nothing ->
-                                        noOp
+                                noOp
 
                             Nothing ->
                                 noOp
 
                     _ ->
-                        noOp
-
-            --Comment.Update.add app
-            CommentAddSocketResponse rawResponse ->
-                case Comment.Update.addSocketResponse rawResponse of
-                    Just cmd ->
-                        ( app, cmd )
-
-                    Nothing ->
                         noOp
 
             UrlUpdate route ->
@@ -250,44 +187,8 @@ update msg app =
             AccountSignup ->
                 Account.Update.signup app
 
-            SocketAccountSignup ->
-                Account.Update.signupSocket app
-
-            SocketAccountSignupResponse rawResponse ->
-                Account.Update.signupSocketResponse rawResponse app
-
-            AccountSignupName name ->
-                Account.Update.signupName name app
-
             AccountLicence licence ->
                 Account.Update.settingsLicence licence app
-
-            SocketAccountLicence ->
-                Account.Update.settingsLicenceSocket app
-
-            SocketAccountLicenceResponse rawResponse ->
-                Account.Update.settingsLicenceSocketResponse rawResponse app
-
-            RacesSocket ->
-                Race.Update.racesSocket app
-
-            RacesSocketResponse rawResponse ->
-                Race.Update.racesSocketResponse rawResponse app
-                -- TODO: do urlUpdate again
-
-            RidersSocket ->
-                Rider.Update.ridersSocket app
-
-            RidersSocketResponse rawResponse ->
-                Rider.Update.ridersSocketResponse rawResponse app
-                -- TODO: do urlUpdate again
-
-            OnJoinResponse rawResponse ->
-                let
-                    _ =
-                        Debug.log "OnJoinResponse" rawResponse
-                in
-                    ( app, Cmd.none )
 
             OnCreatedRider rawResponse ->
                 let
@@ -419,40 +320,6 @@ update msg app =
             Noop ->
                 noOp
 
-            Connect ->
-                let
-                    payload =
-                        Json.Encode.object
-                            [ ( "body", Json.Encode.string "bodyValue" ) ]
-
-                    phxPush =
-                        Phoenix.Push.init "init" "room:lobby"
-                            |> Phoenix.Push.withPayload payload
-                            |> Phoenix.Push.onOk ConnectResponse
-                            |> Phoenix.Push.onError HandleSendError
-
-                    ( phxSocket, phxCmd ) =
-                        Phoenix.Socket.push phxPush app.phxSocket
-
-                    _ =
-                        Debug.log "Connect" "connect"
-                in
-                    ( { app | phxSocket = phxSocket }
-                    , Cmd.map PhoenixMsg phxCmd
-                    )
-
-            ConnectResponse value ->
-                let
-                    _ =
-                        Debug.log "ConnectResponse" value
-                in
-                    ( { app | connected = True }
-                    , (Task.perform
-                        identity
-                        (Task.succeed App.Msg.RidersSocket)
-                      )
-                    )
-
             ReceiveRiders message ->
                 let
                     resultRiders =
@@ -494,38 +361,6 @@ update msg app =
                 , Cmd.none
                 )
 
-            PhoenixMsg message ->
-                let
-                    ( phxSocket, phxCmd ) =
-                        Phoenix.Socket.update message app.phxSocket
-                in
-                    --( { app | connected = True, phxSocket = phxSocket }
-                    ( { app | phxSocket = phxSocket }
-                    , Cmd.map PhoenixMsg phxCmd
-                    )
-
-            OnJoin ->
-                let
-                    _ =
-                        Debug.log "onJoin" "success"
-                in
-                    ( { app | connected = True }
-                    , Cmd.batch
-                        [ Task.perform
-                            identity
-                            (Task.succeed App.Msg.RidersSocket)
-                        , Task.perform
-                            identity
-                            (Task.succeed App.Msg.RacesSocket)
-                        , Task.perform
-                            identity
-                            (Task.succeed App.Msg.ResultsSocket)
-                        , Task.perform
-                            identity
-                            (Task.succeed App.Msg.CommentsSocket)
-                        ]
-                    )
-
             DatePicked dateString ->
                 case app.page of
                     App.Model.RaceAdd raceAdd ->
@@ -541,7 +376,7 @@ update msg app =
                         ( app, Cmd.none )
 
             Ratings msg_ ->
-                let 
+                let
                     ( ratings, cmd ) =
                         Ui.Ratings.update msg_ app.ratings
                 in
@@ -552,7 +387,7 @@ update msg app =
             Calendar msg_ ->
                 case app.page of
                     App.Model.RaceAdd raceAdd ->
-                        let 
+                        let
                             ( calendar, cmd ) =
                                 Ui.Calendar.update msg_ raceAdd.calendar
 
@@ -581,13 +416,13 @@ update msg app =
                     _ ->
                         noOp
 
-            StravaAuthorize -> 
+            StravaAuthorize ->
                 ( app, Navigation.load "https://www.strava.com/oauth/authorize?client_id=1596&response_type=code&redirect_uri=http://localhost:8080/%23account/login/strava/code" ) --&approval_prompt=force" )
 
-            StravaReceiveAccessToken rawResponse -> 
+            StravaReceiveAccessToken rawResponse ->
                 let
                     bodyResult =
-                        Json.Decode.decodeValue (Json.Decode.field "body" Json.Decode.string) rawResponse 
+                        Json.Decode.decodeValue (Json.Decode.field "body" Json.Decode.string) rawResponse
                     bla = case bodyResult of
                         Ok body ->
                             Json.Decode.decodeString (Json.Decode.field "access_token" Json.Decode.string) body

@@ -21,15 +21,10 @@ import Ui.Calendar
 
 render : App -> Html Msg
 render app =
-    case app.connected of
-        True ->
-            div []
-                [ header app
-                , mainView app
-                ]
-
-        False ->
-            div [] [ text "Disconnected" ]
+    div []
+        [ header app
+        , mainView app
+        ]
 
 
 mainView : App -> Html Msg

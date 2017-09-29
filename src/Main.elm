@@ -12,7 +12,6 @@ import Race.Model
 import Result.Model
 import Comment.Model
 import WebSocket
-import Phoenix.Socket
 import Ui.Ratings
 import App.Flags exposing (Flags)
 
@@ -55,5 +54,4 @@ init flags location =
 subscriptions : App -> Sub Msg
 subscriptions app =
     Sub.batch
-        [ Phoenix.Socket.listen app.phxSocket PhoenixMsg
-        ]
+        [ ]
