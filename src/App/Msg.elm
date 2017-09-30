@@ -29,12 +29,13 @@ type Msg
     | CommentAddSetText String
     | CommentAddSetRiderName String
     | CommentAdd
-    | AccountLogin
+    | AccountLogin String
     | AccountLoginEmail String
     | AccountLoginPassword String
-    | AccountLogout
+    | AccountLoginSubmit
+    | AccountLogout String
+    | AccountLogoutSubmit
     | AccountSignup
-    | AccountEmail String
     | AccountLicence Rider.Model.Licence
     | NavigateTo App.Routing.Route
     | UrlUpdate App.Routing.Route

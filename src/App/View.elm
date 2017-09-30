@@ -164,14 +164,15 @@ userLi app =
                 content =
                     case account.licence of
                         Just licence ->
-                            [ text account.name ]
+                            [ text account.email ]
 
                         Nothing ->
-                            [ text account.name
+                            [ text account.email
                             , span [ class "new badge" ] [ text "1" ]
                             ]
             in
                 [ li [] [ a [ href "#account" ] content ]
+                , li [] [ a [ href "#account/logout" ] [ text "Logout" ] ]
                 ]
 
         Nothing ->
@@ -188,11 +189,11 @@ header app =
             [ a [ class "brand-logo left", href "#races" ] [ text "WRS" ]
             , ul [ id "nav-mobile", class "right" ]
                 (List.concat
-                    [ (userLi app)
                       --, [ li [] [ a [ href "#races" ] [ text "Races" ] ]
-                    , [ li [] [ a [ href "#races" ] [ text "Races" ] ] ]
+                    [ [ li [] [ a [ href "#races" ] [ text "Races" ] ] ]
                     , [ li [] [ a [ href "#riders" ] [ text "Riders" ] ] ]
                       --  ]
+                    , (userLi app)
                     ]
                 )
             ]

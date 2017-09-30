@@ -15,7 +15,8 @@ import WebSocket
 import Ui.Ratings
 import App.Flags exposing (Flags)
 
-port setEmail : (String -> msg) -> Sub msg
+port login : (String -> msg) -> Sub msg
+port logout : (String -> msg) -> Sub msg
 
 main : Program Flags App Msg
 main =
@@ -56,4 +57,6 @@ init flags location =
 subscriptions : App -> Sub Msg
 subscriptions app =
     Sub.batch
-        [ setEmail AccountEmail ]
+        [ login AccountLogin
+        , logout AccountLogout
+        ]

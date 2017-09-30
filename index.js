@@ -1,14 +1,12 @@
 'use strict';
 
-const password = 'nHxQh6tM4CVX';
-
 function setup(firebase, app) {
   var database = firebase.database();
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      console.log('user', user);
-      app.ports.setEmail.send(user.email);
+      console.log('user changed to logged in');
+      app.ports.login.send(user.email);
       /*
       firebase.database().ref('/riders/').once('value').then(function(snapshot) {
         console.log('snapshot', snapshot.val());
@@ -16,7 +14,6 @@ function setup(firebase, app) {
       */
     } else {
       console.log('no user signed in');
-      // No user is signed in.
     }
   });
 }
@@ -44,14 +41,17 @@ app.ports.setLocalStorage.subscribe(function (tuple) {
   return localStorage.setItem(tuple[0], tuple[1]);
 });
 
-app.ports.accountLogin.subscribe(function(email) {
-  console.log('email', email);
-  firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+app.ports.accountLogin.subscribe(function(account) {
+  firebase.auth().signInWithEmailAndPassword(account.email, account.password).then(function(user) {
+    console.log('signed in correctly');
+  }).catch(function(error) {
     console.log('error', error);
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // ...
   });
-  //app.ports.suggestions.send(suggestions);
+});
+
+app.ports.accountLogout.subscribe(function() {
+  console.log('logout');
+  firebase.auth().signOut().then(function() {
+    app.ports.logout.send('logouted');
+  });
 });

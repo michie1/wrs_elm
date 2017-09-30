@@ -59,7 +59,7 @@ login app =
                     , button
                         [ class "waves-effect waves-light btn"
                         , type_ "submit"
-                        , onClick (App.Msg.AccountLogin)
+                        , onClick (App.Msg.AccountLoginSubmit)
                         , Html.Attributes.name "action"
                         , disabled submitDisabled
                         ]
@@ -79,7 +79,7 @@ logout app =
             button
                 [ class "waves-effect waves-light btn"
                 , type_ "submit"
-                , onClick (App.Msg.AccountLogout)
+                , onClick (App.Msg.AccountLogoutSubmit)
                 , Html.Attributes.name "action"
                 ]
                 [ text "Logout"

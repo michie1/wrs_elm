@@ -172,8 +172,11 @@ update msg app =
             NavigateTo route ->
                 ( app, App.Helpers.navigate route )
 
-            AccountLogin ->
-                Account.Update.login app
+            AccountLoginSubmit ->
+                Account.Update.loginSubmit app
+
+            AccountLogin email ->
+                Account.Update.login email app
 
             AccountLoginEmail name ->
                 Account.Update.loginEmail name app
@@ -181,8 +184,11 @@ update msg app =
             AccountLoginPassword password ->
                 Account.Update.loginPassword password app
 
-            AccountLogout ->
-                Account.Update.logout app
+            AccountLogoutSubmit ->
+                Account.Update.logoutSubmit app
+                
+            AccountLogout email ->
+                Account.Update.logout email app
 
             AccountSignup ->
                 Account.Update.signup app
@@ -190,9 +196,6 @@ update msg app =
             AccountLicence licence ->
                 Account.Update.settingsLicence licence app
             
-            AccountEmail email -> 
-                Account.Update.setEmail email app
-
             OnCreatedRider rawResponse ->
                 let
                     riderResult =
