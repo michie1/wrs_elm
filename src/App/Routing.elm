@@ -15,7 +15,7 @@ type Route
     | ResultAdd Int
     | CommentAdd Int
     | Account
-    | AccountLoginName String
+    | AccountLoginEmail String
     | AccountLogin
     | AccountLogout
     | AccountSignup
@@ -52,8 +52,8 @@ url route =
         CommentAdd id ->
             "#races/" ++ (toString id) ++ "/comment"
 
-        AccountLoginName name ->
-            "#account/login/" ++ name
+        AccountLoginEmail email ->
+            "#account/login/" ++ email
 
         AccountLogin ->
             "#account/login"
@@ -84,7 +84,7 @@ matchers =
         , map Races (s "races")
         , map Results (s "results")
         , map StravaCode (s "account" </> s "login" </> s "strava" </> string) -- paramString does not work with hash
-        , map AccountLoginName (s "account" </> s "login" </> string)
+        , map AccountLoginEmail (s "account" </> s "login" </> string)
         , map AccountLogin (s "account" </> s "login")
         , map AccountLogout (s "account" </> s "logout")
         , map AccountSignup (s "account" </> s "signup")

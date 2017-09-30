@@ -175,8 +175,8 @@ update msg app =
             AccountLogin ->
                 Account.Update.login app
 
-            AccountLoginName name ->
-                Account.Update.loginName name app
+            AccountLoginEmail name ->
+                Account.Update.loginEmail name app
 
             AccountLoginPassword password ->
                 Account.Update.loginPassword password app
@@ -189,6 +189,9 @@ update msg app =
 
             AccountLicence licence ->
                 Account.Update.settingsLicence licence app
+            
+            AccountEmail email -> 
+                Account.Update.setEmail email app
 
             OnCreatedRider rawResponse ->
                 let

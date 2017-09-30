@@ -1,33 +1,38 @@
-module Account.Model exposing (Login, login, initial, Signup, signup)
+module Account.Model exposing (Login, login, initial, Signup, signup, Account)
 
 import Rider.Model
 
 
 type alias Login =
-    { name : String
+    { email : String
     , password : String
     }
 
 
 type alias Signup =
-    { name : String
+    { email : String
     }
 
+type alias Account =
+    { id: Int
+    , email: String
+    , name: String
+    , licence : Maybe Rider.Model.Licence
+    }
 
 login : Login
 login =
-    { name = ""
+    { email = ""
     , password = ""
     }
 
 
 signup : Signup
 signup =
-    { name = ""
+    { email = ""
     }
 
-
-initial : Maybe Rider.Model.Rider
+initial : Maybe Account
 initial =
     Nothing
     -- Just (Rider.Model.Rider 1 "Michiel" Nothing)

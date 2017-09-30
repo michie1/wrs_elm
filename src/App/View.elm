@@ -138,7 +138,7 @@ viewPage app =
         App.Routing.AccountLogin ->
             Account.View.login app
 
-        App.Routing.AccountLoginName name ->
+        App.Routing.AccountLoginEmail email ->
             Account.View.login app
 
         App.Routing.AccountLogout ->

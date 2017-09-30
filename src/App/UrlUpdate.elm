@@ -43,18 +43,17 @@ onUrlEnter route app =
                       -- TODO: Move code from fetchForRoute inside this function.
                     )
 
-        App.Routing.AccountLoginName name ->
+        App.Routing.AccountLoginEmail email ->
             case app.account of
                 Just account ->
                     ( app, App.Helpers.navigate App.Routing.Account )
 
                 Nothing ->
                     let
-                        accountLogin =
-                            Account.Model.login
+                        accountLogin = Account.Model.Login email ""
 
                         nextAccountLogin =
-                            { accountLogin | name = name }
+                            { accountLogin | email = email }
                     in
                         ( { app | page = App.Model.AccountLogin nextAccountLogin }
                         , fetchForRoute App.Routing.AccountLogin

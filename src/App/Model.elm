@@ -35,7 +35,7 @@ type alias App =
     , results : List Result.Model.Result
     , comments : Maybe (List Comment.Model.Comment)
     , now : Maybe Date.Date
-    , account : Maybe Rider.Model.Rider
+    , account : Maybe Account.Model.Account
     , messages : List String
     , ratings : Ui.Ratings.Model
     }

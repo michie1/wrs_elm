@@ -25,50 +25,36 @@ login app =
         App.Model.AccountLogin accountLogin ->
             let
                 submitDisabled =
-                    case app.riders of
-                        Just riders ->
-                            not <| riderNameExists accountLogin.name riders
-
-                        Nothing ->
-                            False
+                    False
             in
                 div []
-                    [ h2 [] [ text "Strava Login" ]
-                    , button
-                        [ class "waves-effect waves-light btn"
-                        , type_ "submit"
-                        , onClick (App.Msg.StravaAuthorize)
-                        ]
-                        [ text "Login"
-                        , i [ class "material-icons right" ] [ text "send" ]
-                        ]
-                    , h2 [] [ text "Login" ]
+                    [ h2 [] [ text "Login" ]
                     , div []
-                        [ div [ class "row" ]
+                        [ div
+                            [ class "row" ]
                             [ div [ class "input-field col s6" ]
                                 [ input
-                                    [ id "name"
-                                    , class "autocomplete"
+                                    [ id "email"
                                     , type_ "text"
-                                    , value accountLogin.name
-                                    , onInput App.Msg.AccountLoginName
+                                    , value accountLogin.email
+                                    , onInput App.Msg.AccountLoginEmail
                                     ]
                                     []
-                                , label [ for "name" ] [ text "Name" ]
+                                , label [ for "email" ] [ text "E-mail" ]
                                 ]
                             ]
-                          {--, div [ class "row" ]
-                                [ div [ class "input-field col s6" ]
-                                    [ input
-                                        [ id "password"
-                                        , type_ "password"
-                                        , onInput App.Msg.AccountLoginPassword
-                                        ]
-                                        []
-                                    , label [ for "password" ] [ text "Password" ]
+                        , div
+                            [ class "row" ]
+                            [ div [ class "input-field col s6" ]
+                                [ input
+                                    [ id "password"
+                                    , type_ "password"
+                                    , onInput App.Msg.AccountLoginPassword
                                     ]
+                                    []
+                                , label [ for "password" ] [ text "Password" ]
                                 ]
-                            --}
+                            ]
                         ]
                     , button
                         [ class "waves-effect waves-light btn"
@@ -126,14 +112,14 @@ signup app =
     case app.page of
         App.Model.AccountSignup accountSignup ->
             let
-                name =
-                    String.trim accountSignup.name
+                email =
+                    String.trim accountSignup.email
 
                 submitDisabled =
-                    String.contains "/" name
-                        || String.contains "\\" name
-                        || String.contains "&" name
-                        || name
+                    String.contains "/" email
+                        || String.contains "\\" email
+                        || String.contains "&" email
+                        || email
                         == ""
             in
                 div []
@@ -142,13 +128,13 @@ signup app =
                         [ div [ class "row" ]
                             [ div [ class "input-field col s6" ]
                                 [ input
-                                    [ id "name"
+                                    [ id "email"
                                     , type_ "text"
-                                    , value name
+                                    , value email
                                       --, onInput App.Msg.AccountSignupName
                                     ]
                                     []
-                                , label [ for "name" ] [ text "Name" ]
+                                , label [ for "email" ] [ text "Email" ]
                                 ]
                             ]
                         ]
@@ -168,7 +154,7 @@ signup app =
             div [] [ text "accoutSignup nothing" ]
 
 
-licence : App -> Rider.Model.Rider -> Html App.Msg.Msg
+licence : App -> Account.Model.Account -> Html App.Msg.Msg
 licence app account =
     let
         licenceHeading =

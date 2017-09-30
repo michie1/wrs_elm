@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Navigation
 import App.Model exposing (App)
@@ -14,6 +14,8 @@ import Comment.Model
 import WebSocket
 import Ui.Ratings
 import App.Flags exposing (Flags)
+
+port setEmail : (String -> msg) -> Sub msg
 
 main : Program Flags App Msg
 main =
@@ -54,4 +56,4 @@ init flags location =
 subscriptions : App -> Sub Msg
 subscriptions app =
     Sub.batch
-        [ ]
+        [ setEmail AccountEmail ]

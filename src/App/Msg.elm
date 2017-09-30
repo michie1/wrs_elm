@@ -30,10 +30,11 @@ type Msg
     | CommentAddSetRiderName String
     | CommentAdd
     | AccountLogin
-    | AccountLoginName String
+    | AccountLoginEmail String
     | AccountLoginPassword String
     | AccountLogout
     | AccountSignup
+    | AccountEmail String
     | AccountLicence Rider.Model.Licence
     | NavigateTo App.Routing.Route
     | UrlUpdate App.Routing.Route

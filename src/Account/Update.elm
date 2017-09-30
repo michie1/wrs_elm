@@ -1,4 +1,4 @@
-module Account.Update exposing (logout, login, loginName, loginPassword, signup, settingsLicence)
+port module Account.Update exposing (logout, login, loginEmail, loginPassword, signup, settingsLicence, setEmail)
 
 import App.Model exposing (App)
 import App.Msg exposing (Msg(..))
@@ -9,15 +9,18 @@ import Json.Encode
 import Json.Decode
 import App.Encoder
 import App.Routing
+import Account.Model
+
+port accountLogin : String -> Cmd msg
 
 
-loginName : String -> App -> ( App, Cmd Msg )
-loginName name app =
+loginEmail : String -> App -> ( App, Cmd Msg )
+loginEmail email app =
     case app.page of
         App.Model.AccountLogin accountLogin ->
             let
                 nextAccountLogin =
-                    { accountLogin | name = name }
+                    { accountLogin | email = email }
             in
                 ( { app | page = App.Model.AccountLogin nextAccountLogin }
                 , Cmd.none
@@ -58,11 +61,12 @@ logout app =
 login : App -> ( App, Cmd Msg )
 login app =
     case app.page of
-        App.Model.AccountLogin accountLogin ->
+        App.Model.AccountLogin form ->
+            {--
             let
                 maybeRider =
                     App.Helpers.getRiderByLowerCaseName
-                        accountLogin.name
+                        accountLogin.email
                         (Maybe.withDefault [] app.riders)
             in
                 case maybeRider of
@@ -73,6 +77,8 @@ login app =
 
                     Nothing ->
                         ( app, Cmd.none )
+            --}
+            ( app, accountLogin form.email )
 
         _ ->
             ( app, Cmd.none )
@@ -87,7 +93,7 @@ signup app =
                 newRider =
                     Rider.Model.Rider
                         ((List.length (Maybe.withDefault [] app.riders)) + 1)
-                        accountSignup.name
+                        accountSignup.email
                         Nothing
             in
                 ( app
@@ -114,4 +120,16 @@ settingsLicence licence app =
         Nothing ->
             ( app, Cmd.none )
 
-
+setEmail : String -> App -> ( App, Cmd Msg )
+setEmail email app =
+    let
+        nextAccount =
+            case app.account of
+                Just account ->
+                    { account | email = email }
+                Nothing ->
+                    Account.Model.Account 1 email "" Nothing
+    in
+        ( { app | account = Just nextAccount }
+        , Cmd.batch []
+        )
