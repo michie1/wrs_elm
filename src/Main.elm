@@ -14,9 +14,11 @@ import Comment.Model
 import WebSocket
 import Ui.Ratings
 import App.Flags exposing (Flags)
+import Json.Decode
 
 port login : (String -> msg) -> Sub msg
 port logout : (String -> msg) -> Sub msg
+port setRiders : (Json.Decode.Value -> msg) -> Sub msg
 
 main : Program Flags App Msg
 main =
@@ -59,4 +61,5 @@ subscriptions app =
     Sub.batch
         [ login AccountLogin
         , logout AccountLogout
+        , setRiders RidersJson
         ]

@@ -55,3 +55,17 @@ app.ports.accountLogout.subscribe(function() {
     app.ports.logout.send('logouted');
   });
 });
+
+app.ports.loadRiders.subscribe(function() {
+  console.log('load riders');
+  firebase.database().ref('/riders/').orderByChild('id').once('value').then(function(snapshot) {
+    const arr = [];
+    snapshot.val().forEach(function (value) {
+      console.log('value', value);
+      arr.push(value);
+    });
+
+    console.log('arr', arr);
+    app.ports.setRiders.send(arr);
+  });
+});

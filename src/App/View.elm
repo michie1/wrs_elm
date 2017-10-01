@@ -46,6 +46,11 @@ viewPage app =
         App.Routing.Riders ->
             case app.riders of
                 Just riders ->
+                    div []
+                        [ h2 [] [ text "Riders" ]
+                        , Rider.View.List.render riders
+                        ]
+                    {--
                     case app.races of
                         Just races ->
                             div []
@@ -54,6 +59,7 @@ viewPage app =
                                 ]
                         Nothing ->
                             div [] [ text "No races loaded." ]
+                    --}
 
                 Nothing ->
                     div [] [ text "No riders loaded." ]
@@ -171,7 +177,9 @@ userLi app =
                             , span [ class "new badge" ] [ text "1" ]
                             ]
             in
-                [ li [] [ a [ href "#account" ] content ]
+                [ li [] [ a [ href "#races" ] [ text "Races" ] ]
+                , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
+                , li [] [ a [ href "#account" ] content ]
                 , li [] [ a [ href "#account/logout" ] [ text "Logout" ] ]
                 ]
 
@@ -187,15 +195,7 @@ header app =
         [ div
             [ class "nav-wrapper blue darken-4" ]
             [ a [ class "brand-logo left", href "#races" ] [ text "WRS" ]
-            , ul [ id "nav-mobile", class "right" ]
-                (List.concat
-                      --, [ li [] [ a [ href "#races" ] [ text "Races" ] ]
-                    [ [ li [] [ a [ href "#races" ] [ text "Races" ] ] ]
-                    , [ li [] [ a [ href "#riders" ] [ text "Riders" ] ] ]
-                      --  ]
-                    , (userLi app)
-                    ]
-                )
+            , ul [ id "nav-mobile", class "right" ] (userLi app)
             ]
         ]
 

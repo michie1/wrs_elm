@@ -35,6 +35,7 @@ login app =
                             [ div [ class "input-field col s6" ]
                                 [ input
                                     [ id "email"
+                                    , name "email"
                                     , type_ "text"
                                     , value accountLogin.email
                                     , onInput App.Msg.AccountLoginEmail
@@ -48,6 +49,7 @@ login app =
                             [ div [ class "input-field col s6" ]
                                 [ input
                                     [ id "password"
+                                    , name "password"
                                     , type_ "password"
                                     , onInput App.Msg.AccountLoginPassword
                                     ]

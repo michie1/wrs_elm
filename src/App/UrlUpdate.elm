@@ -1,4 +1,4 @@
-module App.UrlUpdate exposing (urlUpdate, onUrlEnter)
+port module App.UrlUpdate exposing (urlUpdate, onUrlEnter)
 
 --import App.Msg exposing (Msg(..))
 
@@ -21,6 +21,7 @@ import Json.Decode
 import Json.Decode.Pipeline
 import Json.Encode
 
+port loadRiders : () -> Cmd msg
 
 onUrlLeave : App.Routing.Route -> App -> App
 onUrlLeave prevRoute prevApp =
@@ -204,6 +205,10 @@ onUrlEnter route app =
             in
                 ( app, cmd )
 
+
+        App.Routing.Riders ->
+            ( app, fetchForRoute App.Routing.Riders )
+
         _ ->
             ( app, Cmd.none )
 
@@ -264,6 +269,13 @@ fetchForRoute route =
         App.Routing.Races ->
             Cmd.batch
                 []
+
+        App.Routing.Riders ->
+            let
+                _ = Debug.log "load riders" "on routing riders"
+            in
+                Cmd.batch
+                    [ loadRiders () ]
 
         _ ->
             Cmd.none

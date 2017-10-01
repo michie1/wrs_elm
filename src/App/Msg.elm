@@ -16,6 +16,7 @@ import Ui.Ratings
 import Ui.Calendar
 import Ui.Chooser
 import Http
+import Json.Decode
 
 type Msg
     = RaceAdd
@@ -43,6 +44,7 @@ type Msg
     | NewMessage String
     | ReceiveMessage Json.Encode.Value
     | ReceiveRiders Json.Encode.Value
+    | RidersJson Json.Decode.Value
     | HandleSendError Json.Encode.Value
     | OnCreatedRider Json.Encode.Value
     | OnCreatedRace Json.Encode.Value

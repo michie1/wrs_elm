@@ -10,6 +10,37 @@ import Result.Model
 import App.Helpers
 import Race.Model
 
+render : List Rider -> Html App.Msg.Msg
+render riders =
+    table []
+        [ thead []
+            [ tr []
+                [ th [] [ text "Name" ]
+                , th [] [ text "Licence" ]
+                , th [] [ text "Points" ]
+                , th [] [ text "Races" ]
+                ]
+            ]
+        , tbody []
+            (List.map
+                (\rider ->
+                    tr []
+                        [ td []
+                            [ a [ href ("#riders/" ++ (toString rider.id)) ]
+                                [ text rider.name ]
+                            ]
+                        , td [] [ text (toString rider.licence) ]
+                        --, td [] [ text <| toString <| App.Helpers.getPointsByRiderId rider.id results races ]
+                        --, td [] [ text <| toString <| countResultsByRiderId rider.id results ]
+                        , td [] [ text "points" ]
+                        , td [] [ text "races" ]
+                        ]
+                )
+                riders
+            )
+        ]
+
+{--
 render : List Rider -> List Result.Model.Result -> List Race.Model.Race -> Html App.Msg.Msg
 render riders results races =
     table []
@@ -37,10 +68,11 @@ render riders results races =
                 riders
             )
         ]
+--}
 
 countResultsByRiderId : Int -> List Result.Model.Result -> Int
 countResultsByRiderId riderId results =
     List.length <|
-        List.filter 
+        List.filter
             (\result -> result.riderId == riderId)
             results

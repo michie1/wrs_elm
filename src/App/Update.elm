@@ -35,8 +35,12 @@ import Ui.Calendar
 import Ui.Chooser
 import Navigation
 
-port setLocalStorage : (String, String) -> Cmd msg
+
+port setLocalStorage : ( String, String ) -> Cmd msg
+
+
 port getLocalStorage : String -> Cmd msg
+
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
@@ -49,6 +53,7 @@ update msg app =
                 case app.page of
                     App.Model.RaceAdd raceAdd ->
                         noOp
+
                     _ ->
                         noOp
 
@@ -186,7 +191,7 @@ update msg app =
 
             AccountLogoutSubmit ->
                 Account.Update.logoutSubmit app
-                
+
             AccountLogout email ->
                 Account.Update.logout email app
 
@@ -195,7 +200,7 @@ update msg app =
 
             AccountLicence licence ->
                 Account.Update.settingsLicence licence app
-            
+
             OnCreatedRider rawResponse ->
                 let
                     riderResult =
@@ -348,6 +353,9 @@ update msg app =
                             , Cmd.none
                             )
 
+            RidersJson json ->
+                Rider.Update.ridersJson json app
+
             ReceiveMessage message ->
                 let
                     _ =
@@ -397,14 +405,15 @@ update msg app =
                             ( calendar, cmd ) =
                                 Ui.Calendar.update msg_ raceAdd.calendar
 
-                            nextRaceAdd = App.Model.RaceAdd { raceAdd | calendar = calendar }
+                            nextRaceAdd =
+                                App.Model.RaceAdd { raceAdd | calendar = calendar }
                         in
                             ( { app | page = nextRaceAdd }
                             , Cmd.map Calendar cmd
                             )
+
                     _ ->
                         noOp
-
 
             Chooser msg_ ->
                 case app.page of
@@ -413,38 +422,44 @@ update msg app =
                             ( chooser, cmd ) =
                                 Ui.Chooser.update msg_ resultAdd.chooser
 
-
-                            nextResultAdd = App.Model.ResultAdd { resultAdd | chooser = chooser }
+                            nextResultAdd =
+                                App.Model.ResultAdd { resultAdd | chooser = chooser }
                         in
                             ( { app | page = nextResultAdd }
                             , Cmd.map Chooser cmd
                             )
+
                     _ ->
                         noOp
 
             StravaAuthorize ->
-                ( app, Navigation.load "https://www.strava.com/oauth/authorize?client_id=1596&response_type=code&redirect_uri=http://localhost:8080/%23account/login/strava/code" ) --&approval_prompt=force" )
+                ( app, Navigation.load "https://www.strava.com/oauth/authorize?client_id=1596&response_type=code&redirect_uri=http://localhost:8080/%23account/login/strava/code" )
 
+            --&approval_prompt=force" )
             StravaReceiveAccessToken rawResponse ->
                 let
                     bodyResult =
                         Json.Decode.decodeValue (Json.Decode.field "body" Json.Decode.string) rawResponse
-                    bla = case bodyResult of
-                        Ok body ->
-                            Json.Decode.decodeString (Json.Decode.field "access_token" Json.Decode.string) body
-                        Err err ->
-                            let
-                                _ = Debug.log "err" err
-                            in
-                                Ok ""
+
+                    bla =
+                        case bodyResult of
+                            Ok body ->
+                                Json.Decode.decodeString (Json.Decode.field "access_token" Json.Decode.string) body
+
+                            Err err ->
+                                let
+                                    _ =
+                                        Debug.log "err" err
+                                in
+                                    Ok ""
                 in
                     case bla of
                         Ok accessToken ->
-                            ( app, setLocalStorage ("accessToken", accessToken) )
+                            ( app, setLocalStorage ( "accessToken", accessToken ) )
 
                         Err err ->
                             let
-                                _ = Debug.log "err" err
+                                _ =
+                                    Debug.log "err" err
                             in
                                 ( app, Cmd.none )
-
