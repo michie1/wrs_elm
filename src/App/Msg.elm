@@ -28,6 +28,7 @@ type Msg
     | ResultAddCategory Result.Model.ResultCategory
     | ResultAddStrava String
     | ResultAddResult String
+    | ResultsJson Json.Decode.Value
     | CommentAddSetText String
     | CommentAddSetRiderName String
     | CommentAdd

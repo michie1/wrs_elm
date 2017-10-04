@@ -164,10 +164,12 @@ resultDecoder =
             (Json.Decode.string
                 |> Json.Decode.andThen resultCategoryDecoder
             )
+        {--
         |> Json.Decode.Pipeline.required "strava"
             (Json.Decode.string
                 |> Json.Decode.nullable
             )
+        --}
 
 
 licence : String -> Maybe Rider.Model.Licence
@@ -233,7 +235,7 @@ resultCategory string =
 
 result : Json.Decode.Decoder Result.Model.Result
 result =
-    Json.Decode.map6 Result.Model.Result
+    Json.Decode.map5 Result.Model.Result
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "riderId" Json.Decode.int)
         (Json.Decode.field "raceId" Json.Decode.int)
@@ -243,7 +245,7 @@ result =
                 |> Json.Decode.andThen decodeResultCategory
             )
         )
-        (Json.Decode.field "strava" (Json.Decode.maybe Json.Decode.string))
+        --(Json.Decode.field "strava" (Json.Decode.maybe Json.Decode.string))
 
 
 page : Json.Decode.Decoder String

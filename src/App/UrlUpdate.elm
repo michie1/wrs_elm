@@ -23,6 +23,7 @@ import Json.Encode
 
 port loadRiders : () -> Cmd msg
 port loadRaces : () -> Cmd msg
+port loadResults : () -> Cmd msg
 
 onUrlLeave : App.Routing.Route -> App -> App
 onUrlLeave prevRoute prevApp =
@@ -202,10 +203,12 @@ onUrlEnter route app =
         App.Routing.RaceDetails id ->
             let
                 cmd =
-                    Cmd.batch []
+                   fetchForRoute (App.Routing.RaceDetails id)
             in
                 ( app, cmd )
 
+        App.Routing.RiderDetails id ->
+            ( app, fetchForRoute (App.Routing.RiderDetails id) )
 
         App.Routing.Riders ->
             ( app, fetchForRoute App.Routing.Riders )
@@ -276,5 +279,10 @@ fetchForRoute route =
         App.Routing.Riders ->
             loadRiders ()
 
+        App.Routing.RaceDetails id ->
+            loadResults ()
+
+        App.Routing.RiderDetails id ->
+            loadResults ()
         _ ->
             Cmd.none

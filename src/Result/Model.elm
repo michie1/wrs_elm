@@ -18,7 +18,6 @@ type alias Result =
     , raceId : Int
     , result : String
     , category : ResultCategory
-    , strava : Maybe String
     }
 
 

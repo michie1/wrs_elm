@@ -20,6 +20,7 @@ port login : (String -> msg) -> Sub msg
 port logout : (String -> msg) -> Sub msg
 port setRiders : (Json.Decode.Value -> msg) -> Sub msg
 port setRaces : (Json.Decode.Value -> msg) -> Sub msg
+port setResults : (Json.Decode.Value -> msg) -> Sub msg
 
 main : Program Flags App Msg
 main =
@@ -64,4 +65,5 @@ subscriptions app =
         , logout AccountLogout
         , setRiders RidersJson
         , setRaces RacesJson
+        , setResults ResultsJson
         ]

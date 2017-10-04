@@ -219,7 +219,7 @@ resultRow result riders =
                             [ href ("#riders/" ++ (toString rider.id)) ]
                             [ text rider.name ]
                         ]
-                    , resultTd result.result result.strava
+                    --, resultTd result.result result.strava
                     ]
 
 

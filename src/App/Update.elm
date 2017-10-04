@@ -81,6 +81,9 @@ update msg app =
             RacesJson json ->
                 Race.Update.racesJson json app
 
+            ResultsJson json ->
+                Result.Update.resultsJson json app
+            
             ResultAdd ->
                 case app.page of
                     App.Model.ResultAdd resultAdd ->
@@ -262,7 +265,7 @@ update msg app =
                                         result.raceId
                                         result.result
                                         Result.Model.CatA
-                                        result.strava
+                                        --result.strava
                             in
                                 ( { app | results = newResult :: app.results }
                                 , Cmd.none

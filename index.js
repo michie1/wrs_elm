@@ -67,15 +67,24 @@ app.ports.loadRiders.subscribe(function() {
 });
 
 app.ports.loadRaces.subscribe(function() {
-  console.log('load races');
   firebase.database().ref('/races/').orderByChild('id').once('value').then(function(snapshot) {
     const arr = [];
     snapshot.val().forEach(function (value) {
-      console.log('value', value);
+      arr.push(value);
+    });
+    app.ports.setRaces.send(arr);
+  });
+});
+
+app.ports.loadResults.subscribe(function() {
+  console.log('load results');
+  firebase.database().ref('/results/').orderByChild('id').once('value').then(function(snapshot) {
+    const arr = [];
+    snapshot.val().forEach(function (value) {
       arr.push(value);
     });
 
     console.log('arr', arr);
-    app.ports.setRaces.send(arr);
+    app.ports.setResults.send(arr);
   });
 });
