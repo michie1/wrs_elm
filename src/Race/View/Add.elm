@@ -51,7 +51,7 @@ render raceAdd =
                         [ button
                             [ class "waves-effect waves-light btn"
                             , type_ "submit"
-                            , onClick App.Msg.RaceAdd
+                            , onClick App.Msg.RaceAddSubmit
                             , Html.Attributes.name "action"
                             , disabled submitDisabled
                             ]

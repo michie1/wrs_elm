@@ -1,4 +1,4 @@
-module Race.Update exposing (..)
+port module Race.Update exposing (..)
 
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
@@ -19,6 +19,7 @@ import Date
 
 import Json.Decode.Extra
 
+port addRace : (Json.Encode.Value) -> Cmd msg
 
 addPage2 : App.Msg.Msg -> App.Model.Page -> App.Model.Page
 addPage2 msg page =
@@ -65,13 +66,25 @@ addCategory : Race.Model.Category -> Race.Model.Add -> Race.Model.Add
 addCategory category raceAdd =
     { raceAdd | category = category }
 
-
-
-
-
 dateFormat : Date.Date -> String
 dateFormat date =
     Date.Extra.Format.format config "%Y-%m-%d 00:00:00" date
+
+addSubmit : Race.Model.Add -> App.Model.App -> ( App, Cmd Msg )
+addSubmit raceAdd app =
+    let
+       dateString = 
+            dateFormat raceAdd.calendar.value
+
+       payload =
+            Json.Encode.object
+                [ ( "name", Json.Encode.string raceAdd.name )
+                , ( "date", Json.Encode.string dateString )
+                , ( "category", App.Encoder.raceCategory raceAdd.category )
+                ] 
+    in
+        ( app, addRace payload )
+
 
 category : String -> Race.Model.Category
 category string =
@@ -98,7 +111,7 @@ categoryDecoder string =
 
 race : Json.Decode.Decoder Race.Model.Race
 race =
-    Json.Decode.map4 
+    Json.Decode.map4
         Race.Model.Race
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "name" Json.Decode.string)

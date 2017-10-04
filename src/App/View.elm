@@ -77,7 +77,8 @@ viewPage app =
 
         App.Routing.RaceAdd ->
             case app.account of
-                Just _ ->
+                -- Just _ ->
+                Nothing ->
                     case app.page of
                         App.Model.RaceAdd raceAdd ->
                             div []
@@ -87,7 +88,7 @@ viewPage app =
                         _ ->
                             div [] [ text "Page not RaceAdd" ]
 
-                Nothing ->
+                _ ->
                     div
                         []
                         [ text "Please log in." ]
@@ -192,8 +193,8 @@ header app =
         [ div
             [ class "nav-wrapper blue darken-4" ]
             [ a [ class "brand-logo left", href "#races" ] [ text "WRS" ]
-            , ul 
-                [ id "nav-mobile", class "right" ] 
+            , ul
+                [ id "nav-mobile", class "right" ]
                 [ li [] [ a [ href "#races" ] [ text "Races" ] ]
                 , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
                 ]

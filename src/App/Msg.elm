@@ -20,6 +20,7 @@ import Json.Decode
 
 type Msg
     = RaceAdd
+    | RaceAddSubmit
     | RaceName String
     | RaceDate String
     | RaceAddCategory Race.Model.Category

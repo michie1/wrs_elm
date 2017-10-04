@@ -88,3 +88,7 @@ app.ports.loadResults.subscribe(function() {
     app.ports.setResults.send(arr);
   });
 });
+
+app.ports.addRace.subscribe(function(value) {
+  console.log('add race', value);
+});

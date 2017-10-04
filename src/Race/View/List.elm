@@ -19,7 +19,7 @@ render : Bool -> List Race -> List Result.Model.Result -> Html App.Msg.Msg
 render loggedIn races results =
     div []
         [ h2 [] [ text "Races" ]
-        , addButton loggedIn
+        , addButton True
         , raceTable races results
         ]
 

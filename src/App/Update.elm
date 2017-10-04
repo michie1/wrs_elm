@@ -37,8 +37,6 @@ import Navigation
 
 
 port setLocalStorage : ( String, String ) -> Cmd msg
-
-
 port getLocalStorage : String -> Cmd msg
 
 
@@ -49,6 +47,13 @@ update msg app =
             ( app, Cmd.none )
     in
         case msg of
+            RaceAddSubmit ->
+                case app.page of
+                    App.Model.RaceAdd raceAdd ->
+                        Race.Update.addSubmit raceAdd app
+                    _ ->
+                        noOp
+
             RaceAdd ->
                 case app.page of
                     App.Model.RaceAdd raceAdd ->
