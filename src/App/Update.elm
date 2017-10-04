@@ -78,6 +78,9 @@ update msg app =
                 in
                     { app | page = page } ! []
 
+            RacesJson json ->
+                Race.Update.racesJson json app
+
             ResultAdd ->
                 case app.page of
                     App.Model.ResultAdd resultAdd ->

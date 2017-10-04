@@ -1,4 +1,4 @@
-module Account.View exposing (render, login, logout, signup)
+module Account.View exposing (render, login, signup)
 
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
@@ -73,25 +73,6 @@ login app =
         _ ->
             div [] [ text "accountLogin nothing" ]
 
-
-logout : App -> Html App.Msg.Msg
-logout app =
-    case app.account of
-        Just account ->
-            button
-                [ class "waves-effect waves-light btn"
-                , type_ "submit"
-                , onClick (App.Msg.AccountLogoutSubmit)
-                , Html.Attributes.name "action"
-                ]
-                [ text "Logout"
-                , i [ class "material-icons right" ] [ text "send" ]
-                ]
-
-        Nothing ->
-            span [] [ text "Already logged out." ]
-
-
 render : App -> Html App.Msg.Msg
 render app =
     case app.account of
@@ -99,7 +80,6 @@ render app =
             div []
                 [ h2 [] [ text "Account" ]
                 , licence app account
-                , logout app
                 ]
 
         Nothing ->

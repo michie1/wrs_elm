@@ -17,7 +17,6 @@ type Route
     | Account
     | AccountLoginEmail String
     | AccountLogin
-    | AccountLogout
     | AccountSignup
     | StravaCode (String)
 
@@ -58,9 +57,6 @@ url route =
         AccountLogin ->
             "#account/login"
 
-        AccountLogout ->
-            "#account/logout"
-
         Account ->
             "#account"
 
@@ -86,7 +82,6 @@ matchers =
         , map StravaCode (s "account" </> s "login" </> s "strava" </> string) -- paramString does not work with hash
         , map AccountLoginEmail (s "account" </> s "login" </> string)
         , map AccountLogin (s "account" </> s "login")
-        , map AccountLogout (s "account" </> s "logout")
         , map AccountSignup (s "account" </> s "signup")
         , map Account (s "account")
         ]

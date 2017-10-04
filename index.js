@@ -57,8 +57,18 @@ app.ports.accountLogout.subscribe(function() {
 });
 
 app.ports.loadRiders.subscribe(function() {
-  console.log('load riders');
   firebase.database().ref('/riders/').orderByChild('id').once('value').then(function(snapshot) {
+    const arr = [];
+    snapshot.val().forEach(function (value) {
+      arr.push(value);
+    });
+    app.ports.setRiders.send(arr);
+  });
+});
+
+app.ports.loadRaces.subscribe(function() {
+  console.log('load races');
+  firebase.database().ref('/races/').orderByChild('id').once('value').then(function(snapshot) {
     const arr = [];
     snapshot.val().forEach(function (value) {
       console.log('value', value);
@@ -66,6 +76,6 @@ app.ports.loadRiders.subscribe(function() {
     });
 
     console.log('arr', arr);
-    app.ports.setRiders.send(arr);
+    app.ports.setRaces.send(arr);
   });
 });

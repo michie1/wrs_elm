@@ -23,6 +23,7 @@ type Msg
     | RaceName String
     | RaceDate String
     | RaceAddCategory Race.Model.Category
+    | RacesJson Json.Decode.Value
     | ResultAdd
     | ResultAddCategory Result.Model.ResultCategory
     | ResultAddStrava String

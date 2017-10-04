@@ -19,6 +19,7 @@ import Json.Decode
 port login : (String -> msg) -> Sub msg
 port logout : (String -> msg) -> Sub msg
 port setRiders : (Json.Decode.Value -> msg) -> Sub msg
+port setRaces : (Json.Decode.Value -> msg) -> Sub msg
 
 main : Program Flags App Msg
 main =
@@ -62,4 +63,5 @@ subscriptions app =
         [ login AccountLogin
         , logout AccountLogout
         , setRiders RidersJson
+        , setRaces RacesJson
         ]

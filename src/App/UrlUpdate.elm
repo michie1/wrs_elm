@@ -22,6 +22,7 @@ import Json.Decode.Pipeline
 import Json.Encode
 
 port loadRiders : () -> Cmd msg
+port loadRaces : () -> Cmd msg
 
 onUrlLeave : App.Routing.Route -> App -> App
 onUrlLeave prevRoute prevApp =
@@ -209,6 +210,9 @@ onUrlEnter route app =
         App.Routing.Riders ->
             ( app, fetchForRoute App.Routing.Riders )
 
+        App.Routing.Races ->
+            ( app, fetchForRoute App.Routing.Races )
+
         _ ->
             ( app, Cmd.none )
 
@@ -267,15 +271,10 @@ fetchForRoute route =
                 ]
 
         App.Routing.Races ->
-            Cmd.batch
-                []
+            loadRaces ()
 
         App.Routing.Riders ->
-            let
-                _ = Debug.log "load riders" "on routing riders"
-            in
-                Cmd.batch
-                    [ loadRiders () ]
+            loadRiders ()
 
         _ ->
             Cmd.none
