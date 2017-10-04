@@ -56,6 +56,25 @@ render app raceId =
             Just race ->
                 case app.riders of
                     Just riders ->
+                        let
+                            results =
+                                List.filter
+                                    (\result -> result.raceId == race.id)
+                                    app.results
+                        in
+                            div []
+                                [ div []
+                                    [ h2 [] [ text race.name ]
+                                    , info race
+                                    ]
+                                    , div []
+                                    [ h3 [] [ text "Results" ]
+                                    , addResultButton race loggedIn
+                                    ]
+                                    , resultsTable race results riders
+                                ]
+
+                        {--
                         case app.comments of
                             Just comments ->
                                 let
@@ -83,6 +102,7 @@ render app raceId =
 
                             Nothing ->
                                 div [] [ text "No comments loaded." ]
+                            --}
 
                     Nothing ->
                         div [] [ text "No riders loaded." ]

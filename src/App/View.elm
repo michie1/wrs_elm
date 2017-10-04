@@ -177,7 +177,7 @@ userLi app =
                 [ li [] [ a [ href "#races" ] [ text "Races" ] ]
                 , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
                 , li [] [ a [ href "#account" ] content ]
-                , li [] [ a [ href "#account/logout" ] [ text "Logout" ] ]
+                , li [] [ a [ onClick App.Msg.AccountLogoutSubmit ] [ text "Logout" ] ]
                 ]
 
         Nothing ->
@@ -192,7 +192,11 @@ header app =
         [ div
             [ class "nav-wrapper blue darken-4" ]
             [ a [ class "brand-logo left", href "#races" ] [ text "WRS" ]
-            , ul [ id "nav-mobile", class "right" ] (userLi app)
+            , ul 
+                [ id "nav-mobile", class "right" ] 
+                [ li [] [ a [ href "#races" ] [ text "Races" ] ]
+                , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
+                ]
             ]
         ]
 
