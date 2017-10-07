@@ -67,18 +67,21 @@ app.ports.loadRiders.subscribe(function() {
 });
 
 app.ports.loadRaces.subscribe(function() {
-  firebase.database().ref('/races/').orderByChild('id').once('value').then(function(snapshot) {
-    const arr = [];
-    snapshot.val().forEach(function (value) {
-      arr.push(value);
-    });
+  firebase.database().ref('/races/').once('value').then(function(snapshot) {
+    const val = snapshot.val();
+    const arr = Object.keys(val).
+      map(function (key) {
+        return Object.assign({
+            key: key
+          }, val[key]);
+      });
     app.ports.setRaces.send(arr);
   });
 });
 
 app.ports.loadResults.subscribe(function() {
   console.log('load results');
-  firebase.database().ref('/results/').orderByChild('id').once('value').then(function(snapshot) {
+  firebase.database().ref('/results/').once('value').then(function(snapshot) {
     const arr = [];
     snapshot.val().forEach(function (value) {
       arr.push(value);
@@ -89,6 +92,15 @@ app.ports.loadResults.subscribe(function() {
   });
 });
 
-app.ports.addRace.subscribe(function(value) {
-  console.log('add race', value);
+app.ports.addRace.subscribe(function(race) {
+  console.log('add race', race);
+  try {
+    const pushedRace = firebase.database().ref('/races/').push();
+    console.log('key', pushedRace.key);
+    console.log('pushedRace', pushedRace);
+    pushedRace.set(race);
+    //console.log('try');
+  } catch (e) {
+    console.log('e', e);
+  }
 });

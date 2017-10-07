@@ -6,7 +6,6 @@ import App.Msg exposing (Msg, Msg(..))
 import App.Model exposing (App)
 import App.Routing exposing (Route)
 import Account.Model
-import Comment.Model
 import Result.Model
 import Race.Model
 import Task
@@ -62,7 +61,7 @@ onUrlEnter route app =
                         , fetchForRoute App.Routing.AccountLogin
                         )
 
-        App.Routing.ResultAdd raceId ->
+        App.Routing.ResultAdd raceKey ->
             case app.account of
                 Nothing ->
                     let
@@ -101,7 +100,7 @@ onUrlEnter route app =
                                 --}
                                 filteredRiders =
                                     List.filter
-                                        (\rider -> not <| resultExists rider.id raceId app.results)
+                                        (\rider -> not <| resultExists rider.id raceKey app.results)
                                         riders
 
                                 items : List Ui.Chooser.Item
@@ -137,46 +136,15 @@ onUrlEnter route app =
                                             resultAdd.chooser
                                                 |> Ui.Chooser.items items
 
-                                resultAddWithRaceId =
+                                resultAddWithRaceKey =
                                     { resultAdd
-                                        | raceId = raceId
+                                        | raceKey = raceKey
                                         , chooser = chooser
                                     }
                             in
-                                ( { app | page = App.Model.ResultAdd resultAddWithRaceId }
-                                , fetchForRoute (App.Routing.ResultAdd raceId)
+                                ( { app | page = App.Model.ResultAdd resultAddWithRaceKey }
+                                , fetchForRoute (App.Routing.ResultAdd raceKey)
                                 )
-
-        App.Routing.CommentAdd raceId ->
-            case app.account of
-                Just account ->
-                    let
-                        commentAdd =
-                            Comment.Model.initialAdd
-
-                        riderName =
-                            account.name
-
-                        commentAddWithRaceId =
-                            { commentAdd
-                                | raceId = raceId
-                                , riderName = riderName
-                            }
-
-                        a =
-                            Debug.log "urlUpdate CommentAdd" riderName
-
-                        b =
-                            Debug.log "urlUpdate CommentAdd" raceId
-                    in
-                        ( { app | page = App.Model.CommentAdd commentAddWithRaceId }
-                        , fetchForRoute (App.Routing.CommentAdd raceId)
-                        )
-
-                Nothing ->
-                    ( app
-                    , Cmd.none
-                    )
 
         App.Routing.RaceAdd ->
             let
@@ -241,11 +209,11 @@ urlUpdate route app =
         onUrlEnter route routeApp
 
 
-resultExists : Int -> Int -> List Result.Model.Result -> Bool
-resultExists riderId raceId results =
+resultExists : Int -> String -> List Result.Model.Result -> Bool
+resultExists riderId raceKey results =
     List.length
         (List.filter
-            (\result -> result.riderId == riderId && result.raceId == raceId)
+            (\result -> result.riderId == riderId && result.raceKey == raceKey)
             results
         )
         == 1
@@ -259,16 +227,11 @@ fetchForRoute route =
                 [ Task.attempt (always App.Msg.Noop) (Dom.focus "name")
                 ]
 
-        App.Routing.CommentAdd raceId ->
-            Cmd.batch
-                [ Task.attempt (always App.Msg.Noop) (Dom.focus "text")
-                ]
-
         App.Routing.AccountLogin ->
             Cmd.batch
                 []
 
-        App.Routing.ResultAdd raceId ->
+        App.Routing.ResultAdd raceKey ->
             Cmd.batch
                 [ Task.attempt (always App.Msg.Noop) (Dom.focus "result")
                 ]

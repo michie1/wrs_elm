@@ -113,7 +113,7 @@ race : Json.Decode.Decoder Race.Model.Race
 race =
     Json.Decode.map4
         Race.Model.Race
-        (Json.Decode.field "id" Json.Decode.int)
+        (Json.Decode.field "key" Json.Decode.string)
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "date" (Json.Decode.maybe Json.Decode.Extra.date))
         (Json.Decode.field "category" 

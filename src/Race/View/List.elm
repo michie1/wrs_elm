@@ -60,12 +60,12 @@ raceTable races results =
                         tr []
                             [ td []
                                 [ a
-                                    [ href ("#races/" ++ (toString race.id)) ]
+                                    [ href ("#races/" ++ race.key) ]
                                     [ text race.name ]
                                 ]
                             , td [] [ text <| dateString ]
                             , td [] [ text (toString race.category) ]
-                            , td [] [ text (toString (countParticipants race.id results)) ]
+                            , td [] [ text (toString (countParticipants race.key results)) ]
                             ]
                 )
                 races
@@ -73,10 +73,10 @@ raceTable races results =
         ]
 
 
-countParticipants : Int -> List Result.Model.Result -> Int
-countParticipants raceId results =
+countParticipants : String -> List Result.Model.Result -> Int
+countParticipants raceKey results =
     List.length
         (List.filter
-            (\result -> result.raceId == raceId)
+            (\result -> result.raceKey == raceKey)
             results
         )

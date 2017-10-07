@@ -4,7 +4,6 @@ import App.Model
 import Race.Model
 import Result.Model
 import Rider.Model
-import Comment.Model
 import Json.Decode
 import Json.Decode.Extra
 import Json.Decode.Pipeline
@@ -119,7 +118,7 @@ riderDecoder =
 raceDecoder : Json.Decode.Decoder Race.Model.Race
 raceDecoder =
     Json.Decode.Pipeline.decode Race.Model.Race
-        |> Json.Decode.Pipeline.required "id" Json.Decode.int
+        |> Json.Decode.Pipeline.required "key" Json.Decode.string
         |> Json.Decode.Pipeline.required "name" Json.Decode.string
         |> Json.Decode.Pipeline.required "date" date
         |> Json.Decode.Pipeline.required "category"
@@ -143,22 +142,12 @@ date =
             |> Json.Decode.andThen convert
 
 
-commentDecoder : Json.Decode.Decoder Comment.Model.Comment
-commentDecoder =
-    Json.Decode.Pipeline.decode Comment.Model.Comment
-        |> Json.Decode.Pipeline.required "id" Json.Decode.int
-        |> Json.Decode.Pipeline.required "updatedAt" date
-        |> Json.Decode.Pipeline.required "raceId" Json.Decode.int
-        |> Json.Decode.Pipeline.required "riderId" Json.Decode.int
-        |> Json.Decode.Pipeline.required "text" Json.Decode.string
-
-
 resultDecoder : Json.Decode.Decoder Result.Model.Result
 resultDecoder =
     Json.Decode.Pipeline.decode Result.Model.Result
         |> Json.Decode.Pipeline.required "id" Json.Decode.int
         |> Json.Decode.Pipeline.required "riderId" Json.Decode.int
-        |> Json.Decode.Pipeline.required "raceId" Json.Decode.int
+        |> Json.Decode.Pipeline.required "raceKey" Json.Decode.string
         |> Json.Decode.Pipeline.required "result" Json.Decode.string
         |> Json.Decode.Pipeline.required "category"
             (Json.Decode.string
@@ -198,16 +187,6 @@ rider =
         )
 
 
-comment : Json.Decode.Decoder Comment.Model.Comment
-comment =
-    Json.Decode.map5 Comment.Model.Comment
-        (Json.Decode.field "id" Json.Decode.int)
-        (Json.Decode.field "updatedAt" date)
-        --(Json.Decode.field "updatedAt" Json.Decode.string)
-        (Json.Decode.field "raceId" Json.Decode.int)
-        (Json.Decode.field "riderId" Json.Decode.int)
-        (Json.Decode.field "text" Json.Decode.string)
-
 
 decodeResultCategory : String -> Json.Decode.Decoder Result.Model.ResultCategory
 decodeResultCategory string =
@@ -238,7 +217,7 @@ result =
     Json.Decode.map5 Result.Model.Result
         (Json.Decode.field "id" Json.Decode.int)
         (Json.Decode.field "riderId" Json.Decode.int)
-        (Json.Decode.field "raceId" Json.Decode.int)
+        (Json.Decode.field "raceKey" Json.Decode.string)
         (Json.Decode.field "result" Json.Decode.string)
         (Json.Decode.field "category"
             (Json.Decode.string
@@ -258,16 +237,14 @@ type alias App =
     , riders :
         List Rider.Model.Rider
         --, races : List Race.Model.Race
-    , comments : List Comment.Model.Comment
     , results : List Result.Model.Result
     }
 
 
 app : Json.Decode.Decoder App
 app =
-    Json.Decode.map4 App
+    Json.Decode.map3 App
         (Json.Decode.field "page" Json.Decode.string)
         (Json.Decode.field "riders" (Json.Decode.list rider))
         --(Json.Decode.field "races" (Json.Decode.list race))
-        (Json.Decode.field "comments" (Json.Decode.list comment))
         (Json.Decode.field "results" (Json.Decode.list result))

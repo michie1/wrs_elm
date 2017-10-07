@@ -122,7 +122,7 @@ getPointsByResults results races =
 
 getPointsByResult : Result.Model.Result -> List Race.Model.Race -> Int
 getPointsByResult result races =
-    case getRaceById result.raceId races of
+    case getRaceByKey result.raceKey races of
         Just race ->
             getPointsByCategory race.category
     
@@ -147,11 +147,11 @@ getPointsByCategory category =
             0
 
 
-getRaceById : Int -> List Race.Model.Race -> Maybe Race.Model.Race
-getRaceById raceId races =
+getRaceByKey : String -> List Race.Model.Race -> Maybe Race.Model.Race
+getRaceByKey raceKey races =
     List.head <|
         List.filter
-            (\race -> race.id == raceId)
+            (\race -> race.key == raceKey)
             races
 
 getPointsByRiderId : Int -> List Result.Model.Result -> List Race.Model.Race -> Int

@@ -19,7 +19,7 @@ resultsTable results =
         [ thead []
             [ tr []
                 [ th [] [ text "id" ]
-                , th [] [ text "raceId" ]
+                , th [] [ text "raceKey" ]
                 , th [] [ text "riderId" ]
                 , th [] [ text "Result" ]
                 ]
@@ -30,7 +30,7 @@ resultsTable results =
                     (\result ->
                         tr []
                             [ td [] [ text (toString result.id) ]
-                            , td [] [ text (toString result.raceId) ]
+                            , td [] [ text (toString result.raceKey) ]
                             , td [] [ text (toString result.riderId) ]
                             , td [] [ text result.result ]
                             ]

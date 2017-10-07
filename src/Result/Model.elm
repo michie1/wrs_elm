@@ -15,14 +15,14 @@ type ResultCategory
 type alias Result =
     { id : Int
     , riderId : Int
-    , raceId : Int
+    , raceKey : String
     , result : String
     , category : ResultCategory
     }
 
 
 type alias Add =
-    { raceId : Int
+    { raceKey : String
     , result : String
     , category : ResultCategory
     , strava : String
@@ -31,7 +31,7 @@ type alias Add =
 
 initialAdd : Add
 initialAdd =
-    { raceId = 0
+    { raceKey = ""
     , result = ""
     , category = Amateurs
     , strava = ""

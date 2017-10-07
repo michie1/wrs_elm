@@ -30,9 +30,6 @@ type Msg
     | ResultAddStrava String
     | ResultAddResult String
     | ResultsJson Json.Decode.Value
-    | CommentAddSetText String
-    | CommentAddSetRiderName String
-    | CommentAdd
     | AccountLogin String
     | AccountLoginEmail String
     | AccountLoginPassword String
@@ -52,7 +49,6 @@ type Msg
     | OnCreatedRider Json.Encode.Value
     | OnCreatedRace Json.Encode.Value
     | OnCreatedResult Json.Encode.Value
-    | OnCreatedComment Json.Encode.Value
     | OnUpdatedRider Json.Encode.Value
     | DatePicked String
     | Ratings Ui.Ratings.Msg

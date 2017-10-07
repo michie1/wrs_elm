@@ -118,7 +118,7 @@ resultExists : Rider.Model.Rider -> Race.Model.Race -> List Result.Model.Result 
 resultExists rider race results =
     List.length
         (List.filter
-            (\result -> race.id == result.raceId && rider.id == result.riderId)
+            (\result -> race.key == result.raceKey && rider.id == result.riderId)
             results
         )
         == 1

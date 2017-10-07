@@ -8,10 +8,8 @@ import App.Msg exposing (Msg(..))
 import App.UrlUpdate
 import Race.Model exposing (Race)
 import Rider.Model
-import Comment.Model
 import Result.Model
 import Result.Update
-import Comment.Update
 import Account.Update
 import Race.Update
 import String
@@ -88,7 +86,7 @@ update msg app =
 
             ResultsJson json ->
                 Result.Update.resultsJson json app
-            
+
             ResultAdd ->
                 case app.page of
                     App.Model.ResultAdd resultAdd ->
@@ -142,45 +140,6 @@ update msg app =
                         app
                 , Cmd.none
                 )
-
-            CommentAddSetText text ->
-                ( case app.page of
-                    App.Model.CommentAdd commentAdd ->
-                        { app
-                            | page =
-                                App.Model.CommentAdd <| Comment.Update.addText text commentAdd
-                        }
-
-                    _ ->
-                        app
-                , Cmd.none
-                )
-
-            CommentAddSetRiderName riderName ->
-                ( case app.page of
-                    App.Model.CommentAdd commentAdd ->
-                        { app
-                            | page =
-                                App.Model.CommentAdd <| Comment.Update.addRiderName riderName commentAdd
-                        }
-
-                    _ ->
-                        app
-                , Cmd.none
-                )
-
-            CommentAdd ->
-                case app.page of
-                    App.Model.CommentAdd commentAdd ->
-                        case app.riders of
-                            Just riders ->
-                                noOp
-
-                            Nothing ->
-                                noOp
-
-                    _ ->
-                        noOp
 
             UrlUpdate route ->
                 App.UrlUpdate.urlUpdate route app
@@ -243,7 +202,7 @@ update msg app =
                             let
                                 newRace =
                                     Race.Model.Race
-                                        race.id
+                                        race.key
                                         race.name
                                         race.date
                                         race.category
@@ -267,35 +226,12 @@ update msg app =
                                     Result.Model.Result
                                         result.id
                                         result.riderId
-                                        result.raceId
+                                        result.raceKey
                                         result.result
                                         Result.Model.CatA
                                         --result.strava
                             in
                                 ( { app | results = newResult :: app.results }
-                                , Cmd.none
-                                )
-
-                        Err _ ->
-                            noOp
-
-            OnCreatedComment rawResponse ->
-                let
-                    commentResult =
-                        Json.Decode.decodeValue App.Decoder.commentDecoder rawResponse
-                in
-                    case commentResult of
-                        Ok comment ->
-                            let
-                                newComment =
-                                    Comment.Model.Comment
-                                        comment.id
-                                        comment.updatedAt
-                                        comment.raceId
-                                        comment.riderId
-                                        comment.text
-                            in
-                                ( { app | comments = Just (newComment :: (Maybe.withDefault [] app.comments)) }
                                 , Cmd.none
                                 )
 

@@ -9,11 +9,10 @@ type Route
     | RiderDetails Int
     | Riders
     | RaceAdd
-    | RaceDetails Int
+    | RaceDetails String
     | Races
     | Results
-    | ResultAdd Int
-    | CommentAdd Int
+    | ResultAdd String
     | Account
     | AccountLoginEmail String
     | AccountLogin
@@ -45,11 +44,8 @@ url route =
         Results ->
             "#results"
 
-        ResultAdd id ->
-            "#races/" ++ (toString id) ++ "/add"
-
-        CommentAdd id ->
-            "#races/" ++ (toString id) ++ "/comment"
+        ResultAdd key ->
+            "#races/" ++ key ++ "/add"
 
         AccountLoginEmail email ->
             "#account/login/" ++ email
@@ -73,10 +69,9 @@ matchers =
         , map Races (s "")
         , map RiderDetails (s "riders" </> int)
         , map Riders (s "riders")
-        , map ResultAdd (s "races" </> int </> s "add")
-        , map CommentAdd (s "races" </> int </> s "comment")
+        , map ResultAdd (s "races" </> string </> s "add")
         , map RaceAdd (s "races" </> s "add")
-        , map RaceDetails (s "races" </> int)
+        , map RaceDetails (s "races" </> string)
         , map Races (s "races")
         , map Results (s "results")
         , map StravaCode (s "account" </> s "login" </> s "strava" </> string) -- paramString does not work with hash
@@ -89,7 +84,7 @@ matchers =
 
 routeParser : Navigation.Location -> Route
 routeParser location =
-    location 
-        |> parseHash matchers 
+    location
+        |> parseHash matchers
         |> Maybe.withDefault Races
     -- location |> parseHash matchers |> Maybe.withDefault Home

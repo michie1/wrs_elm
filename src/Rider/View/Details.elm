@@ -101,7 +101,7 @@ raceRow result races =
         maybeRace =
             List.head
                 (List.filter
-                    (\race -> race.id == result.raceId)
+                    (\race -> race.key == result.raceKey)
                     races
                 )
     in
@@ -125,7 +125,7 @@ raceRow result races =
                         [ td [] [ text (toString result.id) ]
                         , td []
                             [ a
-                                [ href ("#races/" ++ (toString race.id)) ]
+                                [ href ("#races/" ++ race.key) ]
                                 [ text race.name ]
                             ]
                         , td [] [ text <| dateString ]

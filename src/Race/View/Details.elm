@@ -4,14 +4,12 @@ import App.Model
 import Race.Model exposing (Race)
 import Rider.Model
 import Result.Model
-import Comment.Model
 import Markdown
 import App.Msg
 import App.Routing
 import Html exposing (Html, img, button, span, li, i, h2, h3, h5, ul, li, a, div, text, table, tbody, thead, tr, td, th, br, p)
 import Html.Attributes exposing (target, src, href, class, style)
 import Html.Events exposing (onClick, onInput)
-import Comment.View.List
 import List.Extra
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
@@ -29,13 +27,13 @@ dateFormat date =
     Date.Extra.Format.format config "%d-%m-%Y" date
 
 
-render : App.Model.App -> Int -> Html App.Msg.Msg
-render app raceId =
+render : App.Model.App -> String -> Html App.Msg.Msg
+render app raceKey =
     let
         maybeRace =
             List.head
                 (List.filter
-                    (\race -> race.id == raceId)
+                    (\race -> race.key == raceKey)
                     (Maybe.withDefault [] app.races)
                 )
 
@@ -59,7 +57,7 @@ render app raceId =
                         let
                             results =
                                 List.filter
-                                    (\result -> result.raceId == race.id)
+                                    (\result -> result.raceKey == race.key)
                                     app.results
                         in
                             div []
@@ -74,36 +72,6 @@ render app raceId =
                                     , resultsTable race results riders
                                 ]
 
-                        {--
-                        case app.comments of
-                            Just comments ->
-                                let
-                                    results =
-                                        List.filter
-                                            (\result -> result.raceId == race.id)
-                                            app.results
-                                in
-                                    div []
-                                        [ div []
-                                            [ div []
-                                                [ h2 [] [ text race.name ]
-                                                , info race
-                                                ]
-                                            , div []
-                                                [ h3 [] [ text "Results" ]
-                                                , addResultButton race loggedIn
-                                                ]
-                                            , resultsTable race results riders
-                                            ]
-                                        , h3 [] [ text "Comments" ]
-                                        , addCommentButton race loggedIn
-                                        , commentsUl comments race riders
-                                        ]
-
-                            Nothing ->
-                                div [] [ text "No comments loaded." ]
-                            --}
-
                     Nothing ->
                         div [] [ text "No riders loaded." ]
 
@@ -113,23 +81,10 @@ addResultButton race show =
     if show then
         button
             [ class "waves-effect waves-light btn"
-            , onClick (App.Msg.NavigateTo (App.Routing.ResultAdd race.id))
+            , onClick (App.Msg.NavigateTo (App.Routing.ResultAdd race.key))
             , Html.Attributes.name "action"
             ]
             [ text "Add result" ]
-    else
-        span [] []
-
-
-addCommentButton : Race.Model.Race -> Bool -> Html App.Msg.Msg
-addCommentButton race show =
-    if show then
-        button
-            [ class "waves-effect waves-light btn"
-            , onClick (App.Msg.NavigateTo (App.Routing.CommentAdd race.id))
-            , Html.Attributes.name "action"
-            ]
-            [ text "Add Comment" ]
     else
         span [] []
 
@@ -244,53 +199,6 @@ stravaSpan maybeStrava =
         Nothing ->
             span [] []
 
-
-commentsUl : List Comment.Model.Comment -> Race -> List Rider.Model.Rider -> Html msg
-commentsUl comments race riders =
-    ul [ class "collection" ]
-        (List.map
-            (\comment ->
-                commentLi comment (getRiderById comment.riderId riders)
-            )
-            (filterCommentsByRace comments race)
-        )
-
-
-commentLi : Comment.Model.Comment -> Maybe Rider.Model.Rider -> Html msg
-commentLi comment maybeRider =
-    case maybeRider of
-        Nothing ->
-            li [] [ text "Rider does not exist." ]
-
-        Just rider ->
-            let
-                updatedAt =
-                    case comment.updatedAt of
-                        Just updatedAt ->
-                            dateTimeFormat updatedAt
-
-                        Nothing ->
-                            ""
-            in
-                li [ class "collection-item avatar" ]
-                    [ i [ class "material-icons circle red" ] [ text "perm_identity" ]
-                    , span [ class "title" ]
-                        [ a [ href ("#riders/" ++ (toString rider.id)) ]
-                            [ text rider.name ]
-                        ]
-                    , p []
-                        [ span [] [ text updatedAt ]
-                        , br [] []
-                        , Markdown.toHtml [ class "content" ] comment.text
-                        ]
-                    ]
-
-
-filterCommentsByRace : List Comment.Model.Comment -> Race.Model.Race -> List Comment.Model.Comment
-filterCommentsByRace comments race =
-    List.filter
-        (\comment -> comment.raceId == race.id)
-        comments
 
 
 getRiderById : Int -> List Rider.Model.Rider -> Maybe Rider.Model.Rider

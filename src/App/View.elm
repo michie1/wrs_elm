@@ -14,7 +14,6 @@ import Rider.View.List
 import Rider.View.Details
 import Result.View.List
 import Result.View.Add
-import Comment.View.Add
 import Account.View
 import Ui.Ratings
 import Ui.Calendar
@@ -72,8 +71,8 @@ viewPage app =
         App.Routing.Races ->
             Race.View.List.render (app.account /= Nothing) (Maybe.withDefault [] app.races) app.results
 
-        App.Routing.RaceDetails id ->
-            Race.View.Details.render app id
+        App.Routing.RaceDetails key ->
+            Race.View.Details.render app key
 
         App.Routing.RaceAdd ->
             case app.account of
@@ -126,21 +125,6 @@ viewPage app =
                     div
                         []
                         [ text "Please log in." ]
-
-        App.Routing.CommentAdd raceId ->
-            let
-                maybeRace =
-                    getRace raceId (Maybe.withDefault [] app.races)
-            in
-                case maybeRace of
-                    Nothing ->
-                        div []
-                            [ text "Race does not exist. Adding comment not possible." ]
-
-                    Just race ->
-                        div []
-                            [ Comment.View.Add.render app race (Maybe.withDefault [] app.riders)
-                            ]
 
         App.Routing.AccountLogin ->
             Account.View.login app
@@ -207,10 +191,10 @@ viewMessage reponse =
     div [] [ text reponse ]
 
 
-getRace : Int -> List Race.Model.Race -> Maybe Race.Model.Race
-getRace raceId races =
+getRace : String -> List Race.Model.Race -> Maybe Race.Model.Race
+getRace raceKey races =
     List.head
         (List.filter
-            (\race -> race.id == raceId)
+            (\race -> race.key == raceKey)
             races
         )

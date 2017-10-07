@@ -10,7 +10,6 @@ import App.View
 import Rider.Model
 import Race.Model
 import Result.Model
-import Comment.Model
 import WebSocket
 import Ui.Ratings
 import App.Flags exposing (Flags)
