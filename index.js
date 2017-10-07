@@ -67,7 +67,7 @@ app.ports.loadRiders.subscribe(function() {
 });
 
 app.ports.loadRaces.subscribe(function() {
-  firebase.database().ref('/races/').once('value').then(function(snapshot) {
+  firebase.database().ref('/races/').on('value', function(snapshot) {
     const val = snapshot.val();
     const arr = Object.keys(val).
       map(function (key) {
@@ -80,27 +80,22 @@ app.ports.loadRaces.subscribe(function() {
 });
 
 app.ports.loadResults.subscribe(function() {
-  console.log('load results');
   firebase.database().ref('/results/').once('value').then(function(snapshot) {
     const arr = [];
     snapshot.val().forEach(function (value) {
       arr.push(value);
     });
 
-    console.log('arr', arr);
     app.ports.setResults.send(arr);
   });
 });
 
 app.ports.addRace.subscribe(function(race) {
-  console.log('add race', race);
-  try {
-    const pushedRace = firebase.database().ref('/races/').push();
-    console.log('key', pushedRace.key);
-    console.log('pushedRace', pushedRace);
-    pushedRace.set(race);
-    //console.log('try');
-  } catch (e) {
-    console.log('e', e);
-  }
+  const pushedRace = firebase.database().ref('/races/').push();
+  pushedRace.set(race)
+    .then(function () {
+      app.ports.raceAdded.send({
+        key: pushedRace.key
+      });
+    });
 });

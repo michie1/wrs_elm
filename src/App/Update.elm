@@ -32,11 +32,16 @@ import Ui.Ratings
 import Ui.Calendar
 import Ui.Chooser
 import Navigation
+import Json.Decode.Pipeline
+import Json.Decode
 
 
 port setLocalStorage : ( String, String ) -> Cmd msg
 port getLocalStorage : String -> Cmd msg
 
+type alias RaceResponse =
+    { key : String
+    }
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
@@ -192,27 +197,31 @@ update msg app =
                         Err _ ->
                             noOp
 
-            OnCreatedRace rawResponse ->
+            RaceAddedJson rawResponse ->
                 let
+                    decoder =
+                        Json.Decode.Pipeline.decode
+                            RaceResponse
+                            |> Json.Decode.Pipeline.required "key" Json.Decode.string
+
                     raceResult =
-                        Json.Decode.decodeValue App.Decoder.raceDecoder rawResponse
+                        Json.Decode.decodeValue decoder rawResponse
+
                 in
                     case raceResult of
                         Ok race ->
                             let
-                                newRace =
-                                    Race.Model.Race
-                                        race.key
-                                        race.name
-                                        race.date
-                                        race.category
+                                _ = Debug.log "raceKey" race.key
                             in
-                                ( { app | races = Just (newRace :: (Maybe.withDefault [] app.races)) }
-                                , Cmd.none
+                                ( app
+                                , App.Helpers.navigate (App.Routing.RaceDetails race.key)
                                 )
 
-                        Err _ ->
-                            noOp
+                        Err err ->
+                            let
+                                _ = Debug.log "hoi" err
+                            in
+                                noOp
 
             OnCreatedResult rawResponse ->
                 let

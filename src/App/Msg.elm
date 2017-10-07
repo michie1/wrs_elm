@@ -25,6 +25,7 @@ type Msg
     | RaceDate String
     | RaceAddCategory Race.Model.Category
     | RacesJson Json.Decode.Value
+    | RaceAddedJson Json.Decode.Value
     | ResultAdd
     | ResultAddCategory Result.Model.ResultCategory
     | ResultAddStrava String
@@ -47,7 +48,7 @@ type Msg
     | RidersJson Json.Decode.Value
     | HandleSendError Json.Encode.Value
     | OnCreatedRider Json.Encode.Value
-    | OnCreatedRace Json.Encode.Value
+    --| OnCreatedRace Json.Encode.Value
     | OnCreatedResult Json.Encode.Value
     | OnUpdatedRider Json.Encode.Value
     | DatePicked String

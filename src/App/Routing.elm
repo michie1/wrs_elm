@@ -38,8 +38,8 @@ url route =
         RaceAdd ->
             "#races/add"
 
-        RaceDetails id ->
-            "#races/" ++ toString id
+        RaceDetails key ->
+            "#races/" ++ key
 
         Results ->
             "#results"

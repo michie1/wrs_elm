@@ -16,7 +16,6 @@ import App.Encoder
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
-
 import Json.Decode.Extra
 
 port addRace : (Json.Encode.Value) -> Cmd msg
@@ -73,7 +72,7 @@ dateFormat date =
 addSubmit : Race.Model.Add -> App.Model.App -> ( App, Cmd Msg )
 addSubmit raceAdd app =
     let
-       dateString = 
+       dateString =
             dateFormat raceAdd.calendar.value
 
        payload =
@@ -81,7 +80,7 @@ addSubmit raceAdd app =
                 [ ( "name", Json.Encode.string raceAdd.name )
                 , ( "date", Json.Encode.string dateString )
                 , ( "category", App.Encoder.raceCategory raceAdd.category )
-                ] 
+                ]
     in
         ( app, addRace payload )
 
@@ -116,7 +115,7 @@ race =
         (Json.Decode.field "key" Json.Decode.string)
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "date" (Json.Decode.maybe Json.Decode.Extra.date))
-        (Json.Decode.field "category" 
+        (Json.Decode.field "category"
             (Json.Decode.andThen categoryDecoder Json.Decode.string)
         )
 
