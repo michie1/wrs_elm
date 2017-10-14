@@ -10,7 +10,6 @@ import Race.Model exposing (Race)
 import Rider.Model
 import Result.Model
 import Result.Update
-import Account.Update
 import Race.Update
 import String
 import Debug
@@ -152,30 +151,6 @@ update msg app =
             NavigateTo route ->
                 ( app, App.Helpers.navigate route )
 
-            AccountLoginSubmit ->
-                Account.Update.loginSubmit app
-
-            AccountLogin email ->
-                Account.Update.login email app
-
-            AccountLoginEmail name ->
-                Account.Update.loginEmail name app
-
-            AccountLoginPassword password ->
-                Account.Update.loginPassword password app
-
-            AccountLogoutSubmit ->
-                Account.Update.logoutSubmit app
-
-            AccountLogout email ->
-                Account.Update.logout email app
-
-            AccountSignup ->
-                Account.Update.signup app
-
-            AccountLicence licence ->
-                Account.Update.settingsLicence licence app
-
             OnCreatedRider rawResponse ->
                 let
                     riderResult =
@@ -259,23 +234,9 @@ update msg app =
                                     Debug.log
                                         "updatedRiders: "
                                         (App.Helpers.updateRiderLicence rider.id rider.licence (Maybe.withDefault [] app.riders))
-
-                                nextAccount =
-                                    case app.account of
-                                        Just account ->
-                                            case account.id == rider.id of
-                                                True ->
-                                                    Just { account | licence = rider.licence }
-
-                                                False ->
-                                                    Just account
-
-                                        Nothing ->
-                                            Nothing
                             in
                                 ( { app
                                     | riders = Just riders
-                                    , account = nextAccount
                                   }
                                 , Cmd.none
                                 )
@@ -283,7 +244,6 @@ update msg app =
                         Err _ ->
                             noOp
 
-            -- TODO: link account to one rider?
             Noop ->
                 noOp
 

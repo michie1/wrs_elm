@@ -62,9 +62,7 @@ init flags location =
 subscriptions : App -> Sub Msg
 subscriptions app =
     Sub.batch
-        [ login AccountLogin
-        , logout AccountLogout
-        , setRiders RidersJson
+        [ setRiders RidersJson
         , setRaces RacesJson
         , setResults ResultsJson
         , raceAdded RaceAddedJson

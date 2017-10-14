@@ -13,10 +13,6 @@ type Route
     | Races
     | Results
     | ResultAdd String
-    | Account
-    | AccountLoginEmail String
-    | AccountLogin
-    | AccountSignup
     | StravaCode (String)
 
 
@@ -47,18 +43,6 @@ url route =
         ResultAdd key ->
             "#races/" ++ key ++ "/add"
 
-        AccountLoginEmail email ->
-            "#account/login/" ++ email
-
-        AccountLogin ->
-            "#account/login"
-
-        Account ->
-            "#account"
-
-        AccountSignup ->
-            "#account/signup"
-
         StravaCode code ->
             "#account/login/strava/code"
 
@@ -75,10 +59,6 @@ matchers =
         , map Races (s "races")
         , map Results (s "results")
         , map StravaCode (s "account" </> s "login" </> s "strava" </> string) -- paramString does not work with hash
-        , map AccountLoginEmail (s "account" </> s "login" </> string)
-        , map AccountLogin (s "account" </> s "login")
-        , map AccountSignup (s "account" </> s "signup")
-        , map Account (s "account")
         ]
 
 

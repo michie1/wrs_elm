@@ -36,14 +36,6 @@ render app raceKey =
                     (\race -> race.key == raceKey)
                     (Maybe.withDefault [] app.races)
                 )
-
-        loggedIn =
-            case app.account of
-                Just _ ->
-                    True
-
-                Nothing ->
-                    False
     in
         case maybeRace of
             Nothing ->
@@ -67,7 +59,7 @@ render app raceKey =
                                     ]
                                     , div []
                                     [ h3 [] [ text "Results" ]
-                                    , addResultButton race loggedIn
+                                    , addResultButton race
                                     ]
                                     , resultsTable race results riders
                                 ]
@@ -76,17 +68,14 @@ render app raceKey =
                         div [] [ text "No riders loaded." ]
 
 
-addResultButton : Race.Model.Race -> Bool -> Html App.Msg.Msg
-addResultButton race show =
-    if show then
-        button
-            [ class "waves-effect waves-light btn"
-            , onClick (App.Msg.NavigateTo (App.Routing.ResultAdd race.key))
-            , Html.Attributes.name "action"
-            ]
-            [ text "Add result" ]
-    else
-        span [] []
+addResultButton : Race.Model.Race -> Html App.Msg.Msg
+addResultButton race =
+    button
+        [ class "waves-effect waves-light btn"
+        , onClick (App.Msg.NavigateTo (App.Routing.ResultAdd race.key))
+        , Html.Attributes.name "action"
+        ]
+        [ text "Add result" ]
 
 
 info : Race -> Html App.Msg.Msg

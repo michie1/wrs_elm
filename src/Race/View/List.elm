@@ -15,23 +15,18 @@ dateFormat date =
     Date.Extra.Format.format config "%d-%m-%Y" date
 
 
-render : Bool -> List Race -> List Result.Model.Result -> Html App.Msg.Msg
-render loggedIn races results =
+render : Maybe (List Race) -> List Result.Model.Result -> Html App.Msg.Msg
+render maybeRaces results =
     div []
         [ h2 [] [ text "Races" ]
-        , addButton True
-        , raceTable races results
+        , addButton
+        , raceTable (Maybe.withDefault [] maybeRaces) results
         ]
 
 
-addButton : Bool -> Html App.Msg.Msg
-addButton loggedIn =
-    case loggedIn of
-        True ->
-            div [] [ a [ href "#races/add", class "waves-effect waves-light btn" ] [ text "Add race" ] ]
-
-        False ->
-            div [] []
+addButton : Html App.Msg.Msg
+addButton =
+    div [] [ a [ href "#races/add", class "waves-effect waves-light btn" ] [ text "Add race" ] ]
 
 
 raceTable : List Race -> List Result.Model.Result -> Html App.Msg.Msg

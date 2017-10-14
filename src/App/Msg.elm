@@ -31,14 +31,6 @@ type Msg
     | ResultAddStrava String
     | ResultAddResult String
     | ResultsJson Json.Decode.Value
-    | AccountLogin String
-    | AccountLoginEmail String
-    | AccountLoginPassword String
-    | AccountLoginSubmit
-    | AccountLogout String
-    | AccountLogoutSubmit
-    | AccountSignup
-    | AccountLicence Rider.Model.Licence
     | NavigateTo App.Routing.Route
     | UrlUpdate App.Routing.Route
     | Noop

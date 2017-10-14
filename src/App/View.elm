@@ -14,9 +14,9 @@ import Rider.View.List
 import Rider.View.Details
 import Result.View.List
 import Result.View.Add
-import Account.View
 import Ui.Ratings
 import Ui.Calendar
+
 
 render : App -> Html Msg
 render app =
@@ -30,7 +30,7 @@ mainView : App -> Html Msg
 mainView app =
     div [ class "container" ]
         [ viewPage app
-        -- , Html.map Ratings (Ui.Ratings.view app.ratings)
+          -- , Html.map Ratings (Ui.Ratings.view app.ratings)
         ]
 
 
@@ -49,7 +49,8 @@ viewPage app =
                         [ h2 [] [ text "Riders" ]
                         , Rider.View.List.render riders
                         ]
-                    {--
+
+                {--
                     case app.races of
                         Just races ->
                             div []
@@ -59,7 +60,6 @@ viewPage app =
                         Nothing ->
                             div [] [ text "No races loaded." ]
                     --}
-
                 Nothing ->
                     div [] [ text "No riders loaded." ]
 
@@ -69,106 +69,62 @@ viewPage app =
                 id
 
         App.Routing.Races ->
-            Race.View.List.render (app.account /= Nothing) (Maybe.withDefault [] app.races) app.results
+            Race.View.List.render app.races app.results
 
         App.Routing.RaceDetails key ->
             Race.View.Details.render app key
 
         App.Routing.RaceAdd ->
-            case app.account of
-                -- Just _ ->
-                Nothing ->
-                    case app.page of
-                        App.Model.RaceAdd raceAdd ->
-                            div []
-                                [ Race.View.Add.render raceAdd
-                                ]
-
-                        _ ->
-                            div [] [ text "Page not RaceAdd" ]
+            case app.page of
+                App.Model.RaceAdd raceAdd ->
+                    div []
+                        [ Race.View.Add.render raceAdd
+                        ]
 
                 _ ->
-                    div
-                        []
-                        [ text "Please log in." ]
+                    div [] [ text "Page not RaceAdd" ]
 
         App.Routing.Results ->
             Result.View.List.render app.results
 
         App.Routing.ResultAdd raceId ->
-            case app.account of
-                Just _ ->
-                    case app.page of
-                        App.Model.ResultAdd resultAdd ->
-                            let
-                                maybeRace =
-                                    getRace raceId (Maybe.withDefault [] app.races)
-                            in
-                                case maybeRace of
-                                    Nothing ->
+            case app.page of
+                App.Model.ResultAdd resultAdd ->
+                    let
+                        maybeRace =
+                            getRace raceId (Maybe.withDefault [] app.races)
+                    in
+                        case maybeRace of
+                            Nothing ->
+                                div []
+                                    [ text "Race does not exist. Adding result not possible." ]
+
+                            Just race ->
+                                case app.riders of
+                                    Just riders ->
                                         div []
-                                            [ text "Race does not exist. Adding result not possible." ]
+                                            [ Result.View.Add.render race resultAdd riders app.results
+                                            ]
 
-                                    Just race ->
-                                        case app.riders of
-                                            Just riders ->
-                                                div []
-                                                    [ Result.View.Add.render race resultAdd riders app.results
-                                                    ]
+                                    Nothing ->
+                                        div [] [ text "No riders loaded." ]
 
-                                            Nothing ->
-                                                div [] [ text "No riders loaded." ]
-
-                        _ ->
-                            div [] [ text "No resultAdd." ]
-                Nothing ->
-                    div
-                        []
-                        [ text "Please log in." ]
-
-        App.Routing.AccountLogin ->
-            Account.View.login app
-
-        App.Routing.AccountLoginEmail email ->
-            Account.View.login app
-
-        App.Routing.Account ->
-            Account.View.render app
-
-        App.Routing.AccountSignup ->
-            Account.View.signup app
+                _ ->
+                    div [] [ text "No resultAdd." ]
 
         App.Routing.StravaCode maybeCode ->
             div [] []
-            -- ( app, Cmd.none )
-            --Account.View.stravaCode app
+
+
+
+-- ( app, Cmd.none )
 
 
 userLi : App -> List (Html App.Msg.Msg)
 userLi app =
-    case app.account of
-        Just account ->
-            let
-                content =
-                    case account.licence of
-                        Just licence ->
-                            [ text account.email ]
-
-                        Nothing ->
-                            [ text account.email
-                            , span [ class "new badge" ] [ text "1" ]
-                            ]
-            in
-                [ li [] [ a [ href "#races" ] [ text "Races" ] ]
-                , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
-                , li [] [ a [ href "#account" ] content ]
-                , li [] [ a [ onClick App.Msg.AccountLogoutSubmit ] [ text "Logout" ] ]
-                ]
-
-        Nothing ->
-            [ li [] [ a [ href "#account/login" ] [ text "Login" ] ]
-            , li [] [ a [ href "#account/signup" ] [ text "Signup" ] ]
-            ]
+    [ li [] [ a [ href "#races" ] [ text "Races" ] ]
+    , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
+    ]
 
 
 header : App -> Html App.Msg.Msg

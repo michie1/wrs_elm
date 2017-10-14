@@ -5,7 +5,6 @@ port module App.UrlUpdate exposing (urlUpdate, onUrlEnter)
 import App.Msg exposing (Msg, Msg(..))
 import App.Model exposing (App)
 import App.Routing exposing (Route)
-import Account.Model
 import Result.Model
 import Race.Model
 import Task
@@ -34,43 +33,7 @@ onUrlLeave prevRoute prevApp =
 onUrlEnter : App.Routing.Route -> App -> ( App, Cmd Msg )
 onUrlEnter route app =
     case route of
-        App.Routing.AccountLogin ->
-            case app.account of
-                Just account ->
-                    ( app, App.Helpers.navigate App.Routing.Account )
-
-                Nothing ->
-                    ( { app | page = App.Model.AccountLogin Account.Model.login }
-                    , fetchForRoute App.Routing.AccountLogin
-                      -- TODO: Move code from fetchForRoute inside this function.
-                    )
-
-        App.Routing.AccountLoginEmail email ->
-            case app.account of
-                Just account ->
-                    ( app, App.Helpers.navigate App.Routing.Account )
-
-                Nothing ->
-                    let
-                        accountLogin = Account.Model.Login email ""
-
-                        nextAccountLogin =
-                            { accountLogin | email = email }
-                    in
-                        ( { app | page = App.Model.AccountLogin nextAccountLogin }
-                        , fetchForRoute App.Routing.AccountLogin
-                        )
-
         App.Routing.ResultAdd raceKey ->
-            case app.account of
-                Nothing ->
-                    let
-                        _ =
-                            Debug.log "nothing" "app.account"
-                    in
-                        ( app, Cmd.none )
-
-                Just account ->
                     case app.riders of
                         Nothing ->
                             let
@@ -84,20 +47,6 @@ onUrlEnter route app =
                                 resultAdd =
                                     Result.Model.initialAdd
 
-                                {--
-                                name =
-                                    case app.account of
-                                        Just account ->
-                                            case resultExists account.id raceId app.results of
-                                                False ->
-                                                    account.name
-
-                                                True ->
-                                                    ""
-
-                                        Nothing ->
-                                            ""
-                                --}
                                 filteredRiders =
                                     List.filter
                                         (\rider -> not <| resultExists rider.id raceKey app.results)
@@ -114,27 +63,9 @@ onUrlEnter route app =
                                         )
                                         filteredRiders
 
-                                accountInFilteredRiders =
-                                    List.length
-                                        ((List.filter
-                                            (\rider ->
-                                                rider.id == account.id
-                                            )
-                                            filteredRiders
-                                         )
-                                        )
-                                        == 1
-
-                                chooser =
-                                    case accountInFilteredRiders of
-                                        True ->
-                                            resultAdd.chooser
-                                                |> Ui.Chooser.items items
-                                                |> Ui.Chooser.setValue (toString account.id)
-
-                                        False ->
-                                            resultAdd.chooser
-                                                |> Ui.Chooser.items items
+                                chooser = 
+                                    resultAdd.chooser
+                                    |> Ui.Chooser.items items
 
                                 resultAddWithRaceKey =
                                     { resultAdd
@@ -157,16 +88,6 @@ onUrlEnter route app =
                 ( { app | page = App.Model.RaceAdd raceAdd }
                 , fetchForRoute App.Routing.RaceAdd
                 )
-
-        App.Routing.AccountSignup ->
-            case app.account of
-                Just account ->
-                    ( app, App.Helpers.navigate App.Routing.Account )
-
-                Nothing ->
-                    ( { app | page = App.Model.AccountSignup Account.Model.signup }
-                    , Cmd.none
-                    )
 
         App.Routing.RaceDetails id ->
             let
@@ -226,10 +147,6 @@ fetchForRoute route =
             Cmd.batch
                 [ Task.attempt (always App.Msg.Noop) (Dom.focus "name")
                 ]
-
-        App.Routing.AccountLogin ->
-            Cmd.batch
-                []
 
         App.Routing.ResultAdd raceKey ->
             Cmd.batch

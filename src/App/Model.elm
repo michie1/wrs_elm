@@ -6,7 +6,6 @@ import Race.Model
 import Rider.Model
 import Result.Model
 import Date
-import Account.Model
 import Keyboard.Extra
 import Phoenix.Socket
 import Phoenix.Channel
@@ -19,8 +18,6 @@ import App.Flags exposing (Flags)
 
 type Page
     = RaceAdd Race.Model.Add
-    | AccountLogin Account.Model.Login
-    | AccountSignup Account.Model.Signup
     | ResultAdd Result.Model.Add
     | NoOp
 
@@ -32,7 +29,6 @@ type alias App =
     , races : Maybe (List Race.Model.Race)
     , results : List Result.Model.Result
     , now : Maybe Date.Date
-    , account : Maybe Account.Model.Account
     , messages : List String
     , ratings : Ui.Ratings.Model
     }
@@ -47,7 +43,6 @@ initial flags =
     Nothing
     Result.Model.initialResults
     Nothing
-    Account.Model.initial
         []
         (Ui.Ratings.init () |> Ui.Ratings.size 10)
         , Cmd.none
