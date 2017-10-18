@@ -41,21 +41,6 @@ app.ports.setLocalStorage.subscribe(function (tuple) {
   return localStorage.setItem(tuple[0], tuple[1]);
 });
 
-app.ports.accountLogin.subscribe(function(account) {
-  firebase.auth().signInWithEmailAndPassword(account.email, account.password).then(function(user) {
-    console.log('signed in correctly');
-  }).catch(function(error) {
-    console.log('error', error);
-  });
-});
-
-app.ports.accountLogout.subscribe(function() {
-  console.log('logout');
-  firebase.auth().signOut().then(function() {
-    app.ports.logout.send('logouted');
-  });
-});
-
 app.ports.loadRiders.subscribe(function() {
   firebase.database().ref('/riders/').orderByChild('id').once('value').then(function(snapshot) {
     const arr = [];

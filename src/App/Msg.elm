@@ -28,7 +28,6 @@ type Msg
     | RaceAddedJson Json.Decode.Value
     | ResultAdd
     | ResultAddCategory Result.Model.ResultCategory
-    | ResultAddStrava String
     | ResultAddResult String
     | ResultsJson Json.Decode.Value
     | NavigateTo App.Routing.Route
@@ -47,5 +46,3 @@ type Msg
     | Ratings Ui.Ratings.Msg
     | Calendar Ui.Calendar.Msg
     | Chooser Ui.Chooser.Msg
-    | StravaAuthorize
-    | StravaReceiveAccessToken Json.Encode.Value

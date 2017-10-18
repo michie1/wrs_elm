@@ -13,7 +13,6 @@ type Route
     | Races
     | Results
     | ResultAdd String
-    | StravaCode (String)
 
 
 url : Route -> String
@@ -43,9 +42,6 @@ url route =
         ResultAdd key ->
             "#races/" ++ key ++ "/add"
 
-        StravaCode code ->
-            "#account/login/strava/code"
-
 matchers : Parser (Route -> a) a
 matchers =
     oneOf
@@ -58,7 +54,6 @@ matchers =
         , map RaceDetails (s "races" </> string)
         , map Races (s "races")
         , map Results (s "results")
-        , map StravaCode (s "account" </> s "login" </> s "strava" </> string) -- paramString does not work with hash
         ]
 
 

@@ -119,19 +119,6 @@ update msg app =
                 , Cmd.none
                 )
 
-            ResultAddStrava link ->
-                ( case app.page of
-                    App.Model.ResultAdd resultAdd ->
-                        { app
-                            | page =
-                                App.Model.ResultAdd <| Result.Update.addStrava link resultAdd
-                        }
-
-                    _ ->
-                        app
-                , Cmd.none
-                )
-
             ResultAddResult value ->
                 ( case app.page of
                     App.Model.ResultAdd resultAdd ->
@@ -347,35 +334,3 @@ update msg app =
 
                     _ ->
                         noOp
-
-            StravaAuthorize ->
-                ( app, Navigation.load "https://www.strava.com/oauth/authorize?client_id=1596&response_type=code&redirect_uri=http://localhost:8080/%23account/login/strava/code" )
-
-            --&approval_prompt=force" )
-            StravaReceiveAccessToken rawResponse ->
-                let
-                    bodyResult =
-                        Json.Decode.decodeValue (Json.Decode.field "body" Json.Decode.string) rawResponse
-
-                    bla =
-                        case bodyResult of
-                            Ok body ->
-                                Json.Decode.decodeString (Json.Decode.field "access_token" Json.Decode.string) body
-
-                            Err err ->
-                                let
-                                    _ =
-                                        Debug.log "err" err
-                                in
-                                    Ok ""
-                in
-                    case bla of
-                        Ok accessToken ->
-                            ( app, setLocalStorage ( "accessToken", accessToken ) )
-
-                        Err err ->
-                            let
-                                _ =
-                                    Debug.log "err" err
-                            in
-                                ( app, Cmd.none )

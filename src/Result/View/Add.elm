@@ -88,18 +88,6 @@ render race resultAdd riders results =
                 ]
             , div [ class "row" ] [ categoryButtons ]
             , div [ class "row" ]
-                [ div [ class "input-field col s6" ]
-                    [ input
-                        [ id "strava"
-                        , type_ "text"
-                        , value resultAdd.strava
-                        , onInput App.Msg.ResultAddStrava
-                        ]
-                        []
-                    , label [ for "rider" ] [ text "Strava" ]
-                    ]
-                ]
-            , div [ class "row" ]
                 [ button
                     [ class "waves-effect waves-light btn"
                     , type_ "submit"

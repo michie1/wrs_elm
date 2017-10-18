@@ -163,31 +163,15 @@ resultRow result riders =
                             [ href ("#riders/" ++ (toString rider.id)) ]
                             [ text rider.name ]
                         ]
-                    --, resultTd result.result result.strava
+                    , resultTd result.result
                     ]
 
 
-resultTd : String -> Maybe String -> Html msg
-resultTd result maybeStrava =
+resultTd : String -> Html msg
+resultTd result =
     td []
         [ span [] [ text result ]
-        , stravaSpan maybeStrava
         ]
-
-
-stravaSpan : Maybe String -> Html msg
-stravaSpan maybeStrava =
-    case maybeStrava of
-        Just strava ->
-            span [ style [ ( "margin-left", "5px" ) ] ]
-                [ a [ href strava, target "_blank" ]
-                    [ img [ src "https://d3nn82uaxijpm6.cloudfront.net/favicon-16x16.png" ] []
-                    ]
-                ]
-
-        Nothing ->
-            span [] []
-
 
 
 getRiderById : Int -> List Rider.Model.Rider -> Maybe Rider.Model.Rider

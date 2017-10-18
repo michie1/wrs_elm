@@ -1,4 +1,4 @@
-module Result.Update exposing (addCategory, addStrava, addResult, resultsJson)
+module Result.Update exposing (addCategory, addResult, resultsJson)
 import Json.Decode.Pipeline
 
 import App.Model exposing (App)
@@ -22,11 +22,6 @@ addCategory :
     -> Result.Model.Add
 addCategory category resultAdd =
     { resultAdd | category = category }
-
-
-addStrava : String -> Result.Model.Add -> Result.Model.Add
-addStrava link resultAdd =
-    { resultAdd | strava = link }
 
 
 addResult : String -> Result.Model.Add -> Result.Model.Add

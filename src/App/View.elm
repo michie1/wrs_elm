@@ -112,13 +112,6 @@ viewPage app =
                 _ ->
                     div [] [ text "No resultAdd." ]
 
-        App.Routing.StravaCode maybeCode ->
-            div [] []
-
-
-
--- ( app, Cmd.none )
-
 
 userLi : App -> List (Html App.Msg.Msg)
 userLi app =
