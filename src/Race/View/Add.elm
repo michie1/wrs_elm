@@ -5,7 +5,6 @@ import Html.Attributes exposing (attribute, autofocus, value, autofocus, class, 
 import Html.Events exposing (onClick, onInput)
 import App.Msg
 import Race.Model exposing (Race)
-import App.Msg
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date

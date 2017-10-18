@@ -17,8 +17,9 @@ import App.Flags exposing (Flags)
 
 
 type Page
-    = RaceAdd Race.Model.Add
+    = RaceAdd Race.Model.Add -- TODO: Set this data to the Route. 
     | ResultAdd Result.Model.Add
+    | RiderAdd Rider.Model.Add
     | NoOp
 
 

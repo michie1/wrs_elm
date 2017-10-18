@@ -259,6 +259,15 @@ update msg app =
             RidersJson json ->
                 Rider.Update.ridersJson json app
 
+            RiderAddSubmit ->
+                Rider.Update.addSubmit app
+
+            RiderAddName name ->
+                Rider.Update.addName name app
+
+            RiderAddLicence licence ->
+                Rider.Update.addLicence licence app
+
             ReceiveMessage message ->
                 let
                     _ =

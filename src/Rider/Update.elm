@@ -55,3 +55,36 @@ ridersJson json app =
                 )
             _ ->
                 ( app, Cmd.none )
+
+
+
+addSubmit : App -> ( App, Cmd Msg)
+addSubmit app =
+    ( app, Cmd.none )
+
+addName : String -> App -> ( App, Cmd Msg )
+addName name app =
+    let
+        page = 
+            case app.page of
+                App.Model.RiderAdd riderAdd ->
+                    App.Model.RiderAdd { riderAdd | name = name }
+                _ -> 
+                    app.page
+        nextApp = { app | page = page }
+    in
+        ( nextApp, Cmd.none )
+
+
+addLicence : Rider.Model.Licence -> App -> ( App, Cmd Msg )
+addLicence licence app =
+    let
+        page = 
+            case app.page of
+                App.Model.RiderAdd riderAdd ->
+                    App.Model.RiderAdd { riderAdd | licence = Just licence }
+                _ -> 
+                    app.page
+        nextApp = { app | page = page }
+    in
+        ( nextApp, Cmd.none )

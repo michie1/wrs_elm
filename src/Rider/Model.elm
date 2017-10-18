@@ -1,4 +1,4 @@
-module Rider.Model exposing (Rider, Licence, Licence(..))
+module Rider.Model exposing (Rider, Licence, Licence(..), Add)
 
 
 type Licence
@@ -12,4 +12,9 @@ type alias Rider =
     { id : Int
     , name : String
     , licence : Maybe Licence
+    }
+
+type alias Add =
+    { name: String
+    , licence: Maybe Licence
     }

@@ -7,6 +7,7 @@ import App.Model exposing (App)
 import App.Routing exposing (Route)
 import Result.Model
 import Race.Model
+import Rider.Model
 import Task
 import Dom
 import Date
@@ -89,6 +90,13 @@ onUrlEnter route app =
                 , fetchForRoute App.Routing.RaceAdd
                 )
 
+        App.Routing.RiderAdd ->
+            let
+                add = Rider.Model.Add "" Nothing
+            in
+                ( { app | page = App.Model.RiderAdd add }
+                , fetchForRoute App.Routing.RiderAdd
+                )
         App.Routing.RaceDetails id ->
             let
                 cmd =
@@ -148,6 +156,10 @@ fetchForRoute route =
                 [ Task.attempt (always App.Msg.Noop) (Dom.focus "name")
                 ]
 
+        App.Routing.RiderAdd ->
+            Cmd.batch
+                [ Task.attempt (always App.Msg.Noop) (Dom.focus "name")
+                ]
         App.Routing.ResultAdd raceKey ->
             Cmd.batch
                 [ Task.attempt (always App.Msg.Noop) (Dom.focus "result")

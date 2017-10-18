@@ -14,6 +14,7 @@ import Rider.View.List
 import Rider.View.Details
 import Result.View.List
 import Result.View.Add
+import Rider.View.Add
 import Ui.Ratings
 import Ui.Calendar
 
@@ -67,6 +68,16 @@ viewPage app =
             Rider.View.Details.render
                 app
                 id
+
+        App.Routing.RiderAdd ->
+            case app.page of
+                App.Model.RiderAdd add ->
+                    div []
+                        [ Rider.View.Add.render add
+                        ]
+
+                _ ->
+                    div [] [ text "Page not RidersAdd" ]
 
         App.Routing.Races ->
             Race.View.List.render app.races app.results

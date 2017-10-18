@@ -30,6 +30,9 @@ type Msg
     | ResultAddCategory Result.Model.ResultCategory
     | ResultAddResult String
     | ResultsJson Json.Decode.Value
+    | RiderAddSubmit
+    | RiderAddLicence Rider.Model.Licence
+    | RiderAddName String
     | NavigateTo App.Routing.Route
     | UrlUpdate App.Routing.Route
     | Noop
