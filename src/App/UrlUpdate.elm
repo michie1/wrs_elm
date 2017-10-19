@@ -20,9 +20,15 @@ import Json.Decode
 import Json.Decode.Pipeline
 import Json.Encode
 
+
 port loadRiders : () -> Cmd msg
+
+
 port loadRaces : () -> Cmd msg
+
+
 port loadResults : () -> Cmd msg
+
 
 onUrlLeave : App.Routing.Route -> App -> App
 onUrlLeave prevRoute prevApp =
@@ -35,48 +41,48 @@ onUrlEnter : App.Routing.Route -> App -> ( App, Cmd Msg )
 onUrlEnter route app =
     case route of
         App.Routing.ResultAdd raceKey ->
-                    case app.riders of
-                        Nothing ->
-                            let
-                                _ =
-                                    Debug.log "nothing" "app.riders"
-                            in
-                                ( app, Cmd.none )
+            case app.riders of
+                Nothing ->
+                    let
+                        _ =
+                            Debug.log "nothing" "app.riders"
+                    in
+                        ( app, Cmd.none )
 
-                        Just riders ->
-                            let
-                                resultAdd =
-                                    Result.Model.initialAdd
+                Just riders ->
+                    let
+                        resultAdd =
+                            Result.Model.initialAdd
 
-                                filteredRiders =
-                                    List.filter
-                                        (\rider -> not <| resultExists rider.key raceKey app.results)
-                                        riders
+                        filteredRiders =
+                            List.filter
+                                (\rider -> not <| resultExists rider.key raceKey app.results)
+                                riders
 
-                                items : List Ui.Chooser.Item
-                                items =
-                                    List.map
-                                        (\rider ->
-                                            { id = rider.key
-                                            , label = rider.name
-                                            , value = rider.key
-                                            }
-                                        )
-                                        filteredRiders
-
-                                chooser = 
-                                    resultAdd.chooser
-                                    |> Ui.Chooser.items items
-
-                                resultAddWithRaceKey =
-                                    { resultAdd
-                                        | raceKey = raceKey
-                                        , chooser = chooser
+                        items : List Ui.Chooser.Item
+                        items =
+                            List.map
+                                (\rider ->
+                                    { id = rider.key
+                                    , label = rider.name
+                                    , value = rider.key
                                     }
-                            in
-                                ( { app | page = App.Model.ResultAdd resultAddWithRaceKey }
-                                , fetchForRoute (App.Routing.ResultAdd raceKey)
                                 )
+                                filteredRiders
+
+                        chooser =
+                            resultAdd.chooser
+                                |> Ui.Chooser.items items
+
+                        resultAddWithRaceKey =
+                            { resultAdd
+                                | raceKey = raceKey
+                                , chooser = chooser
+                            }
+                    in
+                        ( { app | page = App.Model.ResultAdd resultAddWithRaceKey }
+                        , fetchForRoute (App.Routing.ResultAdd raceKey)
+                        )
 
         App.Routing.RaceAdd ->
             let
@@ -92,26 +98,64 @@ onUrlEnter route app =
 
         App.Routing.RiderAdd ->
             let
-                add = Rider.Model.Add "" Nothing
+                add =
+                    Rider.Model.Add "" Nothing
             in
                 ( { app | page = App.Model.RiderAdd add }
                 , fetchForRoute App.Routing.RiderAdd
                 )
+
         App.Routing.RaceDetails id ->
-            let
+            let -- TODO: Fetch everyting on site enter
                 cmd =
-                   fetchForRoute (App.Routing.RaceDetails id)
+                    case ( app.races, app.riders ) of
+                        ( Nothing, Nothing ) ->
+                            Cmd.batch [ loadRaces (), loadRiders () ]
+
+                        ( Nothing, _ ) ->
+                            loadRaces ()
+
+                        ( _, Nothing ) ->
+                            loadRiders ()
+
+                        _ ->
+                            Cmd.none
             in
                 ( app, cmd )
 
         App.Routing.RiderDetails id ->
-            ( app, fetchForRoute (App.Routing.RiderDetails id) )
+            let
+                cmd =
+                    case ( app.races, app.riders ) of
+                        ( Nothing, Nothing ) ->
+                            Cmd.batch [ loadRaces (), loadRiders () ]
+
+                        ( Nothing, _ ) ->
+                            loadRaces ()
+
+                        ( _, Nothing ) ->
+                            loadRiders ()
+
+                        _ ->
+                            Cmd.none
+            in
+                ( app, cmd )
 
         App.Routing.Riders ->
-            ( app, fetchForRoute App.Routing.Riders )
+            case app.riders of
+                Nothing ->
+                    ( app, fetchForRoute App.Routing.Riders )
+
+                _ ->
+                    ( app, Cmd.none )
 
         App.Routing.Races ->
-            ( app, fetchForRoute App.Routing.Races )
+            case app.races of
+                Nothing ->
+                    ( app, fetchForRoute App.Routing.Races )
+
+                _ ->
+                    ( app, Cmd.none )
 
         _ ->
             ( app, Cmd.none )
@@ -160,6 +204,7 @@ fetchForRoute route =
             Cmd.batch
                 [ Task.attempt (always App.Msg.Noop) (Dom.focus "name")
                 ]
+
         App.Routing.ResultAdd raceKey ->
             Cmd.batch
                 [ Task.attempt (always App.Msg.Noop) (Dom.focus "result")
@@ -176,5 +221,6 @@ fetchForRoute route =
 
         App.Routing.RiderDetails id ->
             loadResults ()
+
         _ ->
             Cmd.none
