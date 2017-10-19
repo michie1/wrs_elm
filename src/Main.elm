@@ -22,6 +22,7 @@ port setRaces : (Json.Decode.Value -> msg) -> Sub msg
 port setResults : (Json.Decode.Value -> msg) -> Sub msg
 
 port raceAdded : (Json.Decode.Value -> msg) -> Sub msg
+port riderAdded : (Json.Decode.Value -> msg) -> Sub msg
 
 main : Program Flags App Msg
 main =
@@ -66,4 +67,5 @@ subscriptions app =
         , setRaces RacesJson
         , setResults ResultsJson
         , raceAdded RaceAddedJson
+        , riderAdded RiderAddedJson
         ]

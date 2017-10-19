@@ -1,13 +1,16 @@
-module Rider.Update exposing (..)
+port module Rider.Update exposing (..)
 
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import Json.Decode
 import Json.Encode
 import App.Decoder
+import App.Encoder
 import App.Routing
 import App.UrlUpdate
 import Rider.Model
+
+port addRider : (Json.Encode.Value) -> Cmd msg
 
 licence : String -> Maybe Rider.Model.Licence
 licence string =
@@ -32,7 +35,7 @@ rider : Json.Decode.Decoder Rider.Model.Rider
 rider =
     Json.Decode.map3 
         Rider.Model.Rider
-        (Json.Decode.field "id" Json.Decode.int)
+        (Json.Decode.field "key" Json.Decode.string)
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "licence" 
             (Json.Decode.andThen licenceDecoder Json.Decode.string)
@@ -60,7 +63,18 @@ ridersJson json app =
 
 addSubmit : App -> ( App, Cmd Msg)
 addSubmit app =
-    ( app, Cmd.none )
+    case app.page of
+        App.Model.RiderAdd add ->
+            let
+                payload =
+                    Json.Encode.object
+                        [ ( "name", Json.Encode.string add.name )
+                        , ( "licence", App.Encoder.licence add.licence )
+                        ]
+            in
+                ( app, addRider payload )
+        _ ->
+            ( app, Cmd.none )
 
 addName : String -> App -> ( App, Cmd Msg )
 addName name app =

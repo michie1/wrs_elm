@@ -146,7 +146,7 @@ resultRow result riders =
         maybeRider =
             List.head
                 (List.filter
-                    (\rider -> rider.id == result.riderId)
+                    (\rider -> rider.key == result.riderKey)
                     riders
                 )
     in
@@ -160,7 +160,7 @@ resultRow result riders =
                 tr []
                     [ td []
                         [ a
-                            [ href ("#riders/" ++ (toString rider.id)) ]
+                            [ href ("#riders/" ++ rider.key) ]
                             [ text rider.name ]
                         ]
                     , resultTd result.result
@@ -174,10 +174,10 @@ resultTd result =
         ]
 
 
-getRiderById : Int -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
-getRiderById id riders =
+getRiderById : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
+getRiderById key riders =
     List.head
         (List.filter
-            (\rider -> rider.id == id)
+            (\rider -> rider.key == key)
             riders
         )

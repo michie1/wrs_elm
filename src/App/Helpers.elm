@@ -14,11 +14,11 @@ navigate route =
     Navigation.newUrl <| App.Routing.url route
 
 
-updateRiderLicence : Int -> Maybe Rider.Model.Licence -> List Rider.Model.Rider -> List Rider.Model.Rider
-updateRiderLicence riderId maybeLicence riders =
+updateRiderLicence : String -> Maybe Rider.Model.Licence -> List Rider.Model.Rider -> List Rider.Model.Rider
+updateRiderLicence riderKey maybeLicence riders =
     List.map
         (\rider ->
-            case rider.id == riderId of
+            case rider.key == riderKey of
                 True ->
                     { rider | licence = maybeLicence }
 
@@ -37,12 +37,8 @@ getRiderByLowerCaseName name riders =
     List.head (List.filter (\rider -> (String.toLower rider.name) == (String.toLower name)) riders)
 
 getRiderByResultId : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
-getRiderByResultId stringId riders =
-    case String.toInt stringId of
-        Ok id ->
-            List.head (List.filter (\rider -> rider.id == id) riders)
-        Err _ ->
-            Nothing
+getRiderByResultId key riders =
+    List.head (List.filter (\rider -> rider.key == key) riders)
 
 calcRaceId : List Race -> Int
 calcRaceId races =
@@ -154,11 +150,11 @@ getRaceByKey raceKey races =
             (\race -> race.key == raceKey)
             races
 
-getPointsByRiderId : Int -> List Result.Model.Result -> List Race.Model.Race -> Int
-getPointsByRiderId riderId results races =
+getPointsByRiderId : String -> List Result.Model.Result -> List Race.Model.Race -> Int
+getPointsByRiderId riderKey results races =
     getPointsByResults (
             ( List.filter
-                (\result -> result.riderId == riderId)
+                (\result -> result.riderKey == riderKey)
                 results
             )
         )

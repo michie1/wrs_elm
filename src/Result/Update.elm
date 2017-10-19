@@ -54,7 +54,7 @@ resultDecoder : Json.Decode.Decoder Result.Model.Result
 resultDecoder =
     Json.Decode.Pipeline.decode Result.Model.Result
         |> Json.Decode.Pipeline.required "id" Json.Decode.int
-        |> Json.Decode.Pipeline.required "rider" Json.Decode.int
+        |> Json.Decode.Pipeline.required "rider" Json.Decode.string
         |> Json.Decode.Pipeline.required "race" Json.Decode.string
         |> Json.Decode.Pipeline.required "result" Json.Decode.string
         |> Json.Decode.Pipeline.required "category"

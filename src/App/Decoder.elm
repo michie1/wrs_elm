@@ -106,7 +106,7 @@ resultCategoryDecoder string =
 riderDecoder : Json.Decode.Decoder Rider.Model.Rider
 riderDecoder =
     Json.Decode.Pipeline.decode Rider.Model.Rider
-        |> Json.Decode.Pipeline.required "id" Json.Decode.int
+        |> Json.Decode.Pipeline.required "key" Json.Decode.string
         |> Json.Decode.Pipeline.required "name" Json.Decode.string
         |> Json.Decode.Pipeline.required "licence"
             (Json.Decode.string
@@ -146,20 +146,13 @@ resultDecoder : Json.Decode.Decoder Result.Model.Result
 resultDecoder =
     Json.Decode.Pipeline.decode Result.Model.Result
         |> Json.Decode.Pipeline.required "id" Json.Decode.int
-        |> Json.Decode.Pipeline.required "riderId" Json.Decode.int
+        |> Json.Decode.Pipeline.required "riderKey" Json.Decode.string
         |> Json.Decode.Pipeline.required "raceKey" Json.Decode.string
         |> Json.Decode.Pipeline.required "result" Json.Decode.string
         |> Json.Decode.Pipeline.required "category"
             (Json.Decode.string
                 |> Json.Decode.andThen resultCategoryDecoder
             )
-        {--
-        |> Json.Decode.Pipeline.required "strava"
-            (Json.Decode.string
-                |> Json.Decode.nullable
-            )
-        --}
-
 
 licence : String -> Maybe Rider.Model.Licence
 licence string =
@@ -180,7 +173,7 @@ licence string =
 rider : Json.Decode.Decoder Rider.Model.Rider
 rider =
     Json.Decode.map3 Rider.Model.Rider
-        (Json.Decode.field "id" Json.Decode.int)
+        (Json.Decode.field "key" Json.Decode.string)
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "licence"
             (Json.Decode.andThen decodeLicence Json.Decode.string)
@@ -216,7 +209,7 @@ result : Json.Decode.Decoder Result.Model.Result
 result =
     Json.Decode.map5 Result.Model.Result
         (Json.Decode.field "id" Json.Decode.int)
-        (Json.Decode.field "riderId" Json.Decode.int)
+        (Json.Decode.field "riderKey" Json.Decode.string)
         (Json.Decode.field "raceKey" Json.Decode.string)
         (Json.Decode.field "result" Json.Decode.string)
         (Json.Decode.field "category"

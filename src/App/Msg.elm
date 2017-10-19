@@ -33,6 +33,7 @@ type Msg
     | RiderAddSubmit
     | RiderAddLicence Rider.Model.Licence
     | RiderAddName String
+    | RiderAddedJson Json.Decode.Value
     | NavigateTo App.Routing.Route
     | UrlUpdate App.Routing.Route
     | Noop
@@ -41,7 +42,7 @@ type Msg
     | ReceiveRiders Json.Encode.Value
     | RidersJson Json.Decode.Value
     | HandleSendError Json.Encode.Value
-    | OnCreatedRider Json.Encode.Value
+    --| OnCreatedRider Json.Encode.Value
     --| OnCreatedRace Json.Encode.Value
     | OnCreatedResult Json.Encode.Value
     | OnUpdatedRider Json.Encode.Value

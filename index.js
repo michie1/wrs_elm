@@ -43,10 +43,13 @@ app.ports.setLocalStorage.subscribe(function (tuple) {
 
 app.ports.loadRiders.subscribe(function() {
   firebase.database().ref('/riders/').orderByChild('id').once('value').then(function(snapshot) {
-    const arr = [];
-    snapshot.val().forEach(function (value) {
-      arr.push(value);
-    });
+    const val = snapshot.val();
+    const arr = Object.keys(val).
+      map(function (key) {
+        return Object.assign({
+            key: key
+          }, val[key]);
+      });
     app.ports.setRiders.send(arr);
   });
 });
@@ -81,6 +84,19 @@ app.ports.addRace.subscribe(function(race) {
     .then(function () {
       app.ports.raceAdded.send({
         key: pushedRace.key
+      });
+    });
+});
+
+app.ports.addRider.subscribe(function(rider) {
+  console.log('rider', rider);
+  const pushedRider = firebase.database().ref('/riders/').push();
+  pushedRider.set(rider)
+    .then(function () {
+      app.ports.riderAdded.send({
+        key: pushedRider.key,
+        name: rider.name,
+        licence: rider.licence
       });
     });
 });

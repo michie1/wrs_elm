@@ -9,7 +9,7 @@ type Licence
 
 
 type alias Rider =
-    { id : Int
+    { key : String
     , name : String
     , licence : Maybe Licence
     }

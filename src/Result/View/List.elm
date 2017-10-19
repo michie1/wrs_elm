@@ -20,7 +20,7 @@ resultsTable results =
             [ tr []
                 [ th [] [ text "id" ]
                 , th [] [ text "raceKey" ]
-                , th [] [ text "riderId" ]
+                , th [] [ text "riderKey" ]
                 , th [] [ text "Result" ]
                 ]
             ]
@@ -31,7 +31,7 @@ resultsTable results =
                         tr []
                             [ td [] [ text (toString result.id) ]
                             , td [] [ text (toString result.raceKey) ]
-                            , td [] [ text (toString result.riderId) ]
+                            , td [] [ text (toString result.riderKey) ]
                             , td [] [ text result.result ]
                             ]
                     )

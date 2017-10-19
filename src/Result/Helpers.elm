@@ -10,7 +10,7 @@ resultExists : Result.Model.Result -> List Result.Model.Result -> Bool
 resultExists result results =
     (List.length
         (List.filter
-            (\r -> r.raceKey == result.raceKey && r.riderId == result.riderId)
+            (\r -> r.raceKey == result.raceKey && r.riderKey == result.riderKey)
             results
         )
     )

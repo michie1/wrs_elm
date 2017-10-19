@@ -138,26 +138,29 @@ update msg app =
             NavigateTo route ->
                 ( app, App.Helpers.navigate route )
 
-            OnCreatedRider rawResponse ->
+            RiderAddedJson rawResponse ->
                 let
                     riderResult =
-                        Json.Decode.decodeValue App.Decoder.riderDecoder rawResponse
+                        Json.Decode.decodeValue App.Decoder.riderDecoder (Debug.log "rawresponse" rawResponse)
                 in
                     case riderResult of
                         Ok rider ->
                             let
                                 newRider =
                                     Rider.Model.Rider
-                                        rider.id
+                                        rider.key
                                         rider.name
                                         rider.licence
                             in
                                 ( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
-                                , Cmd.none
+                                , App.Helpers.navigate (App.Routing.RiderDetails rider.key)
                                 )
 
-                        Err _ ->
-                            noOp
+                        Err err ->
+                            let
+                                _ = Debug.log "err" err
+                            in
+                                noOp
 
             RaceAddedJson rawResponse ->
                 let
@@ -196,7 +199,7 @@ update msg app =
                                 newResult =
                                     Result.Model.Result
                                         result.id
-                                        result.riderId
+                                        result.riderKey
                                         result.raceKey
                                         result.result
                                         Result.Model.CatA
@@ -220,7 +223,7 @@ update msg app =
                                 riders =
                                     Debug.log
                                         "updatedRiders: "
-                                        (App.Helpers.updateRiderLicence rider.id rider.licence (Maybe.withDefault [] app.riders))
+                                        (App.Helpers.updateRiderLicence rider.key rider.licence (Maybe.withDefault [] app.riders))
                             in
                                 ( { app
                                     | riders = Just riders

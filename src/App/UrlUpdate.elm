@@ -50,16 +50,16 @@ onUrlEnter route app =
 
                                 filteredRiders =
                                     List.filter
-                                        (\rider -> not <| resultExists rider.id raceKey app.results)
+                                        (\rider -> not <| resultExists rider.key raceKey app.results)
                                         riders
 
                                 items : List Ui.Chooser.Item
                                 items =
                                     List.map
                                         (\rider ->
-                                            { id = toString rider.id
+                                            { id = rider.key
                                             , label = rider.name
-                                            , value = toString rider.id
+                                            , value = rider.key
                                             }
                                         )
                                         filteredRiders
@@ -138,11 +138,11 @@ urlUpdate route app =
         onUrlEnter route routeApp
 
 
-resultExists : Int -> String -> List Result.Model.Result -> Bool
-resultExists riderId raceKey results =
+resultExists : String -> String -> List Result.Model.Result -> Bool
+resultExists riderKey raceKey results =
     List.length
         (List.filter
-            (\result -> result.riderId == riderId && result.raceKey == raceKey)
+            (\result -> result.riderKey == riderKey && result.raceKey == raceKey)
             results
         )
         == 1

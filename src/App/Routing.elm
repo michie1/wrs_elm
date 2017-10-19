@@ -6,7 +6,7 @@ import UrlParser exposing (..)
 
 type Route
     = Home
-    | RiderDetails Int
+    | RiderDetails String
     | RiderAdd
     | Riders
     | RaceAdd
@@ -28,8 +28,8 @@ url route =
         RiderAdd ->
             "#riders/add"
 
-        RiderDetails id ->
-            "#riders/" ++ toString id
+        RiderDetails key ->
+            "#riders/" ++ key
 
         Races ->
             "#races"
@@ -51,9 +51,9 @@ matchers =
     oneOf
         [ map Races (s "races")
         , map Races (s "")
-        , map RiderDetails (s "riders" </> int)
-        , map Riders (s "riders")
         , map RiderAdd (s "riders" </> s "add")
+        , map RiderDetails (s "riders" </> string)
+        , map Riders (s "riders")
         , map ResultAdd (s "races" </> string </> s "add")
         , map RaceAdd (s "races" </> s "add")
         , map RaceDetails (s "races" </> string)

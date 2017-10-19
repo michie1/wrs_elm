@@ -46,28 +46,13 @@ viewPage app =
         App.Routing.Riders ->
             case app.riders of
                 Just riders ->
-                    div []
-                        [ h2 [] [ text "Riders" ]
-                        , Rider.View.List.render riders
-                        ]
+                    Rider.View.List.render riders
 
-                {--
-                    case app.races of
-                        Just races ->
-                            div []
-                                [ h2 [] [ text "Riders" ]
-                                , Rider.View.List.render riders app.results races
-                                ]
-                        Nothing ->
-                            div [] [ text "No races loaded." ]
-                    --}
                 Nothing ->
                     div [] [ text "No riders loaded." ]
 
-        App.Routing.RiderDetails id ->
-            Rider.View.Details.render
-                app
-                id
+        App.Routing.RiderDetails key ->
+            Rider.View.Details.render app key
 
         App.Routing.RiderAdd ->
             case app.page of

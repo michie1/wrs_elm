@@ -43,9 +43,9 @@ render race resultAdd riders results =
         items =
             List.map
                 (\rider -> 
-                    { id = toString rider.id
+                    { id = rider.key
                     , label = rider.name
-                    , value = toString rider.id 
+                    , value = rider.key
                     }
                 )
                 filteredRiders
@@ -106,7 +106,7 @@ resultExists : Rider.Model.Rider -> Race.Model.Race -> List Result.Model.Result 
 resultExists rider race results =
     List.length
         (List.filter
-            (\result -> race.key == result.raceKey && rider.id == result.riderId)
+            (\result -> race.key == result.raceKey && rider.key == result.riderKey)
             results
         )
         == 1

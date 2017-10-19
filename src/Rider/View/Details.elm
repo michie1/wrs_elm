@@ -19,8 +19,8 @@ dateFormat date =
     Date.Extra.Format.format config "%d-%m-%Y" date
 
 
-render : App.Model.App -> Int -> Html App.Msg.Msg
-render app riderId =
+render : App.Model.App -> String -> Html App.Msg.Msg
+render app riderKey =
     case app.riders of
         Just riders ->
             case app.races of
@@ -29,7 +29,7 @@ render app riderId =
                         maybeRider =
                             List.head
                                 (List.filter
-                                    (\rider -> rider.id == riderId)
+                                    (\rider -> rider.key == riderKey)
                                     riders
                                 )
                     in
@@ -44,7 +44,7 @@ render app riderId =
                                 let
                                     results =
                                         List.filter
-                                            (\result -> result.riderId == rider.id)
+                                            (\result -> result.riderKey == rider.key)
                                             app.results
                                             
                                     points = App.Helpers.getPointsByResults results races
