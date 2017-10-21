@@ -29,43 +29,47 @@ dateFormat date =
 
 render : App.Model.App -> String -> Html App.Msg.Msg
 render app raceKey =
-    let
-        maybeRace =
-            List.head
-                (List.filter
-                    (\race -> race.key == raceKey)
-                    (Maybe.withDefault [] app.races)
-                )
-    in
-        case maybeRace of
-            Nothing ->
-                div []
-                    [ text "Race does not exist"
-                    ]
+    case ( app.races, app.riders ) of
+        ( Nothing, Nothing ) ->
+            div [] [ text "Races and riders not loaded." ]
 
-            Just race ->
-                case app.riders of
-                    Just riders ->
+        ( Nothing, _ ) ->
+            div [] [ text "Races not loaded." ]
+
+        ( _, Nothing ) ->
+            div [] [ text "Riders not loaded." ]
+
+        ( Just races, Just riders ) ->
+            let
+                maybeRace =
+                    List.head
+                        (List.filter
+                            (\race -> race.key == raceKey)
+                            races
+                        )
+            in
+                case maybeRace of
+                    Nothing ->
+                        div [] [ text "Race does not exist" ]
+
+                    Just race ->
                         let
                             results =
                                 List.filter
                                     (\result -> result.raceKey == race.key)
-                                    app.results
+                                    (Maybe.withDefault [] app.results)
                         in
                             div []
                                 [ div []
                                     [ h2 [] [ text race.name ]
                                     , info race
                                     ]
-                                    , div []
+                                , div []
                                     [ h3 [] [ text "Results" ]
                                     , addResultButton race
                                     ]
-                                    , resultsTable race results riders
+                                , resultsTable race results riders
                                 ]
-
-                    Nothing ->
-                        div [] [ text "No riders loaded." ]
 
 
 addResultButton : Race.Model.Race -> Html App.Msg.Msg

@@ -205,7 +205,7 @@ update msg app =
                                         Result.Model.CatA
                                         --result.strava
                             in
-                                ( { app | results = newResult :: app.results }
+                                ( { app | results = Just (newResult :: (Maybe.withDefault [] app.results)) }
                                 , Cmd.none
                                 )
 

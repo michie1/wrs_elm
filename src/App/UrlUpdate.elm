@@ -41,6 +41,7 @@ onUrlEnter : App.Routing.Route -> App -> ( App, Cmd Msg )
 onUrlEnter route app =
     case route of
         App.Routing.ResultAdd raceKey ->
+            {--
             case app.riders of
                 Nothing ->
                     let
@@ -56,7 +57,7 @@ onUrlEnter route app =
 
                         filteredRiders =
                             List.filter
-                                (\rider -> not <| resultExists rider.key raceKey app.results)
+                                (\rider -> not <| resultExists rider.key raceKey (Maybe.withDefault app.results []))
                                 riders
 
                         items : List Ui.Chooser.Item
@@ -84,6 +85,9 @@ onUrlEnter route app =
                         , fetchForRoute (App.Routing.ResultAdd raceKey)
                         )
 
+            --}
+            ( app, Cmd.none )
+
         App.Routing.RaceAdd ->
             let
                 a =
@@ -106,7 +110,8 @@ onUrlEnter route app =
                 )
 
         App.Routing.RaceDetails id ->
-            let -- TODO: Fetch everyting on site enter
+            let
+                -- TODO: Fetch everyting on site enter
                 cmd =
                     case ( app.races, app.riders ) of
                         ( Nothing, Nothing ) ->
@@ -126,18 +131,20 @@ onUrlEnter route app =
         App.Routing.RiderDetails id ->
             let
                 cmd =
-                    case ( app.races, app.riders ) of
-                        ( Nothing, Nothing ) ->
-                            Cmd.batch [ loadRaces (), loadRiders () ]
-
-                        ( Nothing, _ ) ->
+                    Cmd.batch
+                        [ if app.races == Nothing then
                             loadRaces ()
-
-                        ( _, Nothing ) ->
-                            loadRiders ()
-
-                        _ ->
+                          else
                             Cmd.none
+                        , if app.riders == Nothing then
+                            loadRiders ()
+                          else
+                            Cmd.none
+                        , if app.results == Nothing then
+                            loadResults ()
+                          else
+                            Cmd.none
+                        ]
             in
                 ( app, cmd )
 

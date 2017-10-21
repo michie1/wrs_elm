@@ -126,8 +126,7 @@ racesDecoder =
 racesJson : Json.Decode.Value -> App -> ( App, Cmd Msg )
 racesJson json app =
     let
-        _ = Debug.log "json" json
-        nextRacesResult = Debug.log "races" (Json.Decode.decodeValue racesDecoder json)
+        nextRacesResult = Json.Decode.decodeValue racesDecoder json
     in
         case nextRacesResult of
             Ok races ->

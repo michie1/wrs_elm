@@ -33,11 +33,11 @@ licenceDecoder string =
 
 rider : Json.Decode.Decoder Rider.Model.Rider
 rider =
-    Json.Decode.map3 
+    Json.Decode.map3
         Rider.Model.Rider
         (Json.Decode.field "key" Json.Decode.string)
         (Json.Decode.field "name" Json.Decode.string)
-        (Json.Decode.field "licence" 
+        (Json.Decode.field "licence"
             (Json.Decode.andThen licenceDecoder Json.Decode.string)
         )
 
@@ -48,8 +48,7 @@ ridersDecoder =
 ridersJson : Json.Decode.Value -> App -> ( App, Cmd Msg )
 ridersJson json app =
     let
-        _ = Debug.log "json" json
-        nextRidersResult = Debug.log "riders" (Json.Decode.decodeValue ridersDecoder json)
+        nextRidersResult = Json.Decode.decodeValue ridersDecoder json
     in
         case nextRidersResult of
             Ok riders ->
@@ -79,11 +78,11 @@ addSubmit app =
 addName : String -> App -> ( App, Cmd Msg )
 addName name app =
     let
-        page = 
+        page =
             case app.page of
                 App.Model.RiderAdd riderAdd ->
                     App.Model.RiderAdd { riderAdd | name = name }
-                _ -> 
+                _ ->
                     app.page
         nextApp = { app | page = page }
     in
@@ -93,11 +92,11 @@ addName name app =
 addLicence : Rider.Model.Licence -> App -> ( App, Cmd Msg )
 addLicence licence app =
     let
-        page = 
+        page =
             case app.page of
                 App.Model.RiderAdd riderAdd ->
                     App.Model.RiderAdd { riderAdd | licence = Just licence }
-                _ -> 
+                _ ->
                     app.page
         nextApp = { app | page = page }
     in

@@ -17,7 +17,7 @@ import App.Flags exposing (Flags)
 
 
 type Page
-    = RaceAdd Race.Model.Add -- TODO: Set this data to the Route. 
+    = RaceAdd Race.Model.Add -- TODO: Set this data to the Route.
     | ResultAdd Result.Model.Add
     | RiderAdd Rider.Model.Add
     | NoOp
@@ -28,7 +28,7 @@ type alias App =
     , page : Page
     , riders : Maybe (List Rider.Model.Rider)
     , races : Maybe (List Race.Model.Race)
-    , results : List Result.Model.Result
+    , results : Maybe (List Result.Model.Result)
     , now : Maybe Date.Date
     , messages : List String
     , ratings : Ui.Ratings.Model
@@ -42,7 +42,7 @@ initial flags =
     NoOp
     Nothing
     Nothing
-    Result.Model.initialResults
+    Nothing
     Nothing
         []
         (Ui.Ratings.init () |> Ui.Ratings.size 10)

@@ -45,8 +45,8 @@ render app riderKey =
                                     results =
                                         List.filter
                                             (\result -> result.riderKey == rider.key)
-                                            app.results
-                                            
+                                            (Maybe.withDefault [] app.results)
+
                                     points = App.Helpers.getPointsByResults results races
                                 in
                                     div [ class "col s12" ]

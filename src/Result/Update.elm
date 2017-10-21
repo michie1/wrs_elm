@@ -73,7 +73,7 @@ resultsJson json app =
     in
         case nextResults of
             Ok results ->
-                ( { app | results = results }
+                ( { app | results = Just results }
                 , Cmd.none
                 )
             _ ->

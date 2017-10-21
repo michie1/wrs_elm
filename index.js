@@ -68,12 +68,16 @@ app.ports.loadRaces.subscribe(function() {
 });
 
 app.ports.loadResults.subscribe(function() {
-  firebase.database().ref('/results/').once('value').then(function(snapshot) {
-    const arr = [];
-    snapshot.val().forEach(function (value) {
-      arr.push(value);
-    });
-
+  console.log('loadResults');
+  firebase.database().ref('/results/').on('value', function(snapshot) {
+    const val = snapshot.val();
+    const arr = Object.keys(val).
+      map(function (key) {
+        return Object.assign({
+            key: key
+          }, val[key]);
+      });
+    console.log('setResults');
     app.ports.setResults.send(arr);
   });
 });
@@ -89,7 +93,6 @@ app.ports.addRace.subscribe(function(race) {
 });
 
 app.ports.addRider.subscribe(function(rider) {
-  console.log('rider', rider);
   const pushedRider = firebase.database().ref('/riders/').push();
   pushedRider.set(rider)
     .then(function () {

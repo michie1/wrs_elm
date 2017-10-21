@@ -23,9 +23,12 @@ riderNameExists name riders =
 --True
 
 
-render : Race.Model.Race -> Result.Model.Add -> List Rider -> List Result.Model.Result -> Html App.Msg.Msg
-render race resultAdd riders results =
+render : Race.Model.Race -> Result.Model.Add -> List Rider -> Maybe (List Result.Model.Result) -> Html App.Msg.Msg
+render race resultAdd riders maybeResults =
     let
+        results =
+            Maybe.withDefault [] maybeResults
+
         submitDisabled =
             --not (riderNameExists resultAdd.riderName riders)
             -- ||
@@ -42,7 +45,7 @@ render race resultAdd riders results =
         items : List Ui.Chooser.Item
         items =
             List.map
-                (\rider -> 
+                (\rider ->
                     { id = rider.key
                     , label = rider.name
                     , value = rider.key
@@ -54,16 +57,17 @@ render race resultAdd riders results =
             case List.head items of
                 Just head ->
                     let
-                        _ = Debug.log "head.id" (toString head.id)
+                        _ =
+                            Debug.log "head.id" (toString head.id)
                     in
                         resultAdd.chooser
-                            --|> Ui.Chooser.items items
-                            -- |> Ui.Chooser.setValue (head.value)
 
+                --|> Ui.Chooser.items items
+                -- |> Ui.Chooser.setValue (head.value)
                 Nothing ->
-                    resultAdd.chooser 
-                        -- |> Ui.Chooser.items items
+                    resultAdd.chooser
 
+        -- |> Ui.Chooser.items items
         -- TODO: button is enabled although result already exists
     in
         div []

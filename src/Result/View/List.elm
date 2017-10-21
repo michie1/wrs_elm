@@ -6,11 +6,14 @@ import App.Model
 import App.Msg
 
 
-render : List Result.Model.Result -> Html App.Msg.Msg
-render results =
-    div []
-        [ resultsTable results
-        ]
+render : Maybe (List Result.Model.Result) -> Html App.Msg.Msg
+render maybeResults =
+    case maybeResults of
+        Nothing ->
+            div [] [ text "No results loaded" ]
+
+        Just results ->
+            resultsTable results
 
 
 resultsTable : List Result.Model.Result -> Html msg
