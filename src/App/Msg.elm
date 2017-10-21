@@ -26,9 +26,10 @@ type Msg
     | RaceAddCategory Race.Model.Category
     | RacesJson Json.Decode.Value
     | RaceAddedJson Json.Decode.Value
-    | ResultAdd
+    | ResultAddSubmit
     | ResultAddCategory Result.Model.ResultCategory
     | ResultAddResult String
+    | ResultAddedJson Json.Decode.Value
     | ResultsJson Json.Decode.Value
     | RiderAddSubmit
     | RiderAddLicence Rider.Model.Licence

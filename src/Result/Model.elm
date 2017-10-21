@@ -13,7 +13,7 @@ type ResultCategory
 
 
 type alias Result =
-    { id : Int
+    { key : String
     , riderKey : String
     , raceKey : String
     , result : String

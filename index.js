@@ -103,3 +103,18 @@ app.ports.addRider.subscribe(function(rider) {
       });
     });
 });
+
+app.ports.addResultPort.subscribe(function(result) {
+  console.log('addResult', result);
+  const pushedResult = firebase.database().ref('/results/').push();
+  pushedResult.set(result)
+    .then(function () {
+      app.ports.resultAdded.send({
+        key: pushedResult.key,
+        riderKey: result.riderKey,
+        raceKey: result.raceKey,
+        category: result.category,
+        result: result.result
+      });
+    });
+});

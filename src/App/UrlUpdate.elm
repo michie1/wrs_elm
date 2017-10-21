@@ -41,7 +41,6 @@ onUrlEnter : App.Routing.Route -> App -> ( App, Cmd Msg )
 onUrlEnter route app =
     case route of
         App.Routing.ResultAdd raceKey ->
-            {--
             case app.riders of
                 Nothing ->
                     let
@@ -57,7 +56,7 @@ onUrlEnter route app =
 
                         filteredRiders =
                             List.filter
-                                (\rider -> not <| resultExists rider.key raceKey (Maybe.withDefault app.results []))
+                                (\rider -> not <| resultExists rider.key raceKey (Maybe.withDefault [] app.results))
                                 riders
 
                         items : List Ui.Chooser.Item
@@ -85,8 +84,6 @@ onUrlEnter route app =
                         , fetchForRoute (App.Routing.ResultAdd raceKey)
                         )
 
-            --}
-            ( app, Cmd.none )
 
         App.Routing.RaceAdd ->
             let

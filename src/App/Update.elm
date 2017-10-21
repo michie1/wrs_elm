@@ -88,22 +88,14 @@ update msg app =
             RacesJson json ->
                 Race.Update.racesJson json app
 
-            ResultsJson json ->
-                Result.Update.resultsJson json app
+            ResultsJson rawResponse ->
+                Result.Update.resultsJson rawResponse app
 
-            ResultAdd ->
-                case app.page of
-                    App.Model.ResultAdd resultAdd ->
-                        case app.riders of
-                            Just riders ->
-                                -- case Result.Update.add resultAdd riders app.results
-                                noOp
+            ResultAddedJson rawResponse ->
+                Result.Update.addedJson rawResponse app
 
-                            Nothing ->
-                                noOp
-
-                    _ ->
-                        noOp
+            ResultAddSubmit ->
+                Result.Update.addSubmit app
 
             ResultAddCategory category ->
                 ( (case app.page of
@@ -120,17 +112,7 @@ update msg app =
                 )
 
             ResultAddResult value ->
-                ( case app.page of
-                    App.Model.ResultAdd resultAdd ->
-                        { app
-                            | page =
-                                App.Model.ResultAdd <| Result.Update.addResult value resultAdd
-                        }
-
-                    _ ->
-                        app
-                , Cmd.none
-                )
+                Result.Update.addResult value app
 
             UrlUpdate route ->
                 App.UrlUpdate.urlUpdate route app
@@ -198,7 +180,7 @@ update msg app =
                             let
                                 newResult =
                                     Result.Model.Result
-                                        result.id
+                                        result.key
                                         result.riderKey
                                         result.raceKey
                                         result.result

@@ -21,7 +21,7 @@ resultsTable results =
     table []
         [ thead []
             [ tr []
-                [ th [] [ text "id" ]
+                [ th [] [ text "key" ]
                 , th [] [ text "raceKey" ]
                 , th [] [ text "riderKey" ]
                 , th [] [ text "Result" ]
@@ -32,7 +32,7 @@ resultsTable results =
                 |> List.map
                     (\result ->
                         tr []
-                            [ td [] [ text (toString result.id) ]
+                            [ td [] [ text result.key ]
                             , td [] [ text (toString result.raceKey) ]
                             , td [] [ text (toString result.riderKey) ]
                             , td [] [ text result.result ]

@@ -122,7 +122,7 @@ raceRow result races =
                                 "1970-01-01"
                 in
                     tr []
-                        [ td [] [ text (toString result.id) ]
+                        [ td [] [ text result.key ]
                         , td []
                             [ a
                                 [ href ("#races/" ++ race.key) ]

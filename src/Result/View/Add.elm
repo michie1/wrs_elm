@@ -33,9 +33,6 @@ render race resultAdd riders maybeResults =
             --not (riderNameExists resultAdd.riderName riders)
             -- ||
             String.isEmpty resultAdd.result
-                || (not (String.isEmpty resultAdd.strava)
-                        && not (String.contains "strava.com" resultAdd.strava)
-                   )
 
         filteredRiders =
             List.filter
@@ -70,40 +67,45 @@ render race resultAdd riders maybeResults =
         -- |> Ui.Chooser.items items
         -- TODO: button is enabled although result already exists
     in
-        div []
-            [ h2 [] [ text ("Add result for " ++ race.name) ]
-            , div [ class "row" ]
-                [ div [ class "input-field col s6" ]
-                    [ input
-                        [ id "result"
-                        , type_ "text"
-                        , onInput App.Msg.ResultAddResult
-                        , autofocus True
+        case maybeResults of
+            Nothing ->
+                div [] [ text "Results not loaded yet" ]
+
+            Just results ->
+                div []
+                    [ h2 [] [ text ("Add result for " ++ race.name) ]
+                    , div [ class "row" ]
+                        [ div [ class "input-field col s6" ]
+                            [ input
+                                [ id "result"
+                                , type_ "text"
+                                , onInput App.Msg.ResultAddResult
+                                , autofocus True
+                                ]
+                                []
+                            , label [ for "result" ] [ text "Result" ]
+                            ]
                         ]
-                        []
-                    , label [ for "result" ] [ text "Result" ]
+                    , div [ class "row" ]
+                        [ div [ class "input-field col s6" ]
+                            [ div [] [ Html.map App.Msg.Chooser (Ui.Chooser.view chooser) ]
+                            , label [ for "rider", class "active" ] [ text "Rider" ]
+                            ]
+                        ]
+                    , div [ class "row" ] [ categoryButtons ]
+                    , div [ class "row" ]
+                        [ button
+                            [ class "waves-effect waves-light btn"
+                            , type_ "submit"
+                            , onClick App.Msg.ResultAddSubmit
+                            , Html.Attributes.name "action"
+                            , disabled submitDisabled
+                            ]
+                            [ text "Add result"
+                            , i [ class "material-icons right" ] [ text "send" ]
+                            ]
+                        ]
                     ]
-                ]
-            , div [ class "row" ]
-                [ div [ class "input-field col s6" ]
-                    [ div [] [ Html.map App.Msg.Chooser (Ui.Chooser.view chooser) ]
-                    , label [ for "rider", class "active" ] [ text "Rider" ]
-                    ]
-                ]
-            , div [ class "row" ] [ categoryButtons ]
-            , div [ class "row" ]
-                [ button
-                    [ class "waves-effect waves-light btn"
-                    , type_ "submit"
-                    , onClick App.Msg.ResultAdd
-                    , Html.Attributes.name "action"
-                    , disabled submitDisabled
-                    ]
-                    [ text "Add result"
-                    , i [ class "material-icons right" ] [ text "send" ]
-                    ]
-                ]
-            ]
 
 
 resultExists : Rider.Model.Rider -> Race.Model.Race -> List Result.Model.Result -> Bool

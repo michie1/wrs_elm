@@ -145,7 +145,7 @@ date =
 resultDecoder : Json.Decode.Decoder Result.Model.Result
 resultDecoder =
     Json.Decode.Pipeline.decode Result.Model.Result
-        |> Json.Decode.Pipeline.required "id" Json.Decode.int
+        |> Json.Decode.Pipeline.required "key" Json.Decode.string
         |> Json.Decode.Pipeline.required "riderKey" Json.Decode.string
         |> Json.Decode.Pipeline.required "raceKey" Json.Decode.string
         |> Json.Decode.Pipeline.required "result" Json.Decode.string
@@ -208,7 +208,7 @@ resultCategory string =
 result : Json.Decode.Decoder Result.Model.Result
 result =
     Json.Decode.map5 Result.Model.Result
-        (Json.Decode.field "id" Json.Decode.int)
+        (Json.Decode.field "key" Json.Decode.string)
         (Json.Decode.field "riderKey" Json.Decode.string)
         (Json.Decode.field "raceKey" Json.Decode.string)
         (Json.Decode.field "result" Json.Decode.string)
