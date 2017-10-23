@@ -16,6 +16,7 @@ function setup(firebase, app) {
       console.log('no user signed in');
     }
   });
+
 }
 
 var config = {

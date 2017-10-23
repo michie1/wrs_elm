@@ -41,48 +41,30 @@ onUrlEnter : App.Routing.Route -> App -> ( App, Cmd Msg )
 onUrlEnter route app =
     case route of
         App.Routing.ResultAdd raceKey ->
-            case app.riders of
-                Nothing ->
-                    let
-                        _ =
-                            Debug.log "nothing" "app.riders"
-                    in
-                        ( app, Cmd.none )
+            let
+                cmd =
+                    Cmd.batch
+                        [ if app.races == Nothing then
+                            loadRaces ()
+                          else
+                            Cmd.none
+                        , if app.riders == Nothing then
+                            loadRiders ()
+                          else
+                            Cmd.none
+                        , if app.results == Nothing then
+                            loadResults ()
+                          else
+                            Cmd.none
+                        ]
 
-                Just riders ->
-                    let
-                        resultAdd =
-                            Result.Model.initialAdd
+                resultAdd =
+                    Result.Model.initialAdd
 
-                        filteredRiders =
-                            List.filter
-                                (\rider -> not <| resultExists rider.key raceKey (Maybe.withDefault [] app.results))
-                                riders
-
-                        items : List Ui.Chooser.Item
-                        items =
-                            List.map
-                                (\rider ->
-                                    { id = rider.key
-                                    , label = rider.name
-                                    , value = rider.key
-                                    }
-                                )
-                                filteredRiders
-
-                        chooser =
-                            resultAdd.chooser
-                                |> Ui.Chooser.items items
-
-                        resultAddWithRaceKey =
-                            { resultAdd
-                                | raceKey = raceKey
-                                , chooser = chooser
-                            }
-                    in
-                        ( { app | page = App.Model.ResultAdd resultAddWithRaceKey }
-                        , fetchForRoute (App.Routing.ResultAdd raceKey)
-                        )
+                resultAddWithRaceKey =
+                      { resultAdd | raceKey = raceKey }
+            in
+                ( { app | page = App.Model.ResultAdd resultAddWithRaceKey }, cmd )
 
 
         App.Routing.RaceAdd ->

@@ -23,6 +23,7 @@ type alias Result =
 
 type alias Add =
     { raceKey : String
+    , riderKey : Maybe String
     , result : String
     , category : ResultCategory
     , strava : String
@@ -32,6 +33,7 @@ type alias Add =
 initialAdd : Add
 initialAdd =
     { raceKey = ""
+    , riderKey = Nothing
     , result = ""
     , category = Amateurs
     , strava = ""

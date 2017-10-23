@@ -51,21 +51,8 @@ render race resultAdd riders maybeResults =
                 filteredRiders
 
         chooser =
-            case List.head items of
-                Just head ->
-                    let
-                        _ =
-                            Debug.log "head.id" (toString head.id)
-                    in
-                        resultAdd.chooser
-
-                --|> Ui.Chooser.items items
-                -- |> Ui.Chooser.setValue (head.value)
-                Nothing ->
-                    resultAdd.chooser
-
-        -- |> Ui.Chooser.items items
-        -- TODO: button is enabled although result already exists
+            resultAdd.chooser
+                |> Ui.Chooser.items items
     in
         case maybeResults of
             Nothing ->
