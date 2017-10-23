@@ -42,41 +42,23 @@ onUrlEnter route app =
     case route of
         App.Routing.ResultAdd raceKey ->
             let
-                cmd =
-                    Cmd.batch
-                        [ if app.races == Nothing then
-                            loadRaces ()
-                          else
-                            Cmd.none
-                        , if app.riders == Nothing then
-                            loadRiders ()
-                          else
-                            Cmd.none
-                        , if app.results == Nothing then
-                            loadResults ()
-                          else
-                            Cmd.none
-                        ]
-
                 resultAdd =
                     Result.Model.initialAdd
 
                 resultAddWithRaceKey =
-                      { resultAdd | raceKey = raceKey }
+                    { resultAdd | raceKey = raceKey }
             in
-                ( { app | page = App.Model.ResultAdd resultAddWithRaceKey }, cmd )
-
+                ( { app | page = App.Model.ResultAdd resultAddWithRaceKey }
+                , Cmd.none
+                )
 
         App.Routing.RaceAdd ->
             let
-                a =
-                    Debug.log "urlUpdate" "RacesAdd"
-
                 raceAdd =
                     Race.Model.Add "" Race.Model.Classic (Ui.Calendar.init ())
             in
                 ( { app | page = App.Model.RaceAdd raceAdd }
-                , fetchForRoute App.Routing.RaceAdd
+                , Cmd.none
                 )
 
         App.Routing.RiderAdd ->
@@ -85,66 +67,28 @@ onUrlEnter route app =
                     Rider.Model.Add "" Nothing
             in
                 ( { app | page = App.Model.RiderAdd add }
-                , fetchForRoute App.Routing.RiderAdd
+                , Cmd.none
                 )
-
-        App.Routing.RaceDetails id ->
-            let
-                -- TODO: Fetch everyting on site enter
-                cmd =
-                    case ( app.races, app.riders ) of
-                        ( Nothing, Nothing ) ->
-                            Cmd.batch [ loadRaces (), loadRiders () ]
-
-                        ( Nothing, _ ) ->
-                            loadRaces ()
-
-                        ( _, Nothing ) ->
-                            loadRiders ()
-
-                        _ ->
-                            Cmd.none
-            in
-                ( app, cmd )
-
-        App.Routing.RiderDetails id ->
-            let
-                cmd =
-                    Cmd.batch
-                        [ if app.races == Nothing then
-                            loadRaces ()
-                          else
-                            Cmd.none
-                        , if app.riders == Nothing then
-                            loadRiders ()
-                          else
-                            Cmd.none
-                        , if app.results == Nothing then
-                            loadResults ()
-                          else
-                            Cmd.none
-                        ]
-            in
-                ( app, cmd )
-
-        App.Routing.Riders ->
-            case app.riders of
-                Nothing ->
-                    ( app, fetchForRoute App.Routing.Riders )
-
-                _ ->
-                    ( app, Cmd.none )
-
-        App.Routing.Races ->
-            case app.races of
-                Nothing ->
-                    ( app, fetchForRoute App.Routing.Races )
-
-                _ ->
-                    ( app, Cmd.none )
 
         _ ->
             ( app, Cmd.none )
+
+
+load : App -> List (Cmd Msg)
+load app =
+    [ if app.races == Nothing then
+        loadRaces ()
+      else
+        Cmd.none
+    , if app.riders == Nothing then
+        loadRiders ()
+      else
+        Cmd.none
+    , if app.results == Nothing then
+        loadResults ()
+      else
+        Cmd.none
+    ]
 
 
 replace : String -> String -> String -> String
@@ -164,8 +108,14 @@ urlUpdate route app =
 
         routeApp =
             { leaveApp | route = route }
+
+        ( nextApp, routeCmd ) =
+            onUrlEnter route routeApp
+
+        cmd =
+            Cmd.batch (routeCmd :: load app)
     in
-        onUrlEnter route routeApp
+        ( nextApp, cmd )
 
 
 resultExists : String -> String -> List Result.Model.Result -> Bool
@@ -182,31 +132,13 @@ fetchForRoute : Route -> Cmd Msg
 fetchForRoute route =
     case route of
         App.Routing.RaceAdd ->
-            Cmd.batch
-                [ Task.attempt (always App.Msg.Noop) (Dom.focus "name")
-                ]
+            Task.attempt (always App.Msg.Noop) (Dom.focus "name")
 
         App.Routing.RiderAdd ->
-            Cmd.batch
-                [ Task.attempt (always App.Msg.Noop) (Dom.focus "name")
-                ]
+            Task.attempt (always App.Msg.Noop) (Dom.focus "name")
 
         App.Routing.ResultAdd raceKey ->
-            Cmd.batch
-                [ Task.attempt (always App.Msg.Noop) (Dom.focus "result")
-                ]
-
-        App.Routing.Races ->
-            loadRaces ()
-
-        App.Routing.Riders ->
-            loadRiders ()
-
-        App.Routing.RaceDetails id ->
-            loadResults ()
-
-        App.Routing.RiderDetails id ->
-            loadResults ()
+            Task.attempt (always App.Msg.Noop) (Dom.focus "result")
 
         _ ->
             Cmd.none
