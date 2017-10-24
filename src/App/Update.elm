@@ -286,15 +286,6 @@ update msg app =
                     _ ->
                         ( app, Cmd.none )
 
-            Ratings msg_ ->
-                let
-                    ( ratings, cmd ) =
-                        Ui.Ratings.update msg_ app.ratings
-                in
-                    ( { app | ratings = ratings }
-                    , Cmd.map Ratings cmd
-                    )
-
             Calendar msg_ ->
                 case app.page of
                     App.Model.RaceAdd raceAdd ->

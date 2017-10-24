@@ -1,7 +1,5 @@
 port module App.UrlUpdate exposing (urlUpdate, onUrlEnter)
 
---import App.Msg exposing (Msg(..))
-
 import App.Msg exposing (Msg, Msg(..))
 import App.Model exposing (App)
 import App.Routing exposing (Route)
@@ -11,14 +9,9 @@ import Rider.Model
 import Task
 import Dom
 import Date
-import App.Helpers
 import App.Routing
 import Ui.Calendar
 import Ui.Chooser
-import Http
-import Json.Decode
-import Json.Decode.Pipeline
-import Json.Encode
 
 
 port loadRiders : () -> Cmd msg
@@ -63,8 +56,44 @@ onUrlEnter route app =
                 , Cmd.none
                 )
 
+
+        App.Routing.RiderDetails key ->
+            ( { app | page = App.Model.RiderDetails key }
+            , Cmd.none
+            )
+
+        App.Routing.RaceDetails key ->
+            ( { app | page = App.Model.RaceDetails key }
+            , Cmd.none
+            )
+
         _ ->
-            ( app, Cmd.none )
+            let
+                page =
+                    Maybe.withDefault app.page (routeToPage route)
+            in
+                ( { app | page = page }, Cmd.none )
+
+
+routeToPage : App.Routing.Route -> Maybe App.Model.Page
+routeToPage route =
+    let
+        routePages =
+            [ ( App.Routing.Riders, App.Model.Riders )
+            , ( App.Routing.Races, App.Model.Races )
+            , ( App.Routing.Home, App.Model.Races )
+            ]
+
+        maybeRoutePage =
+            List.filter (\f -> Tuple.first f == route) routePages
+                |> List.head
+    in
+        case maybeRoutePage of
+            Just ( r, p ) ->
+                Just p
+
+            Nothing ->
+                Nothing
 
 
 load : App -> List (Cmd Msg)

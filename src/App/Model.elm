@@ -35,7 +35,6 @@ type alias App =
     , results : Maybe (List Result.Model.Result)
     , now : Maybe Date.Date
     , messages : List String
-    , ratings : Ui.Ratings.Model
     }
 
 
@@ -48,6 +47,5 @@ initial flags =
     Nothing
     Nothing
         []
-        (Ui.Ratings.init () |> Ui.Ratings.size 10)
         , Cmd.none
         )

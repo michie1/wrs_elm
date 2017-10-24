@@ -12,7 +12,6 @@ import Time
 import Keyboard
 import Keyboard.Extra
 import Json.Encode
-import Ui.Ratings
 import Ui.Calendar
 import Ui.Chooser
 import Http
@@ -48,6 +47,5 @@ type Msg
     | OnCreatedResult Json.Encode.Value
     | OnUpdatedRider Json.Encode.Value
     | DatePicked String
-    | Ratings Ui.Ratings.Msg
     | Calendar Ui.Calendar.Msg
     | Chooser Ui.Chooser.Msg
