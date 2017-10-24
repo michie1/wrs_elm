@@ -2,6 +2,7 @@ port module Result.Update exposing (addCategory, addResult, addedJson, resultsJs
 import Json.Decode.Pipeline
 
 import App.Model exposing (App)
+import App.Page
 import Result.Model exposing (Add)
 import Rider.Model
 import App.Msg exposing (Msg(..))
@@ -26,14 +27,14 @@ addCategory category resultAdd =
     { resultAdd | category = category }
 
 
-addResult : String -> App -> ( App, Cmd Msg ) 
+addResult : String -> App -> ( App, Cmd Msg )
 addResult value app =
     case app.page of
-        App.Model.ResultAdd add ->
+        App.Page.ResultAdd add ->
             let
                 nextAdd = { add | result = value }
             in
-                ( { app | page = App.Model.ResultAdd nextAdd }, Cmd.none )
+                ( { app | page = App.Page.ResultAdd nextAdd }, Cmd.none )
 
         _ ->
             ( app, Cmd.none )
@@ -99,8 +100,8 @@ addedJson rawResponse app =
         resultResult = Json.Decode.decodeValue resultDecoder rawResponse
     in
         case resultResult of
-            Ok result -> 
-                ( app, App.Helpers.navigate (App.Routing.RaceDetails result.raceKey) )
+            Ok result ->
+                ( app, App.Helpers.navigate (App.Page.RaceDetails result.raceKey) )
             Err err ->
                 let
                     _ = Debug.log "err" err
@@ -111,7 +112,7 @@ addedJson rawResponse app =
 addSubmit : App -> ( App, Cmd Msg)
 addSubmit app =
     case app.page of
-        App.Model.ResultAdd add ->
+        App.Page.ResultAdd add ->
             let
                 payload =
                     Json.Encode.object

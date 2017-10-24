@@ -4,6 +4,7 @@ import App.Model exposing (App)
 import App.Routing
 import App.Decoder
 import App.Encoder
+import App.Page
 import App.Msg exposing (Msg(..))
 import App.UrlUpdate
 import Race.Model exposing (Race)
@@ -51,14 +52,14 @@ update msg app =
         case msg of
             RaceAddSubmit ->
                 case app.page of
-                    App.Model.RaceAdd raceAdd ->
+                    App.Page.RaceAdd raceAdd ->
                         Race.Update.addSubmit raceAdd app
                     _ ->
                         noOp
 
             RaceAdd ->
                 case app.page of
-                    App.Model.RaceAdd raceAdd ->
+                    App.Page.RaceAdd raceAdd ->
                         noOp
 
                     _ ->
@@ -99,10 +100,10 @@ update msg app =
 
             ResultAddCategory category ->
                 ( (case app.page of
-                    App.Model.ResultAdd resultAdd ->
+                    App.Page.ResultAdd resultAdd ->
                         { app
                             | page =
-                                App.Model.ResultAdd <| Result.Update.addCategory category resultAdd
+                                App.Page.ResultAdd <| Result.Update.addCategory category resultAdd
                         }
 
                     _ ->
@@ -117,8 +118,8 @@ update msg app =
             UrlUpdate route ->
                 App.UrlUpdate.urlUpdate route app
 
-            NavigateTo route ->
-                ( app, App.Helpers.navigate route )
+            NavigateTo page ->
+                ( app, App.Helpers.navigate page )
 
             RiderAddedJson rawResponse ->
                 let
@@ -135,7 +136,7 @@ update msg app =
                                         rider.licence
                             in
                                 ( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
-                                , App.Helpers.navigate (App.Routing.RiderDetails rider.key)
+                                , App.Helpers.navigate (App.Page.RiderDetails rider.key)
                                 )
 
                         Err err ->
@@ -161,7 +162,7 @@ update msg app =
                                 _ = Debug.log "raceKey" race.key
                             in
                                 ( app
-                                , App.Helpers.navigate (App.Routing.RaceDetails race.key)
+                                , App.Helpers.navigate (App.Page.RaceDetails race.key)
                                 )
 
                         Err err ->
@@ -274,7 +275,7 @@ update msg app =
 
             DatePicked dateString ->
                 case app.page of
-                    App.Model.RaceAdd raceAdd ->
+                    App.Page.RaceAdd raceAdd ->
                         let
                             page =
                                 Race.Update.addPage2 (App.Msg.RaceDate dateString) app.page
@@ -288,13 +289,13 @@ update msg app =
 
             Calendar msg_ ->
                 case app.page of
-                    App.Model.RaceAdd raceAdd ->
+                    App.Page.RaceAdd raceAdd ->
                         let
                             ( calendar, cmd ) =
                                 Ui.Calendar.update msg_ raceAdd.calendar
 
                             nextRaceAdd =
-                                App.Model.RaceAdd { raceAdd | calendar = calendar }
+                                App.Page.RaceAdd { raceAdd | calendar = calendar }
                         in
                             ( { app | page = nextRaceAdd }
                             , Cmd.map Calendar cmd
@@ -305,13 +306,13 @@ update msg app =
 
             Chooser msg_ ->
                 case app.page of
-                    App.Model.ResultAdd resultAdd ->
+                    App.Page.ResultAdd resultAdd ->
                         let
                             ( chooser, cmd ) =
                                 Ui.Chooser.update msg_ resultAdd.chooser
 
                             nextResultAdd =
-                                App.Model.ResultAdd { resultAdd | chooser = chooser }
+                                App.Page.ResultAdd { resultAdd | chooser = chooser }
                         in
                             ( { app | page = nextResultAdd }
                             , Cmd.map Chooser cmd

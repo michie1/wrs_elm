@@ -2,6 +2,7 @@ port module Race.Update exposing (..)
 
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
+import App.Page
 import App.Helpers
 import Race.Model
 import Date
@@ -20,16 +21,16 @@ import Json.Decode.Extra
 
 port addRace : (Json.Encode.Value) -> Cmd msg
 
-addPage2 : App.Msg.Msg -> App.Model.Page -> App.Model.Page
+addPage2 : App.Msg.Msg -> App.Page.Page -> App.Page.Page
 addPage2 msg page =
     case page of
-        App.Model.RaceAdd raceAdd ->
+        App.Page.RaceAdd raceAdd ->
             case msg of
                 RaceName name ->
-                    App.Model.RaceAdd <| addName name raceAdd
+                    App.Page.RaceAdd <| addName name raceAdd
 
                 RaceAddCategory category ->
-                    App.Model.RaceAdd <| addCategory category raceAdd
+                    App.Page.RaceAdd <| addCategory category raceAdd
 
                 _ ->
                     page

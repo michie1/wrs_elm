@@ -1,6 +1,7 @@
 port module App.UrlUpdate exposing (urlUpdate, onUrlEnter)
 
 import App.Msg exposing (Msg, Msg(..))
+import App.Page
 import App.Model exposing (App)
 import App.Routing exposing (Route)
 import Result.Model
@@ -34,7 +35,7 @@ onUrlEnter route app =
                 resultAddWithRaceKey =
                     { resultAdd | raceKey = raceKey }
             in
-                ( { app | page = App.Model.ResultAdd resultAddWithRaceKey }
+                ( { app | page = App.Page.ResultAdd resultAddWithRaceKey }
                 , Cmd.none
                 )
 
@@ -43,7 +44,7 @@ onUrlEnter route app =
                 raceAdd =
                     Race.Model.Add "" Race.Model.Classic (Ui.Calendar.init ())
             in
-                ( { app | page = App.Model.RaceAdd raceAdd }
+                ( { app | page = App.Page.RaceAdd raceAdd }
                 , Cmd.none
                 )
 
@@ -52,18 +53,18 @@ onUrlEnter route app =
                 add =
                     Rider.Model.Add "" Nothing
             in
-                ( { app | page = App.Model.RiderAdd add }
+                ( { app | page = App.Page.RiderAdd add }
                 , Cmd.none
                 )
 
 
         App.Routing.RiderDetails key ->
-            ( { app | page = App.Model.RiderDetails key }
+            ( { app | page = App.Page.RiderDetails key }
             , Cmd.none
             )
 
         App.Routing.RaceDetails key ->
-            ( { app | page = App.Model.RaceDetails key }
+            ( { app | page = App.Page.RaceDetails key }
             , Cmd.none
             )
 
@@ -75,13 +76,13 @@ onUrlEnter route app =
                 ( { app | page = page }, Cmd.none )
 
 
-routeToPage : App.Routing.Route -> Maybe App.Model.Page
+routeToPage : App.Routing.Route -> Maybe App.Page.Page
 routeToPage route =
     let
         routePages =
-            [ ( App.Routing.Riders, App.Model.Riders )
-            , ( App.Routing.Races, App.Model.Races )
-            , ( App.Routing.Home, App.Model.Races )
+            [ ( App.Routing.Riders, App.Page.Riders )
+            , ( App.Routing.Races, App.Page.Races )
+            , ( App.Routing.Home, App.Page.Races )
             ]
 
         maybeRoutePage =

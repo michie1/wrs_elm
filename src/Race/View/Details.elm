@@ -1,6 +1,7 @@
 module Race.View.Details exposing (..)
 
 import App.Model
+import App.Page
 import Race.Model exposing (Race)
 import Rider.Model
 import Result.Model
@@ -74,12 +75,16 @@ render app raceKey =
 
 addResultButton : Race.Model.Race -> Html App.Msg.Msg
 addResultButton race =
-    button
-        [ class "waves-effect waves-light btn"
-        , onClick (App.Msg.NavigateTo (App.Routing.ResultAdd race.key))
-        , Html.Attributes.name "action"
-        ]
-        [ text "Add result" ]
+    let
+        initialAdd = Result.Model.initialAdd
+        resultAdd = { initialAdd | raceKey = race.key }
+    in
+        button
+            [ class "waves-effect waves-light btn"
+            , onClick (App.Msg.NavigateTo (App.Page.ResultAdd resultAdd))
+            , Html.Attributes.name "action"
+            ]
+            [ text "Add result" ]
 
 
 info : Race -> Html App.Msg.Msg

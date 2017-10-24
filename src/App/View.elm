@@ -6,6 +6,7 @@ import Html.Events exposing (onInput, onClick)
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import App.Routing
+import App.Page
 import Race.Model exposing (Race)
 import Race.View.Add
 import Race.View.List
@@ -38,12 +39,7 @@ mainView app =
 viewPage : App -> Html Msg
 viewPage app =
     case app.page of
-        App.Model.Home ->
-            div []
-                [ h2 [] [ text "Home" ]
-                ]
-
-        App.Model.Riders ->
+        App.Page.Riders ->
             case app.riders of
                 Just riders ->
                     Rider.View.List.render riders
@@ -51,25 +47,22 @@ viewPage app =
                 Nothing ->
                     div [] [ text "No riders loaded." ]
 
-        App.Model.RiderDetails key ->
+        App.Page.RiderDetails key ->
             Rider.View.Details.render app key
 
-        App.Model.RiderAdd add ->
+        App.Page.RiderAdd add ->
             Rider.View.Add.render add
 
-        App.Model.Races ->
+        App.Page.Races ->
             Race.View.List.render app.races app.results
 
-        App.Model.RaceDetails key ->
+        App.Page.RaceDetails key ->
             Race.View.Details.render app key
 
-        App.Model.RaceAdd raceAdd ->
+        App.Page.RaceAdd raceAdd ->
             Race.View.Add.render raceAdd
 
-        App.Model.Results ->
-            Result.View.List.render app.results
-
-        App.Model.ResultAdd resultAdd ->
+        App.Page.ResultAdd resultAdd ->
             let
                 maybeRace =
                     getRace resultAdd.raceKey (Maybe.withDefault [] app.races)

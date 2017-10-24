@@ -8,10 +8,11 @@ import Navigation
 import App.Msg
 import App.Routing
 import Result.Model
+import App.Page
 
-navigate : App.Routing.Route -> Cmd App.Msg.Msg
-navigate route =
-    Navigation.newUrl <| App.Routing.url route
+navigate : App.Page.Page -> Cmd App.Msg.Msg
+navigate page =
+    Navigation.newUrl <| App.Routing.url page
 
 
 updateRiderLicence : String -> Maybe Rider.Model.Licence -> List Rider.Model.Rider -> List Rider.Model.Rider

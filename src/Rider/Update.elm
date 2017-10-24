@@ -2,6 +2,7 @@ port module Rider.Update exposing (..)
 
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
+import App.Page
 import Json.Decode
 import Json.Encode
 import App.Decoder
@@ -63,7 +64,7 @@ ridersJson json app =
 addSubmit : App -> ( App, Cmd Msg)
 addSubmit app =
     case app.page of
-        App.Model.RiderAdd add ->
+        App.Page.RiderAdd add ->
             let
                 payload =
                     Json.Encode.object
@@ -80,8 +81,8 @@ addName name app =
     let
         page =
             case app.page of
-                App.Model.RiderAdd riderAdd ->
-                    App.Model.RiderAdd { riderAdd | name = name }
+                App.Page.RiderAdd riderAdd ->
+                    App.Page.RiderAdd { riderAdd | name = name }
                 _ ->
                     app.page
         nextApp = { app | page = page }
@@ -94,8 +95,8 @@ addLicence licence app =
     let
         page =
             case app.page of
-                App.Model.RiderAdd riderAdd ->
-                    App.Model.RiderAdd { riderAdd | licence = Just licence }
+                App.Page.RiderAdd riderAdd ->
+                    App.Page.RiderAdd { riderAdd | licence = Just licence }
                 _ ->
                     app.page
         nextApp = { app | page = page }

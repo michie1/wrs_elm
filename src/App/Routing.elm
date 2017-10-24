@@ -1,7 +1,8 @@
-module App.Routing exposing (Route(..), url, routeParser)
+module App.Routing exposing (Route(..), routeParser, url)
 
 import Navigation
 import UrlParser exposing (..)
+import App.Page
 
 
 type Route
@@ -16,35 +17,29 @@ type Route
     | ResultAdd String
 
 
-url : Route -> String
-url route =
-    case route of
-        Home ->
-            "#home"
-
-        Riders ->
+url : App.Page.Page -> String
+url page =
+    case page of
+        App.Page.Riders ->
             "#riders"
 
-        RiderAdd ->
+        App.Page.RiderAdd _ ->
             "#riders/add"
 
-        RiderDetails key ->
+        App.Page.RiderDetails key ->
             "#riders/" ++ key
 
-        Races ->
+        App.Page.Races ->
             "#races"
 
-        RaceAdd ->
+        App.Page.RaceAdd _ ->
             "#races/add"
 
-        RaceDetails key ->
+        App.Page.RaceDetails key ->
             "#races/" ++ key
 
-        Results ->
-            "#results"
-
-        ResultAdd key ->
-            "#races/" ++ key ++ "/add"
+        App.Page.ResultAdd add ->
+            "#races/" ++ add.raceKey ++ "/add"
 
 matchers : Parser (Route -> a) a
 matchers =

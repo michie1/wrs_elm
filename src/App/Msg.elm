@@ -16,6 +16,7 @@ import Ui.Calendar
 import Ui.Chooser
 import Http
 import Json.Decode
+import App.Page
 
 type Msg
     = RaceAdd
@@ -34,7 +35,7 @@ type Msg
     | RiderAddLicence Rider.Model.Licence
     | RiderAddName String
     | RiderAddedJson Json.Decode.Value
-    | NavigateTo App.Routing.Route
+    | NavigateTo App.Page.Page
     | UrlUpdate App.Routing.Route
     | Noop
     | NewMessage String

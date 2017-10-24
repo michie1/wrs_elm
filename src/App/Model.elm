@@ -1,4 +1,4 @@
-module App.Model exposing (App, initial, Page, Page(..))
+module App.Model exposing (App, initial)
 
 import Dict exposing (Dict)
 import App.Routing as Routing exposing (Route(..))
@@ -14,18 +14,9 @@ import App.Msg
 import Ui.Ratings
 import Ui.Calendar
 import App.Flags exposing (Flags)
+import App.Page exposing (Page)
 
 
-type Page
-    = RaceAdd Race.Model.Add -- TODO: Set this data to the Route.
-    | ResultAdd Result.Model.Add
-    | RiderAdd Rider.Model.Add
-    | Home
-    | RiderDetails String
-    | Riders
-    | RaceDetails String
-    | Races
-    | Results
 
 
 type alias App =
@@ -41,7 +32,7 @@ type alias App =
 initial : Flags -> ( App, Cmd App.Msg.Msg )
 initial flags =
     ( App
-    Home
+    App.Page.Races
     Nothing
     Nothing
     Nothing
