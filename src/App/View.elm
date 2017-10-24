@@ -37,13 +37,13 @@ mainView app =
 
 viewPage : App -> Html Msg
 viewPage app =
-    case app.route of
-        App.Routing.Home ->
+    case app.page of
+        App.Model.Home ->
             div []
                 [ h2 [] [ text "Home" ]
                 ]
 
-        App.Routing.Riders ->
+        App.Model.Riders ->
             case app.riders of
                 Just riders ->
                     Rider.View.List.render riders
@@ -51,62 +51,41 @@ viewPage app =
                 Nothing ->
                     div [] [ text "No riders loaded." ]
 
-        App.Routing.RiderDetails key ->
+        App.Model.RiderDetails key ->
             Rider.View.Details.render app key
 
-        App.Routing.RiderAdd ->
-            case app.page of
-                App.Model.RiderAdd add ->
-                    div []
-                        [ Rider.View.Add.render add
-                        ]
+        App.Model.RiderAdd add ->
+            Rider.View.Add.render add
 
-                _ ->
-                    div [] [ text "Page not RidersAdd" ]
-
-        App.Routing.Races ->
+        App.Model.Races ->
             Race.View.List.render app.races app.results
 
-        App.Routing.RaceDetails key ->
+        App.Model.RaceDetails key ->
             Race.View.Details.render app key
 
-        App.Routing.RaceAdd ->
-            case app.page of
-                App.Model.RaceAdd raceAdd ->
-                    div []
-                        [ Race.View.Add.render raceAdd
-                        ]
+        App.Model.RaceAdd raceAdd ->
+            Race.View.Add.render raceAdd
 
-                _ ->
-                    div [] [ text "Page not RaceAdd" ]
-
-        App.Routing.Results ->
+        App.Model.Results ->
             Result.View.List.render app.results
 
-        App.Routing.ResultAdd raceId ->
-            case app.page of
-                App.Model.ResultAdd resultAdd ->
-                    let
-                        maybeRace =
-                            getRace raceId (Maybe.withDefault [] app.races)
-                    in
-                        case maybeRace of
-                            Nothing ->
-                                div []
-                                    [ text "Race does not exist. Adding result not possible." ]
+        App.Model.ResultAdd resultAdd ->
+            let
+                maybeRace =
+                    getRace resultAdd.raceKey (Maybe.withDefault [] app.races)
+            in
+                case ( maybeRace, app.riders ) of
+                    ( Nothing, Nothing ) ->
+                        div [] [ text "Race does not exist and riders not loaded." ]
 
-                            Just race ->
-                                case app.riders of
-                                    Just riders ->
-                                        div []
-                                            [ Result.View.Add.render race resultAdd riders app.results
-                                            ]
+                    ( Nothing, _ ) ->
+                        div [] [ text "Race does not exist." ]
 
-                                    Nothing ->
-                                        div [] [ text "No riders loaded." ]
+                    ( _, Nothing ) ->
+                        div [] [ text "Riders not yet loaded." ]
 
-                _ ->
-                    div [] [ text "No resultAdd." ]
+                    ( Just race, Just riders ) ->
+                        Result.View.Add.render race resultAdd riders app.results
 
 
 userLi : App -> List (Html App.Msg.Msg)

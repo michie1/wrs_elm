@@ -20,12 +20,16 @@ type Page
     = RaceAdd Race.Model.Add -- TODO: Set this data to the Route.
     | ResultAdd Result.Model.Add
     | RiderAdd Rider.Model.Add
-    | NoOp
+    | Home
+    | RiderDetails String
+    | Riders
+    | RaceDetails String
+    | Races
+    | Results
 
 
 type alias App =
-    { route : Routing.Route
-    , page : Page
+    { page : Page
     , riders : Maybe (List Rider.Model.Rider)
     , races : Maybe (List Race.Model.Race)
     , results : Maybe (List Result.Model.Result)
@@ -39,7 +43,6 @@ initial : Flags -> ( App, Cmd App.Msg.Msg )
 initial flags =
     ( App
     Home
-    NoOp
     Nothing
     Nothing
     Nothing

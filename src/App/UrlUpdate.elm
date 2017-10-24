@@ -30,13 +30,6 @@ port loadRaces : () -> Cmd msg
 port loadResults : () -> Cmd msg
 
 
-onUrlLeave : App.Routing.Route -> App -> App
-onUrlLeave prevRoute prevApp =
-    case prevRoute of
-        _ ->
-            { prevApp | page = App.Model.NoOp }
-
-
 onUrlEnter : App.Routing.Route -> App -> ( App, Cmd Msg )
 onUrlEnter route app =
     case route of
@@ -100,17 +93,8 @@ replace from to str =
 urlUpdate : App.Routing.Route -> App -> ( App, Cmd Msg )
 urlUpdate route app =
     let
-        prevRoute =
-            app.route
-
-        leaveApp =
-            onUrlLeave prevRoute app
-
-        routeApp =
-            { leaveApp | route = route }
-
         ( nextApp, routeCmd ) =
-            onUrlEnter route routeApp
+            onUrlEnter route app
 
         cmd =
             Cmd.batch (routeCmd :: load app)
