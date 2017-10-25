@@ -22,19 +22,28 @@ import Ui.Calendar
 
 render : App -> Html Msg
 render app =
-    div []
-        [ header app
-        , mainView app
-        ]
+    mainView app
 
 
 mainView : App -> Html Msg
 mainView app =
     div [ class "container" ]
-        [ viewPage app
-          -- , Html.map Ratings (Ui.Ratings.view app.ratings)
+        [ div [ class "row" ] 
+            [ div [ class "col s3" ] [ sidebar app ]
+            , div [ class "col s9" ] [ viewPage app ]
+            ] 
         ]
 
+sidebar : App -> Html Msg
+sidebar app =
+    div [ ]
+        [ h2 [] [ text "Uitslagen" ]
+        , ul [] 
+            [ li [] [ a [ href "#races" ] [ text "Races" ] ]
+            , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
+            ]
+        ]
+    
 
 viewPage : App -> Html Msg
 viewPage app =

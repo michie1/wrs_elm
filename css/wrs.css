@@ -1,3 +1,9 @@
+#sidebar {
+  display: block;
+  width: 200px;
+  border: 1px solid red;
+}
+
 select {
   display: block;
 }
