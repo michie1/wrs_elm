@@ -65,7 +65,7 @@ render app riderKey =
 info : Rider -> Int -> Html App.Msg.Msg
 info rider points =
     div [ class "row" ]
-        [ ul [ class "collection col s8 m6 l4" ]
+        [ ul [ class "collection col s4 m5" ]
             [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text rider.name ] ]
             , li [ class "collection-item" ] [ text "Licence ", span [ class "secondary-content" ] [ text (toString rider.licence) ] ]
             , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text <| toString points ] ]

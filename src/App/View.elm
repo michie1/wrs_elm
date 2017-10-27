@@ -29,8 +29,8 @@ mainView : App -> Html Msg
 mainView app =
     div [ class "container" ]
         [ div [ class "row" ]
-            [ div [ class "col s3" ] [ sidebar app ]
-            , div [ class "col s9" ] [ viewPage app ]
+            [ div [ class "col s3 m4" ] [ sidebar app ]
+            , div [ class "col s9 m8" ] [ viewPage app ]
             ]
         ]
 

@@ -99,7 +99,7 @@ info race =
                     "1970-01-01"
     in
         div [ class "row" ]
-            [ div [ class "col s4" ]
+            [ div [ class "col s4 m5" ]
                 [ ul [ class "collection" ]
                     [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text race.name ] ]
                     , li [ class "collection-item" ] [ text "Date ", span [ class "secondary-content" ] [ text dateString ] ]
