@@ -89,7 +89,7 @@ addSubmit raceAdd app =
 category : String -> Race.Model.Category
 category string =
     case string of
-        "klassieker" ->
+        "classic" ->
             Race.Model.Classic
 
         "criterium" ->
