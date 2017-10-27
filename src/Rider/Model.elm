@@ -11,7 +11,7 @@ type Licence
 type alias Rider =
     { key : String
     , name : String
-    , licence : Maybe Licence
+    , licence : Licence
     }
 
 type alias Add =

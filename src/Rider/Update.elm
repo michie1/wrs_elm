@@ -13,22 +13,22 @@ import Rider.Model
 
 port addRider : (Json.Encode.Value) -> Cmd msg
 
-licence : String -> Maybe Rider.Model.Licence
+licence : String -> Rider.Model.Licence
 licence string =
     case string of
         "elite" ->
-            Just Rider.Model.Elite
+            Rider.Model.Elite
 
         "amateurs" ->
-            Just Rider.Model.Amateurs
+            Rider.Model.Amateurs
 
         "basislidmaatschap" ->
-            Just Rider.Model.Basislidmaatschap
+            Rider.Model.Basislidmaatschap
 
         _ ->
-            Nothing
+            Rider.Model.Other
 
-licenceDecoder : String -> Json.Decode.Decoder (Maybe Rider.Model.Licence)
+licenceDecoder : String -> Json.Decode.Decoder Rider.Model.Licence
 licenceDecoder string =
     Json.Decode.succeed (licence string)
 

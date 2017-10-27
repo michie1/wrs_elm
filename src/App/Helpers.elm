@@ -10,18 +10,19 @@ import App.Routing
 import Result.Model
 import App.Page
 
+
 navigate : App.Page.Page -> Cmd App.Msg.Msg
 navigate page =
     Navigation.newUrl <| App.Routing.url page
 
 
-updateRiderLicence : String -> Maybe Rider.Model.Licence -> List Rider.Model.Rider -> List Rider.Model.Rider
-updateRiderLicence riderKey maybeLicence riders =
+updateRiderLicence : String -> Rider.Model.Licence -> List Rider.Model.Rider -> List Rider.Model.Rider
+updateRiderLicence riderKey licence riders =
     List.map
         (\rider ->
             case rider.key == riderKey of
                 True ->
-                    { rider | licence = maybeLicence }
+                    { rider | licence = licence }
 
                 False ->
                     rider
@@ -33,13 +34,16 @@ getRiderByName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderByName name riders =
     List.head (List.filter (\rider -> rider.name == name) riders)
 
+
 getRiderByLowerCaseName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderByLowerCaseName name riders =
     List.head (List.filter (\rider -> (String.toLower rider.name) == (String.toLower name)) riders)
 
+
 getRiderByResultId : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
 getRiderByResultId key riders =
     List.head (List.filter (\rider -> rider.key == key) riders)
+
 
 calcRaceId : List Race -> Int
 calcRaceId races =
@@ -114,23 +118,26 @@ getPointsByResults : List Result.Model.Result -> List Race.Model.Race -> Int
 getPointsByResults results races =
     List.sum <|
         List.map
-        (\result -> getPointsByResult result races )
-        results
+            (\result -> getPointsByResult result races)
+            results
+
 
 getPointsByResult : Result.Model.Result -> List Race.Model.Race -> Int
 getPointsByResult result races =
     case getRaceByKey result.raceKey races of
         Just race ->
             getPointsByCategory race.category
-    
+
         Nothing ->
             0
-    
-getPointsByCategory :  Race.Model.Category -> Int
+
+
+getPointsByCategory : Race.Model.Category -> Int
 getPointsByCategory category =
     case category of
         Race.Model.Classic ->
             4
+
         Race.Model.Criterium ->
             3
 
@@ -151,12 +158,13 @@ getRaceByKey raceKey races =
             (\race -> race.key == raceKey)
             races
 
+
 getPointsByRiderId : String -> List Result.Model.Result -> List Race.Model.Race -> Int
 getPointsByRiderId riderKey results races =
-    getPointsByResults (
-            ( List.filter
-                (\result -> result.riderKey == riderKey)
-                results
-            )
+    getPointsByResults
+        ((List.filter
+            (\result -> result.riderKey == riderKey)
+            results
+         )
         )
         races
