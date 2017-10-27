@@ -14,7 +14,7 @@ render add =
             add.name
 
         submitDisabled =
-            name == "" || add.licence == Nothing
+            name == "" || add.licence == Nothing || String.length name > 100
 
     in
         div []

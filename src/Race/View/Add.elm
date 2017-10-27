@@ -23,7 +23,7 @@ render raceAdd =
             raceAdd.name
 
         submitDisabled =
-            name == ""
+            name == "" || String.length name > 100
 
         dateString = dateFormat raceAdd.calendar.value
     in
