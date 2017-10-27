@@ -21,23 +21,23 @@ import Date.Extra
 
 render : App -> Html Msg
 render app =
-    mainView app
+    div [ class "container" ]
+        [ div [ class "row" ] [ loadingPage app ]
+        ]
 
 
 mainView : App -> Html Msg
 mainView app =
-    div [ class "container" ]
-        [ div [ class "row" ]
-            [ div [ class "col s3 m4" ] [ sidebar app ]
-            , div [ class "col s9 m8" ] [ viewPage app ]
-            ]
+    div []
+        [ div [ class "col s3 m4" ] [ sidebar app ]
+        , div [ class "col s9 m8" ] [ viewPage app ]
         ]
 
 
 sidebar : App -> Html Msg
 sidebar app =
     div []
-        [ h2 [] [ text "Uitslagen" ]
+        [ h2 [] [ text "WRS" ]
         , ul [ class "collection" ] <|
             [ li [ class "collection-header" ] [ h4 [] [ a [ href "#riders" ] [ text "Riders" ] ] ] ]
                 ++ [ li [ class "collection-header" ] [ h4 [] [ a [ href "#races" ] [ text "Races" ] ] ] ]
@@ -57,6 +57,34 @@ lastRaces maybeRaces =
 raceLi : Race -> Html Msg
 raceLi race =
     li [] [ a [ class "collection-item", href ("#races/" ++ race.key) ] [ text race.name ] ]
+
+
+loadingPage : App -> Html Msg
+loadingPage app =
+    case ( app.races, app.riders ) of
+        ( Just race, Just riders ) ->
+            mainView app
+
+        ( _, _ ) ->
+            div [ class "col s9 m8 offset-s3 offset-m4" ]
+                [ h2 [] [ text "Loading data" ]
+                , spinner
+                ]
+
+
+spinner : Html Msg
+spinner =
+    div [ class "preloader-wrapper big active" ]
+        [ div [ class "spinner-layer spinner-blue-only" ]
+            [ div [ class "circle-clipper left" ]
+                [ div [ class "circle" ] []
+                , div [ class "gap-patch" ] []
+                , div [ class "circle" ] []
+                ]
+            , div [ class "circle-clipper right" ] []
+            , div [ class "circle" ] []
+            ]
+        ]
 
 
 viewPage : App -> Html Msg

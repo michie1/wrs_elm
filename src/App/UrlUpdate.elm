@@ -36,7 +36,7 @@ onUrlEnter route app =
                     { resultAdd | raceKey = raceKey }
             in
                 ( { app | page = App.Page.ResultAdd resultAddWithRaceKey }
-                , Cmd.none
+                , Task.attempt (always App.Msg.Noop) (Dom.focus "result")
                 )
 
         App.Routing.RaceAdd ->
@@ -45,7 +45,7 @@ onUrlEnter route app =
                     Race.Model.Add "" Race.Model.Classic (Ui.Calendar.init ())
             in
                 ( { app | page = App.Page.RaceAdd raceAdd }
-                , Cmd.none
+                , Task.attempt (always App.Msg.Noop) (Dom.focus "name")
                 )
 
         App.Routing.RiderAdd ->
@@ -54,9 +54,8 @@ onUrlEnter route app =
                     Rider.Model.Add "" Nothing
             in
                 ( { app | page = App.Page.RiderAdd add }
-                , Cmd.none
+                , Task.attempt (always App.Msg.Noop) (Dom.focus "name")
                 )
-
 
         App.Routing.RiderDetails key ->
             ( { app | page = App.Page.RiderDetails key }
@@ -69,11 +68,12 @@ onUrlEnter route app =
             )
 
         _ ->
-            let
-                page =
-                    Maybe.withDefault app.page (routeToPage route)
-            in
-                ( { app | page = page }, Cmd.none )
+            case routeToPage route of
+                Just page ->
+                    ( { app | page = page }, Cmd.none )
+
+                Nothing ->
+                    ( app, Cmd.none )
 
 
 routeToPage : App.Routing.Route -> Maybe App.Page.Page
@@ -140,19 +140,3 @@ resultExists riderKey raceKey results =
             results
         )
         == 1
-
-
-fetchForRoute : Route -> Cmd Msg
-fetchForRoute route =
-    case route of
-        App.Routing.RaceAdd ->
-            Task.attempt (always App.Msg.Noop) (Dom.focus "name")
-
-        App.Routing.RiderAdd ->
-            Task.attempt (always App.Msg.Noop) (Dom.focus "name")
-
-        App.Routing.ResultAdd raceKey ->
-            Task.attempt (always App.Msg.Noop) (Dom.focus "result")
-
-        _ ->
-            Cmd.none
