@@ -17,7 +17,7 @@ import Date.Extra
 
 dateFormat : Date.Date -> String
 dateFormat date =
-    Date.Extra.Format.format config "%d-%m-%Y" date
+    Date.Extra.Format.format config "%Y-%m-%d" date
 
 
 render : App.Model.App -> String -> Html App.Msg.Msg
@@ -79,8 +79,7 @@ resultsTable rider results races =
     table []
         [ thead []
             [ tr []
-                [ th [] [ text "id" ]
-                , th [] [ text "Race" ]
+                [ th [] [ text "Race" ]
                 , th [] [ text "Date" ]
                 , th [] [ text "Points" ]
                 , th [] [ text "Result" ]
@@ -118,8 +117,7 @@ raceRow result races =
                     dateString = dateFormat race.date
                 in
                     tr []
-                        [ td [] [ text result.key ]
-                        , td []
+                        [ td []
                             [ a
                                 [ href ("#races/" ++ race.key) ]
                                 [ text race.name ]

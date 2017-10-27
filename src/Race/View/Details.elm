@@ -18,14 +18,9 @@ import Date
 import App.Helpers
 
 
-dateTimeFormat : Date.Date -> String
-dateTimeFormat date =
-    Date.Extra.Format.format config "%d-%m-%Y %H:%M" date
-
-
 dateFormat : Date.Date -> String
 dateFormat date =
-    Date.Extra.Format.format config "%d-%m-%Y" date
+    Date.Extra.Format.format config "%Y-%m-%d" date
 
 
 render : App.Model.App -> String -> Html App.Msg.Msg
