@@ -12,6 +12,7 @@ import Date
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import App.Helpers
+import Date.Extra
 
 
 dateFormat : Date.Date -> String
@@ -87,6 +88,7 @@ resultsTable rider results races =
             ]
         , tbody []
             (results
+                -- |> List.sortWith (\a b -> Date.Extra.compare a.race.date b.date) -- TODO: sort by race date of this result
                 |> List.map
                     (\result ->
                         raceRow result races
@@ -113,13 +115,7 @@ raceRow result races =
 
             Just race ->
                 let
-                    dateString =
-                        case race.date of
-                            Just date ->
-                                dateFormat date
-
-                            Nothing ->
-                                "1970-01-01"
+                    dateString = dateFormat race.date
                 in
                     tr []
                         [ td [] [ text result.key ]

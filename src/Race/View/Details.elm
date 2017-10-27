@@ -90,13 +90,7 @@ addResultButton race =
 info : Race -> Html App.Msg.Msg
 info race =
     let
-        dateString =
-            case race.date of
-                Just date ->
-                    dateFormat date
-
-                Nothing ->
-                    "1970-01-01"
+        dateString = dateFormat race.date
     in
         div [ class "row" ]
             [ div [ class "col s4 m5" ]

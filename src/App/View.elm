@@ -16,8 +16,7 @@ import Rider.View.Details
 import Result.View.List
 import Result.View.Add
 import Rider.View.Add
-import Ui.Ratings
-import Ui.Calendar
+import Date.Extra
 
 
 render : App -> Html Msg
@@ -41,19 +40,18 @@ sidebar app =
         [ h2 [] [ text "Uitslagen" ]
         , ul [ class "collection" ] <|
             [ li [ class "collection-header" ] [ h4 [] [ a [ href "#riders" ] [ text "Riders" ] ] ] ]
-            ++ [ li [ class "collection-header" ] [ h4 [] [ a [ href "#races" ] [ text "Races" ] ] ] ]
-            ++ lastRaces app.races
+                ++ [ li [ class "collection-header" ] [ h4 [] [ a [ href "#races" ] [ text "Races" ] ] ] ]
+                ++ lastRaces app.races
         ]
 
 
 lastRaces : Maybe (List Race) -> List (Html Msg)
 lastRaces maybeRaces =
-    case maybeRaces of
-        Just races ->
-            List.map raceLi (races |> List.take 5)
-
-        Nothing ->
-            []
+    Maybe.withDefault [] maybeRaces
+        |> List.sortWith (\a b -> Date.Extra.compare a.date b.date)
+        |> List.reverse
+        |> List.take 5
+        |> List.map raceLi
 
 
 raceLi : Race -> Html Msg

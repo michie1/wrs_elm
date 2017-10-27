@@ -8,6 +8,7 @@ import Html.Attributes exposing (href, class)
 import Date
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
+import Date.Extra
 
 
 dateFormat : Date.Date -> String
@@ -30,42 +31,39 @@ addButton =
 
 
 raceTable : List Race -> List Result.Model.Result -> Html App.Msg.Msg
-raceTable races results =
-    table []
-        [ thead []
-            [ tr []
-                [ th [] [ text "Name" ]
-                , th [] [ text "Date" ]
-                , th [] [ text "Category" ]
-                , th [] [ text "Riders" ]
+raceTable unsortedRaces results =
+    let
+        races = unsortedRaces |> List.sortWith (\a b -> Date.Extra.compare a.date b.date) |> List.reverse
+    in
+        table []
+            [ thead []
+                [ tr []
+                    [ th [] [ text "Name" ]
+                    , th [] [ text "Date" ]
+                    , th [] [ text "Category" ]
+                    , th [] [ text "Riders" ]
+                    ]
                 ]
-            ]
-        , tbody []
-            (List.map
-                (\race ->
-                    let
-                        dateString =
-                            case race.date of
-                                Just date ->
-                                    dateFormat date
-
-                                Nothing ->
-                                    "1970-01-01"
-                    in
-                        tr []
-                            [ td []
-                                [ a
-                                    [ href ("#races/" ++ race.key) ]
-                                    [ text race.name ]
+            , tbody []
+                (List.map
+                    (\race ->
+                        let
+                            dateString = dateFormat race.date
+                        in
+                            tr []
+                                [ td []
+                                    [ a
+                                        [ href ("#races/" ++ race.key) ]
+                                        [ text race.name ]
+                                    ]
+                                , td [] [ text <| dateString ]
+                                , td [] [ text (toString race.category) ]
+                                , td [] [ text (toString (countParticipants race.key results)) ]
                                 ]
-                            , td [] [ text <| dateString ]
-                            , td [] [ text (toString race.category) ]
-                            , td [] [ text (toString (countParticipants race.key results)) ]
-                            ]
+                    )
+                    races
                 )
-                races
-            )
-        ]
+            ]
 
 
 countParticipants : String -> List Result.Model.Result -> Int

@@ -126,17 +126,17 @@ raceDecoder =
                 |> Json.Decode.andThen raceCategoryDecoder
             )
 
-date : Json.Decode.Decoder (Maybe Date.Date)
+date : Json.Decode.Decoder Date.Date
 date =
     let
-        convert : String -> Json.Decode.Decoder (Maybe Date.Date)
+        convert : String -> Json.Decode.Decoder Date.Date
         convert raw =
             case Date.fromString raw of
                 Ok date ->
-                    Json.Decode.succeed <| Just date
+                    Json.Decode.succeed <| date
 
                 Err error ->
-                    Json.Decode.succeed Nothing
+                    Json.Decode.succeed <| Date.fromTime 0
     in
         Json.Decode.string
             |> Json.Decode.andThen convert

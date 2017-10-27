@@ -15,7 +15,7 @@ type Category
 type alias Race =
     { key : String
     , name : String
-    , date : Maybe Date.Date
+    , date : Date.Date
     , category : Category
     }
 

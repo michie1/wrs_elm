@@ -115,7 +115,7 @@ race =
         Race.Model.Race
         (Json.Decode.field "key" Json.Decode.string)
         (Json.Decode.field "name" Json.Decode.string)
-        (Json.Decode.field "date" (Json.Decode.maybe Json.Decode.Extra.date))
+        (Json.Decode.field "date" Json.Decode.Extra.date)
         (Json.Decode.field "category"
             (Json.Decode.andThen categoryDecoder Json.Decode.string)
         )
