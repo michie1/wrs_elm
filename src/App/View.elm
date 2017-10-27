@@ -39,14 +39,26 @@ sidebar : App -> Html Msg
 sidebar app =
     div []
         [ h2 [] [ text "Uitslagen" ]
-        , ul [ class "collection" ]
-            [ li [ class "collection-header" ] [ h4 [] [ a [ href "#races" ] [ text "Races" ] ] ]
-            , li [ ] [ a [ class "collection-item", href "#riders" ] [ text "Race 1" ] ]
-            , li [ class "collection-header" ] [ h4 [] [ a [ href "#races" ] [ text "Riders" ] ] ]
-            , li [ ] [ a [ class "collection-item", href "#riders" ] [ text "Rider 1" ] ]
-            , li [ ] [ a [ class "collection-item", href "#riders" ] [ text "Rider 1" ] ]
-            ]
+        , ul [ class "collection" ] <|
+            [ li [ class "collection-header" ] [ h4 [] [ a [ href "#riders" ] [ text "Riders" ] ] ] ]
+            ++ [ li [ class "collection-header" ] [ h4 [] [ a [ href "#races" ] [ text "Races" ] ] ] ]
+            ++ lastRaces app.races
         ]
+
+
+lastRaces : Maybe (List Race) -> List (Html Msg)
+lastRaces maybeRaces =
+    case maybeRaces of
+        Just races ->
+            List.map raceLi (races |> List.take 5)
+
+        Nothing ->
+            []
+
+
+raceLi : Race -> Html Msg
+raceLi race =
+    li [] [ a [ class "collection-item", href ("#races/" ++ race.key) ] [ text race.name ] ]
 
 
 viewPage : App -> Html Msg
