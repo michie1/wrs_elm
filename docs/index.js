@@ -30,17 +30,9 @@ var config = {
 firebase.initializeApp(config);
 
 // var Elm = require('./src/Main');
-var app = Elm.Main.embed(document.getElementById('main'), { });
+var app = Elm.Main.embed(document.getElementById('main'));
 
 setup(firebase, app);
-
-app.ports.getLocalStorage.subscribe(function (key) {
-  return localStorage.getItem(key);
-});
-
-app.ports.setLocalStorage.subscribe(function (tuple) {
-  return localStorage.setItem(tuple[0], tuple[1]);
-});
 
 app.ports.loadRiders.subscribe(function() {
   firebase.database().ref('/riders/').orderByChild('id').once('value').then(function(snapshot) {
@@ -69,7 +61,6 @@ app.ports.loadRaces.subscribe(function() {
 });
 
 app.ports.loadResults.subscribe(function() {
-  console.log('loadResults');
   firebase.database().ref('/results/').on('value', function(snapshot) {
     const val = snapshot.val();
     const arr = Object.keys(val).
@@ -78,7 +69,6 @@ app.ports.loadResults.subscribe(function() {
             key: key
           }, val[key]);
       });
-    console.log('setResults');
     app.ports.setResults.send(arr);
   });
 });
@@ -106,7 +96,6 @@ app.ports.addRider.subscribe(function(rider) {
 });
 
 app.ports.addResultPort.subscribe(function(result) {
-  console.log('addResult', result);
   const pushedResult = firebase.database().ref('/results/').push();
   pushedResult.set(result)
     .then(function () {
@@ -115,7 +104,8 @@ app.ports.addResultPort.subscribe(function(result) {
         riderKey: result.riderKey,
         raceKey: result.raceKey,
         category: result.category,
-        result: result.result
+        result: result.result,
+        outfit: result.outfit
       });
     });
 });
