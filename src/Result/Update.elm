@@ -16,6 +16,7 @@ import App.Decoder
 import Set
 import App.UrlUpdate
 import Ui.Chooser
+import App.Outfit exposing (Outfit)
 
 
 port addResultPort : Json.Encode.Value -> Cmd msg
@@ -29,7 +30,7 @@ addCategory category resultAdd =
     { resultAdd | category = category }
 
 
-addOutfit : Result.Model.Outfit -> App -> ( App, Cmd Msg )
+addOutfit : Outfit -> App -> ( App, Cmd Msg )
 addOutfit outfit app =
     case app.page of
         App.Page.ResultAdd resultAdd ->

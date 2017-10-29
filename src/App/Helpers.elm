@@ -9,6 +9,7 @@ import App.Msg
 import App.Routing
 import Result.Model
 import App.Page
+import App.Outfit as Outfit
 
 
 navigate : App.Page.Page -> Cmd App.Msg.Msg
@@ -124,7 +125,7 @@ getPointsByResults results races =
 
 getPointsByResult : Result.Model.Result -> List Race.Model.Race -> Int
 getPointsByResult result races =
-    if result.outfit == Result.Model.WTOS then
+    if result.outfit == Outfit.WTOS then
         case getRaceByKey result.raceKey races of
             Just race ->
                 getPointsByCategory race.category

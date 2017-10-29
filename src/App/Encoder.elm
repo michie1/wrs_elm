@@ -4,6 +4,7 @@ import Rider.Model exposing (Licence)
 import Json.Encode
 import Race.Model
 import Result.Model
+import App.Outfit as Outfit exposing (Outfit)
 
 
 licence : Maybe Licence -> Json.Encode.Value
@@ -62,14 +63,14 @@ resultCategory category =
         Result.Model.Unknown ->
             Json.Encode.string "unknown"
 
-resultOutfit : Result.Model.Outfit -> Json.Encode.Value
+resultOutfit : Outfit -> Json.Encode.Value
 resultOutfit outfit =
     case outfit of
-        Result.Model.WTOS ->
+        Outfit.WTOS ->
             Json.Encode.string "wtos"
 
-        Result.Model.WASP ->
+        Outfit.WASP ->
             Json.Encode.string "wasp"
 
-        Result.Model.Other ->
+        Outfit.Other ->
             Json.Encode.string "other"

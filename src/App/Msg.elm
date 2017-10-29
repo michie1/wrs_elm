@@ -17,6 +17,7 @@ import Ui.Chooser
 import Http
 import Json.Decode
 import App.Page
+import App.Outfit exposing (Outfit)
 
 type Msg
     = RaceAdd
@@ -28,7 +29,7 @@ type Msg
     | RaceAddedJson Json.Decode.Value
     | ResultAddSubmit
     | ResultAddCategory Result.Model.ResultCategory
-    | ResultAddOutfit Result.Model.Outfit
+    | ResultAddOutfit Outfit
     | ResultAddResult String
     | ResultAddedJson Json.Decode.Value
     | ResultsJson Json.Decode.Value

@@ -9,6 +9,8 @@ import Json.Decode.Extra
 import Json.Decode.Pipeline
 import Date
 
+import App.Outfit as Outfit exposing (Outfit)
+
 
 decodeCategory : String -> Json.Decode.Decoder Race.Model.Category
 decodeCategory string =
@@ -108,21 +110,21 @@ resultCategoryDecoder string =
                 Result.Model.Unknown
 
 
-resultOutfitDecoder : String -> Json.Decode.Decoder Result.Model.Outfit
+resultOutfitDecoder : String -> Json.Decode.Decoder Outfit
 resultOutfitDecoder string =
     Json.Decode.succeed <|
         case string of
             "wtos" ->
-                Result.Model.WTOS
+                Outfit.WTOS
 
             "wasp" ->
-                Result.Model.WASP
+                Outfit.WASP
 
             "other" ->
-                Result.Model.Other
+                Outfit.Other
 
             _ ->
-                Result.Model.Other
+                Outfit.Other
 
 
 riderDecoder : Json.Decode.Decoder Rider.Model.Rider
@@ -212,25 +214,25 @@ decodeResultCategory string =
     Json.Decode.succeed (resultCategory string)
 
 
-decodeResultOutfit : String -> Json.Decode.Decoder Result.Model.Outfit
+decodeResultOutfit : String -> Json.Decode.Decoder Outfit
 decodeResultOutfit string =
     Json.Decode.succeed (resultOutfit string)
 
 
-resultOutfit : String -> Result.Model.Outfit
+resultOutfit : String -> Outfit
 resultOutfit string =
     case string of
         "wtos" ->
-            Result.Model.WTOS
+            Outfit.WTOS
 
         "wasp" ->
-            Result.Model.WASP
+            Outfit.WASP
 
         "other" ->
-            Result.Model.Other
+            Outfit.Other
 
         _ ->
-            Result.Model.Other
+            Outfit.Other
 
 
 resultCategory : String -> Result.Model.ResultCategory

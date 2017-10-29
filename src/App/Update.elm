@@ -34,7 +34,7 @@ import Ui.Chooser
 import Navigation
 import Json.Decode.Pipeline
 import Json.Decode
-
+import App.Outfit as Outfit exposing (Outfit)
 
 port setLocalStorage : ( String, String ) -> Cmd msg
 
@@ -196,7 +196,7 @@ update msg app =
                                         result.raceKey
                                         result.result
                                         Result.Model.CatA
-                                        Result.Model.WTOS
+                                        Outfit.WTOS
 
                                 --result.strava
                             in

@@ -10,6 +10,7 @@ import Race.Model
 import Rider.Model exposing (Rider)
 import Ui.Chooser
 import Set
+import App.Outfit as Outfit exposing (Outfit)
 
 
 riderNameExists : String -> List Rider -> Bool
@@ -129,7 +130,7 @@ categoryButtons =
         , categoryButton "catb" "Cat B" Result.Model.CatB
         ]
 
-outfitButton : String -> String -> Result.Model.Outfit -> Bool -> Html App.Msg.Msg
+outfitButton : String -> String -> Outfit -> Bool -> Html App.Msg.Msg
 outfitButton outfitName outfitLabel outfit isChecked =
     p []
         [ input [ checked isChecked, name "outfit", type_ "radio", id outfitName, onClick (App.Msg.ResultAddOutfit outfit) ] []
@@ -140,7 +141,7 @@ outfitButtons : Html App.Msg.Msg
 outfitButtons =
     div []
         [ label [ for "result" ] [ text "Outfit" ]
-        , outfitButton "wtos" "WTOS" Result.Model.WTOS True
-        , outfitButton "wasp" "WASP" Result.Model.WASP False
-        , outfitButton "other" "Other" Result.Model.Other False
+        , outfitButton "wtos" "WTOS" Outfit.WTOS True
+        , outfitButton "wasp" "WASP" Outfit.WASP False
+        , outfitButton "other" "Other" Outfit.Other False
         ]

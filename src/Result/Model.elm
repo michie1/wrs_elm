@@ -1,7 +1,8 @@
-module Result.Model exposing (Add, Result, initialAdd, initialResults, ResultCategory, ResultCategory(..), categories, Outfit, Outfit(..))
+module Result.Model exposing (Add, Result, initialAdd, initialResults, ResultCategory, ResultCategory(..), categories ) 
 
 import Rider.Model exposing (Rider)
 import Ui.Chooser
+import App.Outfit as Outfit exposing (Outfit)
 
 
 type ResultCategory
@@ -10,11 +11,6 @@ type ResultCategory
     | CatA
     | CatB
     | Unknown
-
-type Outfit
-    = WTOS
-    | WASP
-    | Other
 
 type alias Result =
     { key : String
@@ -42,7 +38,7 @@ initialAdd =
     , riderKey = Nothing
     , result = ""
     , category = Amateurs
-    , outfit = WTOS
+    , outfit = Outfit.WTOS
     , strava = ""
     , chooser = ( Ui.Chooser.init ()
                     |> Ui.Chooser.closeOnSelect True
