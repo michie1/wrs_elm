@@ -3,7 +3,6 @@ port module App.Update exposing (update)
 import App.Model exposing (App)
 import App.Routing
 import App.Decoder
-import App.Encoder
 import App.Page
 import App.Msg exposing (Msg(..))
 import App.UrlUpdate

@@ -6,10 +6,9 @@ import App.Page
 import Json.Decode
 import Json.Encode
 import App.Decoder
-import App.Encoder
 import App.Routing
 import App.UrlUpdate
-import Rider.Model
+import Rider.Model exposing (Licence)
 
 port addRider : (Json.Encode.Value) -> Cmd msg
 
@@ -69,12 +68,31 @@ addSubmit app =
                 payload =
                     Json.Encode.object
                         [ ( "name", Json.Encode.string add.name )
-                        , ( "licence", App.Encoder.licence add.licence )
+                        , ( "licence", licenceEncoder add.licence )
                         ]
             in
                 ( app, addRider payload )
         _ ->
             ( app, Cmd.none )
+
+licenceEncoder : Maybe Licence -> Json.Encode.Value
+licenceEncoder maybeLicence =
+    case maybeLicence of
+        Just (Rider.Model.Elite) ->
+            Json.Encode.string "elite"
+
+        Just (Rider.Model.Amateurs) ->
+            Json.Encode.string "amateurs"
+
+        Just (Rider.Model.Basislidmaatschap) ->
+            Json.Encode.string "basislidmaatschap"
+
+        Just (Rider.Model.Other) ->
+            Json.Encode.string "other"
+
+        Nothing ->
+            Json.Encode.null
+
 
 addName : String -> App -> ( App, Cmd Msg )
 addName name app =

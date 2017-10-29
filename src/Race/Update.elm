@@ -13,13 +13,14 @@ import App.Routing
 import Json.Encode
 import Json.Decode
 import App.Decoder
-import App.Encoder
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
 import Json.Decode.Extra
 
-port addRace : (Json.Encode.Value) -> Cmd msg
+
+port addRace : Json.Encode.Value -> Cmd msg
+
 
 addPage2 : App.Msg.Msg -> App.Page.Page -> App.Page.Page
 addPage2 msg page =
@@ -66,21 +67,23 @@ addCategory : Race.Model.Category -> Race.Model.Add -> Race.Model.Add
 addCategory category raceAdd =
     { raceAdd | category = category }
 
+
 dateFormat : Date.Date -> String
 dateFormat date =
     Date.Extra.Format.format config "%Y-%m-%d 00:00:00" date
 
+
 addSubmit : Race.Model.Add -> App.Model.App -> ( App, Cmd Msg )
 addSubmit raceAdd app =
     let
-       dateString =
+        dateString =
             dateFormat raceAdd.calendar.value
 
-       payload =
+        payload =
             Json.Encode.object
                 [ ( "name", Json.Encode.string raceAdd.name )
                 , ( "date", Json.Encode.string dateString )
-                , ( "category", App.Encoder.raceCategory raceAdd.category )
+                , ( "category", Json.Encode.string <| categoryToString raceAdd.category )
                 ]
     in
         ( app, addRace payload )
@@ -98,16 +101,36 @@ category string =
         "regiocross" ->
             Race.Model.Regiocross
 
-
         "other" ->
             Race.Model.Other
 
         _ ->
             Race.Model.Other
 
+
+categoryToString : Race.Model.Category -> String
+categoryToString category =
+    case category of
+        Race.Model.Classic ->
+            "classic"
+
+        Race.Model.Criterium ->
+            "criterium"
+
+        Race.Model.Regiocross ->
+            "regiocross"
+
+        Race.Model.Other ->
+            "other"
+
+        Race.Model.Unknown ->
+            "unknown"
+
+
 categoryDecoder : String -> Json.Decode.Decoder Race.Model.Category
 categoryDecoder string =
     Json.Decode.succeed (category string)
+
 
 race : Json.Decode.Decoder Race.Model.Race
 race =
@@ -120,19 +143,23 @@ race =
             (Json.Decode.andThen categoryDecoder Json.Decode.string)
         )
 
+
 racesDecoder : Json.Decode.Decoder (List Race.Model.Race)
 racesDecoder =
     Json.Decode.list race
 
+
 racesJson : Json.Decode.Value -> App -> ( App, Cmd Msg )
 racesJson json app =
     let
-        nextRacesResult = Json.Decode.decodeValue racesDecoder json
+        nextRacesResult =
+            Json.Decode.decodeValue racesDecoder json
     in
         case nextRacesResult of
             Ok races ->
                 ( { app | races = Just races }
                 , Cmd.none
                 )
+
             _ ->
                 ( app, Cmd.none )

@@ -11,12 +11,11 @@ import App.Helpers
 import App.Routing
 import Json.Encode
 import Json.Decode
-import App.Encoder
 import App.Decoder
 import Set
 import App.UrlUpdate
 import Ui.Chooser
-import App.Outfit exposing (Outfit)
+import App.Outfit as Outfit exposing (Outfit)
 
 
 port addResultPort : Json.Encode.Value -> Cmd msg
@@ -153,8 +152,8 @@ addSubmit app =
                         [ ( "raceKey", Json.Encode.string add.raceKey )
                         , ( "riderKey", Json.Encode.string (riderKey add.chooser) )
                         , ( "result", Json.Encode.string add.result )
-                        , ( "category", App.Encoder.resultCategory add.category )
-                        , ( "outfit", App.Encoder.resultOutfit add.outfit )
+                        , ( "category", Json.Encode.string <| categoryToString add.category )
+                        , ( "outfit", Json.Encode.string <| outfitToString add.outfit )
                         ]
             in
                 ( app, addResultPort payload )
@@ -171,12 +170,33 @@ riderKey chooser =
         |> Maybe.withDefault ""
 
 
+outfitToString : Outfit -> String
+outfitToString outfit =
+    case outfit of
+        Outfit.WTOS ->
+            "wtos"
 
-{--
-    { raceKey : String
-    , result : String
-    , category : ResultCategory
-    , strava : String
-    , chooser : Ui.Chooser.Model
-    }
---}
+        Outfit.WASP ->
+            "wasp"
+
+        Outfit.Other ->
+            "other"
+
+
+categoryToString : Result.Model.ResultCategory -> String
+categoryToString category =
+    case category of
+        Result.Model.Amateurs ->
+            "amateurs"
+
+        Result.Model.Basislidmaatschap ->
+            "basislidmaatschap"
+
+        Result.Model.CatA ->
+            "cata"
+
+        Result.Model.CatB ->
+            "catb"
+
+        Result.Model.Unknown ->
+            "unknown"
