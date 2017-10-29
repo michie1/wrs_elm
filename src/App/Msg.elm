@@ -7,10 +7,6 @@ import Rider.Model exposing (Rider)
 import Race.Model
 import Result.Model
 import App.Routing
-import Date
-import Time
-import Keyboard
-import Keyboard.Extra
 import Json.Encode
 import Ui.Calendar
 import Ui.Chooser
@@ -27,28 +23,22 @@ type Msg
     | RaceAddCategory Race.Model.Category
     | RacesJson Json.Decode.Value
     | RaceAddedJson Json.Decode.Value
+    | Calendar Ui.Calendar.Msg
+    --
     | ResultAddSubmit
     | ResultAddCategory Result.Model.ResultCategory
     | ResultAddOutfit Outfit
     | ResultAddResult String
     | ResultAddedJson Json.Decode.Value
     | ResultsJson Json.Decode.Value
+    | Chooser Ui.Chooser.Msg
+    --
     | RiderAddSubmit
     | RiderAddLicence Rider.Model.Licence
     | RiderAddName String
     | RiderAddedJson Json.Decode.Value
+    | RidersJson Json.Decode.Value
+    --
     | NavigateTo App.Page.Page
     | UrlUpdate App.Routing.Route
     | Noop
-    | NewMessage String
-    | ReceiveMessage Json.Encode.Value
-    | ReceiveRiders Json.Encode.Value
-    | RidersJson Json.Decode.Value
-    | HandleSendError Json.Encode.Value
-    --| OnCreatedRider Json.Encode.Value
-    --| OnCreatedRace Json.Encode.Value
-    | OnCreatedResult Json.Encode.Value
-    | OnUpdatedRider Json.Encode.Value
-    | DatePicked String
-    | Calendar Ui.Calendar.Msg
-    | Chooser Ui.Chooser.Msg

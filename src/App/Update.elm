@@ -180,78 +180,8 @@ update msg app =
                             in
                                 noOp
 
-            OnCreatedResult rawResponse ->
-                let
-                    resultResult =
-                        Json.Decode.decodeValue App.Decoder.resultDecoder rawResponse
-                in
-                    case resultResult of
-                        Ok result ->
-                            let
-                                newResult =
-                                    Result.Model.Result
-                                        result.key
-                                        result.riderKey
-                                        result.raceKey
-                                        result.result
-                                        Result.Model.CatA
-                                        Outfit.WTOS
-
-                                --result.strava
-                            in
-                                ( { app | results = Just (newResult :: (Maybe.withDefault [] app.results)) }
-                                , Cmd.none
-                                )
-
-                        Err _ ->
-                            noOp
-
-            OnUpdatedRider rawResponse ->
-                let
-                    riderResult =
-                        Debug.log "riderResult in onUpdatedRider" (Json.Decode.decodeValue App.Decoder.riderDecoder rawResponse)
-                in
-                    case riderResult of
-                        Ok rider ->
-                            let
-                                riders =
-                                    Debug.log
-                                        "updatedRiders: "
-                                        (App.Helpers.updateRiderLicence rider.key rider.licence (Maybe.withDefault [] app.riders))
-                            in
-                                ( { app
-                                    | riders = Just riders
-                                  }
-                                , Cmd.none
-                                )
-
-                        Err _ ->
-                            noOp
-
             Noop ->
                 noOp
-
-            ReceiveRiders message ->
-                let
-                    resultRiders =
-                        (Json.Decode.decodeValue
-                            (Json.Decode.field "riders" (Json.Decode.list App.Decoder.riderDecoder))
-                            message
-                        )
-
-                    messages =
-                        (toString message) :: app.messages
-                in
-                    case resultRiders of
-                        Ok riders ->
-                            ( { app | messages = messages, riders = Just riders }
-                            , Cmd.none
-                            )
-
-                        Err errorMessage ->
-                            ( { app | messages = messages }
-                            , Cmd.none
-                            )
 
             RidersJson json ->
                 Rider.Update.ridersJson json app
@@ -265,38 +195,6 @@ update msg app =
             RiderAddLicence licence ->
                 Rider.Update.addLicence licence app
 
-            ReceiveMessage message ->
-                let
-                    _ =
-                        Debug.log "receiveMessage" message
-                in
-                    --( { app | messages = (toString message) :: app.messages }
-                    --( { app | connected = True }
-                    ( app
-                    , Cmd.none
-                    )
-
-            HandleSendError _ ->
-                noOp
-
-            NewMessage message ->
-                ( { app | messages = message :: app.messages }
-                , Cmd.none
-                )
-
-            DatePicked dateString ->
-                case app.page of
-                    App.Page.RaceAdd raceAdd ->
-                        let
-                            page =
-                                Race.Update.addPage2 (App.Msg.RaceDate dateString) app.page
-
-                            -- nextRaceAdd = { raceAdd | dateString = dateString }
-                        in
-                            ( { app | page = page }, Cmd.none )
-
-                    _ ->
-                        ( app, Cmd.none )
 
             Calendar msg_ ->
                 case app.page of

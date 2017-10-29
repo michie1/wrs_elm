@@ -68,30 +68,30 @@ addSubmit app =
                 payload =
                     Json.Encode.object
                         [ ( "name", Json.Encode.string add.name )
-                        , ( "licence", licenceEncoder add.licence )
+                        , ( "licence", Json.Encode.string <| licenceToString add.licence )
                         ]
             in
                 ( app, addRider payload )
         _ ->
             ( app, Cmd.none )
 
-licenceEncoder : Maybe Licence -> Json.Encode.Value
-licenceEncoder maybeLicence =
+licenceToString : Maybe Licence -> String
+licenceToString maybeLicence =
     case maybeLicence of
-        Just (Rider.Model.Elite) ->
-            Json.Encode.string "elite"
+        Just Rider.Model.Elite ->
+            "elite"
 
-        Just (Rider.Model.Amateurs) ->
-            Json.Encode.string "amateurs"
+        Just Rider.Model.Amateurs ->
+            "amateurs"
 
-        Just (Rider.Model.Basislidmaatschap) ->
-            Json.Encode.string "basislidmaatschap"
+        Just Rider.Model.Basislidmaatschap ->
+            "basislidmaatschap"
 
-        Just (Rider.Model.Other) ->
-            Json.Encode.string "other"
+        Just Rider.Model.Other ->
+            "other"
 
         Nothing ->
-            Json.Encode.null
+            "other"
 
 
 addName : String -> App -> ( App, Cmd Msg )

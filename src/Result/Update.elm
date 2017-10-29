@@ -11,7 +11,6 @@ import App.Helpers
 import App.Routing
 import Json.Encode
 import Json.Decode
-import App.Decoder
 import Set
 import App.UrlUpdate
 import Ui.Chooser
@@ -95,8 +94,25 @@ resultDecoder =
             )
         |> Json.Decode.Pipeline.required "outfit"
             (Json.Decode.string
-                |> Json.Decode.andThen App.Decoder.resultOutfitDecoder
+                |> Json.Decode.andThen resultOutfitDecoder
             )
+
+
+resultOutfitDecoder : String -> Json.Decode.Decoder Outfit
+resultOutfitDecoder string =
+    Json.Decode.succeed <|
+        case string of
+            "wtos" ->
+                Outfit.WTOS
+
+            "wasp" ->
+                Outfit.WASP
+
+            "other" ->
+                Outfit.Other
+
+            _ ->
+                Outfit.Other
 
 
 resultsDecoder : Json.Decode.Decoder (List Result.Model.Result)

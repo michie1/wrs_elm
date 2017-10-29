@@ -33,7 +33,7 @@ render add =
                         , label [ for "name" ] [ text "Name" ]
                         ]
                     ]
-                , div [ class "row" ] [ categoryButtons add.licence ]
+                , div [ class "row" ] [ licenceButtons add.licence ]
                 , div [ class "row" ]
                     [ div [ class "col s6" ]
                         [ button
@@ -51,8 +51,8 @@ render add =
                 ]
             ]
  
-categoryButtonCheck : String -> String -> Rider.Model.Licence -> Maybe Rider.Model.Licence -> Html App.Msg.Msg
-categoryButtonCheck categoryName categoryText categoryModel maybeCurrent =
+licenceButtonCheck : String -> String -> Rider.Model.Licence -> Maybe Rider.Model.Licence -> Html App.Msg.Msg
+licenceButtonCheck categoryName categoryText categoryModel maybeCurrent =
     let
         isChecked =
             case maybeCurrent of
@@ -66,12 +66,12 @@ categoryButtonCheck categoryName categoryText categoryModel maybeCurrent =
             , label [ for categoryName ] [ text categoryText ]
             ]
 
-categoryButtons : Maybe Rider.Model.Licence -> Html App.Msg.Msg
-categoryButtons maybeCurrent =
+licenceButtons : Maybe Rider.Model.Licence -> Html App.Msg.Msg
+licenceButtons maybeCurrent =
     div [ class "col s6" ]
         [ label [ class "active" ] [ text "Category" ]
-        , categoryButtonCheck "elite" "Elite" Rider.Model.Elite maybeCurrent
-        , categoryButtonCheck "amateurs" "Amateurs" Rider.Model.Amateurs maybeCurrent
-        , categoryButtonCheck "basislidmaatschap" "Basislidmaatschap" Rider.Model.Basislidmaatschap maybeCurrent
-        , categoryButtonCheck "other" "Other" Rider.Model.Other maybeCurrent
+        , licenceButtonCheck "elite" "Elite" Rider.Model.Elite maybeCurrent
+        , licenceButtonCheck "amateurs" "Amateurs" Rider.Model.Amateurs maybeCurrent
+        , licenceButtonCheck "basislidmaatschap" "Basislidmaatschap" Rider.Model.Basislidmaatschap maybeCurrent
+        , licenceButtonCheck "other" "Other" Rider.Model.Other maybeCurrent
         ]
