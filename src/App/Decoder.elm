@@ -56,51 +56,73 @@ licenceDecoder string =
 
         _ ->
             Json.Decode.succeed Rider.Model.Other
-            -- Json.Decode.fail <| string ++ " licence does not exists."
+
+
+
+-- Json.Decode.fail <| string ++ " licence does not exists."
 
 
 raceCategoryDecoder : String -> Json.Decode.Decoder Race.Model.Category
 raceCategoryDecoder string =
-    case string of
-        "classic" ->
-            Json.Decode.succeed Race.Model.Classic
+    Json.Decode.succeed <|
+        case string of
+            "classic" ->
+                Race.Model.Classic
 
-        "criterum" ->
-            Json.Decode.succeed Race.Model.Criterium
+            "criterum" ->
+                Race.Model.Criterium
 
-        "regiocross" ->
-            Json.Decode.succeed Race.Model.Regiocross
+            "regiocross" ->
+                Race.Model.Regiocross
 
-        "other" ->
-            Json.Decode.succeed Race.Model.Other
+            "other" ->
+                Race.Model.Other
 
-        "unknown" ->
-            Json.Decode.succeed Race.Model.Unknown
+            "unknown" ->
+                Race.Model.Unknown
 
-        _ ->
-            Json.Decode.succeed Race.Model.Unknown
+            _ ->
+                Race.Model.Unknown
 
 
 resultCategoryDecoder : String -> Json.Decode.Decoder Result.Model.ResultCategory
 resultCategoryDecoder string =
-    case string of
-        "amateurs" ->
-            Json.Decode.succeed Result.Model.Amateurs
+    Json.Decode.succeed <|
+        case string of
+            "amateurs" ->
+                Result.Model.Amateurs
 
-        "basislidmaatschap" ->
-            Json.Decode.succeed Result.Model.Basislidmaatschap
+            "basislidmaatschap" ->
+                Result.Model.Basislidmaatschap
 
-        "cata" ->
-            Json.Decode.succeed Result.Model.CatA
+            "cata" ->
+                Result.Model.CatA
 
-        "catb" ->
-            Json.Decode.succeed Result.Model.CatB
+            "catb" ->
+                Result.Model.CatB
 
-        "unknown" ->
-            Json.Decode.succeed Result.Model.Unknown
+            "unknown" ->
+                Result.Model.Unknown
 
-        _ ->
-            Json.Decode.succeed Result.Model.Unknown
+            _ ->
+                Result.Model.Unknown
+
+
+resultOutfitDecoder : String -> Json.Decode.Decoder Result.Model.Outfit
+resultOutfitDecoder string =
+    Json.Decode.succeed <|
+        case string of
+            "wtos" ->
+                Result.Model.WTOS
+
+            "wasp" ->
+                Result.Model.WASP
+
+            "other" ->
+                Result.Model.Other
+
+            _ ->
+                Result.Model.Other
 
 
 riderDecoder : Json.Decode.Decoder Rider.Model.Rider
@@ -124,6 +146,7 @@ raceDecoder =
             (Json.Decode.string
                 |> Json.Decode.andThen raceCategoryDecoder
             )
+
 
 date : Json.Decode.Decoder Date.Date
 date =
@@ -152,6 +175,11 @@ resultDecoder =
             (Json.Decode.string
                 |> Json.Decode.andThen resultCategoryDecoder
             )
+        |> Json.Decode.Pipeline.required "outfit"
+            (Json.Decode.string
+                |> Json.Decode.andThen resultOutfitDecoder
+            )
+
 
 licence : String -> Rider.Model.Licence
 licence string =
@@ -179,10 +207,30 @@ rider =
         )
 
 
-
 decodeResultCategory : String -> Json.Decode.Decoder Result.Model.ResultCategory
 decodeResultCategory string =
     Json.Decode.succeed (resultCategory string)
+
+
+decodeResultOutfit : String -> Json.Decode.Decoder Result.Model.Outfit
+decodeResultOutfit string =
+    Json.Decode.succeed (resultOutfit string)
+
+
+resultOutfit : String -> Result.Model.Outfit
+resultOutfit string =
+    case string of
+        "wtos" ->
+            Result.Model.WTOS
+
+        "wasp" ->
+            Result.Model.WASP
+
+        "other" ->
+            Result.Model.Other
+
+        _ ->
+            Result.Model.Other
 
 
 resultCategory : String -> Result.Model.ResultCategory
@@ -206,7 +254,7 @@ resultCategory string =
 
 result : Json.Decode.Decoder Result.Model.Result
 result =
-    Json.Decode.map5 Result.Model.Result
+    Json.Decode.map6 Result.Model.Result
         (Json.Decode.field "key" Json.Decode.string)
         (Json.Decode.field "riderKey" Json.Decode.string)
         (Json.Decode.field "raceKey" Json.Decode.string)
@@ -216,7 +264,15 @@ result =
                 |> Json.Decode.andThen decodeResultCategory
             )
         )
-        --(Json.Decode.field "strava" (Json.Decode.maybe Json.Decode.string))
+        (Json.Decode.field "outfit"
+            (Json.Decode.string
+                |> Json.Decode.andThen decodeResultOutfit
+            )
+        )
+
+
+
+--(Json.Decode.field "strava" (Json.Decode.maybe Json.Decode.string))
 
 
 page : Json.Decode.Decoder String

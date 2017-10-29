@@ -28,6 +28,7 @@ type Msg
     | RaceAddedJson Json.Decode.Value
     | ResultAddSubmit
     | ResultAddCategory Result.Model.ResultCategory
+    | ResultAddOutfit Result.Model.Outfit
     | ResultAddResult String
     | ResultAddedJson Json.Decode.Value
     | ResultsJson Json.Decode.Value

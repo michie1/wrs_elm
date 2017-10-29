@@ -37,11 +37,15 @@ import Json.Decode
 
 
 port setLocalStorage : ( String, String ) -> Cmd msg
+
+
 port getLocalStorage : String -> Cmd msg
+
 
 type alias RaceResponse =
     { key : String
     }
+
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
@@ -54,6 +58,7 @@ update msg app =
                 case app.page of
                     App.Page.RaceAdd raceAdd ->
                         Race.Update.addSubmit raceAdd app
+
                     _ ->
                         noOp
 
@@ -98,6 +103,9 @@ update msg app =
             ResultAddSubmit ->
                 Result.Update.addSubmit app
 
+            ResultAddOutfit outfit ->
+                Result.Update.addOutfit outfit app
+
             ResultAddCategory category ->
                 ( (case app.page of
                     App.Page.ResultAdd resultAdd ->
@@ -141,7 +149,8 @@ update msg app =
 
                         Err err ->
                             let
-                                _ = Debug.log "err" err
+                                _ =
+                                    Debug.log "err" err
                             in
                                 noOp
 
@@ -154,12 +163,12 @@ update msg app =
 
                     raceResult =
                         Json.Decode.decodeValue decoder rawResponse
-
                 in
                     case raceResult of
                         Ok race ->
                             let
-                                _ = Debug.log "raceKey" race.key
+                                _ =
+                                    Debug.log "raceKey" race.key
                             in
                                 ( app
                                 , App.Helpers.navigate (App.Page.RaceDetails race.key)
@@ -167,7 +176,8 @@ update msg app =
 
                         Err err ->
                             let
-                                _ = Debug.log "hoi" err
+                                _ =
+                                    Debug.log "hoi" err
                             in
                                 noOp
 
@@ -186,7 +196,9 @@ update msg app =
                                         result.raceKey
                                         result.result
                                         Result.Model.CatA
-                                        --result.strava
+                                        Result.Model.WTOS
+
+                                --result.strava
                             in
                                 ( { app | results = Just (newResult :: (Maybe.withDefault [] app.results)) }
                                 , Cmd.none

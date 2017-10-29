@@ -80,6 +80,7 @@ render race resultAdd riders maybeResults =
                             ]
                         ]
                     , div [ class "row" ] [ categoryButtons ]
+                    , div [ class "row" ] [ outfitButtons ]
                     , div [ class "row" ]
                         [ button
                             [ class "waves-effect waves-light btn"
@@ -121,8 +122,25 @@ categoryButton categoryName categoryText category =
 categoryButtons : Html App.Msg.Msg
 categoryButtons =
     div []
-        [ categoryButtonCheck "amateurs" "Amateurs" Result.Model.Amateurs True
+        [ label [ for "result" ] [ text "Category" ]
+        , categoryButtonCheck "amateurs" "Amateurs" Result.Model.Amateurs True
         , categoryButton "basislidmaatschap" "Basislidmaatschap" Result.Model.Basislidmaatschap
         , categoryButton "cata" "Cat A" Result.Model.CatA
         , categoryButton "catb" "Cat B" Result.Model.CatB
+        ]
+
+outfitButton : String -> String -> Result.Model.Outfit -> Bool -> Html App.Msg.Msg
+outfitButton outfitName outfitLabel outfit isChecked =
+    p []
+        [ input [ checked isChecked, name "outfit", type_ "radio", id outfitName, onClick (App.Msg.ResultAddOutfit outfit) ] []
+        , label [ for outfitName ] [ text outfitLabel ]
+        ]
+
+outfitButtons : Html App.Msg.Msg
+outfitButtons =
+    div []
+        [ label [ for "result" ] [ text "Outfit" ]
+        , outfitButton "wtos" "WTOS" Result.Model.WTOS True
+        , outfitButton "wasp" "WASP" Result.Model.WASP False
+        , outfitButton "other" "Other" Result.Model.Other False
         ]

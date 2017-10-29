@@ -124,12 +124,15 @@ getPointsByResults results races =
 
 getPointsByResult : Result.Model.Result -> List Race.Model.Race -> Int
 getPointsByResult result races =
-    case getRaceByKey result.raceKey races of
-        Just race ->
-            getPointsByCategory race.category
+    if result.outfit == Result.Model.WTOS then
+        case getRaceByKey result.raceKey races of
+            Just race ->
+                getPointsByCategory race.category
 
-        Nothing ->
-            0
+            Nothing ->
+                0
+    else
+        0
 
 
 getPointsByCategory : Race.Model.Category -> Int

@@ -83,6 +83,7 @@ resultsTable rider results races =
                 , th [] [ text "Date" ]
                 , th [] [ text "Points" ]
                 , th [] [ text "Result" ]
+                , th [] [ text "Outfit" ]
                 ]
             ]
         , tbody []
@@ -125,4 +126,5 @@ raceRow result races =
                         , td [] [ text <| dateString ]
                         , td [] [ text <| toString <| App.Helpers.getPointsByResult result races ]
                         , td [] [ text result.result ]
+                        , td [] [ text <| toString result.outfit ]
                         ]

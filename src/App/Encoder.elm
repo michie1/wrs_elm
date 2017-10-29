@@ -1,4 +1,4 @@
-module App.Encoder exposing (licence, raceCategory, resultCategory)
+module App.Encoder exposing (licence, raceCategory, resultCategory, resultOutfit)
 
 import Rider.Model exposing (Licence)
 import Json.Encode
@@ -32,7 +32,7 @@ raceCategory category =
             Json.Encode.string "classic"
 
         Race.Model.Criterium ->
-            Json.Encode.string "criterum"
+            Json.Encode.string "criterium"
 
         Race.Model.Regiocross ->
             Json.Encode.string "regiocross"
@@ -61,3 +61,15 @@ resultCategory category =
 
         Result.Model.Unknown ->
             Json.Encode.string "unknown"
+
+resultOutfit : Result.Model.Outfit -> Json.Encode.Value
+resultOutfit outfit =
+    case outfit of
+        Result.Model.WTOS ->
+            Json.Encode.string "wtos"
+
+        Result.Model.WASP ->
+            Json.Encode.string "wasp"
+
+        Result.Model.Other ->
+            Json.Encode.string "other"
