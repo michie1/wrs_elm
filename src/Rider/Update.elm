@@ -5,7 +5,6 @@ import App.Model exposing (App)
 import App.Page
 import Json.Decode
 import Json.Encode
-import App.Decoder
 import App.Routing
 import App.UrlUpdate
 import Rider.Model exposing (Licence)

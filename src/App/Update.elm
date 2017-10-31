@@ -2,7 +2,6 @@ port module App.Update exposing (update)
 
 import App.Model exposing (App)
 import App.Routing
-import App.Decoder
 import App.Page
 import App.Msg exposing (Msg(..))
 import App.UrlUpdate
@@ -16,7 +15,6 @@ import Debug
 import Array
 import Set
 import Json.Decode
-import App.Decoder
 import Date
 import Time
 import Date.Extra
@@ -41,10 +39,9 @@ port setLocalStorage : ( String, String ) -> Cmd msg
 port getLocalStorage : String -> Cmd msg
 
 
-type alias RaceResponse =
+type alias KeyResponse =
     { key : String
     }
-
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
@@ -130,55 +127,41 @@ update msg app =
 
             RiderAddedJson rawResponse ->
                 let
-                    riderResult =
-                        Json.Decode.decodeValue App.Decoder.riderDecoder (Debug.log "rawresponse" rawResponse)
+                    decoder =
+                        Json.Decode.Pipeline.decode
+                            KeyResponse
+                            |> Json.Decode.Pipeline.required "key" Json.Decode.string
+
+                    keyResponseResult =
+                        Json.Decode.decodeValue decoder rawResponse
                 in
-                    case riderResult of
-                        Ok rider ->
-                            let
-                                newRider =
-                                    Rider.Model.Rider
-                                        rider.key
-                                        rider.name
-                                        rider.licence
-                            in
-                                ( { app | riders = Just (newRider :: (Maybe.withDefault [] app.riders)) }
-                                , App.Helpers.navigate (App.Page.RiderDetails rider.key)
-                                )
+                    case keyResponseResult of
+                        Ok keyResponse ->
+                            ( app
+                            , App.Helpers.navigate (App.Page.RiderDetails keyResponse.key)
+                            )
 
                         Err err ->
-                            let
-                                _ =
-                                    Debug.log "err" err
-                            in
-                                noOp
+                            noOp
 
             RaceAddedJson rawResponse ->
                 let
                     decoder =
                         Json.Decode.Pipeline.decode
-                            RaceResponse
+                            KeyResponse
                             |> Json.Decode.Pipeline.required "key" Json.Decode.string
 
-                    raceResult =
+                    keyResponseResult =
                         Json.Decode.decodeValue decoder rawResponse
                 in
-                    case raceResult of
-                        Ok race ->
-                            let
-                                _ =
-                                    Debug.log "raceKey" race.key
-                            in
-                                ( app
-                                , App.Helpers.navigate (App.Page.RaceDetails race.key)
-                                )
+                    case keyResponseResult of
+                        Ok keyResponse ->
+                            ( app
+                            , App.Helpers.navigate (App.Page.RaceDetails keyResponse.key)
+                            )
 
                         Err err ->
-                            let
-                                _ =
-                                    Debug.log "hoi" err
-                            in
-                                noOp
+                            noOp
 
             Noop ->
                 noOp

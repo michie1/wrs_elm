@@ -12,7 +12,6 @@ import App.Helpers
 import App.Routing
 import Json.Encode
 import Json.Decode
-import App.Decoder
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date

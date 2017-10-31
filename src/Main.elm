@@ -7,11 +7,6 @@ import App.Msg exposing (Msg(..))
 import App.Update
 import App.UrlUpdate
 import App.View
-import Rider.Model
-import Race.Model
-import Result.Model
-import WebSocket
-import Ui.Ratings
 import App.Flags exposing (Flags)
 import Json.Decode
 
