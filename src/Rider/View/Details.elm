@@ -13,6 +13,7 @@ import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import App.Helpers
 import Date.Extra
+import Data.Race exposing (Race)
 
 
 dateFormat : Date.Date -> String
@@ -74,7 +75,7 @@ info rider points =
         ]
 
 
-resultsTable : Rider -> List Result.Model.Result -> List Race.Model.Race -> Html msg
+resultsTable : Rider -> List Result.Model.Result -> List Race -> Html msg
 resultsTable rider results races =
     table []
         [ thead []
@@ -97,7 +98,7 @@ resultsTable rider results races =
         ]
 
 
-raceRow : Result.Model.Result -> List Race.Model.Race -> Html msg
+raceRow : Result.Model.Result -> List Race -> Html msg
 raceRow result races =
     let
         maybeRace =

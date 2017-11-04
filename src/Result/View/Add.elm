@@ -6,11 +6,11 @@ import Html.Events exposing (onInput, onClick, on)
 import Json.Decode as Json
 import App.Msg
 import Result.Model
-import Race.Model
 import Rider.Model exposing (Rider)
 import Ui.Chooser
 import Set
 import Data.Outfit as Outfit exposing (Outfit)
+import Data.Race exposing (Race)
 
 
 riderNameExists : String -> List Rider -> Bool
@@ -24,7 +24,7 @@ riderNameExists name riders =
 --True
 
 
-render : Race.Model.Race -> Result.Model.Add -> List Rider -> Maybe (List Result.Model.Result) -> Html App.Msg.Msg
+render : Race -> Result.Model.Add -> List Rider -> Maybe (List Result.Model.Result) -> Html App.Msg.Msg
 render race resultAdd riders maybeResults =
     let
         results =
@@ -97,7 +97,7 @@ render race resultAdd riders maybeResults =
                     ]
 
 
-resultExists : Rider.Model.Rider -> Race.Model.Race -> List Result.Model.Result -> Bool
+resultExists : Rider.Model.Rider -> Race -> List Result.Model.Result -> Bool
 resultExists rider race results =
     List.length
         (List.filter

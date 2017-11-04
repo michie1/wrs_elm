@@ -1,6 +1,6 @@
 module Race.View.List exposing (..)
 
-import Race.Model exposing (Race)
+import Data.Race exposing (Race)
 import Result.Model
 import App.Msg
 import Html exposing (Html, h2, div, text, a, table, tr, td, th, thead, tbody)

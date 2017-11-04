@@ -2,7 +2,6 @@ module Race.View.Details exposing (..)
 
 import App.Model
 import App.Page
-import Race.Model exposing (Race)
 import Rider.Model
 import Result.Model
 import Markdown
@@ -16,6 +15,7 @@ import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
 import App.Helpers
+import Data.Race exposing (Race)
 
 
 dateFormat : Date.Date -> String
@@ -68,7 +68,7 @@ render app raceKey =
                                 ]
 
 
-addResultButton : Race.Model.Race -> Html App.Msg.Msg
+addResultButton : Race -> Html App.Msg.Msg
 addResultButton race =
     let
         initialAdd = Result.Model.initialAdd

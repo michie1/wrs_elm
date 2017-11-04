@@ -17,6 +17,7 @@ import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
 import Json.Decode.Extra
 import Data.RaceType as RaceType exposing (RaceType)
+import Data.Race exposing (Race)
 
 
 port addRace : Json.Encode.Value -> Cmd msg
@@ -132,10 +133,10 @@ raceTypeDecoder string =
     Json.Decode.succeed (raceType string)
 
 
-race : Json.Decode.Decoder Race.Model.Race
+race : Json.Decode.Decoder Race
 race =
     Json.Decode.map4
-        Race.Model.Race
+        Race
         (Json.Decode.field "key" Json.Decode.string)
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "date" Json.Decode.Extra.date)
@@ -144,7 +145,7 @@ race =
         )
 
 
-racesDecoder : Json.Decode.Decoder (List Race.Model.Race)
+racesDecoder : Json.Decode.Decoder (List Race)
 racesDecoder =
     Json.Decode.list race
 

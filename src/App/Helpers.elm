@@ -1,6 +1,5 @@
 module App.Helpers exposing (..)
 
-import Race.Model exposing (Race)
 import Rider.Model
 import Date
 import Array
@@ -11,6 +10,7 @@ import Result.Model
 import App.Page
 import Data.Outfit as Outfit
 import Data.RaceType as RaceType exposing (RaceType)
+import Data.Race exposing (Race)
 
 
 navigate : App.Page.Page -> Cmd App.Msg.Msg
@@ -116,7 +116,7 @@ formatDate date =
         ++ (leadingZero (Date.day date))
 
 
-getPointsByResults : List Result.Model.Result -> List Race.Model.Race -> Int
+getPointsByResults : List Result.Model.Result -> List Race -> Int
 getPointsByResults results races =
     List.sum <|
         List.map
@@ -124,7 +124,7 @@ getPointsByResults results races =
             results
 
 
-getPointsByResult : Result.Model.Result -> List Race.Model.Race -> Int
+getPointsByResult : Result.Model.Result -> List Race -> Int
 getPointsByResult result races =
     if result.outfit == Outfit.WTOS then
         case getRaceByKey result.raceKey races of
@@ -156,7 +156,7 @@ getPointsByRaceType category =
             0
 
 
-getRaceByKey : String -> List Race.Model.Race -> Maybe Race.Model.Race
+getRaceByKey : String -> List Race -> Maybe Race
 getRaceByKey raceKey races =
     List.head <|
         List.filter
@@ -164,7 +164,7 @@ getRaceByKey raceKey races =
             races
 
 
-getPointsByRiderId : String -> List Result.Model.Result -> List Race.Model.Race -> Int
+getPointsByRiderId : String -> List Result.Model.Result -> List Race -> Int
 getPointsByRiderId riderKey results races =
     getPointsByResults
         ((List.filter

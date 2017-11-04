@@ -7,7 +7,7 @@ import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import App.Routing
 import App.Page
-import Race.Model exposing (Race)
+import Data.Race exposing (Race)
 import Race.View.Add
 import Race.View.List
 import Race.View.Details
@@ -159,7 +159,7 @@ viewMessage reponse =
     div [] [ text reponse ]
 
 
-getRace : String -> List Race.Model.Race -> Maybe Race.Model.Race
+getRace : String -> List Race -> Maybe Race
 getRace raceKey races =
     List.head
         (List.filter

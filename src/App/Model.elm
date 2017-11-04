@@ -1,6 +1,6 @@
 module App.Model exposing (App, initial)
 
-import Race.Model exposing (Race)
+import Data.Race exposing (Race)
 import Rider.Model exposing (Rider)
 import Result.Model exposing (Result)
 import App.Msg exposing (Msg)
