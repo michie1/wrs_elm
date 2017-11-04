@@ -1,20 +1,19 @@
-module Rider.View.Details exposing (render)
+module Page.Rider.View.Details exposing (render)
 
-import App.Model
-import Data.Rider exposing (Rider)
-import App.Msg
-import App.Model
 import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, li, span, h2, p)
 import Html.Attributes exposing (class, href)
-import Result.Model
-import Race.Model
 import Date
+import Date.Extra
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
+import App.Model
+import App.Msg
 import App.Helpers
-import Date.Extra
+import Data.Rider exposing (Rider)
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
+import Page.Result.Model
+import Page.Race.Model
 
 
 dateFormat : Date.Date -> String

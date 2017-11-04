@@ -1,24 +1,23 @@
-module Race.View.Details exposing (..)
+module Page.Race.View.Details exposing (..)
 
-import App.Model
-import App.Page
-import Rider.Model
-import Result.Model
-import Markdown
-import App.Msg
-import App.Routing
 import Html exposing (Html, img, button, span, li, i, h2, h3, h5, ul, li, a, div, text, table, tbody, thead, tr, td, th, br, p)
 import Html.Attributes exposing (target, src, href, class, style)
 import Html.Events exposing (onClick, onInput)
 import List.Extra
+import Date
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
-import Date
+import App.Model
+import App.Msg
+import App.Page
+import App.Routing
 import App.Helpers
 import Data.Race exposing (Race)
 import Data.Rider exposing (Rider)
 import Data.RaceResult exposing (RaceResult)
 import Data.ResultCategory exposing (ResultCategory, resultCategories)
+import Page.Rider.Model
+import Page.Result.Model
 
 
 dateFormat : Date.Date -> String
@@ -74,7 +73,7 @@ render app raceKey =
 addResultButton : Race -> Html App.Msg.Msg
 addResultButton race =
     let
-        initialAdd = Result.Model.initialAdd
+        initialAdd = Page.Result.Model.initialAdd
         resultAdd = { initialAdd | raceKey = race.key }
     in
         button

@@ -1,4 +1,4 @@
-module Race.Model exposing (Add)
+module Page.Race.Model exposing (Add)
 
 import Date exposing (Date)
 import Ui.Calendar

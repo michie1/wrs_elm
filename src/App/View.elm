@@ -8,14 +8,14 @@ import App.Model exposing (App)
 import App.Routing
 import App.Page
 import Data.Race exposing (Race)
-import Race.View.Add
-import Race.View.List
-import Race.View.Details
-import Rider.View.List
-import Rider.View.Details
-import Result.View.List
-import Result.View.Add
-import Rider.View.Add
+import Page.Race.View.Add
+import Page.Race.View.List
+import Page.Race.View.Details
+import Page.Rider.View.List
+import Page.Rider.View.Details
+import Page.Result.View.List
+import Page.Result.View.Add
+import Page.Rider.View.Add
 import Date.Extra
 
 
@@ -93,25 +93,25 @@ viewPage app =
         App.Page.Riders ->
             case app.riders of
                 Just riders ->
-                    Rider.View.List.render riders
+                    Page.Rider.View.List.render riders
 
                 Nothing ->
                     div [] [ text "No riders loaded." ]
 
         App.Page.RiderDetails key ->
-            Rider.View.Details.render app key
+            Page.Rider.View.Details.render app key
 
         App.Page.RiderAdd add ->
-            Rider.View.Add.render add
+            Page.Rider.View.Add.render add
 
         App.Page.Races ->
-            Race.View.List.render app.races app.results
+            Page.Race.View.List.render app.races app.results
 
         App.Page.RaceDetails key ->
-            Race.View.Details.render app key
+            Page.Race.View.Details.render app key
 
         App.Page.RaceAdd raceAdd ->
-            Race.View.Add.render raceAdd
+            Page.Race.View.Add.render raceAdd
 
         App.Page.ResultAdd add ->
             let
@@ -129,7 +129,7 @@ viewPage app =
                         div [] [ text "Riders not yet loaded." ]
 
                     ( Just race, Just riders ) ->
-                        Result.View.Add.render race add riders app.results
+                        Page.Result.View.Add.render race add riders app.results
 
 
 userLi : App -> List (Html App.Msg.Msg)

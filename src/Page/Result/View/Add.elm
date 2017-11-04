@@ -1,18 +1,18 @@
-module Result.View.Add exposing (render)
+module Page.Result.View.Add exposing (render)
 
 import Html exposing (Html, button, div, text, span, label, input, ul, li, h2, input, i, p)
 import Html.Attributes exposing (autofocus, class, id, type_, for, disabled, value, name, checked)
 import Html.Events exposing (onInput, onClick, on)
 import Json.Decode as Json
-import App.Msg
-import Result.Model
 import Ui.Chooser
 import Set
+import App.Msg
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race)
 import Data.Rider exposing (Rider)
 import Data.ResultCategory as ResultCategory exposing (ResultCategory)
 import Data.RaceResult exposing (RaceResult)
+import Page.Result.Model
 
 
 riderNameExists : String -> List Rider -> Bool
@@ -26,7 +26,7 @@ riderNameExists name riders =
 --True
 
 
-render : Race -> Result.Model.Add -> List Rider -> Maybe (List RaceResult) -> Html App.Msg.Msg
+render : Race -> Page.Result.Model.Add -> List Rider -> Maybe (List RaceResult) -> Html App.Msg.Msg
 render race resultAdd riders maybeResults =
     let
         results =

@@ -1,8 +1,5 @@
 module App.Msg exposing (Msg(..))
 
-import Rider.Model
-import Race.Model
-import Result.Model
 import App.Routing
 import Json.Encode
 import Ui.Calendar

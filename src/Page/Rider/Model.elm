@@ -1,4 +1,4 @@
-module Rider.Model exposing (Add)
+module Page.Rider.Model exposing (Add)
 
 import Data.Licence exposing (Licence)
 

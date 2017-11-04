@@ -1,4 +1,4 @@
-module Result.View.List exposing (render)
+module Page.Result.View.List exposing (render)
 
 import Html exposing (Html, a, div, text, span, input, ul, li, table, tr, td, tbody, th, thead)
 import App.Model

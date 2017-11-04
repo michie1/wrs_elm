@@ -8,11 +8,12 @@ import App.UrlUpdate
 import App.Helpers
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race)
-import Race.Update
-import Rider.Model
-import Rider.Update
-import Result.Model
-import Result.Update
+import Page.Rider.Model
+import Page.Rider.Update
+import Page.Race.Model
+import Page.Race.Update
+import Page.Result.Model
+import Page.Result.Update
 import String
 import Json.Encode
 import Json.Decode
@@ -36,7 +37,7 @@ update msg app =
             RaceAddSubmit ->
                 case app.page of
                     App.Page.RaceAdd raceAdd ->
-                        Race.Update.addSubmit raceAdd app
+                        Page.Race.Update.addSubmit raceAdd app
 
                     _ ->
                         noOp
@@ -44,21 +45,21 @@ update msg app =
             RaceName name ->
                 let
                     page =
-                        Race.Update.addPage2 msg app.page
+                        Page.Race.Update.addPage2 msg app.page
                 in
                     ( { app | page = page }, Cmd.none )
 
             RaceAddRaceType raceType ->
                 let
                     page =
-                        Race.Update.addPage2 msg app.page
+                        Page.Race.Update.addPage2 msg app.page
                 in
                     ( { app | page = page }, Cmd.none )
 
             RaceDate newDate ->
                 let
                     page =
-                        Race.Update.addPage2 msg app.page
+                        Page.Race.Update.addPage2 msg app.page
                 in
                     ( { app | page = page }, Cmd.none )
 
@@ -99,26 +100,26 @@ update msg app =
                             noOp
 
             RacesJson json ->
-                Race.Update.racesJson json app
+                Page.Race.Update.racesJson json app
 
             ResultAddSubmit ->
-                Result.Update.addSubmit app
+                Page.Result.Update.addSubmit app
 
             ResultsJson rawResponse ->
-                Result.Update.resultsJson rawResponse app
+                Page.Result.Update.resultsJson rawResponse app
 
             ResultAddedJson rawResponse ->
-                Result.Update.addedJson rawResponse app
+                Page.Result.Update.addedJson rawResponse app
 
             ResultAddOutfit outfit ->
-                Result.Update.addOutfit outfit app
+                Page.Result.Update.addOutfit outfit app
 
             ResultAddCategory category ->
                 ( (case app.page of
                     App.Page.ResultAdd resultAdd ->
                         { app
                             | page =
-                                App.Page.ResultAdd <| Result.Update.addCategory category resultAdd
+                                App.Page.ResultAdd <| Page.Result.Update.addCategory category resultAdd
                         }
 
                     _ ->
@@ -128,7 +129,7 @@ update msg app =
                 )
 
             ResultAddResult value ->
-                Result.Update.addResult value app
+                Page.Result.Update.addResult value app
 
             Calendar msg_ ->
                 case app.page of
@@ -167,16 +168,16 @@ update msg app =
                             noOp
 
             RidersJson json ->
-                Rider.Update.ridersJson json app
+                Page.Rider.Update.ridersJson json app
 
             RiderAddSubmit ->
-                Rider.Update.addSubmit app
+                Page.Rider.Update.addSubmit app
 
             RiderAddName name ->
-                Rider.Update.addName name app
+                Page.Rider.Update.addName name app
 
             RiderAddLicence licence ->
-                Rider.Update.addLicence licence app
+                Page.Rider.Update.addLicence licence app
 
             Noop ->
                 noOp

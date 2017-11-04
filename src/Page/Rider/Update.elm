@@ -1,4 +1,4 @@
-port module Rider.Update exposing (..)
+port module Page.Rider.Update exposing (..)
 
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
@@ -7,7 +7,7 @@ import Json.Decode
 import Json.Encode
 import App.Routing
 import App.UrlUpdate
-import Rider.Model
+import Page.Rider.Model
 import Data.Licence as Licence exposing (Licence)
 import Data.Rider exposing (Rider)
 

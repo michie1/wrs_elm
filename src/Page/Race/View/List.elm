@@ -1,15 +1,15 @@
-module Race.View.List exposing (..)
+module Page.Race.View.List exposing (..)
 
-import Data.Race exposing (Race)
-import Data.RaceResult exposing (RaceResult)
-import Result.Model
-import App.Msg
 import Html exposing (Html, h2, div, text, a, table, tr, td, th, thead, tbody)
 import Html.Attributes exposing (href, class)
 import Date
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date.Extra
+import App.Msg
+import Data.Race exposing (Race)
+import Data.RaceResult exposing (RaceResult)
+import Page.Result.Model
 
 
 dateFormat : Date.Date -> String

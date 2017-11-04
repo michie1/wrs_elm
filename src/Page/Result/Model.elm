@@ -1,4 +1,4 @@
-module Result.Model exposing (Add, initialAdd)
+module Page.Result.Model exposing (Add, initialAdd)
 
 import Data.Rider exposing (Rider)
 import Ui.Chooser

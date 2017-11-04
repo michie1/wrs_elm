@@ -1,9 +1,7 @@
-module Result.Helpers exposing (resultExists, calcResultId)
+module Page.Result.Helpers exposing (resultExists, calcResultId)
 
-import Result.Model exposing (Add)
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
-import Rider.Model
 import Data.RaceResult exposing (RaceResult)
 
 

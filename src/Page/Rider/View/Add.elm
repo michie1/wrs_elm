@@ -1,14 +1,14 @@
-module Rider.View.Add exposing (render)
+module Page.Rider.View.Add exposing (render)
 
 import Html exposing (Html, node, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
 import Html.Attributes exposing (attribute, autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
 import App.Msg
-import Rider.Model
 import Data.Licence as Licence exposing (Licence)
+import Page.Rider.Model
 
 
-render : Rider.Model.Add -> Html App.Msg.Msg
+render : Page.Rider.Model.Add -> Html App.Msg.Msg
 render add =
     let
         name =

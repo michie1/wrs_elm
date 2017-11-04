@@ -1,12 +1,12 @@
 module App.Helpers exposing (..)
 
-import Rider.Model
 import Date
 import Array
 import Navigation
 import App.Msg
 import App.Routing
-import Result.Model
+import Page.Result.Model
+import Page.Rider.Model
 import App.Page
 import Data.Outfit as Outfit
 import Data.RaceType as RaceType exposing (RaceType)

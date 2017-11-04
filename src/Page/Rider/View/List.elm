@@ -1,15 +1,15 @@
-module Rider.View.List exposing (render)
+module Page.Rider.View.List exposing (render)
 
 import Html exposing (Html, h2, a, div, text, span, input, ul, li, table, td, tr, th, thead, tbody)
 import Html.Attributes exposing (href, class)
+import App.Model
+import App.Msg
+import App.Routing
+import App.Helpers
 import Data.Rider exposing (Rider)
 import Data.RaceResult exposing (RaceResult)
-import App.Model
-import App.Routing
-import App.Msg
-import Result.Model
-import App.Helpers
-import Race.Model
+import Page.Result.Model
+import Page.Race.Model
 
 render : List Rider -> Html App.Msg.Msg
 render riders =

@@ -1,4 +1,4 @@
-module Race.View.Add exposing (render)
+module Page.Race.View.Add exposing (render)
 
 import Html exposing (Html, node, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
 import Html.Attributes exposing (attribute, autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
@@ -10,7 +10,7 @@ import Date
 import Ui.Calendar
 import Data.RaceType as RaceType exposing (RaceType)
 import Data.Race exposing (Race)
-import Race.Model exposing (Add)
+import Page.Race.Model exposing (Add)
 
 
 dateFormat : Date.Date -> String

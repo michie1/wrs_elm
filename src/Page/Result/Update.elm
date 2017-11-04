@@ -1,19 +1,19 @@
-port module Result.Update exposing (addCategory, addResult, addedJson, resultsJson, addSubmit, addOutfit)
+port module Page.Result.Update exposing (addCategory, addResult, addedJson, resultsJson, addSubmit, addOutfit)
 
 import Json.Decode.Pipeline
-import App.Model exposing (App)
-import App.Page
-import Result.Model exposing (Add)
-import Rider.Model
-import App.Msg exposing (Msg(..))
-import Result.Helpers exposing (..)
-import App.Helpers
-import App.Routing
 import Json.Encode
 import Json.Decode
 import Set
-import App.UrlUpdate
 import Ui.Chooser
+import App.Model exposing (App)
+import App.Msg exposing (Msg(..))
+import App.Page
+import App.Routing
+import App.UrlUpdate
+import App.Helpers
+import Page.Result.Model exposing (Add)
+import Page.Rider.Model
+import Page.Result.Helpers exposing (..)
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.RaceResult exposing (RaceResult)
 import Data.ResultCategory as ResultCategory exposing (ResultCategory)
@@ -23,8 +23,8 @@ port addResultPort : Json.Encode.Value -> Cmd msg
 
 addCategory :
     ResultCategory
-    -> Result.Model.Add
-    -> Result.Model.Add
+    -> Page.Result.Model.Add
+    -> Page.Result.Model.Add
 addCategory category resultAdd =
     { resultAdd | category = category }
 
