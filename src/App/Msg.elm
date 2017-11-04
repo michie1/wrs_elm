@@ -10,13 +10,14 @@ import Ui.Chooser
 import Json.Decode
 import App.Page
 import Data.Outfit exposing (Outfit)
+import Data.RaceType exposing (RaceType)
 
 
 type Msg
     = RaceAddSubmit
     | RaceName String
     | RaceDate String
-    | RaceAddCategory Race.Model.Category
+    | RaceAddRaceType RaceType
     | RacesJson Json.Decode.Value
     | RaceAddedJson Json.Decode.Value
     | Calendar Ui.Calendar.Msg

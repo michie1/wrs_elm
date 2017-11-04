@@ -13,7 +13,7 @@ import Date
 import App.Routing
 import Ui.Calendar
 import Ui.Chooser
-
+import Data.RaceType as RaceType
 
 port loadRiders : () -> Cmd msg
 
@@ -42,7 +42,7 @@ onUrlEnter route app =
         App.Routing.RaceAdd ->
             let
                 raceAdd =
-                    Race.Model.Add "" Race.Model.Classic (Ui.Calendar.init ())
+                    Race.Model.Add "" RaceType.Classic (Ui.Calendar.init ())
             in
                 ( { app | page = App.Page.RaceAdd raceAdd }
                 , Task.attempt (always App.Msg.Noop) (Dom.focus "name")

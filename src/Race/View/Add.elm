@@ -9,6 +9,7 @@ import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
 import Ui.Calendar
+import Data.RaceType as RaceType exposing (RaceType)
 
 
 dateFormat : Date.Date -> String
@@ -43,7 +44,7 @@ render raceAdd =
                         , label [ for "name" ] [ text "Name" ]
                         ]
                     ]
-                , div [ class "row" ] [ categoryButtons raceAdd.category ]
+                , div [ class "row" ] [ raceTypeButtons raceAdd.raceType ]
                 , div [] [ Html.map App.Msg.Calendar (Ui.Calendar.view "en_us" raceAdd.calendar) ]
                 , div [ class "row" ]
                     [ div [ class "col s6" ]
@@ -63,26 +64,26 @@ render raceAdd =
             ]
 
 
-categoryButtonCheck : String -> String -> Race.Model.Category -> Race.Model.Category -> Html App.Msg.Msg
-categoryButtonCheck categoryName categoryText categoryModel current =
+raceTypeButtonCheck : String -> String -> RaceType -> RaceType -> Html App.Msg.Msg
+raceTypeButtonCheck raceTypeName raceTypeText raceType current =
     let
         isChecked =
-            categoryModel == current
+            raceType == current
     in
         p []
-            [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (App.Msg.RaceAddCategory categoryModel) ] []
-            , label [ for categoryName ] [ text categoryText ]
+            [ input [ checked isChecked, name "type", type_ "radio", id raceTypeName, onClick (App.Msg.RaceAddRaceType raceType) ] []
+            , label [ for raceTypeName ] [ text raceTypeText ]
             ]
 
 
-categoryButtons : Race.Model.Category -> Html App.Msg.Msg
-categoryButtons current =
+raceTypeButtons : RaceType -> Html App.Msg.Msg
+raceTypeButtons current =
     div [ class "col s6" ]
         [ label [ class "active" ] [ text "Category" ]
-        , categoryButtonCheck "classic" "Klassieker" Race.Model.Classic current
-        , categoryButtonCheck "criterum" "Criterium" Race.Model.Criterium current
-        , categoryButtonCheck "regiocross" "Regiocross" Race.Model.Regiocross current
-        , categoryButtonCheck "other" "Other" Race.Model.Other current
+        , raceTypeButtonCheck "classic" "Klassieker" RaceType.Classic current
+        , raceTypeButtonCheck "criterum" "Criterium" RaceType.Criterium current
+        , raceTypeButtonCheck "regiocross" "Regiocross" RaceType.Regiocross current
+        , raceTypeButtonCheck "other" "Other" RaceType.Other current
         ]
 
 

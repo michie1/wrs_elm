@@ -16,6 +16,7 @@ import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
 import Json.Decode.Extra
+import Data.RaceType as RaceType exposing (RaceType)
 
 
 port addRace : Json.Encode.Value -> Cmd msg
@@ -29,8 +30,8 @@ addPage2 msg page =
                 RaceName name ->
                     App.Page.RaceAdd <| addName name raceAdd
 
-                RaceAddCategory category ->
-                    App.Page.RaceAdd <| addCategory category raceAdd
+                RaceAddRaceType raceType ->
+                    App.Page.RaceAdd <| addRaceType raceType raceAdd
 
                 _ ->
                     page
@@ -47,8 +48,8 @@ addPage msg maybeRaceAdd =
                 RaceName name ->
                     Just <| addName name raceAdd
 
-                RaceAddCategory category ->
-                    Just <| addCategory category raceAdd
+                RaceAddRaceType raceType ->
+                    Just <| addRaceType raceType raceAdd
 
                 _ ->
                     Nothing
@@ -62,9 +63,9 @@ addName newName raceAdd =
     { raceAdd | name = newName }
 
 
-addCategory : Race.Model.Category -> Race.Model.Add -> Race.Model.Add
-addCategory category raceAdd =
-    { raceAdd | category = category }
+addRaceType : RaceType -> Race.Model.Add -> Race.Model.Add
+addRaceType raceType raceAdd =
+    { raceAdd | raceType = raceType }
 
 
 dateFormat : Date.Date -> String
@@ -82,53 +83,53 @@ addSubmit raceAdd app =
             Json.Encode.object
                 [ ( "name", Json.Encode.string raceAdd.name )
                 , ( "date", Json.Encode.string dateString )
-                , ( "category", Json.Encode.string <| categoryToString raceAdd.category )
+                , ( "category", Json.Encode.string <| raceTypeToString raceAdd.raceType )
                 ]
     in
         ( app, addRace payload )
 
 
-category : String -> Race.Model.Category
-category string =
+raceType : String -> RaceType
+raceType string =
     case string of
         "classic" ->
-            Race.Model.Classic
+            RaceType.Classic
 
         "criterium" ->
-            Race.Model.Criterium
+            RaceType.Criterium
 
         "regiocross" ->
-            Race.Model.Regiocross
+            RaceType.Regiocross
 
         "other" ->
-            Race.Model.Other
+            RaceType.Other
 
         _ ->
-            Race.Model.Other
+            RaceType.Other
 
 
-categoryToString : Race.Model.Category -> String
-categoryToString category =
+raceTypeToString : RaceType -> String
+raceTypeToString category =
     case category of
-        Race.Model.Classic ->
+        RaceType.Classic ->
             "classic"
 
-        Race.Model.Criterium ->
+        RaceType.Criterium ->
             "criterium"
 
-        Race.Model.Regiocross ->
+        RaceType.Regiocross ->
             "regiocross"
 
-        Race.Model.Other ->
+        RaceType.Other ->
             "other"
 
-        Race.Model.Unknown ->
+        RaceType.Unknown ->
             "unknown"
 
 
-categoryDecoder : String -> Json.Decode.Decoder Race.Model.Category
-categoryDecoder string =
-    Json.Decode.succeed (category string)
+raceTypeDecoder : String -> Json.Decode.Decoder RaceType
+raceTypeDecoder string =
+    Json.Decode.succeed (raceType string)
 
 
 race : Json.Decode.Decoder Race.Model.Race
@@ -139,7 +140,7 @@ race =
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "date" Json.Decode.Extra.date)
         (Json.Decode.field "category"
-            (Json.Decode.andThen categoryDecoder Json.Decode.string)
+            (Json.Decode.andThen raceTypeDecoder Json.Decode.string)
         )
 
 

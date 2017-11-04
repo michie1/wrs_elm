@@ -48,7 +48,7 @@ update msg app =
                 in
                     ( { app | page = page }, Cmd.none )
 
-            RaceAddCategory category ->
+            RaceAddRaceType raceType ->
                 let
                     page =
                         Race.Update.addPage2 msg app.page

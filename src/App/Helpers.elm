@@ -10,6 +10,7 @@ import App.Routing
 import Result.Model
 import App.Page
 import Data.Outfit as Outfit
+import Data.RaceType as RaceType exposing (RaceType)
 
 
 navigate : App.Page.Page -> Cmd App.Msg.Msg
@@ -128,7 +129,7 @@ getPointsByResult result races =
     if result.outfit == Outfit.WTOS then
         case getRaceByKey result.raceKey races of
             Just race ->
-                getPointsByCategory race.category
+                getPointsByRaceType race.raceType
 
             Nothing ->
                 0
@@ -136,22 +137,22 @@ getPointsByResult result races =
         0
 
 
-getPointsByCategory : Race.Model.Category -> Int
-getPointsByCategory category =
+getPointsByRaceType : RaceType -> Int
+getPointsByRaceType category =
     case category of
-        Race.Model.Classic ->
+        RaceType.Classic ->
             4
 
-        Race.Model.Criterium ->
+        RaceType.Criterium ->
             3
 
-        Race.Model.Regiocross ->
+        RaceType.Regiocross ->
             2
 
-        Race.Model.Other ->
+        RaceType.Other ->
             0
 
-        Race.Model.Unknown ->
+        RaceType.Unknown ->
             0
 
 

@@ -57,7 +57,7 @@ raceTable unsortedRaces results =
                                         [ text race.name ]
                                     ]
                                 , td [] [ text <| dateString ]
-                                , td [] [ text (toString race.category) ]
+                                , td [] [ text (toString race.raceType) ]
                                 , td [] [ text (toString (countParticipants race.key results)) ]
                                 ]
                     )

@@ -1,26 +1,18 @@
-module Race.Model exposing (Add, Race, Category, Category(..) )
+module Race.Model exposing (Add, Race)
 
-import Date
+import Date exposing (Date)
 import Ui.Calendar
-
-
-type Category
-    = Classic
-    | Criterium
-    | Regiocross
-    | Other
-    | Unknown
-
+import Data.RaceType exposing (RaceType)
 
 type alias Race =
     { key : String
     , name : String
-    , date : Date.Date
-    , category : Category
+    , date : Date
+    , raceType : RaceType
     }
 
 type alias Add =
     { name : String
-    , category : Category
+    , raceType : RaceType
     , calendar : Ui.Calendar.Model
     }
