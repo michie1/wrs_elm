@@ -15,13 +15,14 @@ import Set
 import App.UrlUpdate
 import Ui.Chooser
 import Data.Outfit as Outfit exposing (Outfit)
-
+import Data.RaceResult exposing (RaceResult)
+import Data.ResultCategory as ResultCategory exposing (ResultCategory)
 
 port addResultPort : Json.Encode.Value -> Cmd msg
 
 
 addCategory :
-    Result.Model.ResultCategory
+    ResultCategory
     -> Result.Model.Add
     -> Result.Model.Add
 addCategory category resultAdd =
@@ -55,31 +56,31 @@ addResult value app =
             ( app, Cmd.none )
 
 
-resultCategoryDecoder : String -> Json.Decode.Decoder Result.Model.ResultCategory
+resultCategoryDecoder : String -> Json.Decode.Decoder ResultCategory
 resultCategoryDecoder string =
     case string of
         "amateurs" ->
-            Json.Decode.succeed Result.Model.Amateurs
+            Json.Decode.succeed ResultCategory.Amateurs
 
         "basislidmaatschap" ->
-            Json.Decode.succeed Result.Model.Basislidmaatschap
+            Json.Decode.succeed ResultCategory.Basislidmaatschap
 
         "cata" ->
-            Json.Decode.succeed Result.Model.CatA
+            Json.Decode.succeed ResultCategory.CatA
 
         "catb" ->
-            Json.Decode.succeed Result.Model.CatB
+            Json.Decode.succeed ResultCategory.CatB
 
         "unknown" ->
-            Json.Decode.succeed Result.Model.Unknown
+            Json.Decode.succeed ResultCategory.Unknown
 
         _ ->
-            Json.Decode.succeed Result.Model.Unknown
+            Json.Decode.succeed ResultCategory.Unknown
 
 
-resultDecoder : Json.Decode.Decoder Result.Model.Result
+resultDecoder : Json.Decode.Decoder RaceResult
 resultDecoder =
-    Json.Decode.Pipeline.decode Result.Model.Result
+    Json.Decode.Pipeline.decode RaceResult
         |> Json.Decode.Pipeline.required "key" Json.Decode.string
         |> Json.Decode.Pipeline.required "riderKey" Json.Decode.string
         |> Json.Decode.Pipeline.required "raceKey" Json.Decode.string
@@ -111,7 +112,7 @@ resultOutfitDecoder string =
                 Outfit.Other
 
 
-resultsDecoder : Json.Decode.Decoder (List Result.Model.Result)
+resultsDecoder : Json.Decode.Decoder (List RaceResult)
 resultsDecoder =
     Json.Decode.list resultDecoder
 
@@ -195,20 +196,20 @@ outfitToString outfit =
             "other"
 
 
-categoryToString : Result.Model.ResultCategory -> String
+categoryToString : ResultCategory -> String
 categoryToString category =
     case category of
-        Result.Model.Amateurs ->
+        ResultCategory.Amateurs ->
             "amateurs"
 
-        Result.Model.Basislidmaatschap ->
+        ResultCategory.Basislidmaatschap ->
             "basislidmaatschap"
 
-        Result.Model.CatA ->
+        ResultCategory.CatA ->
             "cata"
 
-        Result.Model.CatB ->
+        ResultCategory.CatB ->
             "catb"
 
-        Result.Model.Unknown ->
+        ResultCategory.Unknown ->
             "unknown"

@@ -16,6 +16,9 @@ import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
 import App.Helpers
 import Data.Race exposing (Race)
+import Data.Rider exposing (Rider)
+import Data.RaceResult exposing (RaceResult)
+import Data.ResultCategory exposing (ResultCategory, resultCategories)
 
 
 dateFormat : Date.Date -> String
@@ -99,15 +102,15 @@ info race =
             ]
 
 
-resultsTable : Race -> List Result.Model.Result -> List Rider.Model.Rider -> Html msg
+resultsTable : Race -> List RaceResult -> List Rider -> Html msg
 resultsTable race results riders =
     div [] <|
         List.map
             (\category -> resultsByCategory category results riders)
-            Result.Model.categories
+            resultCategories
 
 
-resultsByCategory : Result.Model.ResultCategory -> List Result.Model.Result -> List Rider.Model.Rider -> Html msg
+resultsByCategory : ResultCategory -> List RaceResult -> List Rider -> Html msg
 resultsByCategory category results riders =
     let
         catResults =
@@ -138,7 +141,7 @@ resultsByCategory category results riders =
                     ]
 
 
-resultRow : Result.Model.Result -> List Rider.Model.Rider -> Html msg
+resultRow : RaceResult -> List Rider -> Html msg
 resultRow result riders =
     let
         maybeRider =
@@ -172,7 +175,7 @@ resultTd result =
         ]
 
 
-getRiderById : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
+getRiderById : String -> List Rider -> Maybe Rider
 getRiderById key riders =
     List.head
         (List.filter

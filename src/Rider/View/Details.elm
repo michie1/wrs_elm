@@ -1,7 +1,7 @@
 module Rider.View.Details exposing (render)
 
 import App.Model
-import Rider.Model exposing (Rider)
+import Data.Rider exposing (Rider)
 import App.Msg
 import App.Model
 import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, li, span, h2, p)
@@ -14,6 +14,7 @@ import Date.Extra.Config.Config_nl_nl exposing (config)
 import App.Helpers
 import Date.Extra
 import Data.Race exposing (Race)
+import Data.RaceResult exposing (RaceResult)
 
 
 dateFormat : Date.Date -> String
@@ -75,7 +76,7 @@ info rider points =
         ]
 
 
-resultsTable : Rider -> List Result.Model.Result -> List Race -> Html msg
+resultsTable : Rider -> List RaceResult -> List Race -> Html msg
 resultsTable rider results races =
     table []
         [ thead []
@@ -98,7 +99,7 @@ resultsTable rider results races =
         ]
 
 
-raceRow : Result.Model.Result -> List Race -> Html msg
+raceRow : RaceResult -> List Race -> Html msg
 raceRow result races =
     let
         maybeRace =

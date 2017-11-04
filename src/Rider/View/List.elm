@@ -2,7 +2,8 @@ module Rider.View.List exposing (render)
 
 import Html exposing (Html, h2, a, div, text, span, input, ul, li, table, td, tr, th, thead, tbody)
 import Html.Attributes exposing (href, class)
-import Rider.Model exposing (Rider)
+import Data.Rider exposing (Rider)
+import Data.RaceResult exposing (RaceResult)
 import App.Model
 import App.Routing
 import App.Msg
@@ -48,7 +49,7 @@ addButton : Html App.Msg.Msg
 addButton =
     div [] [ a [ href "#riders/add", class "waves-effect waves-light btn" ] [ text "Add rider" ] ]
 
-countResultsByRiderId : String -> List Result.Model.Result -> Int
+countResultsByRiderId : String -> List RaceResult -> Int
 countResultsByRiderId riderKey results =
     List.length <|
         List.filter

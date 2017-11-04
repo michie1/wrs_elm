@@ -9,6 +9,7 @@ import App.Routing
 import App.UrlUpdate
 import Rider.Model
 import Data.Licence as Licence exposing (Licence)
+import Data.Rider exposing (Rider)
 
 port addRider : (Json.Encode.Value) -> Cmd msg
 
@@ -31,17 +32,17 @@ licenceDecoder : String -> Json.Decode.Decoder Licence
 licenceDecoder string =
     Json.Decode.succeed (licence string)
 
-rider : Json.Decode.Decoder Rider.Model.Rider
+rider : Json.Decode.Decoder Rider
 rider =
     Json.Decode.map3
-        Rider.Model.Rider
+        Rider
         (Json.Decode.field "key" Json.Decode.string)
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "licence"
             (Json.Decode.andThen licenceDecoder Json.Decode.string)
         )
 
-ridersDecoder : Json.Decode.Decoder (List Rider.Model.Rider)
+ridersDecoder : Json.Decode.Decoder (List Rider)
 ridersDecoder =
     Json.Decode.list rider
 

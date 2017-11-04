@@ -1,25 +1,9 @@
-module Result.Model exposing (Result, Add, initialAdd, ResultCategory, ResultCategory(..), categories )
+module Result.Model exposing (Add, initialAdd)
 
-import Rider.Model exposing (Rider)
+import Data.Rider exposing (Rider)
 import Ui.Chooser
 import Data.Outfit as Outfit exposing (Outfit)
-
-
-type ResultCategory
-    = Amateurs
-    | Basislidmaatschap
-    | CatA
-    | CatB
-    | Unknown
-
-type alias Result =
-    { key : String
-    , riderKey : String
-    , raceKey : String
-    , result : String
-    , category : ResultCategory
-    , outfit : Outfit
-    }
+import Data.ResultCategory as ResultCategory exposing (ResultCategory)
 
 
 type alias Add =
@@ -32,25 +16,18 @@ type alias Add =
     , chooser : Ui.Chooser.Model
     }
 
+
 initialAdd : Add
 initialAdd =
     { raceKey = ""
     , riderKey = Nothing
     , result = ""
-    , category = Amateurs
+    , category = ResultCategory.Amateurs
     , outfit = Outfit.WTOS
     , strava = ""
-    , chooser = ( Ui.Chooser.init ()
-                    |> Ui.Chooser.closeOnSelect True
-                    |> Ui.Chooser.searchable True
-                    )
+    , chooser =
+        (Ui.Chooser.init ()
+            |> Ui.Chooser.closeOnSelect True
+            |> Ui.Chooser.searchable True
+        )
     }
-
-categories : List ResultCategory
-categories =
-    [ Amateurs
-    , Basislidmaatschap
-    , CatA
-    , CatB
-    , Unknown
-    ]

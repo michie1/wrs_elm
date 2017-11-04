@@ -12,6 +12,8 @@ import Data.Outfit as Outfit
 import Data.RaceType as RaceType exposing (RaceType)
 import Data.Race exposing (Race)
 import Data.Licence exposing (Licence)
+import Data.RaceResult exposing (RaceResult)
+import Data.Rider exposing (Rider)
 
 
 navigate : App.Page.Page -> Cmd App.Msg.Msg
@@ -19,7 +21,7 @@ navigate page =
     Navigation.newUrl <| App.Routing.url page
 
 
-updateRiderLicence : String -> Licence -> List Rider.Model.Rider -> List Rider.Model.Rider
+updateRiderLicence : String -> Licence -> List Rider -> List Rider
 updateRiderLicence riderKey licence riders =
     List.map
         (\rider ->
@@ -33,17 +35,17 @@ updateRiderLicence riderKey licence riders =
         riders
 
 
-getRiderByName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
+getRiderByName : String -> List Rider -> Maybe Rider
 getRiderByName name riders =
     List.head (List.filter (\rider -> rider.name == name) riders)
 
 
-getRiderByLowerCaseName : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
+getRiderByLowerCaseName : String -> List Rider -> Maybe Rider
 getRiderByLowerCaseName name riders =
     List.head (List.filter (\rider -> (String.toLower rider.name) == (String.toLower name)) riders)
 
 
-getRiderByResultId : String -> List Rider.Model.Rider -> Maybe Rider.Model.Rider
+getRiderByResultId : String -> List Rider -> Maybe Rider
 getRiderByResultId key riders =
     List.head (List.filter (\rider -> rider.key == key) riders)
 
@@ -117,7 +119,7 @@ formatDate date =
         ++ (leadingZero (Date.day date))
 
 
-getPointsByResults : List Result.Model.Result -> List Race -> Int
+getPointsByResults : List RaceResult -> List Race -> Int
 getPointsByResults results races =
     List.sum <|
         List.map
@@ -125,7 +127,7 @@ getPointsByResults results races =
             results
 
 
-getPointsByResult : Result.Model.Result -> List Race -> Int
+getPointsByResult : RaceResult -> List Race -> Int
 getPointsByResult result races =
     if result.outfit == Outfit.WTOS then
         case getRaceByKey result.raceKey races of
@@ -165,7 +167,7 @@ getRaceByKey raceKey races =
             races
 
 
-getPointsByRiderId : String -> List Result.Model.Result -> List Race -> Int
+getPointsByRiderId : String -> List RaceResult -> List Race -> Int
 getPointsByRiderId riderKey results races =
     getPointsByResults
         ((List.filter

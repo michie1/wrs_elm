@@ -4,9 +4,10 @@ import Result.Model exposing (Add)
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import Rider.Model
+import Data.RaceResult exposing (RaceResult)
 
 
-resultExists : Result.Model.Result -> List Result.Model.Result -> Bool
+resultExists : RaceResult -> List RaceResult -> Bool
 resultExists result results =
     (List.length
         (List.filter
@@ -17,6 +18,6 @@ resultExists result results =
         /= 0
 
 
-calcResultId : List Result.Model.Result -> Int
+calcResultId : List RaceResult -> Int
 calcResultId results =
     (List.length results) + 1

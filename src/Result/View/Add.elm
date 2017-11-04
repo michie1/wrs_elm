@@ -6,11 +6,13 @@ import Html.Events exposing (onInput, onClick, on)
 import Json.Decode as Json
 import App.Msg
 import Result.Model
-import Rider.Model exposing (Rider)
 import Ui.Chooser
 import Set
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race)
+import Data.Rider exposing (Rider)
+import Data.ResultCategory as ResultCategory exposing (ResultCategory)
+import Data.RaceResult exposing (RaceResult)
 
 
 riderNameExists : String -> List Rider -> Bool
@@ -19,12 +21,12 @@ riderNameExists name riders =
 
 
 
---resultExists : Int -> Int -> List Result.Model.Result -> Bool
+--resultExists : Int -> Int -> List RaceResult -> Bool
 --resultExists raceId riderId results =
 --True
 
 
-render : Race -> Result.Model.Add -> List Rider -> Maybe (List Result.Model.Result) -> Html App.Msg.Msg
+render : Race -> Result.Model.Add -> List Rider -> Maybe (List RaceResult) -> Html App.Msg.Msg
 render race resultAdd riders maybeResults =
     let
         results =
@@ -80,7 +82,7 @@ render race resultAdd riders maybeResults =
                             , label [ for "rider", class "active" ] [ text "Rider" ]
                             ]
                         ]
-                    , div [ class "row" ] [ categoryButtons ]
+                    , div [ class "row" ] [ resultCategoryButtons ]
                     , div [ class "row" ] [ outfitButtons ]
                     , div [ class "row" ]
                         [ button
@@ -97,7 +99,7 @@ render race resultAdd riders maybeResults =
                     ]
 
 
-resultExists : Rider.Model.Rider -> Race -> List Result.Model.Result -> Bool
+resultExists : Rider -> Race -> List RaceResult -> Bool
 resultExists rider race results =
     List.length
         (List.filter
@@ -107,27 +109,27 @@ resultExists rider race results =
         == 1
 
 
-categoryButtonCheck : String -> String -> Result.Model.ResultCategory -> Bool -> Html App.Msg.Msg
-categoryButtonCheck categoryName categoryText category isChecked =
+resultCategoryButtonCheck : String -> String -> ResultCategory -> Bool -> Html App.Msg.Msg
+resultCategoryButtonCheck resultCategoryName resultCategoryText category isChecked =
     p []
-        [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (App.Msg.ResultAddCategory category) ] []
-        , label [ for categoryName ] [ text categoryText ]
+        [ input [ checked isChecked, name "resultCategory", type_ "radio", id resultCategoryName, onClick (App.Msg.ResultAddCategory category) ] []
+        , label [ for resultCategoryName ] [ text resultCategoryText ]
         ]
 
 
-categoryButton : String -> String -> Result.Model.ResultCategory -> Html App.Msg.Msg
-categoryButton categoryName categoryText category =
-    categoryButtonCheck categoryName categoryText category False
+resultCategoryButton : String -> String -> ResultCategory -> Html App.Msg.Msg
+resultCategoryButton resultCategoryName resultCategoryText resultCategory =
+    resultCategoryButtonCheck resultCategoryName resultCategoryText resultCategory False
 
 
-categoryButtons : Html App.Msg.Msg
-categoryButtons =
+resultCategoryButtons : Html App.Msg.Msg
+resultCategoryButtons =
     div []
         [ label [ for "result" ] [ text "Category" ]
-        , categoryButtonCheck "amateurs" "Amateurs" Result.Model.Amateurs True
-        , categoryButton "basislidmaatschap" "Basislidmaatschap" Result.Model.Basislidmaatschap
-        , categoryButton "cata" "Cat A" Result.Model.CatA
-        , categoryButton "catb" "Cat B" Result.Model.CatB
+        , resultCategoryButtonCheck "amateurs" "Amateurs" ResultCategory.Amateurs True
+        , resultCategoryButton "basislidmaatschap" "Basislidmaatschap" ResultCategory.Basislidmaatschap
+        , resultCategoryButton "cata" "Cat A" ResultCategory.CatA
+        , resultCategoryButton "catb" "Cat B" ResultCategory.CatB
         ]
 
 outfitButton : String -> String -> Outfit -> Bool -> Html App.Msg.Msg

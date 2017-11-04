@@ -14,6 +14,7 @@ import App.Routing
 import Ui.Calendar
 import Ui.Chooser
 import Data.RaceType as RaceType
+import Data.RaceResult exposing (RaceResult)
 
 port loadRiders : () -> Cmd msg
 
@@ -131,7 +132,7 @@ urlUpdate route app =
         ( nextApp, cmd )
 
 
-resultExists : String -> String -> List Result.Model.Result -> Bool
+resultExists : String -> String -> List RaceResult -> Bool
 resultExists riderKey raceKey results =
     List.length
         (List.filter

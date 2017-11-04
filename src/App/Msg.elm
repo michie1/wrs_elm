@@ -12,6 +12,7 @@ import App.Page
 import Data.Outfit exposing (Outfit)
 import Data.RaceType exposing (RaceType)
 import Data.Licence exposing (Licence)
+import Data.ResultCategory exposing (ResultCategory)
 
 
 type Msg
@@ -24,7 +25,7 @@ type Msg
     | Calendar Ui.Calendar.Msg
       --
     | ResultAddSubmit
-    | ResultAddCategory Result.Model.ResultCategory
+    | ResultAddCategory ResultCategory
     | ResultAddOutfit Outfit
     | ResultAddResult String
     | ResultAddedJson Json.Decode.Value

@@ -1,6 +1,7 @@
 module Race.View.List exposing (..)
 
 import Data.Race exposing (Race)
+import Data.RaceResult exposing (RaceResult)
 import Result.Model
 import App.Msg
 import Html exposing (Html, h2, div, text, a, table, tr, td, th, thead, tbody)
@@ -16,7 +17,7 @@ dateFormat date =
     Date.Extra.Format.format config "%d-%m-%Y" date
 
 
-render : Maybe (List Race) -> Maybe (List Result.Model.Result) -> Html App.Msg.Msg
+render : Maybe (List Race) -> Maybe (List RaceResult) -> Html App.Msg.Msg
 render maybeRaces maybeResults =
     div []
         [ h2 [] [ text "Races" ]
@@ -30,7 +31,7 @@ addButton =
     div [] [ a [ href "#races/add", class "waves-effect waves-light btn" ] [ text "Add race" ] ]
 
 
-raceTable : List Race -> List Result.Model.Result -> Html App.Msg.Msg
+raceTable : List Race -> List RaceResult -> Html App.Msg.Msg
 raceTable unsortedRaces results =
     let
         races = unsortedRaces |> List.sortWith (\a b -> Date.Extra.compare a.date b.date) |> List.reverse
@@ -66,7 +67,7 @@ raceTable unsortedRaces results =
             ]
 
 
-countParticipants : String -> List Result.Model.Result -> Int
+countParticipants : String -> List RaceResult -> Int
 countParticipants raceKey results =
     List.length
         (List.filter
