@@ -2,7 +2,7 @@ module Result.Model exposing (Result, Add, initialAdd, ResultCategory, ResultCat
 
 import Rider.Model exposing (Rider)
 import Ui.Chooser
-import App.Outfit as Outfit exposing (Outfit)
+import Data.Outfit as Outfit exposing (Outfit)
 
 
 type ResultCategory

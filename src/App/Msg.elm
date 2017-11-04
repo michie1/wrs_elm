@@ -9,7 +9,7 @@ import Ui.Calendar
 import Ui.Chooser
 import Json.Decode
 import App.Page
-import App.Outfit exposing (Outfit)
+import Data.Outfit exposing (Outfit)
 
 
 type Msg

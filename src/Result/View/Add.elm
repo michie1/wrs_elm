@@ -10,7 +10,7 @@ import Race.Model
 import Rider.Model exposing (Rider)
 import Ui.Chooser
 import Set
-import App.Outfit as Outfit exposing (Outfit)
+import Data.Outfit as Outfit exposing (Outfit)
 
 
 riderNameExists : String -> List Rider -> Bool

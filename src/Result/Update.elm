@@ -14,7 +14,7 @@ import Json.Decode
 import Set
 import App.UrlUpdate
 import Ui.Chooser
-import App.Outfit as Outfit exposing (Outfit)
+import Data.Outfit as Outfit exposing (Outfit)
 
 
 port addResultPort : Json.Encode.Value -> Cmd msg

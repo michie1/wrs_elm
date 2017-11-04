@@ -9,7 +9,7 @@ import App.Msg
 import App.Routing
 import Result.Model
 import App.Page
-import App.Outfit as Outfit
+import Data.Outfit as Outfit
 
 
 navigate : App.Page.Page -> Cmd App.Msg.Msg

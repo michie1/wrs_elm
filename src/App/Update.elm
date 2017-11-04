@@ -6,7 +6,7 @@ import App.Routing
 import App.Page
 import App.UrlUpdate
 import App.Helpers
-import App.Outfit as Outfit exposing (Outfit)
+import Data.Outfit as Outfit exposing (Outfit)
 import Race.Model exposing (Race)
 import Race.Update
 import Rider.Model
