@@ -7,7 +7,7 @@ import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import App.Routing
 import App.Page
-import Data.Race exposing (Race)
+import Data.Race exposing (Race, lastRaces, getRace)
 import Page.Race.View.Add
 import Page.Race.View.List
 import Page.Race.View.Details
@@ -41,49 +41,7 @@ sidebar app =
         , ul [ class "collection" ] <|
             [ li [ class "collection-header" ] [ h4 [] [ a [ href "#riders" ] [ text "Riders" ] ] ] ]
                 ++ [ li [ class "collection-header" ] [ h4 [] [ a [ href "#races" ] [ text "Races" ] ] ] ]
-                ++ lastRaces app.races
-        ]
-
-
-lastRaces : Maybe (List Race) -> List (Html Msg)
-lastRaces maybeRaces =
-    Maybe.withDefault [] maybeRaces
-        |> List.sortWith (\a b -> Date.Extra.compare a.date b.date)
-        |> List.reverse
-        |> List.take 5
-        |> List.map raceLi
-
-
-raceLi : Race -> Html Msg
-raceLi race =
-    li [] [ a [ class "collection-item", href ("#races/" ++ race.key) ] [ text race.name ] ]
-
-
-loadingPage : App -> Html Msg
-loadingPage app =
-    case ( app.races, app.riders ) of
-        ( Just race, Just riders ) ->
-            mainView app
-
-        ( _, _ ) ->
-            div [ class "col s9 m8 offset-s3 offset-m4" ]
-                [ h2 [] [ text "Loading data" ]
-                , spinner
-                ]
-
-
-spinner : Html Msg
-spinner =
-    div [ class "preloader-wrapper big active" ]
-        [ div [ class "spinner-layer spinner-blue-only" ]
-            [ div [ class "circle-clipper left" ]
-                [ div [ class "circle" ] []
-                , div [ class "gap-patch" ] []
-                , div [ class "circle" ] []
-                ]
-            , div [ class "circle-clipper right" ] []
-            , div [ class "circle" ] []
-            ]
+                ++ (List.map raceLi <| lastRaces app.races)
         ]
 
 
@@ -132,6 +90,34 @@ viewPage app =
                         Page.Result.View.Add.render race add riders app.results
 
 
+loadingPage : App -> Html Msg
+loadingPage app =
+    case ( app.races, app.riders ) of
+        ( Just race, Just riders ) ->
+            mainView app
+
+        ( _, _ ) ->
+            div [ class "col s9 m8 offset-s3 offset-m4" ]
+                [ h2 [] [ text "Loading data" ]
+                , spinner
+                ]
+
+
+spinner : Html Msg
+spinner =
+    div [ class "preloader-wrapper big active" ]
+        [ div [ class "spinner-layer spinner-blue-only" ]
+            [ div [ class "circle-clipper left" ]
+                [ div [ class "circle" ] []
+                , div [ class "gap-patch" ] []
+                , div [ class "circle" ] []
+                ]
+            , div [ class "circle-clipper right" ] []
+            , div [ class "circle" ] []
+            ]
+        ]
+
+
 userLi : App -> List (Html App.Msg.Msg)
 userLi app =
     [ li [] [ a [ href "#races" ] [ text "Races" ] ]
@@ -139,30 +125,6 @@ userLi app =
     ]
 
 
-header : App -> Html App.Msg.Msg
-header app =
-    nav []
-        [ div
-            [ class "nav-wrapper blue darken-4" ]
-            [ a [ class "brand-logo left", href "#races" ] [ text "WRS" ]
-            , ul
-                [ id "nav-mobile", class "right" ]
-                [ li [] [ a [ href "#races" ] [ text "Races" ] ]
-                , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
-                ]
-            ]
-        ]
-
-
-viewMessage : String -> Html msg
-viewMessage reponse =
-    div [] [ text reponse ]
-
-
-getRace : String -> List Race -> Maybe Race
-getRace raceKey races =
-    List.head
-        (List.filter
-            (\race -> race.key == raceKey)
-            races
-        )
+raceLi : Race -> Html Msg
+raceLi race =
+    li [] [ a [ class "collection-item", href ("#races/" ++ race.key) ] [ text race.name ] ]
