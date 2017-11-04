@@ -11,6 +11,7 @@ import Json.Decode
 import App.Page
 import Data.Outfit exposing (Outfit)
 import Data.RaceType exposing (RaceType)
+import Data.Licence exposing (Licence)
 
 
 type Msg
@@ -31,7 +32,7 @@ type Msg
     | Chooser Ui.Chooser.Msg
       --
     | RiderAddSubmit
-    | RiderAddLicence Rider.Model.Licence
+    | RiderAddLicence Licence
     | RiderAddName String
     | RiderAddedJson Json.Decode.Value
     | RidersJson Json.Decode.Value

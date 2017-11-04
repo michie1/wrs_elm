@@ -1,11 +1,6 @@
-module Rider.Model exposing (Rider, Licence, Licence(..), Add)
+module Rider.Model exposing (Rider, Add)
 
-
-type Licence
-    = Elite
-    | Amateurs
-    | Basislidmaatschap
-    | Other
+import Data.Licence exposing (Licence)
 
 
 type alias Rider =
@@ -14,7 +9,8 @@ type alias Rider =
     , licence : Licence
     }
 
+
 type alias Add =
-    { name: String
-    , licence: Maybe Licence
+    { name : String
+    , licence : Maybe Licence
     }

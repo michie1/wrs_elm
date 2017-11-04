@@ -11,6 +11,7 @@ import App.Page
 import Data.Outfit as Outfit
 import Data.RaceType as RaceType exposing (RaceType)
 import Data.Race exposing (Race)
+import Data.Licence exposing (Licence)
 
 
 navigate : App.Page.Page -> Cmd App.Msg.Msg
@@ -18,7 +19,7 @@ navigate page =
     Navigation.newUrl <| App.Routing.url page
 
 
-updateRiderLicence : String -> Rider.Model.Licence -> List Rider.Model.Rider -> List Rider.Model.Rider
+updateRiderLicence : String -> Licence -> List Rider.Model.Rider -> List Rider.Model.Rider
 updateRiderLicence riderKey licence riders =
     List.map
         (\rider ->

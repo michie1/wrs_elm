@@ -7,26 +7,27 @@ import Json.Decode
 import Json.Encode
 import App.Routing
 import App.UrlUpdate
-import Rider.Model exposing (Licence)
+import Rider.Model
+import Data.Licence as Licence exposing (Licence)
 
 port addRider : (Json.Encode.Value) -> Cmd msg
 
-licence : String -> Rider.Model.Licence
+licence : String -> Licence
 licence string =
     case string of
         "elite" ->
-            Rider.Model.Elite
+            Licence.Elite
 
         "amateurs" ->
-            Rider.Model.Amateurs
+            Licence.Amateurs
 
         "basislidmaatschap" ->
-            Rider.Model.Basislidmaatschap
+            Licence.Basislidmaatschap
 
         _ ->
-            Rider.Model.Other
+            Licence.Other
 
-licenceDecoder : String -> Json.Decode.Decoder Rider.Model.Licence
+licenceDecoder : String -> Json.Decode.Decoder Licence
 licenceDecoder string =
     Json.Decode.succeed (licence string)
 
@@ -77,16 +78,16 @@ addSubmit app =
 licenceToString : Maybe Licence -> String
 licenceToString maybeLicence =
     case maybeLicence of
-        Just Rider.Model.Elite ->
+        Just Licence.Elite ->
             "elite"
 
-        Just Rider.Model.Amateurs ->
+        Just Licence.Amateurs ->
             "amateurs"
 
-        Just Rider.Model.Basislidmaatschap ->
+        Just Licence.Basislidmaatschap ->
             "basislidmaatschap"
 
-        Just Rider.Model.Other ->
+        Just Licence.Other ->
             "other"
 
         Nothing ->
@@ -107,7 +108,7 @@ addName name app =
         ( nextApp, Cmd.none )
 
 
-addLicence : Rider.Model.Licence -> App -> ( App, Cmd Msg )
+addLicence : Licence -> App -> ( App, Cmd Msg )
 addLicence licence app =
     let
         page =

@@ -5,6 +5,7 @@ import Html.Attributes exposing (attribute, autofocus, value, autofocus, class, 
 import Html.Events exposing (onClick, onInput)
 import App.Msg
 import Rider.Model
+import Data.Licence as Licence exposing (Licence)
 
 
 render : Rider.Model.Add -> Html App.Msg.Msg
@@ -51,7 +52,7 @@ render add =
             ]
 
 
-licenceButtonCheck : String -> String -> Rider.Model.Licence -> Maybe Rider.Model.Licence -> Html App.Msg.Msg
+licenceButtonCheck : String -> String -> Licence -> Maybe Licence -> Html App.Msg.Msg
 licenceButtonCheck categoryName categoryText categoryModel maybeCurrent =
     let
         isChecked =
@@ -68,12 +69,12 @@ licenceButtonCheck categoryName categoryText categoryModel maybeCurrent =
             ]
 
 
-licenceButtons : Maybe Rider.Model.Licence -> Html App.Msg.Msg
+licenceButtons : Maybe Licence -> Html App.Msg.Msg
 licenceButtons maybeCurrent =
     div [ class "col s6" ]
         [ label [ class "active" ] [ text "Category" ]
-        , licenceButtonCheck "elite" "Elite" Rider.Model.Elite maybeCurrent
-        , licenceButtonCheck "amateurs" "Amateurs" Rider.Model.Amateurs maybeCurrent
-        , licenceButtonCheck "basislidmaatschap" "Basislidmaatschap" Rider.Model.Basislidmaatschap maybeCurrent
-        , licenceButtonCheck "other" "Other" Rider.Model.Other maybeCurrent
+        , licenceButtonCheck "elite" "Elite" Licence.Elite maybeCurrent
+        , licenceButtonCheck "amateurs" "Amateurs" Licence.Amateurs maybeCurrent
+        , licenceButtonCheck "basislidmaatschap" "Basislidmaatschap" Licence.Basislidmaatschap maybeCurrent
+        , licenceButtonCheck "other" "Other" Licence.Other maybeCurrent
         ]
