@@ -16,5 +16,5 @@ type alias Rider =
 
 type alias Add =
     { name: String
-    , licence: Maybe Licence -- By default, no licence selected
+    , licence: Maybe Licence
     }

@@ -1,42 +1,21 @@
 module App.Model exposing (App, initial)
 
-import Dict exposing (Dict)
-import App.Routing as Routing exposing (Route(..))
-import Race.Model
-import Rider.Model
-import Result.Model
-import Date
-import Keyboard.Extra
-import Phoenix.Socket
-import Phoenix.Channel
-import Phoenix.Push
-import App.Msg
-import Ui.Ratings
-import Ui.Calendar
-import App.Flags exposing (Flags)
+import Race.Model exposing (Race)
+import Rider.Model exposing (Rider)
+import Result.Model exposing (Result)
+import App.Msg exposing (Msg)
 import App.Page exposing (Page)
-
-
+import App.Flags exposing (Flags)
 
 
 type alias App =
     { page : Page
-    , riders : Maybe (List Rider.Model.Rider)
-    , races : Maybe (List Race.Model.Race)
+    , riders : Maybe (List Rider)
+    , races : Maybe (List Race)
     , results : Maybe (List Result.Model.Result)
-    , now : Maybe Date.Date
-    , messages : List String
     }
 
 
-initial : Flags -> ( App, Cmd App.Msg.Msg )
+initial : Flags -> App
 initial flags =
-    ( App
-    App.Page.Races
-    Nothing
-    Nothing
-    Nothing
-    Nothing
-        []
-        , Cmd.none
-        )
+    App App.Page.Races Nothing Nothing Nothing

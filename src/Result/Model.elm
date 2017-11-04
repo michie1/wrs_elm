@@ -1,4 +1,4 @@
-module Result.Model exposing (Add, Result, initialAdd, initialResults, ResultCategory, ResultCategory(..), categories ) 
+module Result.Model exposing (Result, Add, initialAdd, ResultCategory, ResultCategory(..), categories )
 
 import Rider.Model exposing (Rider)
 import Ui.Chooser
@@ -45,16 +45,6 @@ initialAdd =
                     |> Ui.Chooser.searchable True
                     )
     }
-
-
-initialResults : List Result
-initialResults =
-    []
-
-
-
---[ Result 1 1 1 "9000" CatA Nothing ]
-
 
 categories : List ResultCategory
 categories =

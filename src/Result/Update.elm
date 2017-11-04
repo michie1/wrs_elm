@@ -48,12 +48,8 @@ addOutfit outfit app =
 addResult : String -> App -> ( App, Cmd Msg )
 addResult value app =
     case app.page of
-        App.Page.ResultAdd add ->
-            let
-                nextAdd =
-                    { add | result = value }
-            in
-                ( { app | page = App.Page.ResultAdd nextAdd }, Cmd.none )
+        App.Page.ResultAdd raceKey ->
+            ( { app | page = App.Page.ResultAdd raceKey }, Cmd.none )
 
         _ ->
             ( app, Cmd.none )

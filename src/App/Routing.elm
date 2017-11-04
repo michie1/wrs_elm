@@ -1,13 +1,12 @@
 module App.Routing exposing (Route(..), routeParser, url)
 
 import Navigation
-import UrlParser exposing (..)
+import UrlParser exposing (parseHash, Parser, s, map, string, (</>), oneOf)
 import App.Page
 
 
 type Route
-    = Home
-    | RiderDetails String
+    = RiderDetails String
     | RiderAdd
     | Riders
     | RaceAdd
@@ -23,20 +22,20 @@ url page =
         App.Page.Riders ->
             "#riders"
 
-        App.Page.RiderAdd _ ->
-            "#riders/add"
-
         App.Page.RiderDetails key ->
             "#riders/" ++ key
+
+        App.Page.RiderAdd _ ->
+            "#riders/add"
 
         App.Page.Races ->
             "#races"
 
-        App.Page.RaceAdd _ ->
-            "#races/add"
-
         App.Page.RaceDetails key ->
             "#races/" ++ key
+
+        App.Page.RaceAdd _ ->
+            "#races/add"
 
         App.Page.ResultAdd add ->
             "#races/" ++ add.raceKey ++ "/add"
@@ -62,4 +61,3 @@ routeParser location =
     location
         |> parseHash matchers
         |> Maybe.withDefault Races
-    -- location |> parseHash matchers |> Maybe.withDefault Home

@@ -42,17 +42,14 @@ init flags location =
         route =
             App.Routing.routeParser location
 
-        ( initialApp, initialCmd ) =
+        initialApp =
             App.Model.initial flags
 
         ( app, cmd ) =
             App.UrlUpdate.urlUpdate route initialApp
     in
         ( app
-        , Cmd.batch
-            [ cmd
-            , initialCmd
-            ]
+        , cmd
         )
 
 

@@ -1,13 +1,15 @@
 module App.Page exposing (Page, Page(..))
 import Rider.Model
-import Result.Model
 import Race.Model
+import Result.Model
 
 type Page
-    = RaceAdd Race.Model.Add
-    | ResultAdd Result.Model.Add
-    | RiderAdd Rider.Model.Add
+    = Riders
     | RiderDetails String
-    | Riders
-    | RaceDetails String
+    | RiderAdd Rider.Model.Add
+    --
     | Races
+    | RaceDetails String
+    | RaceAdd Race.Model.Add
+    --
+    | ResultAdd Result.Model.Add

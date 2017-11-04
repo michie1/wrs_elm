@@ -1,4 +1,4 @@
-module Race.Model exposing (Add, Race, initialRaces, Category, Category(..), categoryString)
+module Race.Model exposing (Add, Race, Category, Category(..) )
 
 import Date
 import Ui.Calendar
@@ -19,39 +19,8 @@ type alias Race =
     , category : Category
     }
 
-
 type alias Add =
     { name : String
     , category : Category
     , calendar : Ui.Calendar.Model
     }
-
-
-initialRaces : List Race
-initialRaces =
-    []
-
-
-
--- [ Race 1 "race a" "31-10-2016" Criterium
--- , Race 2 "race c" "21-10-2016" Other
---]
-
-
-categoryString : Category -> String
-categoryString category =
-    case category of
-        Classic ->
-            "Klassieker"
-
-        Criterium ->
-            "Criterum"
-
-        Regiocross ->
-            "Regiocross"
-
-        Other ->
-            "Other"
-
-        _ ->
-            "Unknown"

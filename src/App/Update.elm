@@ -1,47 +1,30 @@
-port module App.Update exposing (update)
+module App.Update exposing (update)
 
 import App.Model exposing (App)
+import App.Msg exposing (Msg(..))
 import App.Routing
 import App.Page
-import App.Msg exposing (Msg(..))
 import App.UrlUpdate
+import App.Helpers
+import App.Outfit as Outfit exposing (Outfit)
 import Race.Model exposing (Race)
+import Race.Update
 import Rider.Model
+import Rider.Update
 import Result.Model
 import Result.Update
-import Race.Update
 import String
-import Debug
-import Array
-import Set
-import Json.Decode
-import Date
-import Time
-import Date.Extra
-import Task
-import Keyboard.Extra
-import Dom
 import Json.Encode
 import Json.Decode
-import App.Helpers
-import Rider.Update
-import Ui.Ratings
+import Json.Decode.Pipeline
 import Ui.Calendar
 import Ui.Chooser
-import Navigation
-import Json.Decode.Pipeline
-import Json.Decode
-import App.Outfit as Outfit exposing (Outfit)
-
-port setLocalStorage : ( String, String ) -> Cmd msg
-
-
-port getLocalStorage : String -> Cmd msg
 
 
 type alias KeyResponse =
     { key : String
     }
+
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
@@ -58,46 +41,74 @@ update msg app =
                     _ ->
                         noOp
 
-            RaceAdd ->
-                case app.page of
-                    App.Page.RaceAdd raceAdd ->
-                        noOp
-
-                    _ ->
-                        noOp
-
             RaceName name ->
                 let
                     page =
                         Race.Update.addPage2 msg app.page
                 in
-                    { app | page = page } ! []
+                    ( { app | page = page }, Cmd.none )
 
             RaceAddCategory category ->
                 let
                     page =
                         Race.Update.addPage2 msg app.page
                 in
-                    { app | page = page } ! []
+                    ( { app | page = page }, Cmd.none )
 
             RaceDate newDate ->
                 let
                     page =
                         Race.Update.addPage2 msg app.page
                 in
-                    { app | page = page } ! []
+                    ( { app | page = page }, Cmd.none )
+
+            Chooser msg_ ->
+                case app.page of
+                    App.Page.ResultAdd resultAdd ->
+                        let
+                            ( chooser, cmd ) =
+                                Ui.Chooser.update msg_ resultAdd.chooser
+
+                            nextResultAdd =
+                                App.Page.ResultAdd { resultAdd | chooser = chooser }
+                        in
+                            ( { app | page = nextResultAdd }
+                            , Cmd.map Chooser cmd
+                            )
+
+                    _ ->
+                        noOp
+
+            RaceAddedJson rawResponse ->
+                let
+                    decoder =
+                        Json.Decode.Pipeline.decode
+                            KeyResponse
+                            |> Json.Decode.Pipeline.required "key" Json.Decode.string
+
+                    keyResponseResult =
+                        Json.Decode.decodeValue decoder rawResponse
+                in
+                    case keyResponseResult of
+                        Ok keyResponse ->
+                            ( app
+                            , App.Helpers.navigate (App.Page.RaceDetails keyResponse.key)
+                            )
+
+                        Err err ->
+                            noOp
 
             RacesJson json ->
                 Race.Update.racesJson json app
+
+            ResultAddSubmit ->
+                Result.Update.addSubmit app
 
             ResultsJson rawResponse ->
                 Result.Update.resultsJson rawResponse app
 
             ResultAddedJson rawResponse ->
                 Result.Update.addedJson rawResponse app
-
-            ResultAddSubmit ->
-                Result.Update.addSubmit app
 
             ResultAddOutfit outfit ->
                 Result.Update.addOutfit outfit app
@@ -119,11 +130,22 @@ update msg app =
             ResultAddResult value ->
                 Result.Update.addResult value app
 
-            UrlUpdate route ->
-                App.UrlUpdate.urlUpdate route app
+            Calendar msg_ ->
+                case app.page of
+                    App.Page.RaceAdd raceAdd ->
+                        let
+                            ( calendar, cmd ) =
+                                Ui.Calendar.update msg_ raceAdd.calendar
 
-            NavigateTo page ->
-                ( app, App.Helpers.navigate page )
+                            nextRaceAdd =
+                                App.Page.RaceAdd { raceAdd | calendar = calendar }
+                        in
+                            ( { app | page = nextRaceAdd }
+                            , Cmd.map Calendar cmd
+                            )
+
+                    _ ->
+                        noOp
 
             RiderAddedJson rawResponse ->
                 let
@@ -144,28 +166,6 @@ update msg app =
                         Err err ->
                             noOp
 
-            RaceAddedJson rawResponse ->
-                let
-                    decoder =
-                        Json.Decode.Pipeline.decode
-                            KeyResponse
-                            |> Json.Decode.Pipeline.required "key" Json.Decode.string
-
-                    keyResponseResult =
-                        Json.Decode.decodeValue decoder rawResponse
-                in
-                    case keyResponseResult of
-                        Ok keyResponse ->
-                            ( app
-                            , App.Helpers.navigate (App.Page.RaceDetails keyResponse.key)
-                            )
-
-                        Err err ->
-                            noOp
-
-            Noop ->
-                noOp
-
             RidersJson json ->
                 Rider.Update.ridersJson json app
 
@@ -178,37 +178,11 @@ update msg app =
             RiderAddLicence licence ->
                 Rider.Update.addLicence licence app
 
+            Noop ->
+                noOp
 
-            Calendar msg_ ->
-                case app.page of
-                    App.Page.RaceAdd raceAdd ->
-                        let
-                            ( calendar, cmd ) =
-                                Ui.Calendar.update msg_ raceAdd.calendar
+            UrlUpdate route ->
+                App.UrlUpdate.urlUpdate route app
 
-                            nextRaceAdd =
-                                App.Page.RaceAdd { raceAdd | calendar = calendar }
-                        in
-                            ( { app | page = nextRaceAdd }
-                            , Cmd.map Calendar cmd
-                            )
-
-                    _ ->
-                        noOp
-
-            Chooser msg_ ->
-                case app.page of
-                    App.Page.ResultAdd resultAdd ->
-                        let
-                            ( chooser, cmd ) =
-                                Ui.Chooser.update msg_ resultAdd.chooser
-
-                            nextResultAdd =
-                                App.Page.ResultAdd { resultAdd | chooser = chooser }
-                        in
-                            ( { app | page = nextResultAdd }
-                            , Cmd.map Chooser cmd
-                            )
-
-                    _ ->
-                        noOp
+            NavigateTo page ->
+                ( app, App.Helpers.navigate page )

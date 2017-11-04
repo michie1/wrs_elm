@@ -113,10 +113,10 @@ viewPage app =
         App.Page.RaceAdd raceAdd ->
             Race.View.Add.render raceAdd
 
-        App.Page.ResultAdd resultAdd ->
+        App.Page.ResultAdd add ->
             let
                 maybeRace =
-                    getRace resultAdd.raceKey (Maybe.withDefault [] app.races)
+                    getRace add.raceKey (Maybe.withDefault [] app.races)
             in
                 case ( maybeRace, app.riders ) of
                     ( Nothing, Nothing ) ->
@@ -129,7 +129,7 @@ viewPage app =
                         div [] [ text "Riders not yet loaded." ]
 
                     ( Just race, Just riders ) ->
-                        Result.View.Add.render race resultAdd riders app.results
+                        Result.View.Add.render race add riders app.results
 
 
 userLi : App -> List (Html App.Msg.Msg)

@@ -82,7 +82,6 @@ routeToPage route =
         routePages =
             [ ( App.Routing.Riders, App.Page.Riders )
             , ( App.Routing.Races, App.Page.Races )
-            , ( App.Routing.Home, App.Page.Races )
             ]
 
         maybeRoutePage =
