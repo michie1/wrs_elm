@@ -6,3 +6,4 @@ type RaceType
     | Regiocross
     | Other
     | Unknown
+

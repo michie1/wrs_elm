@@ -1,6 +1,6 @@
 module App.Page exposing (Page, Page(..))
-import Page.Rider.Model
-import Page.Race.Model
+import Page.Rider.Model 
+import Page.Race.Add.Model as RaceAdd
 import Page.Result.Model
 
 type Page
@@ -10,6 +10,6 @@ type Page
     --
     | Races
     | RaceDetails String
-    | RaceAdd Page.Race.Model.Add
+    | RaceAdd RaceAdd.Model
     --
     | ResultAdd Page.Result.Model.Add

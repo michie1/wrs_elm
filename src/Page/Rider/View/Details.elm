@@ -13,7 +13,7 @@ import Data.Rider exposing (Rider)
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
 import Page.Result.Model
-import Page.Race.Model
+import Page.Race.Add.Model
 
 
 dateFormat : Date.Date -> String

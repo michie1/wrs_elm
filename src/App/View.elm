@@ -8,9 +8,9 @@ import App.Model exposing (App)
 import App.Routing
 import App.Page
 import Data.Race exposing (Race, lastRaces, getRace)
-import Page.Race.View.Add
-import Page.Race.View.List
-import Page.Race.View.Details
+import Page.Race.Add.View
+import Page.Race.List.View
+import Page.Race.Details.View
 import Page.Rider.View.List
 import Page.Rider.View.Details
 import Page.Result.View.List
@@ -63,13 +63,13 @@ viewPage app =
             Page.Rider.View.Add.render add
 
         App.Page.Races ->
-            Page.Race.View.List.render app.races app.results
+            Page.Race.List.View.render app.races app.results
 
         App.Page.RaceDetails key ->
-            Page.Race.View.Details.render app key
+            Page.Race.Details.View.render app key
 
         App.Page.RaceAdd raceAdd ->
-            Page.Race.View.Add.render raceAdd
+            Page.Race.Add.View.render raceAdd
 
         App.Page.ResultAdd add ->
             let

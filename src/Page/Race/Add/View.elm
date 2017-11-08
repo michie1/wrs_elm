@@ -1,5 +1,4 @@
-module Page.Race.View.Add exposing (render)
-
+module Page.Race.Add.View exposing (render)
 import Html exposing (Html, node, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
 import Html.Attributes exposing (attribute, autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
@@ -10,7 +9,7 @@ import Date
 import Ui.Calendar
 import Data.RaceType as RaceType exposing (RaceType)
 import Data.Race exposing (Race)
-import Page.Race.Model exposing (Add)
+import Page.Race.Add.Model exposing (Model)
 
 
 dateFormat : Date.Date -> String
@@ -18,7 +17,7 @@ dateFormat date =
     Date.Extra.Format.format config "%Y-%m-%d" date
 
 
-render : Add -> Html App.Msg.Msg
+render : Model -> Html App.Msg.Msg
 render raceAdd =
     let
         name =

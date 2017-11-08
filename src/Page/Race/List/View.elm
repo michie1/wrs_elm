@@ -1,4 +1,4 @@
-module Page.Race.View.List exposing (..)
+module Page.Race.List.View exposing (..)
 
 import Html exposing (Html, h2, div, text, a, table, tr, td, th, thead, tbody)
 import Html.Attributes exposing (href, class)

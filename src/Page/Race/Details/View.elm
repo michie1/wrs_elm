@@ -1,4 +1,4 @@
-module Page.Race.View.Details exposing (..)
+module Page.Race.Details.View exposing (..)
 
 import Html exposing (Html, img, button, span, li, i, h2, h3, h5, ul, li, a, div, text, table, tbody, thead, tr, td, th, br, p)
 import Html.Attributes exposing (target, src, href, class, style)

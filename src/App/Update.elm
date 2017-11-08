@@ -10,7 +10,7 @@ import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race)
 import Page.Rider.Model
 import Page.Rider.Update
-import Page.Race.Model
+import Page.Race.Add.Model
 import Page.Race.Update
 import Page.Result.Model
 import Page.Result.Update

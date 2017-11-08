@@ -9,7 +9,7 @@ import App.Helpers
 import Data.Rider exposing (Rider)
 import Data.RaceResult exposing (RaceResult)
 import Page.Result.Model
-import Page.Race.Model
+import Page.Race.Add.Model
 
 render : List Rider -> Html App.Msg.Msg
 render riders =

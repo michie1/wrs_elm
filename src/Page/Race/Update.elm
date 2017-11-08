@@ -4,7 +4,7 @@ import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import App.Page
 import App.Helpers
-import Page.Race.Model
+import Page.Race.Add.Model as RaceAdd
 import Date
 import Date.Extra
 import Task
@@ -41,7 +41,7 @@ addPage2 msg page =
             page
 
 
-addPage : App.Msg.Msg -> Maybe Page.Race.Model.Add -> Maybe Page.Race.Model.Add
+addPage : App.Msg.Msg -> Maybe RaceAdd.Model -> Maybe RaceAdd.Model
 addPage msg maybeRaceAdd =
     case maybeRaceAdd of
         Just raceAdd ->
@@ -59,12 +59,12 @@ addPage msg maybeRaceAdd =
             Nothing
 
 
-addName : String -> Page.Race.Model.Add -> Page.Race.Model.Add
+addName : String -> RaceAdd.Model -> RaceAdd.Model
 addName newName raceAdd =
     { raceAdd | name = newName }
 
 
-addRaceType : RaceType -> Page.Race.Model.Add -> Page.Race.Model.Add
+addRaceType : RaceType -> RaceAdd.Model -> RaceAdd.Model
 addRaceType raceType raceAdd =
     { raceAdd | raceType = raceType }
 
@@ -74,7 +74,7 @@ dateFormat date =
     Date.Extra.Format.format config "%Y-%m-%d 00:00:00" date
 
 
-addSubmit : Page.Race.Model.Add -> App.Model.App -> ( App, Cmd Msg )
+addSubmit : RaceAdd.Model -> App.Model.App -> ( App, Cmd Msg )
 addSubmit raceAdd app =
     let
         dateString =

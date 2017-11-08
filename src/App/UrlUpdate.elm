@@ -5,7 +5,7 @@ import App.Page
 import App.Model exposing (App)
 import App.Routing exposing (Route)
 import Page.Result.Model
-import Page.Race.Model
+import Page.Race.Add.Model as RaceAdd
 import Page.Rider.Model
 import Task
 import Dom
@@ -43,7 +43,7 @@ onUrlEnter route app =
         App.Routing.RaceAdd ->
             let
                 raceAdd =
-                    Page.Race.Model.Add "" RaceType.Classic (Ui.Calendar.init ())
+                    RaceAdd.Model "" RaceType.Classic (Ui.Calendar.init ())
             in
                 ( { app | page = App.Page.RaceAdd raceAdd }
                 , Task.attempt (always App.Msg.Noop) (Dom.focus "name")
