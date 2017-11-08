@@ -11,7 +11,7 @@ import App.Msg
 import App.Helpers
 import Data.Rider exposing (Rider)
 import Data.Race exposing (Race)
-import Data.RaceResult exposing (RaceResult)
+import Data.RaceResult exposing (RaceResult, getPointsByResult, getPointsByResults)
 import Page.Result.Add.Model as ResultAdd
 import Page.Race.Add.Model as RaceAdd
 
@@ -46,7 +46,7 @@ view app riderKey races riders results =
                             results
 
                     points =
-                        App.Helpers.getPointsByResults riderResults races
+                        getPointsByResults riderResults races
                 in
                     div [ class "col s12" ]
                         [ h2 [] [ text rider.name ]
@@ -118,7 +118,7 @@ raceRow result races =
                                 [ text race.name ]
                             ]
                         , td [] [ text <| dateString ]
-                        , td [] [ text <| toString <| App.Helpers.getPointsByResult result races ]
+                        , td [] [ text <| toString <| getPointsByResult result races ]
                         , td [] [ text result.result ]
                         , td [] [ text <| toString result.outfit ]
                         ]

@@ -1,4 +1,4 @@
-module Data.RaceType exposing (RaceType, RaceType(..), raceType, raceTypeToString, raceTypeDecoder)
+module Data.RaceType exposing (RaceType, RaceType(..), raceType, raceTypeToString, raceTypeDecoder, getPointsByRaceType)
 
 import Json.Decode
 import Json.Decode.Extra
@@ -50,3 +50,24 @@ raceTypeToString category =
 raceTypeDecoder : String -> Json.Decode.Decoder RaceType
 raceTypeDecoder string =
     Json.Decode.succeed (raceType string)
+
+getPointsByRaceType : RaceType -> Int
+getPointsByRaceType category =
+    case category of
+        Classic ->
+            4
+
+        Criterium ->
+            3
+
+        Regiocross ->
+            2
+
+        Other ->
+            0
+
+        Unknown ->
+            0
+
+
+

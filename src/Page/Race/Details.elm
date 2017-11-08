@@ -16,6 +16,7 @@ import Data.Race exposing (Race)
 import Data.Rider exposing (Rider, getRiderById)
 import Data.RaceResult exposing (RaceResult)
 import Data.ResultCategory exposing (ResultCategory, resultCategories)
+import Data.RaceType exposing (getPointsByRaceType)
 import Page.Result.Add.Model as ResultAdd
 
 
@@ -87,7 +88,7 @@ info race =
                     [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text race.name ] ]
                     , li [ class "collection-item" ] [ text "Date ", span [ class "secondary-content" ] [ text dateString ] ]
                     , li [ class "collection-item" ] [ text "Category ", span [ class "secondary-content" ] [ text (toString race.raceType) ] ]
-                    , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text <| toString <| App.Helpers.getPointsByRaceType race.raceType ] ]
+                    , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text <| toString <| getPointsByRaceType race.raceType ] ]
                     ]
                 ]
             ]

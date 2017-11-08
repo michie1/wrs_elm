@@ -1,9 +1,11 @@
-module Data.RaceResult exposing (RaceResult, resultExists, resultDecoder, resultsDecoder)
+module Data.RaceResult exposing (RaceResult, resultExists, resultDecoder, resultsDecoder, getPointsByResults, getPointsByResult)
 
 import Json.Decode
 import Json.Decode.Pipeline
 import Data.ResultCategory exposing (ResultCategory, resultCategoryDecoder)
-import Data.Outfit exposing (Outfit, outfitDecoder)
+import Data.Outfit as Outfit exposing (Outfit, outfitDecoder)
+import Data.Race exposing (Race, getRaceByKey)
+import Data.RaceType exposing (getPointsByRaceType)
 
 type alias RaceResult =
     { key : String
@@ -43,3 +45,23 @@ resultDecoder =
 resultsDecoder : Json.Decode.Decoder (List RaceResult)
 resultsDecoder =
     Json.Decode.list resultDecoder
+
+getPointsByResults : List RaceResult -> List Race -> Int
+getPointsByResults results races =
+    List.sum <|
+        List.map
+            (\result -> getPointsByResult result races)
+            results
+
+
+getPointsByResult : RaceResult -> List Race -> Int
+getPointsByResult result races =
+    if result.outfit == Outfit.WTOS then
+        case getRaceByKey result.raceKey races of
+            Just race ->
+                getPointsByRaceType race.raceType
+
+            Nothing ->
+                0
+    else
+        0
