@@ -24,56 +24,48 @@ dateFormat date =
     Date.Extra.Format.format config "%Y-%m-%d" date
 
 
-view : App.Model.App -> String -> Html App.Msg.Msg
-view app raceKey =
-    case ( app.races, app.riders ) of
-        ( Nothing, Nothing ) ->
-            div [] [ text "Races and riders not loaded." ]
+view : App.Model.App -> String -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
+view app raceKey races riders results =
+    let
+        maybeRace =
+            List.head
+                (List.filter
+                    (\race -> race.key == raceKey)
+                    races
+                )
+    in
+        case maybeRace of
+            Nothing ->
+                div [] [ text "Race does not exist" ]
 
-        ( Nothing, _ ) ->
-            div [] [ text "Races not loaded." ]
-
-        ( _, Nothing ) ->
-            div [] [ text "Riders not loaded." ]
-
-        ( Just races, Just riders ) ->
-            let
-                maybeRace =
-                    List.head
-                        (List.filter
-                            (\race -> race.key == raceKey)
-                            races
-                        )
-            in
-                case maybeRace of
-                    Nothing ->
-                        div [] [ text "Race does not exist" ]
-
-                    Just race ->
-                        let
-                            results =
-                                List.filter
-                                    (\result -> result.raceKey == race.key)
-                                    (Maybe.withDefault [] app.results)
-                        in
-                            div []
-                                [ div []
-                                    [ h2 [] [ text race.name ]
-                                    , info race
-                                    ]
-                                , div []
-                                    [ h3 [] [ text "Results" ]
-                                    , addResultButton race
-                                    ]
-                                , resultsTable race results riders
-                                ]
+            Just race ->
+                let
+                    raceResults =
+                        List.filter
+                            (\result -> result.raceKey == race.key)
+                            results
+                in
+                    div []
+                        [ div []
+                            [ h2 [] [ text race.name ]
+                            , info race
+                            ]
+                        , div []
+                            [ h3 [] [ text "Results" ]
+                            , addResultButton race
+                            ]
+                        , resultsTable race raceResults riders
+                        ]
 
 
 addResultButton : Race -> Html App.Msg.Msg
 addResultButton race =
     let
-        initialAdd = ResultAdd.initial
-        resultAdd = { initialAdd | raceKey = race.key }
+        initialAdd =
+            ResultAdd.initial
+
+        resultAdd =
+            { initialAdd | raceKey = race.key }
     in
         button
             [ class "waves-effect waves-light btn"
@@ -86,7 +78,8 @@ addResultButton race =
 info : Race -> Html App.Msg.Msg
 info race =
     let
-        dateString = dateFormat race.date
+        dateString =
+            dateFormat race.date
     in
         div [ class "row" ]
             [ div [ class "col s4 m5" ]
@@ -171,4 +164,3 @@ resultTd result =
     td []
         [ span [] [ text result ]
         ]
-

@@ -1,4 +1,4 @@
-module App.View exposing (render)
+module App.View exposing (view)
 
 import Html exposing (Html, h2, h3, h4, button, nav, div, text, span, a, input, ul, li, node)
 import Html.Attributes exposing (attribute, href, id, class)
@@ -9,6 +9,8 @@ import App.Model exposing (App)
 import App.Routing
 import App.Page
 import Data.Race exposing (Race, lastRaces, getRace)
+import Data.Rider exposing (Rider)
+import Data.RaceResult exposing (RaceResult)
 import Page.Race.Details
 import Page.Race.List
 import Page.Race.Add.View
@@ -19,54 +21,49 @@ import Page.Result.List
 import Page.Result.Add.View
 
 
-render : App -> Html Msg
-render app =
+view : App -> Html Msg
+view app =
     div [ class "container" ]
         [ div [ class "row" ] [ loadingPage app ]
         ]
 
 
-mainView : App -> Html Msg
-mainView app =
+mainView : App -> List Race -> List Rider -> List RaceResult -> Html Msg
+mainView app races riders results =
     div []
-        [ div [ class "col s3 m4" ] [ sidebar app ]
-        , div [ class "col s9 m8" ] [ viewPage app ]
+        [ div [ class "col s3 m4" ] [ sidebar races ]
+        , div [ class "col s9 m8" ] [ viewPage app races riders results ]
         ]
 
 
-sidebar : App -> Html Msg
-sidebar app =
+sidebar : List Race -> Html Msg
+sidebar races =
     div []
         [ h2 [] [ text "WRS" ]
         , ul [ class "collection" ] <|
             [ li [ class "collection-header" ] [ h4 [] [ a [ href "#riders" ] [ text "Riders" ] ] ] ]
                 ++ [ li [ class "collection-header" ] [ h4 [] [ a [ href "#races" ] [ text "Races" ] ] ] ]
-                ++ (List.map raceLi <| lastRaces app.races)
+                ++ (List.map raceLi <| lastRaces races)
         ]
 
 
-viewPage : App -> Html Msg
-viewPage app =
+viewPage : App -> List Race -> List Rider -> List RaceResult -> Html Msg
+viewPage app races riders results =
     case app.page of
-        App.Page.Riders ->
-            case app.riders of
-                Just riders ->
-                    Page.Rider.List.view riders
-
-                Nothing ->
-                    div [] [ text "No riders loaded." ]
-
         App.Page.RiderDetails key ->
-            Page.Rider.Details.view app key
+            Page.Rider.Details.view app key races riders results
+
+        App.Page.Riders ->
+            Page.Rider.List.view riders
 
         App.Page.RiderAdd add ->
             Page.Rider.Add.View.view add
 
-        App.Page.Races ->
-            Page.Race.List.view app.races app.results
-
         App.Page.RaceDetails key ->
-            Page.Race.Details.view app key
+            Page.Race.Details.view app key races riders results
+
+        App.Page.Races ->
+            Page.Race.List.view races results
 
         App.Page.RaceAdd raceAdd ->
             Page.Race.Add.View.view raceAdd
@@ -74,29 +71,23 @@ viewPage app =
         App.Page.ResultAdd add ->
             let
                 maybeRace =
-                    getRace add.raceKey (Maybe.withDefault [] app.races)
+                    getRace add.raceKey races
             in
-                case ( maybeRace, app.riders ) of
-                    ( Nothing, Nothing ) ->
-                        div [] [ text "Race does not exist and riders not loaded." ]
+                case maybeRace of
+                    Just race ->
+                        Page.Result.Add.View.view race add riders results
 
-                    ( Nothing, _ ) ->
+                    Nothing ->
                         div [] [ text "Race does not exist." ]
-
-                    ( _, Nothing ) ->
-                        div [] [ text "Riders not yet loaded." ]
-
-                    ( Just race, Just riders ) ->
-                        Page.Result.Add.View.view race add riders app.results
 
 
 loadingPage : App -> Html Msg
 loadingPage app =
-    case ( app.races, app.riders ) of
-        ( Just race, Just riders ) ->
-            mainView app
+    case ( app.races, app.riders, app.results ) of
+        ( Just races, Just riders, Just results ) ->
+            mainView app races riders results
 
-        ( _, _ ) ->
+        ( _, _, _ ) ->
             div [ class "col s9 m8 offset-s3 offset-m4" ]
                 [ h2 [] [ text "Loading data" ]
                 , spinner

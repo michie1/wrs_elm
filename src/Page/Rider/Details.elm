@@ -21,47 +21,38 @@ dateFormat date =
     Date.Extra.Format.format config "%Y-%m-%d" date
 
 
-view : App.Model.App -> String -> Html App.Msg.Msg
-view app riderKey =
-    case app.riders of
-        Just riders ->
-            case app.races of
-                Just races ->
-                    let
-                        maybeRider =
-                            List.head
-                                (List.filter
-                                    (\rider -> rider.key == riderKey)
-                                    riders
-                                )
-                    in
-                        case maybeRider of
-                            Nothing ->
-                                div []
-                                    [ h2 [] [ text "Rider" ]
-                                    , p [] [ text "Rider does not exist." ]
-                                    ]
+view : App.Model.App -> String -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
+view app riderKey races riders results =
+    let
+        maybeRider =
+            List.head
+                (List.filter
+                    (\rider -> rider.key == riderKey)
+                    riders
+                )
+    in
+        case maybeRider of
+            Nothing ->
+                div []
+                    [ h2 [] [ text "Rider" ]
+                    , p [] [ text "Rider does not exist." ]
+                    ]
 
-                            Just rider ->
-                                let
-                                    results =
-                                        List.filter
-                                            (\result -> result.riderKey == rider.key)
-                                            (Maybe.withDefault [] app.results)
+            Just rider ->
+                let
+                    riderResults =
+                        List.filter
+                            (\result -> result.riderKey == rider.key)
+                            results
 
-                                    points = App.Helpers.getPointsByResults results races
-                                in
-                                    div [ class "col s12" ]
-                                        [ h2 [] [ text rider.name ]
-                                        , info rider points
-                                        , resultsTable rider results (Maybe.withDefault [] app.races)
-                                        ]
-                Nothing ->
-                    div [] [ text "No races loaded." ]
-
-        Nothing ->
-            div [] [ text "No riders loaded." ]
-
+                    points =
+                        App.Helpers.getPointsByResults riderResults races
+                in
+                    div [ class "col s12" ]
+                        [ h2 [] [ text rider.name ]
+                        , info rider points
+                        , resultsTable rider results races
+                        ]
 
 
 info : Rider -> Int -> Html App.Msg.Msg
@@ -90,10 +81,11 @@ resultsTable rider results races =
         , tbody []
             (results
                 -- |> List.sortWith (\a b -> Date.Extra.compare a.race.date b.date) -- TODO: sort by race date of this result
-                |> List.map
-                    (\result ->
-                        raceRow result races
-                    )
+                |>
+                    List.map
+                        (\result ->
+                            raceRow result races
+                        )
             )
         ]
 
@@ -116,7 +108,8 @@ raceRow result races =
 
             Just race ->
                 let
-                    dateString = dateFormat race.date
+                    dateString =
+                        dateFormat race.date
                 in
                     tr []
                         [ td []

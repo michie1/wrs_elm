@@ -16,9 +16,9 @@ type alias Race =
     }
 
 
-lastRaces : Maybe (List Race) -> List Race
-lastRaces maybeRaces =
-    Maybe.withDefault [] maybeRaces
+lastRaces : List Race -> List Race
+lastRaces races =
+    races
         |> List.sortWith (\a b -> Date.Extra.compare a.date b.date)
         |> List.reverse
         |> List.take 5

@@ -17,12 +17,12 @@ dateFormat date =
     Date.Extra.Format.format config "%d-%m-%Y" date
 
 
-view : Maybe (List Race) -> Maybe (List RaceResult) -> Html App.Msg.Msg
-view maybeRaces maybeResults =
+view : List Race -> List RaceResult -> Html App.Msg.Msg
+view races results =
     div []
         [ h2 [] [ text "Races" ]
         , addButton
-        , raceTable (Maybe.withDefault [] maybeRaces) (Maybe.withDefault [] maybeResults)
+        , raceTable races results
         ]
 
 

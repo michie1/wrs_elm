@@ -27,7 +27,7 @@ main =
         { init = init
         , update = App.Update.update
         , subscriptions = subscriptions
-        , view = App.View.render
+        , view = App.View.view
         }
 
 

@@ -26,12 +26,9 @@ riderNameExists name riders =
 --True
 
 
-view : Race -> Model -> List Rider -> Maybe (List RaceResult) -> Html App.Msg.Msg
-view race resultAdd riders maybeResults =
+view : Race -> Model -> List Rider -> List RaceResult -> Html App.Msg.Msg
+view race resultAdd riders results =
     let
-        results =
-            Maybe.withDefault [] maybeResults
-
         submitDisabled =
             --not (riderNameExists resultAdd.riderName riders)
             -- ||
@@ -57,46 +54,41 @@ view race resultAdd riders maybeResults =
             resultAdd.chooser
                 |> Ui.Chooser.items items
     in
-        case maybeResults of
-            Nothing ->
-                div [] [ text "Results not loaded yet" ]
-
-            Just results ->
-                div []
-                    [ h2 [] [ text ("Add result for " ++ race.name) ]
-                    , div [ class "row" ]
-                        [ div [ class "input-field col s6" ]
-                            [ input
-                                [ id "result"
-                                , type_ "text"
-                                , onInput App.Msg.ResultAddResult
-                                , autofocus True
-                                ]
-                                []
-                            , label [ for "result" ] [ text "Result" ]
-                            ]
+        div []
+            [ h2 [] [ text ("Add result for " ++ race.name) ]
+            , div [ class "row" ]
+                [ div [ class "input-field col s6" ]
+                    [ input
+                        [ id "result"
+                        , type_ "text"
+                        , onInput App.Msg.ResultAddResult
+                        , autofocus True
                         ]
-                    , div [ class "row" ]
-                        [ div [ class "input-field col s6" ]
-                            [ div [] [ Html.map App.Msg.Chooser (Ui.Chooser.view chooser) ]
-                            , label [ for "rider", class "active" ] [ text "Rider" ]
-                            ]
-                        ]
-                    , div [ class "row" ] [ resultCategoryButtons ]
-                    , div [ class "row" ] [ outfitButtons ]
-                    , div [ class "row" ]
-                        [ button
-                            [ class "waves-effect waves-light btn"
-                            , type_ "submit"
-                            , onClick App.Msg.ResultAddSubmit
-                            , Html.Attributes.name "action"
-                            , disabled submitDisabled
-                            ]
-                            [ text "Add result"
-                            , i [ class "material-icons right" ] [ text "send" ]
-                            ]
-                        ]
+                        []
+                    , label [ for "result" ] [ text "Result" ]
                     ]
+                ]
+            , div [ class "row" ]
+                [ div [ class "input-field col s6" ]
+                    [ div [] [ Html.map App.Msg.Chooser (Ui.Chooser.view chooser) ]
+                    , label [ for "rider", class "active" ] [ text "Rider" ]
+                    ]
+                ]
+            , div [ class "row" ] [ resultCategoryButtons ]
+            , div [ class "row" ] [ outfitButtons ]
+            , div [ class "row" ]
+                [ button
+                    [ class "waves-effect waves-light btn"
+                    , type_ "submit"
+                    , onClick App.Msg.ResultAddSubmit
+                    , Html.Attributes.name "action"
+                    , disabled submitDisabled
+                    ]
+                    [ text "Add result"
+                    , i [ class "material-icons right" ] [ text "send" ]
+                    ]
+                ]
+            ]
 
 
 resultExists : Rider -> Race -> List RaceResult -> Bool
@@ -132,12 +124,14 @@ resultCategoryButtons =
         , resultCategoryButton "catb" "Cat B" ResultCategory.CatB
         ]
 
+
 outfitButton : String -> String -> Outfit -> Bool -> Html App.Msg.Msg
 outfitButton outfitName outfitLabel outfit isChecked =
     p []
         [ input [ checked isChecked, name "outfit", type_ "radio", id outfitName, onClick (App.Msg.ResultAddOutfit outfit) ] []
         , label [ for outfitName ] [ text outfitLabel ]
         ]
+
 
 outfitButtons : Html App.Msg.Msg
 outfitButtons =
