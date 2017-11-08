@@ -7,13 +7,14 @@ import App.Page
 import App.UrlUpdate
 import App.Helpers
 import Data.Outfit as Outfit exposing (Outfit)
-import Data.Race exposing (Race)
+import Data.Race exposing (Race, racesDecoder)
+import Data.RaceResult exposing (resultDecoder, resultsDecoder)
 import Page.Rider.Model
 import Page.Rider.Update
-import Page.Race.Add.Model
-import Page.Race.Update
-import Page.Result.Model
-import Page.Result.Update
+import Page.Race.Add.Model as RaceAdd
+import Page.Race.Add.Update
+import Page.Result.Add.Model as ResultAdd
+import Page.Result.Add.Update
 import String
 import Json.Encode
 import Json.Decode
@@ -37,7 +38,7 @@ update msg app =
             RaceAddSubmit ->
                 case app.page of
                     App.Page.RaceAdd raceAdd ->
-                        Page.Race.Update.addSubmit raceAdd app
+                        Page.Race.Add.Update.addSubmit raceAdd app
 
                     _ ->
                         noOp
@@ -45,21 +46,21 @@ update msg app =
             RaceName name ->
                 let
                     page =
-                        Page.Race.Update.addPage2 msg app.page
+                        Page.Race.Add.Update.addPage msg app.page
                 in
                     ( { app | page = page }, Cmd.none )
 
             RaceAddRaceType raceType ->
                 let
                     page =
-                        Page.Race.Update.addPage2 msg app.page
+                        Page.Race.Add.Update.addPage msg app.page
                 in
                     ( { app | page = page }, Cmd.none )
 
             RaceDate newDate ->
                 let
                     page =
-                        Page.Race.Update.addPage2 msg app.page
+                        Page.Race.Add.Update.addPage msg app.page
                 in
                     ( { app | page = page }, Cmd.none )
 
@@ -100,26 +101,49 @@ update msg app =
                             noOp
 
             RacesJson json ->
-                Page.Race.Update.racesJson json app
+                case Json.Decode.decodeValue racesDecoder json of
+                    Ok races ->
+                        ( { app | races = Just races }, Cmd.none )
+                    _ ->
+                        ( app, Cmd.none )
 
             ResultAddSubmit ->
-                Page.Result.Update.addSubmit app
+                Page.Result.Add.Update.addSubmit app
 
             ResultsJson rawResponse ->
-                Page.Result.Update.resultsJson rawResponse app
+                let
+                    nextResults = Json.Decode.decodeValue resultsDecoder rawResponse
+                in
+                    case nextResults of
+                        Ok results ->
+                            ( { app | results = Just results }
+                            , Cmd.none
+                            )
+
+                        Err err ->
+                            ( app, Cmd.none )
 
             ResultAddedJson rawResponse ->
-                Page.Result.Update.addedJson rawResponse app
+                let
+                    resultResult =
+                        Json.Decode.decodeValue resultDecoder rawResponse
+                in
+                    case resultResult of
+                        Ok result ->
+                            ( app, App.Helpers.navigate (App.Page.RaceDetails result.raceKey) )
+
+                        Err err ->
+                            ( app, Cmd.none )
 
             ResultAddOutfit outfit ->
-                Page.Result.Update.addOutfit outfit app
+                Page.Result.Add.Update.addOutfit outfit app
 
             ResultAddCategory category ->
                 ( (case app.page of
                     App.Page.ResultAdd resultAdd ->
                         { app
                             | page =
-                                App.Page.ResultAdd <| Page.Result.Update.addCategory category resultAdd
+                                App.Page.ResultAdd <| Page.Result.Add.Update.addCategory category resultAdd
                         }
 
                     _ ->
@@ -129,7 +153,7 @@ update msg app =
                 )
 
             ResultAddResult value ->
-                Page.Result.Update.addResult value app
+                Page.Result.Add.Update.addResult value app
 
             Calendar msg_ ->
                 case app.page of

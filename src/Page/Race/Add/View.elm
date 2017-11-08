@@ -1,4 +1,4 @@
-module Page.Race.Add.View exposing (render)
+module Page.Race.Add.View exposing (view)
 import Html exposing (Html, node, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
 import Html.Attributes exposing (attribute, autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
@@ -17,8 +17,8 @@ dateFormat date =
     Date.Extra.Format.format config "%Y-%m-%d" date
 
 
-render : Model -> Html App.Msg.Msg
-render raceAdd =
+view : Model -> Html App.Msg.Msg
+view raceAdd =
     let
         name =
             raceAdd.name

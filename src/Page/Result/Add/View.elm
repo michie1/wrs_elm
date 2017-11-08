@@ -1,4 +1,4 @@
-module Page.Result.View.Add exposing (render)
+module Page.Result.Add.View exposing (view)
 
 import Html exposing (Html, button, div, text, span, label, input, ul, li, h2, input, i, p)
 import Html.Attributes exposing (autofocus, class, id, type_, for, disabled, value, name, checked)
@@ -12,7 +12,7 @@ import Data.Race exposing (Race)
 import Data.Rider exposing (Rider)
 import Data.ResultCategory as ResultCategory exposing (ResultCategory)
 import Data.RaceResult exposing (RaceResult)
-import Page.Result.Model
+import Page.Result.Add.Model exposing (Model)
 
 
 riderNameExists : String -> List Rider -> Bool
@@ -26,8 +26,8 @@ riderNameExists name riders =
 --True
 
 
-render : Race -> Page.Result.Model.Add -> List Rider -> Maybe (List RaceResult) -> Html App.Msg.Msg
-render race resultAdd riders maybeResults =
+view : Race -> Model -> List Rider -> Maybe (List RaceResult) -> Html App.Msg.Msg
+view race resultAdd riders maybeResults =
     let
         results =
             Maybe.withDefault [] maybeResults

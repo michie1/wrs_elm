@@ -1,4 +1,4 @@
-module Page.Race.List.View exposing (..)
+module Page.Race.List exposing (view)
 
 import Html exposing (Html, h2, div, text, a, table, tr, td, th, thead, tbody)
 import Html.Attributes exposing (href, class)
@@ -9,7 +9,7 @@ import Date.Extra
 import App.Msg
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
-import Page.Result.Model
+import Page.Result.Add.Model as ResultAdd
 
 
 dateFormat : Date.Date -> String
@@ -17,8 +17,8 @@ dateFormat date =
     Date.Extra.Format.format config "%d-%m-%Y" date
 
 
-render : Maybe (List Race) -> Maybe (List RaceResult) -> Html App.Msg.Msg
-render maybeRaces maybeResults =
+view : Maybe (List Race) -> Maybe (List RaceResult) -> Html App.Msg.Msg
+view maybeRaces maybeResults =
     div []
         [ h2 [] [ text "Races" ]
         , addButton

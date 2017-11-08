@@ -1,4 +1,4 @@
-module Page.Result.Model exposing (Add, initialAdd)
+module Page.Result.Add.Model exposing (Model, initial)
 
 import Data.Rider exposing (Rider)
 import Ui.Chooser
@@ -6,7 +6,7 @@ import Data.Outfit as Outfit exposing (Outfit)
 import Data.ResultCategory as ResultCategory exposing (ResultCategory)
 
 
-type alias Add =
+type alias Model =
     { raceKey : String
     , riderKey : Maybe String
     , result : String
@@ -17,8 +17,8 @@ type alias Add =
     }
 
 
-initialAdd : Add
-initialAdd =
+initial : Model
+initial =
     { raceKey = ""
     , riderKey = Nothing
     , result = ""

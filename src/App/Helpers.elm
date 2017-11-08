@@ -5,7 +5,6 @@ import Array
 import Navigation
 import App.Msg
 import App.Routing
-import Page.Result.Model
 import Page.Rider.Model
 import App.Page
 import Data.Outfit as Outfit

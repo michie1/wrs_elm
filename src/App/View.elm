@@ -9,12 +9,12 @@ import App.Routing
 import App.Page
 import Data.Race exposing (Race, lastRaces, getRace)
 import Page.Race.Add.View
-import Page.Race.List.View
-import Page.Race.Details.View
+import Page.Race.List
+import Page.Race.Details
 import Page.Rider.View.List
 import Page.Rider.View.Details
-import Page.Result.View.List
-import Page.Result.View.Add
+import Page.Result.List
+import Page.Result.Add.View
 import Page.Rider.View.Add
 import Date.Extra
 
@@ -63,13 +63,13 @@ viewPage app =
             Page.Rider.View.Add.render add
 
         App.Page.Races ->
-            Page.Race.List.View.render app.races app.results
+            Page.Race.List.view app.races app.results
 
         App.Page.RaceDetails key ->
-            Page.Race.Details.View.render app key
+            Page.Race.Details.view app key
 
         App.Page.RaceAdd raceAdd ->
-            Page.Race.Add.View.render raceAdd
+            Page.Race.Add.View.view raceAdd
 
         App.Page.ResultAdd add ->
             let
@@ -87,7 +87,7 @@ viewPage app =
                         div [] [ text "Riders not yet loaded." ]
 
                     ( Just race, Just riders ) ->
-                        Page.Result.View.Add.render race add riders app.results
+                        Page.Result.Add.View.view race add riders app.results
 
 
 loadingPage : App -> Html Msg

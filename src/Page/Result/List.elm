@@ -1,4 +1,4 @@
-module Page.Result.View.List exposing (render)
+module Page.Result.List exposing (view)
 
 import Html exposing (Html, a, div, text, span, input, ul, li, table, tr, td, tbody, th, thead)
 import App.Model
@@ -6,8 +6,8 @@ import App.Msg
 import Data.RaceResult exposing (RaceResult)
 
 
-render : Maybe (List RaceResult) -> Html App.Msg.Msg
-render maybeResults =
+view : Maybe (List RaceResult) -> Html App.Msg.Msg
+view maybeResults =
     case maybeResults of
         Nothing ->
             div [] [ text "No results loaded" ]

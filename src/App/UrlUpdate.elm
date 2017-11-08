@@ -4,7 +4,7 @@ import App.Msg exposing (Msg, Msg(..))
 import App.Page
 import App.Model exposing (App)
 import App.Routing exposing (Route)
-import Page.Result.Model
+import Page.Result.Add.Model as ResultAdd
 import Page.Race.Add.Model as RaceAdd
 import Page.Rider.Model
 import Task
@@ -31,7 +31,7 @@ onUrlEnter route app =
         App.Routing.ResultAdd raceKey ->
             let
                 resultAdd =
-                    Page.Result.Model.initialAdd
+                    ResultAdd.initial
 
                 resultAddWithRaceKey =
                     { resultAdd | raceKey = raceKey }

@@ -12,8 +12,8 @@ import App.Helpers
 import Data.Rider exposing (Rider)
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
-import Page.Result.Model
-import Page.Race.Add.Model
+import Page.Result.Add.Model as ResultAdd
+import Page.Race.Add.Model as RaceAdd
 
 
 dateFormat : Date.Date -> String

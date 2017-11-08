@@ -1,4 +1,4 @@
-module Page.Race.Details.View exposing (..)
+module Page.Race.Details exposing (view)
 
 import Html exposing (Html, img, button, span, li, i, h2, h3, h5, ul, li, a, div, text, table, tbody, thead, tr, td, th, br, p)
 import Html.Attributes exposing (target, src, href, class, style)
@@ -13,11 +13,11 @@ import App.Page
 import App.Routing
 import App.Helpers
 import Data.Race exposing (Race)
-import Data.Rider exposing (Rider)
+import Data.Rider exposing (Rider, getRiderById)
 import Data.RaceResult exposing (RaceResult)
 import Data.ResultCategory exposing (ResultCategory, resultCategories)
 import Page.Rider.Model
-import Page.Result.Model
+import Page.Result.Add.Model as ResultAdd
 
 
 dateFormat : Date.Date -> String
@@ -25,8 +25,8 @@ dateFormat date =
     Date.Extra.Format.format config "%Y-%m-%d" date
 
 
-render : App.Model.App -> String -> Html App.Msg.Msg
-render app raceKey =
+view : App.Model.App -> String -> Html App.Msg.Msg
+view app raceKey =
     case ( app.races, app.riders ) of
         ( Nothing, Nothing ) ->
             div [] [ text "Races and riders not loaded." ]
@@ -73,7 +73,7 @@ render app raceKey =
 addResultButton : Race -> Html App.Msg.Msg
 addResultButton race =
     let
-        initialAdd = Page.Result.Model.initialAdd
+        initialAdd = ResultAdd.initial
         resultAdd = { initialAdd | raceKey = race.key }
     in
         button
@@ -173,11 +173,3 @@ resultTd result =
         [ span [] [ text result ]
         ]
 
-
-getRiderById : String -> List Rider -> Maybe Rider
-getRiderById key riders =
-    List.head
-        (List.filter
-            (\rider -> rider.key == key)
-            riders
-        )
