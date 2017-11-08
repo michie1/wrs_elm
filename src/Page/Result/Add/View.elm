@@ -6,13 +6,13 @@ import Html.Events exposing (onInput, onClick, on)
 import Json.Decode as Json
 import Ui.Chooser
 import Set
-import App.Msg
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race)
 import Data.Rider exposing (Rider)
 import Data.ResultCategory as ResultCategory exposing (ResultCategory)
 import Data.RaceResult exposing (RaceResult)
 import Page.Result.Add.Model exposing (Model)
+import Page.Result.Add.Msg exposing (Msg, Msg(..))
 
 
 riderNameExists : String -> List Rider -> Bool
@@ -26,7 +26,7 @@ riderNameExists name riders =
 --True
 
 
-view : Race -> Model -> List Rider -> List RaceResult -> Html App.Msg.Msg
+view : Race -> Model -> List Rider -> List RaceResult -> Html Msg
 view race resultAdd riders results =
     let
         submitDisabled =
@@ -61,7 +61,7 @@ view race resultAdd riders results =
                     [ input
                         [ id "result"
                         , type_ "text"
-                        , onInput App.Msg.ResultAddResult
+                        , onInput ResultAddResult
                         , autofocus True
                         ]
                         []
@@ -70,7 +70,7 @@ view race resultAdd riders results =
                 ]
             , div [ class "row" ]
                 [ div [ class "input-field col s6" ]
-                    [ div [] [ Html.map App.Msg.Chooser (Ui.Chooser.view chooser) ]
+                    [ div [] [ Html.map Chooser (Ui.Chooser.view chooser) ]
                     , label [ for "rider", class "active" ] [ text "Rider" ]
                     ]
                 ]
@@ -80,7 +80,7 @@ view race resultAdd riders results =
                 [ button
                     [ class "waves-effect waves-light btn"
                     , type_ "submit"
-                    , onClick App.Msg.ResultAddSubmit
+                    , onClick ResultAddSubmit
                     , Html.Attributes.name "action"
                     , disabled submitDisabled
                     ]
@@ -101,20 +101,20 @@ resultExists rider race results =
         == 1
 
 
-resultCategoryButtonCheck : String -> String -> ResultCategory -> Bool -> Html App.Msg.Msg
+resultCategoryButtonCheck : String -> String -> ResultCategory -> Bool -> Html Msg
 resultCategoryButtonCheck resultCategoryName resultCategoryText category isChecked =
     p []
-        [ input [ checked isChecked, name "resultCategory", type_ "radio", id resultCategoryName, onClick (App.Msg.ResultAddCategory category) ] []
+        [ input [ checked isChecked, name "resultCategory", type_ "radio", id resultCategoryName, onClick (ResultAddCategory category) ] []
         , label [ for resultCategoryName ] [ text resultCategoryText ]
         ]
 
 
-resultCategoryButton : String -> String -> ResultCategory -> Html App.Msg.Msg
+resultCategoryButton : String -> String -> ResultCategory -> Html Msg
 resultCategoryButton resultCategoryName resultCategoryText resultCategory =
     resultCategoryButtonCheck resultCategoryName resultCategoryText resultCategory False
 
 
-resultCategoryButtons : Html App.Msg.Msg
+resultCategoryButtons : Html Msg
 resultCategoryButtons =
     div []
         [ label [ for "result" ] [ text "Category" ]
@@ -125,15 +125,15 @@ resultCategoryButtons =
         ]
 
 
-outfitButton : String -> String -> Outfit -> Bool -> Html App.Msg.Msg
+outfitButton : String -> String -> Outfit -> Bool -> Html Msg
 outfitButton outfitName outfitLabel outfit isChecked =
     p []
-        [ input [ checked isChecked, name "outfit", type_ "radio", id outfitName, onClick (App.Msg.ResultAddOutfit outfit) ] []
+        [ input [ checked isChecked, name "outfit", type_ "radio", id outfitName, onClick (ResultAddOutfit outfit) ] []
         , label [ for outfitName ] [ text outfitLabel ]
         ]
 
 
-outfitButtons : Html App.Msg.Msg
+outfitButtons : Html Msg
 outfitButtons =
     div []
         [ label [ for "result" ] [ text "Outfit" ]

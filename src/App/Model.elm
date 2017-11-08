@@ -3,7 +3,6 @@ module App.Model exposing (App, initial)
 import Data.Race exposing (Race)
 import Data.Rider exposing (Rider)
 import Data.RaceResult exposing (RaceResult)
-import App.Msg exposing (Msg)
 import App.Page exposing (Page)
 import App.Flags exposing (Flags)
 

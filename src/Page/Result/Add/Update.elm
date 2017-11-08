@@ -1,19 +1,65 @@
-port module Page.Result.Add.Update exposing (addCategory, addResult, addSubmit, addOutfit)
+port module Page.Result.Add.Update exposing (addCategory, addResult, addSubmit, addOutfit, update)
 
 import Json.Encode
 import Set
 import Ui.Chooser
+import Json.Decode
 import App.Model exposing (App)
-import App.Msg exposing (Msg(..))
 import App.Page
 import App.UrlUpdate
+import App.Helpers
 import Page.Result.Add.Model exposing (Model)
+import Page.Result.Add.Msg as ResultAdd
 import Data.Outfit as Outfit exposing (Outfit, outfitToString)
 import Data.RaceResult exposing (RaceResult, resultDecoder, resultsDecoder)
 import Data.ResultCategory as ResultCategory exposing (ResultCategory, categoryToString)
 
 
 port addResultPort : Json.Encode.Value -> Cmd msg
+
+
+update : ResultAdd.Msg -> App -> ( App, Cmd ResultAdd.Msg )
+update msg app =
+    case msg of
+        ResultAdd.ResultAddSubmit ->
+            addSubmit app
+
+        ResultAdd.ResultAddOutfit outfit ->
+            addOutfit outfit app
+
+        ResultAdd.ResultAddCategory category ->
+            ( (case app.page of
+                App.Page.ResultAdd resultAdd ->
+                    { app
+                        | page =
+                            App.Page.ResultAdd <| addCategory category resultAdd
+                    }
+
+                _ ->
+                    app
+              )
+            , Cmd.none
+            )
+
+        ResultAdd.ResultAddResult value ->
+            addResult value app
+
+        ResultAdd.Chooser msg_ ->
+            case app.page of
+                App.Page.ResultAdd resultAdd ->
+                    let
+                        ( chooser, cmd ) =
+                            Ui.Chooser.update msg_ resultAdd.chooser
+
+                        nextResultAdd =
+                            App.Page.ResultAdd { resultAdd | chooser = chooser }
+                    in
+                        ( { app | page = nextResultAdd }
+                        , Cmd.map ResultAdd.Chooser cmd
+                        )
+
+                _ ->
+                    ( app, Cmd.none )
 
 
 addCategory :
@@ -24,7 +70,7 @@ addCategory category resultAdd =
     { resultAdd | category = category }
 
 
-addOutfit : Outfit -> App -> ( App, Cmd Msg )
+addOutfit : Outfit -> App -> ( App, Cmd ResultAdd.Msg )
 addOutfit outfit app =
     case app.page of
         App.Page.ResultAdd resultAdd ->
@@ -41,7 +87,7 @@ addOutfit outfit app =
             ( app, Cmd.none )
 
 
-addResult : String -> App -> ( App, Cmd Msg )
+addResult : String -> App -> ( App, Cmd ResultAdd.Msg )
 addResult value app =
     case app.page of
         App.Page.ResultAdd raceKey ->
@@ -51,7 +97,7 @@ addResult value app =
             ( app, Cmd.none )
 
 
-addSubmit : App -> ( App, Cmd Msg )
+addSubmit : App -> ( App, Cmd ResultAdd.Msg )
 addSubmit app =
     case app.page of
         App.Page.ResultAdd add ->

@@ -1,17 +1,10 @@
 module App.Helpers exposing (..)
 
 import Date
-import Array
 import Navigation
 import App.Msg
 import App.Routing
 import App.Page
-import Data.Outfit as Outfit
-import Data.RaceType as RaceType exposing (RaceType)
-import Data.Race exposing (Race)
-import Data.Licence exposing (Licence)
-import Data.RaceResult exposing (RaceResult)
-import Data.Rider exposing (Rider)
 
 
 navigate : App.Page.Page -> Cmd App.Msg.Msg

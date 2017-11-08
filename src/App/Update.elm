@@ -15,9 +15,8 @@ import Page.Rider.Add.Update
 import Page.Race.Add.Model as RaceAdd
 import Page.Race.Add.Update
 import Page.Result.Add.Model as ResultAdd
-import Page.Result.Add.Update
+import Page.Result.Add.Update as ResultAdd
 import String
-import Json.Encode
 import Json.Decode
 import Json.Decode.Pipeline
 import Ui.Calendar
@@ -36,6 +35,39 @@ update msg app =
             ( app, Cmd.none )
     in
         case msg of
+            ResultAddMsg subMsg ->
+                let
+                    ( nextApp, nextCmd ) =
+                        ResultAdd.update subMsg app
+                in
+                    ( nextApp, Cmd.map ResultAddMsg nextCmd )
+
+            ResultAddedJson rawResponse ->
+                let
+                    resultResult =
+                        Json.Decode.decodeValue resultDecoder rawResponse
+                in
+                    case resultResult of
+                        Ok result ->
+                            ( app, (App.Helpers.navigate (App.Page.RaceDetails result.raceKey)) )
+
+                        Err err ->
+                            ( app, Cmd.none )
+
+            ResultsJson rawResponse ->
+                let
+                    nextResults =
+                        Json.Decode.decodeValue resultsDecoder rawResponse
+                in
+                    case nextResults of
+                        Ok results ->
+                            ( { app | results = Just results }
+                            , Cmd.none
+                            )
+
+                        Err err ->
+                            ( app, Cmd.none )
+
             RaceAddSubmit ->
                 case app.page of
                     App.Page.RaceAdd raceAdd ->
@@ -65,23 +97,6 @@ update msg app =
                 in
                     ( { app | page = page }, Cmd.none )
 
-            Chooser msg_ ->
-                case app.page of
-                    App.Page.ResultAdd resultAdd ->
-                        let
-                            ( chooser, cmd ) =
-                                Ui.Chooser.update msg_ resultAdd.chooser
-
-                            nextResultAdd =
-                                App.Page.ResultAdd { resultAdd | chooser = chooser }
-                        in
-                            ( { app | page = nextResultAdd }
-                            , Cmd.map Chooser cmd
-                            )
-
-                    _ ->
-                        noOp
-
             RaceAddedJson rawResponse ->
                 let
                     decoder =
@@ -108,55 +123,6 @@ update msg app =
 
                     _ ->
                         ( app, Cmd.none )
-
-            ResultAddSubmit ->
-                Page.Result.Add.Update.addSubmit app
-
-            ResultsJson rawResponse ->
-                let
-                    nextResults =
-                        Json.Decode.decodeValue resultsDecoder rawResponse
-                in
-                    case nextResults of
-                        Ok results ->
-                            ( { app | results = Just results }
-                            , Cmd.none
-                            )
-
-                        Err err ->
-                            ( app, Cmd.none )
-
-            ResultAddedJson rawResponse ->
-                let
-                    resultResult =
-                        Json.Decode.decodeValue resultDecoder rawResponse
-                in
-                    case resultResult of
-                        Ok result ->
-                            ( app, App.Helpers.navigate (App.Page.RaceDetails result.raceKey) )
-
-                        Err err ->
-                            ( app, Cmd.none )
-
-            ResultAddOutfit outfit ->
-                Page.Result.Add.Update.addOutfit outfit app
-
-            ResultAddCategory category ->
-                ( (case app.page of
-                    App.Page.ResultAdd resultAdd ->
-                        { app
-                            | page =
-                                App.Page.ResultAdd <| Page.Result.Add.Update.addCategory category resultAdd
-                        }
-
-                    _ ->
-                        app
-                  )
-                , Cmd.none
-                )
-
-            ResultAddResult value ->
-                Page.Result.Add.Update.addResult value app
 
             Calendar msg_ ->
                 case app.page of

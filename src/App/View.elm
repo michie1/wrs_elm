@@ -4,7 +4,7 @@ import Html exposing (Html, h2, h3, h4, button, nav, div, text, span, a, input, 
 import Html.Attributes exposing (attribute, href, id, class)
 import Html.Events exposing (onInput, onClick)
 import Date.Extra
-import App.Msg exposing (Msg(..))
+import App.Msg
 import App.Model exposing (App)
 import App.Routing
 import App.Page
@@ -19,16 +19,17 @@ import Page.Rider.List
 import Page.Rider.Add.View
 import Page.Result.List
 import Page.Result.Add.View
+import Page.Result.Add.Msg
 
 
-view : App -> Html Msg
+view : App -> Html App.Msg.Msg
 view app =
     div [ class "container" ]
         [ div [ class "row" ] [ loadingPage app ]
         ]
 
 
-mainView : App -> List Race -> List Rider -> List RaceResult -> Html Msg
+mainView : App -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
 mainView app races riders results =
     div []
         [ div [ class "col s3 m4" ] [ sidebar races ]
@@ -36,18 +37,7 @@ mainView app races riders results =
         ]
 
 
-sidebar : List Race -> Html Msg
-sidebar races =
-    div []
-        [ h2 [] [ text "WRS" ]
-        , ul [ class "collection" ] <|
-            [ li [ class "collection-header" ] [ h4 [] [ a [ href "#riders" ] [ text "Riders" ] ] ] ]
-                ++ [ li [ class "collection-header" ] [ h4 [] [ a [ href "#races" ] [ text "Races" ] ] ] ]
-                ++ (List.map raceLi <| lastRaces races)
-        ]
-
-
-viewPage : App -> List Race -> List Rider -> List RaceResult -> Html Msg
+viewPage : App -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
 viewPage app races riders results =
     case app.page of
         App.Page.RiderDetails key ->
@@ -76,12 +66,13 @@ viewPage app races riders results =
                 case maybeRace of
                     Just race ->
                         Page.Result.Add.View.view race add riders results
+                            |> Html.map App.Msg.ResultAddMsg
 
                     Nothing ->
                         div [] [ text "Race does not exist." ]
 
 
-loadingPage : App -> Html Msg
+loadingPage : App -> Html App.Msg.Msg
 loadingPage app =
     case ( app.races, app.riders, app.results ) of
         ( Just races, Just riders, Just results ) ->
@@ -94,7 +85,7 @@ loadingPage app =
                 ]
 
 
-spinner : Html Msg
+spinner : Html App.Msg.Msg
 spinner =
     div [ class "preloader-wrapper big active" ]
         [ div [ class "spinner-layer spinner-blue-only" ]
@@ -109,6 +100,17 @@ spinner =
         ]
 
 
+sidebar : List Race -> Html App.Msg.Msg
+sidebar races =
+    div []
+        [ h2 [] [ text "WRS" ]
+        , ul [ class "collection" ] <|
+            [ li [ class "collection-header" ] [ h4 [] [ a [ href "#riders" ] [ text "Riders" ] ] ] ]
+                ++ [ li [ class "collection-header" ] [ h4 [] [ a [ href "#races" ] [ text "Races" ] ] ] ]
+                ++ (List.map raceLi <| lastRaces races)
+        ]
+
+
 userLi : App -> List (Html App.Msg.Msg)
 userLi app =
     [ li [] [ a [ href "#races" ] [ text "Races" ] ]
@@ -116,6 +118,6 @@ userLi app =
     ]
 
 
-raceLi : Race -> Html Msg
+raceLi : Race -> Html App.Msg.Msg
 raceLi race =
     li [] [ a [ class "collection-item", href ("#races/" ++ race.key) ] [ text race.name ] ]

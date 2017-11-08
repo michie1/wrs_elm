@@ -1,15 +1,16 @@
-module App.Msg exposing (Msg(..))
+module App.Msg exposing (Msg, Msg(..))
 
-import App.Routing
 import Json.Encode
 import Ui.Calendar
 import Ui.Chooser
 import Json.Decode
-import App.Page
+import App.Page exposing (Page)
+import App.Routing exposing (Route)
 import Data.Outfit exposing (Outfit)
 import Data.RaceType exposing (RaceType)
 import Data.Licence exposing (Licence)
 import Data.ResultCategory exposing (ResultCategory)
+import Page.Result.Add.Msg as ResultAdd
 
 
 type Msg
@@ -21,13 +22,9 @@ type Msg
     | RaceAddedJson Json.Decode.Value
     | Calendar Ui.Calendar.Msg
       --
-    | ResultAddSubmit
-    | ResultAddCategory ResultCategory
-    | ResultAddOutfit Outfit
-    | ResultAddResult String
+    | ResultAddMsg ResultAdd.Msg
     | ResultAddedJson Json.Decode.Value
     | ResultsJson Json.Decode.Value
-    | Chooser Ui.Chooser.Msg
       --
     | RiderAddSubmit
     | RiderAddLicence Licence
@@ -35,6 +32,6 @@ type Msg
     | RiderAddedJson Json.Decode.Value
     | RidersJson Json.Decode.Value
       --
-    | NavigateTo App.Page.Page
-    | UrlUpdate App.Routing.Route
+    | NavigateTo Page
+    | UrlUpdate Route
     | Noop

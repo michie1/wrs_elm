@@ -1,5 +1,10 @@
 port module App.UrlUpdate exposing (urlUpdate, onUrlEnter)
 
+import Task
+import Dom
+import Date
+import Ui.Calendar
+import Ui.Chooser
 import App.Msg exposing (Msg, Msg(..))
 import App.Page
 import App.Model exposing (App)
@@ -7,12 +12,6 @@ import App.Routing exposing (Route)
 import Page.Result.Add.Model as ResultAdd
 import Page.Race.Add.Model as RaceAdd
 import Page.Rider.Add.Model as RiderAdd
-import Task
-import Dom
-import Date
-import App.Routing
-import Ui.Calendar
-import Ui.Chooser
 import Data.RaceType as RaceType
 import Data.RaceResult exposing (RaceResult)
 
@@ -130,13 +129,3 @@ urlUpdate route app =
             Cmd.batch (routeCmd :: load app)
     in
         ( nextApp, cmd )
-
-
-resultExists : String -> String -> List RaceResult -> Bool
-resultExists riderKey raceKey results =
-    List.length
-        (List.filter
-            (\result -> result.riderKey == riderKey && result.raceKey == raceKey)
-            results
-        )
-        == 1
