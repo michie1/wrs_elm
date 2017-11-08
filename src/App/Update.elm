@@ -11,7 +11,7 @@ import Data.Race exposing (Race, racesDecoder)
 import Data.RaceResult exposing (resultDecoder, resultsDecoder)
 import Data.Rider exposing (ridersDecoder)
 import Page.Rider.Add.Model as RiderAdd
-import Page.Rider.Add.Update
+import Page.Rider.Add.Update as RiderAdd
 import Page.Race.Add.Model as RaceAdd
 import Page.Race.Add.Update
 import Page.Result.Add.Model as ResultAdd
@@ -141,6 +141,13 @@ update msg app =
                     _ ->
                         noOp
 
+            RiderAddMsg subMsg ->
+                let
+                    ( nextApp, nextCmd ) =
+                        RiderAdd.update subMsg app
+                in
+                    ( nextApp, Cmd.map RiderAddMsg nextCmd )
+
             RiderAddedJson rawResponse ->
                 let
                     decoder =
@@ -174,14 +181,7 @@ update msg app =
                         _ ->
                             ( app, Cmd.none )
 
-            RiderAddSubmit ->
-                Page.Rider.Add.Update.addSubmit app
 
-            RiderAddName name ->
-                Page.Rider.Add.Update.addName name app
-
-            RiderAddLicence licence ->
-                Page.Rider.Add.Update.addLicence licence app
 
             Noop ->
                 noOp

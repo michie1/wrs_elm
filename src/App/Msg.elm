@@ -11,6 +11,7 @@ import Data.RaceType exposing (RaceType)
 import Data.Licence exposing (Licence)
 import Data.ResultCategory exposing (ResultCategory)
 import Page.Result.Add.Msg as ResultAdd
+import Page.Rider.Add.Msg as RiderAdd
 
 
 type Msg
@@ -26,9 +27,7 @@ type Msg
     | ResultAddedJson Json.Decode.Value
     | ResultsJson Json.Decode.Value
       --
-    | RiderAddSubmit
-    | RiderAddLicence Licence
-    | RiderAddName String
+    | RiderAddMsg RiderAdd.Msg
     | RiderAddedJson Json.Decode.Value
     | RidersJson Json.Decode.Value
       --

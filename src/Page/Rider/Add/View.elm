@@ -3,12 +3,12 @@ module Page.Rider.Add.View exposing (view)
 import Html exposing (Html, node, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
 import Html.Attributes exposing (attribute, autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
-import App.Msg
 import Data.Licence as Licence exposing (Licence)
 import Page.Rider.Add.Model exposing (Model)
+import Page.Rider.Add.Msg exposing (Msg, Msg(..))
 
 
-view : Model -> Html App.Msg.Msg
+view : Model -> Html Msg
 view add =
     let
         name =
@@ -25,7 +25,7 @@ view add =
                         [ input
                             [ id "name"
                             , type_ "text"
-                            , onInput App.Msg.RiderAddName
+                            , onInput RiderAddName
                             , autofocus True
                             , value name
                             ]
@@ -39,7 +39,7 @@ view add =
                         [ button
                             [ class "waves-effect waves-light btn"
                             , type_ "submit"
-                            , onClick App.Msg.RiderAddSubmit
+                            , onClick RiderAddSubmit
                             , Html.Attributes.name "action"
                             , disabled submitDisabled
                             ]
@@ -52,7 +52,7 @@ view add =
             ]
 
 
-licenceButtonCheck : String -> String -> Licence -> Maybe Licence -> Html App.Msg.Msg
+licenceButtonCheck : String -> String -> Licence -> Maybe Licence -> Html Msg
 licenceButtonCheck categoryName categoryText categoryModel maybeCurrent =
     let
         isChecked =
@@ -64,12 +64,12 @@ licenceButtonCheck categoryName categoryText categoryModel maybeCurrent =
                     False
     in
         p []
-            [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (App.Msg.RiderAddLicence categoryModel) ] []
+            [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (RiderAddLicence categoryModel) ] []
             , label [ for categoryName ] [ text categoryText ]
             ]
 
 
-licenceButtons : Maybe Licence -> Html App.Msg.Msg
+licenceButtons : Maybe Licence -> Html Msg
 licenceButtons maybeCurrent =
     div [ class "col s6" ]
         [ label [ class "active" ] [ text "Category" ]
