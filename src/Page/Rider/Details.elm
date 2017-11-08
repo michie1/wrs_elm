@@ -1,4 +1,4 @@
-module Page.Rider.View.Details exposing (render)
+module Page.Rider.Details exposing (view)
 
 import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, li, span, h2, p)
 import Html.Attributes exposing (class, href)
@@ -21,8 +21,8 @@ dateFormat date =
     Date.Extra.Format.format config "%Y-%m-%d" date
 
 
-render : App.Model.App -> String -> Html App.Msg.Msg
-render app riderKey =
+view : App.Model.App -> String -> Html App.Msg.Msg
+view app riderKey =
     case app.riders of
         Just riders ->
             case app.races of

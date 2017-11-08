@@ -1,6 +1,7 @@
-module Data.Rider exposing (Rider, getRiderById)
+module Data.Rider exposing (Rider, getRiderById, ridersDecoder)
 
-import Data.Licence exposing (Licence)
+import Json.Decode
+import Data.Licence exposing (Licence, licenceDecoder)
 
 
 type alias Rider =
@@ -17,3 +18,17 @@ getRiderById key riders =
             (\rider -> rider.key == key)
             riders
         )
+
+rider : Json.Decode.Decoder Rider
+rider =
+    Json.Decode.map3
+        Rider
+        (Json.Decode.field "key" Json.Decode.string)
+        (Json.Decode.field "name" Json.Decode.string)
+        (Json.Decode.field "licence"
+            (Json.Decode.andThen licenceDecoder Json.Decode.string)
+        )
+
+ridersDecoder : Json.Decode.Decoder (List Rider)
+ridersDecoder =
+    Json.Decode.list rider

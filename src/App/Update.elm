@@ -9,8 +9,9 @@ import App.Helpers
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race, racesDecoder)
 import Data.RaceResult exposing (resultDecoder, resultsDecoder)
-import Page.Rider.Model
-import Page.Rider.Update
+import Data.Rider exposing (ridersDecoder)
+import Page.Rider.Add.Model as RiderAdd
+import Page.Rider.Add.Update
 import Page.Race.Add.Model as RaceAdd
 import Page.Race.Add.Update
 import Page.Result.Add.Model as ResultAdd
@@ -104,6 +105,7 @@ update msg app =
                 case Json.Decode.decodeValue racesDecoder json of
                     Ok races ->
                         ( { app | races = Just races }, Cmd.none )
+
                     _ ->
                         ( app, Cmd.none )
 
@@ -112,7 +114,8 @@ update msg app =
 
             ResultsJson rawResponse ->
                 let
-                    nextResults = Json.Decode.decodeValue resultsDecoder rawResponse
+                    nextResults =
+                        Json.Decode.decodeValue resultsDecoder rawResponse
                 in
                     case nextResults of
                         Ok results ->
@@ -191,17 +194,28 @@ update msg app =
                         Err err ->
                             noOp
 
-            RidersJson json ->
-                Page.Rider.Update.ridersJson json app
+            RidersJson rawResponse ->
+                let
+                    nextRidersResult =
+                        Json.Decode.decodeValue ridersDecoder rawResponse
+                in
+                    case nextRidersResult of
+                        Ok riders ->
+                            ( { app | riders = Just riders }
+                            , Cmd.none
+                            )
+
+                        _ ->
+                            ( app, Cmd.none )
 
             RiderAddSubmit ->
-                Page.Rider.Update.addSubmit app
+                Page.Rider.Add.Update.addSubmit app
 
             RiderAddName name ->
-                Page.Rider.Update.addName name app
+                Page.Rider.Add.Update.addName name app
 
             RiderAddLicence licence ->
-                Page.Rider.Update.addLicence licence app
+                Page.Rider.Add.Update.addLicence licence app
 
             Noop ->
                 noOp

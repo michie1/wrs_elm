@@ -6,7 +6,7 @@ import App.Model exposing (App)
 import App.Routing exposing (Route)
 import Page.Result.Add.Model as ResultAdd
 import Page.Race.Add.Model as RaceAdd
-import Page.Rider.Model
+import Page.Rider.Add.Model as RiderAdd
 import Task
 import Dom
 import Date
@@ -52,7 +52,7 @@ onUrlEnter route app =
         App.Routing.RiderAdd ->
             let
                 add =
-                    Page.Rider.Model.Add "" Nothing
+                    RiderAdd.Model "" Nothing
             in
                 ( { app | page = App.Page.RiderAdd add }
                 , Task.attempt (always App.Msg.Noop) (Dom.focus "name")

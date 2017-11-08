@@ -1,9 +1,9 @@
-module Page.Rider.Model exposing (Add)
+module Page.Rider.Add.Model exposing (Model)
 
 import Data.Licence exposing (Licence)
 
 
-type alias Add =
+type alias Model =
     { name : String
     , licence : Maybe Licence
     }

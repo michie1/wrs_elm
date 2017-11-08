@@ -1,4 +1,4 @@
-module Page.Rider.View.List exposing (render)
+module Page.Rider.List exposing (view)
 
 import Html exposing (Html, h2, a, div, text, span, input, ul, li, table, td, tr, th, thead, tbody)
 import Html.Attributes exposing (href, class)
@@ -11,8 +11,8 @@ import Data.RaceResult exposing (RaceResult)
 import Page.Result.Add.Model as ResultAdd
 import Page.Race.Add.Model as RaceAdd
 
-render : List Rider -> Html App.Msg.Msg
-render riders =
+view : List Rider -> Html App.Msg.Msg
+view riders =
     div []
         [ h2 [] [ text "Riders" ]
         , addButton

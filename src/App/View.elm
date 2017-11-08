@@ -3,20 +3,20 @@ module App.View exposing (render)
 import Html exposing (Html, h2, h3, h4, button, nav, div, text, span, a, input, ul, li, node)
 import Html.Attributes exposing (attribute, href, id, class)
 import Html.Events exposing (onInput, onClick)
+import Date.Extra
 import App.Msg exposing (Msg(..))
 import App.Model exposing (App)
 import App.Routing
 import App.Page
 import Data.Race exposing (Race, lastRaces, getRace)
-import Page.Race.Add.View
-import Page.Race.List
 import Page.Race.Details
-import Page.Rider.View.List
-import Page.Rider.View.Details
+import Page.Race.List
+import Page.Race.Add.View
+import Page.Rider.Details
+import Page.Rider.List
+import Page.Rider.Add.View
 import Page.Result.List
 import Page.Result.Add.View
-import Page.Rider.View.Add
-import Date.Extra
 
 
 render : App -> Html Msg
@@ -51,16 +51,16 @@ viewPage app =
         App.Page.Riders ->
             case app.riders of
                 Just riders ->
-                    Page.Rider.View.List.render riders
+                    Page.Rider.List.view riders
 
                 Nothing ->
                     div [] [ text "No riders loaded." ]
 
         App.Page.RiderDetails key ->
-            Page.Rider.View.Details.render app key
+            Page.Rider.Details.view app key
 
         App.Page.RiderAdd add ->
-            Page.Rider.View.Add.render add
+            Page.Rider.Add.View.view add
 
         App.Page.Races ->
             Page.Race.List.view app.races app.results

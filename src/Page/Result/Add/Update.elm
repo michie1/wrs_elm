@@ -8,7 +8,6 @@ import App.Msg exposing (Msg(..))
 import App.Page
 import App.UrlUpdate
 import Page.Result.Add.Model exposing (Model)
-import Page.Rider.Model
 import Data.Outfit as Outfit exposing (Outfit, outfitToString)
 import Data.RaceResult exposing (RaceResult, resultDecoder, resultsDecoder)
 import Data.ResultCategory as ResultCategory exposing (ResultCategory, categoryToString)

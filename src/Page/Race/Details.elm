@@ -16,7 +16,6 @@ import Data.Race exposing (Race)
 import Data.Rider exposing (Rider, getRiderById)
 import Data.RaceResult exposing (RaceResult)
 import Data.ResultCategory exposing (ResultCategory, resultCategories)
-import Page.Rider.Model
 import Page.Result.Add.Model as ResultAdd
 
 
