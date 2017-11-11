@@ -23,7 +23,18 @@ update msg app =
         App.Page.RaceAdd page ->
             case msg of
                 Msg.Submit ->
-                    addSubmit page app
+                    let
+                        dateString =
+                            dateFormat page.calendar.value
+
+                        payload =
+                            Json.Encode.object
+                                [ ( "name", Json.Encode.string page.name )
+                                , ( "date", Json.Encode.string dateString )
+                                , ( "category", Json.Encode.string <| raceTypeToString page.raceType )
+                                ]
+                    in
+                        ( app, addRace payload )
 
                 Msg.Name name ->
                     let
@@ -61,19 +72,3 @@ update msg app =
 dateFormat : Date.Date -> String
 dateFormat date =
     Date.Extra.Format.format config "%Y-%m-%d 00:00:00" date
-
-
-addSubmit : RaceAdd.Model -> App.Model.App -> ( App, Cmd Msg )
-addSubmit raceAdd app =
-    let
-        dateString =
-            dateFormat raceAdd.calendar.value
-
-        payload =
-            Json.Encode.object
-                [ ( "name", Json.Encode.string raceAdd.name )
-                , ( "date", Json.Encode.string dateString )
-                , ( "category", Json.Encode.string <| raceTypeToString raceAdd.raceType )
-                ]
-    in
-        ( app, addRace payload )

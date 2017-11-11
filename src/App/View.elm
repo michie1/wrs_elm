@@ -48,7 +48,7 @@ viewPage app races riders results =
 
         App.Page.RiderAdd add ->
             Page.Rider.Add.View.view add
-                |> Html.map App.Msg.RiderAddMsg
+                |> Html.map App.Msg.RiderAdd
 
         App.Page.RaceDetails key ->
             Page.Race.Details.view app key races riders results
@@ -58,7 +58,7 @@ viewPage app races riders results =
 
         App.Page.RaceAdd raceAdd ->
             Page.Race.Add.View.view raceAdd
-                |> Html.map App.Msg.RaceAddMsg
+                |> Html.map App.Msg.RaceAdd
 
         App.Page.ResultAdd add ->
             let
@@ -68,7 +68,7 @@ viewPage app races riders results =
                 case maybeRace of
                     Just race ->
                         Page.Result.Add.View.view race add riders results
-                            |> Html.map App.Msg.ResultAddMsg
+                            |> Html.map App.Msg.ResultAdd
 
                     Nothing ->
                         div [] [ text "Race does not exist." ]

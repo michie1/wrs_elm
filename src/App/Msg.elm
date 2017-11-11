@@ -20,14 +20,14 @@ type Msg
     | UrlUpdate Route
     | Noop
       --
-    | RaceAddMsg RaceAdd.Msg
+    | RaceAdd RaceAdd.Msg
     | RaceAddedJson Json.Decode.Value
     | RacesJson Json.Decode.Value
       --
-    | ResultAddMsg ResultAdd.Msg
+    | ResultAdd ResultAdd.Msg
     | ResultAddedJson Json.Decode.Value
     | ResultsJson Json.Decode.Value
       --
-    | RiderAddMsg RiderAdd.Msg
+    | RiderAdd RiderAdd.Msg
     | RiderAddedJson Json.Decode.Value
     | RidersJson Json.Decode.Value

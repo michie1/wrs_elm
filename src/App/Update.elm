@@ -1,15 +1,15 @@
 module App.Update exposing (update)
 
 import App.Model exposing (App)
-import App.Msg exposing (Msg(..))
+import App.Msg as Msg exposing (Msg)
 import App.Routing
 import App.Page
 import App.UrlUpdate
 import App.Helpers
-import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race, racesDecoder)
 import Data.RaceResult exposing (resultDecoder, resultsDecoder)
 import Data.Rider exposing (ridersDecoder)
+import Data.Outfit as Outfit exposing (Outfit)
 import Page.Rider.Add.Model as RiderAdd
 import Page.Rider.Add.Update as RiderAdd
 import Page.Race.Add.Model as RaceAdd
@@ -33,14 +33,14 @@ update msg app =
             ( app, Cmd.none )
     in
         case msg of
-            ResultAddMsg subMsg ->
+            Msg.ResultAdd subMsg ->
                 let
                     ( nextApp, nextCmd ) =
                         ResultAdd.update subMsg app
                 in
-                    ( nextApp, Cmd.map ResultAddMsg nextCmd )
+                    ( nextApp, Cmd.map Msg.ResultAdd nextCmd )
 
-            ResultAddedJson rawResponse ->
+            Msg.ResultAddedJson rawResponse ->
                 let
                     resultResult =
                         Json.Decode.decodeValue resultDecoder rawResponse
@@ -52,7 +52,7 @@ update msg app =
                         Err err ->
                             ( app, Cmd.none )
 
-            ResultsJson rawResponse ->
+            Msg.ResultsJson rawResponse ->
                 let
                     nextResults =
                         Json.Decode.decodeValue resultsDecoder rawResponse
@@ -66,14 +66,14 @@ update msg app =
                         Err err ->
                             ( app, Cmd.none )
 
-            RaceAddMsg subMsg ->
+            Msg.RaceAdd subMsg ->
                 let
                     ( nextApp, nextCmd ) =
                         RaceAdd.update subMsg app
                 in
-                    ( nextApp, Cmd.map RaceAddMsg nextCmd )
+                    ( nextApp, Cmd.map Msg.RaceAdd nextCmd )
 
-            RaceAddedJson rawResponse ->
+            Msg.RaceAddedJson rawResponse ->
                 let
                     decoder =
                         Json.Decode.Pipeline.decode
@@ -92,7 +92,7 @@ update msg app =
                         Err err ->
                             noOp
 
-            RacesJson json ->
+            Msg.RacesJson json ->
                 case Json.Decode.decodeValue racesDecoder json of
                     Ok races ->
                         ( { app | races = Just races }, Cmd.none )
@@ -100,14 +100,14 @@ update msg app =
                     _ ->
                         ( app, Cmd.none )
 
-            RiderAddMsg subMsg ->
+            Msg.RiderAdd subMsg ->
                 let
                     ( nextApp, nextCmd ) =
                         RiderAdd.update subMsg app
                 in
-                    ( nextApp, Cmd.map RiderAddMsg nextCmd )
+                    ( nextApp, Cmd.map Msg.RiderAdd nextCmd )
 
-            RiderAddedJson rawResponse ->
+            Msg.RiderAddedJson rawResponse ->
                 let
                     decoder =
                         Json.Decode.Pipeline.decode
@@ -126,7 +126,7 @@ update msg app =
                         Err err ->
                             noOp
 
-            RidersJson rawResponse ->
+            Msg.RidersJson rawResponse ->
                 let
                     nextRidersResult =
                         Json.Decode.decodeValue ridersDecoder rawResponse
@@ -140,11 +140,11 @@ update msg app =
                         _ ->
                             ( app, Cmd.none )
 
-            Noop ->
+            Msg.Noop ->
                 noOp
 
-            UrlUpdate route ->
+            Msg.UrlUpdate route ->
                 App.UrlUpdate.urlUpdate route app
 
-            NavigateTo page ->
+            Msg.NavigateTo page ->
                 ( app, App.Helpers.navigate page )

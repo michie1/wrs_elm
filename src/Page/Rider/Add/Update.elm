@@ -14,64 +14,37 @@ import Data.Rider exposing (Rider)
 
 port addRider : Json.Encode.Value -> Cmd msg
 
+
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
-    case msg of
-        Msg.Submit ->
-            addSubmit app
-
-        Msg.Name name ->
-            addName name app
-
-        Msg.Licence licence ->
-            addLicence licence app
-
-addSubmit : App -> ( App, Cmd Msg )
-addSubmit app =
     case app.page of
-        App.Page.RiderAdd add ->
-            let
-                payload =
-                    Json.Encode.object
-                        [ ( "name", Json.Encode.string add.name )
-                        , ( "licence", Json.Encode.string <| licenceToString add.licence )
-                        ]
-            in
-                ( app, addRider payload )
+        App.Page.RiderAdd page ->
+            case msg of
+                Msg.Submit ->
+                    let
+                        payload =
+                            Json.Encode.object
+                                [ ( "name", Json.Encode.string page.name )
+                                , ( "licence", Json.Encode.string <| licenceToString page.licence )
+                                ]
+                    in
+                        ( app, addRider payload )
+
+                Msg.Name name ->
+                    let
+                        nextPage =
+                            App.Page.RiderAdd
+                                { page | name = name }
+                    in
+                        ( app, Cmd.none )
+
+                Msg.Licence licence ->
+                    let
+                        nextPage =
+                            App.Page.RiderAdd
+                                { page | licence = Just licence }
+                    in
+                        ( app, Cmd.none )
 
         _ ->
             ( app, Cmd.none )
-
-
-addName : String -> App -> ( App, Cmd Msg )
-addName name app =
-    let
-        page =
-            case app.page of
-                App.Page.RiderAdd riderAdd ->
-                    App.Page.RiderAdd { riderAdd | name = name }
-
-                _ ->
-                    app.page
-
-        nextApp =
-            { app | page = page }
-    in
-        ( nextApp, Cmd.none )
-
-
-addLicence : Licence -> App -> ( App, Cmd Msg )
-addLicence licence app =
-    let
-        page =
-            case app.page of
-                App.Page.RiderAdd riderAdd ->
-                    App.Page.RiderAdd { riderAdd | licence = Just licence }
-
-                _ ->
-                    app.page
-
-        nextApp =
-            { app | page = page }
-    in
-        ( nextApp, Cmd.none )
