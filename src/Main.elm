@@ -11,9 +11,6 @@ import App.View
 import App.Flags exposing (Flags)
 import App.OutsideInfo
 
-port setRaces : (Json.Decode.Value -> msg) -> Sub msg
-port setResults : (Json.Decode.Value -> msg) -> Sub msg
-
 port raceAdded : (Json.Decode.Value -> msg) -> Sub msg
 port riderAdded : (Json.Decode.Value -> msg) -> Sub msg
 port resultAdded: (Json.Decode.Value -> msg) -> Sub msg
@@ -52,9 +49,7 @@ init flags location =
 subscriptions : App -> Sub Msg
 subscriptions app =
     Sub.batch
-        [ setRaces RacesJson
-        , setResults ResultsJson
-        , raceAdded RaceAddedJson
+        [ raceAdded RaceAddedJson
         , riderAdded RiderAddedJson
         , resultAdded ResultAddedJson
         , App.OutsideInfo.getInfoFromOutside App.Msg.Outside App.Msg.LogErr

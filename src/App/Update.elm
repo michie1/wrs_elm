@@ -137,5 +137,11 @@ update msg app =
                     App.OutsideInfo.RidersLoaded riders ->
                         ( { app | riders = Just riders }, Cmd.none )
 
+                    App.OutsideInfo.RacesLoaded races ->
+                        ( { app | races = Just races }, Cmd.none )
+
+                    App.OutsideInfo.ResultsLoaded results ->
+                        ( { app | results = Just results }, Cmd.none )
+
             Msg.LogErr err ->
                 ( app, App.OutsideInfo.sendInfoOutside (App.OutsideInfo.LogError err) )

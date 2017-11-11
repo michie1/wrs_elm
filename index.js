@@ -50,7 +50,7 @@ function loadRiders() {
   });
 }
 
-app.ports.loadRaces.subscribe(function() {
+function loadRaces() {
   firebase.database().ref('/races/').on('value', function(snapshot) {
     const val = snapshot.val();
     const arr = Object.keys(val).
@@ -59,11 +59,14 @@ app.ports.loadRaces.subscribe(function() {
             key: key
           }, val[key]);
       });
-    app.ports.setRaces.send(arr);
+    app.ports.infoForElm.send({
+      tag: 'RacesLoaded',
+      data: arr
+    });
   });
-});
+}
 
-app.ports.loadResults.subscribe(function() {
+function loadResults() {
   firebase.database().ref('/results/').on('value', function(snapshot) {
     const val = snapshot.val();
     const arr = Object.keys(val).
@@ -72,9 +75,12 @@ app.ports.loadResults.subscribe(function() {
             key: key
           }, val[key]);
       });
-    app.ports.setResults.send(arr);
+    app.ports.infoForElm.send({
+      tag: 'ResultsLoaded',
+      data: arr
+    });
   });
-});
+}
 
 app.ports.addRace.subscribe(function(race) {
   const pushedRace = firebase.database().ref('/races/').push();
@@ -116,6 +122,10 @@ app.ports.addResultPort.subscribe(function(result) {
 app.ports.infoForOutside.subscribe(function (msg) {
   if (msg.tag === 'LoadRiders') {
     loadRiders();
+  } else if (msg.tag === 'LoadRaces') {
+    loadRaces();
+  } else if (msg.tag === 'LoadResults') {
+    loadResults();
   } else {
     console.log('msg', msg);
   }

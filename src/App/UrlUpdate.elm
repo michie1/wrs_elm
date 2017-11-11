@@ -1,4 +1,4 @@
-port module App.UrlUpdate exposing (urlUpdate, onUrlEnter)
+module App.UrlUpdate exposing (urlUpdate, onUrlEnter)
 
 import Task
 import Dom
@@ -15,12 +15,6 @@ import Page.Race.Add.Model as RaceAdd
 import Page.Rider.Add.Model as RiderAdd
 import Data.RaceType as RaceType
 import Data.RaceResult exposing (RaceResult)
-
-
-port loadRaces : () -> Cmd msg
-
-
-port loadResults : () -> Cmd msg
 
 
 onUrlEnter : App.Routing.Route -> App -> ( App, Cmd Msg )
@@ -98,7 +92,7 @@ routeToPage route =
 load : App -> List (Cmd Msg)
 load app =
     [ if app.races == Nothing then
-        loadRaces ()
+        sendInfoOutside App.OutsideInfo.LoadRaces
       else
         Cmd.none
     , if app.riders == Nothing then
@@ -106,7 +100,7 @@ load app =
       else
         Cmd.none
     , if app.results == Nothing then
-        loadResults ()
+        sendInfoOutside App.OutsideInfo.LoadResults
       else
         Cmd.none
     ]
