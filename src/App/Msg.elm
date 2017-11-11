@@ -22,14 +22,7 @@ type Msg
     | Outside InfoForElm
     | LogErr String
     | Noop
-      --
     | RaceAdd RaceAdd.Msg
-    | RaceAddedJson Json.Decode.Value
-    | RacesJson Json.Decode.Value
-      --
+    | RiderAdd RiderAdd.Msg
     | ResultAdd ResultAdd.Msg
     | ResultAddedJson Json.Decode.Value
-    | ResultsJson Json.Decode.Value
-      --
-    | RiderAdd RiderAdd.Msg
-    | RiderAddedJson Json.Decode.Value

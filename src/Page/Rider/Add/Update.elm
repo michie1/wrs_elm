@@ -1,4 +1,4 @@
-port module Page.Rider.Add.Update exposing (update)
+module Page.Rider.Add.Update exposing (update)
 
 import App.Model exposing (App)
 import App.Page
@@ -6,14 +6,11 @@ import Json.Decode
 import Json.Encode
 import App.Routing
 import App.UrlUpdate
+import App.OutsideInfo exposing (sendInfoOutside, InfoForOutside)
 import Page.Rider.Add.Model exposing (Model)
 import Page.Rider.Add.Msg as Msg exposing (Msg)
 import Data.Licence as Licence exposing (Licence, licenceToString)
 import Data.Rider exposing (Rider)
-
-
-port addRider : Json.Encode.Value -> Cmd msg
-
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
@@ -28,7 +25,7 @@ update msg app =
                                 , ( "licence", Json.Encode.string <| licenceToString page.licence )
                                 ]
                     in
-                        ( app, addRider payload )
+                        ( app, sendInfoOutside <| App.OutsideInfo.RiderAdd payload )
 
                 Msg.Name name ->
                     let
@@ -36,7 +33,7 @@ update msg app =
                             App.Page.RiderAdd
                                 { page | name = name }
                     in
-                        ( app, Cmd.none )
+                        ( { app | page = nextPage }, Cmd.none )
 
                 Msg.Licence licence ->
                     let
@@ -44,7 +41,7 @@ update msg app =
                             App.Page.RiderAdd
                                 { page | licence = Just licence }
                     in
-                        ( app, Cmd.none )
+                        ( { app | page = nextPage }, Cmd.none )
 
         _ ->
             ( app, Cmd.none )

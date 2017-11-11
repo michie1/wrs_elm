@@ -53,20 +53,6 @@ update msg app =
                         Err err ->
                             ( app, Cmd.none )
 
-            Msg.ResultsJson rawResponse ->
-                let
-                    nextResults =
-                        Json.Decode.decodeValue resultsDecoder rawResponse
-                in
-                    case nextResults of
-                        Ok results ->
-                            ( { app | results = Just results }
-                            , Cmd.none
-                            )
-
-                        Err err ->
-                            ( app, Cmd.none )
-
             Msg.RaceAdd subMsg ->
                 let
                     ( nextApp, nextCmd ) =
@@ -74,30 +60,6 @@ update msg app =
                 in
                     ( nextApp, Cmd.map Msg.RaceAdd nextCmd )
 
-            Msg.RaceAddedJson rawResponse ->
-                let
-                    decoder =
-                        Json.Decode.Pipeline.decode
-                            KeyResponse
-                            |> Json.Decode.Pipeline.required "key" Json.Decode.string
-
-                    keyResponseResult =
-                        Json.Decode.decodeValue decoder rawResponse
-                in
-                    case keyResponseResult of
-                        Ok keyResponse ->
-                            ( app, App.Helpers.navigate <| App.Page.RaceDetails keyResponse.key )
-
-                        Err err ->
-                            noOp
-
-            Msg.RacesJson json ->
-                case Json.Decode.decodeValue racesDecoder json of
-                    Ok races ->
-                        ( { app | races = Just races }, Cmd.none )
-
-                    _ ->
-                        ( app, Cmd.none )
 
             Msg.RiderAdd subMsg ->
                 let
@@ -106,22 +68,6 @@ update msg app =
                 in
                     ( nextApp, Cmd.map Msg.RiderAdd nextCmd )
 
-            Msg.RiderAddedJson rawResponse ->
-                let
-                    decoder =
-                        Json.Decode.Pipeline.decode
-                            KeyResponse
-                            |> Json.Decode.Pipeline.required "key" Json.Decode.string
-
-                    keyResponseResult =
-                        Json.Decode.decodeValue decoder rawResponse
-                in
-                    case keyResponseResult of
-                        Ok keyResponse ->
-                            ( app, App.Helpers.navigate <| App.Page.RiderDetails keyResponse.key )
-
-                        Err err ->
-                            noOp
 
             Msg.Noop ->
                 noOp
@@ -143,5 +89,12 @@ update msg app =
                     App.OutsideInfo.ResultsLoaded results ->
                         ( { app | results = Just results }, Cmd.none )
 
+                    App.OutsideInfo.RaceAdded key ->
+                        ( app, App.Helpers.navigate <| App.Page.RaceDetails key )
+
+                    App.OutsideInfo.RiderAdded key ->
+                        ( app, App.Helpers.navigate <| App.Page.RiderDetails key )
+
+
             Msg.LogErr err ->
-                ( app, App.OutsideInfo.sendInfoOutside (App.OutsideInfo.LogError err) )
+                ( app, App.OutsideInfo.sendInfoOutside <| App.OutsideInfo.LogError err)

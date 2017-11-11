@@ -9,6 +9,7 @@ import Json.Decode.Extra
 import Ui.Calendar
 import App.Model exposing (App)
 import App.Page
+import App.OutsideInfo exposing (sendInfoOutside, InfoForOutside)
 import Page.Race.Add.Model as RaceAdd
 import Page.Race.Add.Msg as Msg exposing (Msg)
 import Data.RaceType as RaceType exposing (raceTypeToString)
@@ -34,7 +35,8 @@ update msg app =
                                 , ( "category", Json.Encode.string <| raceTypeToString page.raceType )
                                 ]
                     in
-                        ( app, addRace payload )
+                        -- ( app, addRace payload )
+                        ( app, sendInfoOutside <| App.OutsideInfo.RaceAdd payload )
 
                 Msg.Name name ->
                     let
