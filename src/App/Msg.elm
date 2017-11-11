@@ -6,6 +6,7 @@ import Ui.Chooser
 import Json.Decode
 import App.Page exposing (Page)
 import App.Routing exposing (Route)
+import App.OutsideInfo exposing (InfoForElm)
 import Data.Outfit exposing (Outfit)
 import Data.RaceType exposing (RaceType)
 import Data.Licence exposing (Licence)
@@ -18,6 +19,8 @@ import Page.Race.Add.Msg as RaceAdd
 type Msg
     = NavigateTo Page
     | UrlUpdate Route
+    | Outside InfoForElm
+    | LogErr String
     | Noop
       --
     | RaceAdd RaceAdd.Msg
@@ -30,4 +33,3 @@ type Msg
       --
     | RiderAdd RiderAdd.Msg
     | RiderAddedJson Json.Decode.Value
-    | RidersJson Json.Decode.Value

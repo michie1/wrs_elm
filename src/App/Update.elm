@@ -6,6 +6,7 @@ import App.Routing
 import App.Page
 import App.UrlUpdate
 import App.Helpers
+import App.OutsideInfo
 import Data.Race exposing (Race, racesDecoder)
 import Data.RaceResult exposing (resultDecoder, resultsDecoder)
 import Data.Rider exposing (ridersDecoder)
@@ -47,7 +48,7 @@ update msg app =
                 in
                     case resultResult of
                         Ok result ->
-                            ( app, (App.Helpers.navigate (App.Page.RaceDetails result.raceKey)) )
+                            ( app, App.Helpers.navigate <| App.Page.RaceDetails result.raceKey )
 
                         Err err ->
                             ( app, Cmd.none )
@@ -85,9 +86,7 @@ update msg app =
                 in
                     case keyResponseResult of
                         Ok keyResponse ->
-                            ( app
-                            , App.Helpers.navigate (App.Page.RaceDetails keyResponse.key)
-                            )
+                            ( app, App.Helpers.navigate <| App.Page.RaceDetails keyResponse.key )
 
                         Err err ->
                             noOp
@@ -119,26 +118,10 @@ update msg app =
                 in
                     case keyResponseResult of
                         Ok keyResponse ->
-                            ( app
-                            , App.Helpers.navigate (App.Page.RiderDetails keyResponse.key)
-                            )
+                            ( app, App.Helpers.navigate <| App.Page.RiderDetails keyResponse.key )
 
                         Err err ->
                             noOp
-
-            Msg.RidersJson rawResponse ->
-                let
-                    nextRidersResult =
-                        Json.Decode.decodeValue ridersDecoder rawResponse
-                in
-                    case nextRidersResult of
-                        Ok riders ->
-                            ( { app | riders = Just riders }
-                            , Cmd.none
-                            )
-
-                        _ ->
-                            ( app, Cmd.none )
 
             Msg.Noop ->
                 noOp
@@ -148,3 +131,11 @@ update msg app =
 
             Msg.NavigateTo page ->
                 ( app, App.Helpers.navigate page )
+
+            Msg.Outside infoForElm ->
+                case infoForElm of
+                    App.OutsideInfo.RidersLoaded riders ->
+                        ( { app | riders = Just riders }, Cmd.none )
+
+            Msg.LogErr err ->
+                ( app, App.OutsideInfo.sendInfoOutside (App.OutsideInfo.LogError err) )

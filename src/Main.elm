@@ -1,6 +1,7 @@
 port module Main exposing (..)
 
 import Navigation
+import Json.Decode
 import App.Model exposing (App)
 import App.Routing
 import App.Msg exposing (Msg(..))
@@ -8,11 +9,8 @@ import App.Update
 import App.UrlUpdate
 import App.View
 import App.Flags exposing (Flags)
-import Json.Decode
+import App.OutsideInfo
 
-port login : (String -> msg) -> Sub msg
-port logout : (String -> msg) -> Sub msg
-port setRiders : (Json.Decode.Value -> msg) -> Sub msg
 port setRaces : (Json.Decode.Value -> msg) -> Sub msg
 port setResults : (Json.Decode.Value -> msg) -> Sub msg
 
@@ -48,18 +46,16 @@ init flags location =
         ( app, cmd ) =
             App.UrlUpdate.urlUpdate route initialApp
     in
-        ( app
-        , cmd
-        )
+        ( app, cmd )
 
 
 subscriptions : App -> Sub Msg
 subscriptions app =
     Sub.batch
-        [ setRiders RidersJson
-        , setRaces RacesJson
+        [ setRaces RacesJson
         , setResults ResultsJson
         , raceAdded RaceAddedJson
         , riderAdded RiderAddedJson
         , resultAdded ResultAddedJson
+        , App.OutsideInfo.getInfoFromOutside App.Msg.Outside App.Msg.LogErr
         ]

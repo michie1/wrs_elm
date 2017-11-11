@@ -5,17 +5,16 @@ import Dom
 import Date
 import Ui.Calendar
 import Ui.Chooser
-import App.Msg exposing (Msg, Msg(..))
+import App.Msg as Msg exposing (Msg)
 import App.Page
 import App.Model exposing (App)
 import App.Routing exposing (Route)
+import App.OutsideInfo exposing (sendInfoOutside, InfoForOutside)
 import Page.Result.Add.Model as ResultAdd
 import Page.Race.Add.Model as RaceAdd
 import Page.Rider.Add.Model as RiderAdd
 import Data.RaceType as RaceType
 import Data.RaceResult exposing (RaceResult)
-
-port loadRiders : () -> Cmd msg
 
 
 port loadRaces : () -> Cmd msg
@@ -36,7 +35,7 @@ onUrlEnter route app =
                     { resultAdd | raceKey = raceKey }
             in
                 ( { app | page = App.Page.ResultAdd resultAddWithRaceKey }
-                , Task.attempt (always App.Msg.Noop) (Dom.focus "result")
+                , Task.attempt (always Msg.Noop) (Dom.focus "result")
                 )
 
         App.Routing.RaceAdd ->
@@ -45,7 +44,7 @@ onUrlEnter route app =
                     RaceAdd.Model "" RaceType.Classic (Ui.Calendar.init ())
             in
                 ( { app | page = App.Page.RaceAdd raceAdd }
-                , Task.attempt (always App.Msg.Noop) (Dom.focus "name")
+                , Task.attempt (always Msg.Noop) (Dom.focus "name")
                 )
 
         App.Routing.RiderAdd ->
@@ -54,7 +53,7 @@ onUrlEnter route app =
                     RiderAdd.Model "" Nothing
             in
                 ( { app | page = App.Page.RiderAdd add }
-                , Task.attempt (always App.Msg.Noop) (Dom.focus "name")
+                , Task.attempt (always Msg.Noop) (Dom.focus "name")
                 )
 
         App.Routing.RiderDetails key ->
@@ -103,7 +102,7 @@ load app =
       else
         Cmd.none
     , if app.riders == Nothing then
-        loadRiders ()
+        sendInfoOutside App.OutsideInfo.LoadRiders
       else
         Cmd.none
     , if app.results == Nothing then

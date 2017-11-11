@@ -34,7 +34,7 @@ var app = Elm.Main.embed(document.getElementById('main'), { });
 
 setup(firebase, app);
 
-app.ports.loadRiders.subscribe(function() {
+function loadRiders() {
   firebase.database().ref('/riders/').orderByChild('id').once('value').then(function(snapshot) {
     const val = snapshot.val();
     const arr = Object.keys(val).
@@ -43,9 +43,12 @@ app.ports.loadRiders.subscribe(function() {
             key: key
           }, val[key]);
       });
-    app.ports.setRiders.send(arr);
+    app.ports.infoForElm.send({
+      tag: 'RidersLoaded',
+      data: arr
+    });
   });
-});
+}
 
 app.ports.loadRaces.subscribe(function() {
   firebase.database().ref('/races/').on('value', function(snapshot) {
@@ -108,4 +111,12 @@ app.ports.addResultPort.subscribe(function(result) {
         outfit: result.outfit
       });
     });
+});
+
+app.ports.infoForOutside.subscribe(function (msg) {
+  if (msg.tag === 'LoadRiders') {
+    loadRiders();
+  } else {
+    console.log('msg', msg);
+  }
 });
