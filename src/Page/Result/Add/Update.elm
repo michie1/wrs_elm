@@ -9,7 +9,7 @@ import App.Page
 import App.UrlUpdate
 import App.Helpers
 import Page.Result.Add.Model exposing (Model)
-import Page.Result.Add.Msg as ResultAdd
+import Page.Result.Add.Msg as Msg exposing (Msg)
 import Data.Outfit as Outfit exposing (Outfit, outfitToString)
 import Data.RaceResult exposing (RaceResult, resultDecoder, resultsDecoder)
 import Data.ResultCategory as ResultCategory exposing (ResultCategory, categoryToString)
@@ -18,100 +18,66 @@ import Data.ResultCategory as ResultCategory exposing (ResultCategory, categoryT
 port addResultPort : Json.Encode.Value -> Cmd msg
 
 
-update : ResultAdd.Msg -> App -> ( App, Cmd ResultAdd.Msg )
+update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
-    case msg of
-        ResultAdd.ResultAddSubmit ->
-            addSubmit app
-
-        ResultAdd.ResultAddOutfit outfit ->
-            addOutfit outfit app
-
-        ResultAdd.ResultAddCategory category ->
-            ( (case app.page of
-                App.Page.ResultAdd resultAdd ->
-                    { app
-                        | page =
-                            App.Page.ResultAdd <| addCategory category resultAdd
-                    }
-
-                _ ->
-                    app
-              )
-            , Cmd.none
-            )
-
-        ResultAdd.ResultAddResult value ->
-            addResult value app
-
-        ResultAdd.Chooser msg_ ->
-            case app.page of
-                App.Page.ResultAdd resultAdd ->
+    case app.page of
+        App.Page.ResultAdd page ->
+            case msg of
+                Msg.Submit ->
                     let
-                        ( chooser, cmd ) =
-                            Ui.Chooser.update msg_ resultAdd.chooser
-
-                        nextResultAdd =
-                            App.Page.ResultAdd { resultAdd | chooser = chooser }
+                        payload =
+                            Json.Encode.object
+                                [ ( "raceKey", Json.Encode.string page.raceKey )
+                                , ( "riderKey", Json.Encode.string (riderKey page.chooser) )
+                                , ( "result", Json.Encode.string page.result )
+                                , ( "category", Json.Encode.string <| categoryToString page.category )
+                                , ( "outfit", Json.Encode.string <| outfitToString page.outfit )
+                                ]
                     in
-                        ( { app | page = nextResultAdd }
-                        , Cmd.map ResultAdd.Chooser cmd
+                        ( app, addResultPort payload )
+
+                Msg.Outfit outfit ->
+                    let
+                        nextPage =
+                            App.Page.ResultAdd
+                                { page | outfit = outfit }
+                    in
+                        ( { app | page = nextPage }
+                        , Cmd.none
                         )
 
-                _ ->
-                    ( app, Cmd.none )
+                Msg.Category category ->
+                    let
+                        nextPage =
+                            App.Page.ResultAdd
+                                { page | category = category }
+                    in
+                        ( { app | page = nextPage }
+                        , Cmd.none
+                        )
 
+                Msg.Result result ->
+                    let
+                        nextPage =
+                            App.Page.ResultAdd
+                                { page | result = result }
+                    in
+                        ( { app | page = nextPage }
+                        , Cmd.none
+                        )
 
-addCategory :
-    ResultCategory
-    -> Model
-    -> Model
-addCategory category resultAdd =
-    { resultAdd | category = category }
+                Msg.Chooser msg_ ->
+                    let
+                        ( chooser, cmd ) =
+                            Ui.Chooser.update msg_ page.chooser
 
-
-addOutfit : Outfit -> App -> ( App, Cmd ResultAdd.Msg )
-addOutfit outfit app =
-    case app.page of
-        App.Page.ResultAdd resultAdd ->
-            let
-                nextAdd =
-                    { resultAdd | outfit = outfit }
-
-                nextApp =
-                    { app | page = App.Page.ResultAdd nextAdd }
-            in
-                ( nextApp, Cmd.none )
-
-        _ ->
-            ( app, Cmd.none )
-
-
-addResult : String -> App -> ( App, Cmd ResultAdd.Msg )
-addResult value app =
-    case app.page of
-        App.Page.ResultAdd raceKey ->
-            ( { app | page = App.Page.ResultAdd raceKey }, Cmd.none )
-
-        _ ->
-            ( app, Cmd.none )
-
-
-addSubmit : App -> ( App, Cmd ResultAdd.Msg )
-addSubmit app =
-    case app.page of
-        App.Page.ResultAdd add ->
-            let
-                payload =
-                    Json.Encode.object
-                        [ ( "raceKey", Json.Encode.string add.raceKey )
-                        , ( "riderKey", Json.Encode.string (riderKey add.chooser) )
-                        , ( "result", Json.Encode.string add.result )
-                        , ( "category", Json.Encode.string <| categoryToString add.category )
-                        , ( "outfit", Json.Encode.string <| outfitToString add.outfit )
-                        ]
-            in
-                ( app, addResultPort payload )
+                        nextPage =
+                            App.Page.ResultAdd
+                                { page | chooser = chooser }
+                    in
+                        ( { app | page = nextPage }
+                        , Cmd.map Msg.Chooser cmd
+                        )
 
         _ ->
             ( app, Cmd.none )

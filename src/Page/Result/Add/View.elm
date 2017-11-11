@@ -12,7 +12,7 @@ import Data.Rider exposing (Rider)
 import Data.ResultCategory as ResultCategory exposing (ResultCategory)
 import Data.RaceResult exposing (RaceResult)
 import Page.Result.Add.Model exposing (Model)
-import Page.Result.Add.Msg exposing (Msg, Msg(..))
+import Page.Result.Add.Msg as Msg exposing (Msg) 
 
 
 riderNameExists : String -> List Rider -> Bool
@@ -61,7 +61,7 @@ view race resultAdd riders results =
                     [ input
                         [ id "result"
                         , type_ "text"
-                        , onInput ResultAddResult
+                        , onInput Msg.Result
                         , autofocus True
                         ]
                         []
@@ -70,7 +70,7 @@ view race resultAdd riders results =
                 ]
             , div [ class "row" ]
                 [ div [ class "input-field col s6" ]
-                    [ div [] [ Html.map Chooser (Ui.Chooser.view chooser) ]
+                    [ div [] [ Html.map Msg.Chooser (Ui.Chooser.view chooser) ]
                     , label [ for "rider", class "active" ] [ text "Rider" ]
                     ]
                 ]
@@ -80,7 +80,7 @@ view race resultAdd riders results =
                 [ button
                     [ class "waves-effect waves-light btn"
                     , type_ "submit"
-                    , onClick ResultAddSubmit
+                    , onClick Msg.Submit
                     , Html.Attributes.name "action"
                     , disabled submitDisabled
                     ]
@@ -104,7 +104,7 @@ resultExists rider race results =
 resultCategoryButtonCheck : String -> String -> ResultCategory -> Bool -> Html Msg
 resultCategoryButtonCheck resultCategoryName resultCategoryText category isChecked =
     p []
-        [ input [ checked isChecked, name "resultCategory", type_ "radio", id resultCategoryName, onClick (ResultAddCategory category) ] []
+        [ input [ checked isChecked, name "resultCategory", type_ "radio", id resultCategoryName, onClick (Msg.Category category) ] []
         , label [ for resultCategoryName ] [ text resultCategoryText ]
         ]
 
@@ -128,7 +128,7 @@ resultCategoryButtons =
 outfitButton : String -> String -> Outfit -> Bool -> Html Msg
 outfitButton outfitName outfitLabel outfit isChecked =
     p []
-        [ input [ checked isChecked, name "outfit", type_ "radio", id outfitName, onClick (ResultAddOutfit outfit) ] []
+        [ input [ checked isChecked, name "outfit", type_ "radio", id outfitName, onClick (Msg.Outfit outfit) ] []
         , label [ for outfitName ] [ text outfitLabel ]
         ]
 

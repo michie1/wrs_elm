@@ -6,8 +6,8 @@ import Data.Outfit exposing (Outfit)
 import Data.ResultCategory exposing (ResultCategory)
 
 type Msg
-    = ResultAddSubmit
-    | ResultAddCategory ResultCategory
-    | ResultAddOutfit Outfit
-    | ResultAddResult String
+    = Submit
+    | Category ResultCategory
+    | Outfit Outfit
+    | Result String
     | Chooser Ui.Chooser.Msg
