@@ -4,7 +4,7 @@ import Data.RaceType exposing (RaceType)
 import Ui.Calendar
 
 type Msg
-    = RaceAddSubmit
-    | RaceName String
-    | RaceAddRaceType RaceType
+    = Submit
+    | Name String
+    | RaceType RaceType
     | Calendar Ui.Calendar.Msg

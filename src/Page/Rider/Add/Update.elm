@@ -7,26 +7,26 @@ import Json.Encode
 import App.Routing
 import App.UrlUpdate
 import Page.Rider.Add.Model exposing (Model)
-import Page.Rider.Add.Msg as RiderAdd
+import Page.Rider.Add.Msg as Msg exposing (Msg)
 import Data.Licence as Licence exposing (Licence, licenceToString)
 import Data.Rider exposing (Rider)
 
 
 port addRider : Json.Encode.Value -> Cmd msg
 
-update : RiderAdd.Msg -> App -> ( App, Cmd RiderAdd.Msg )
+update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
     case msg of
-        RiderAdd.RiderAddSubmit ->
+        Msg.Submit ->
             addSubmit app
 
-        RiderAdd.RiderAddName name ->
+        Msg.Name name ->
             addName name app
 
-        RiderAdd.RiderAddLicence licence ->
+        Msg.Licence licence ->
             addLicence licence app
 
-addSubmit : App -> ( App, Cmd RiderAdd.Msg )
+addSubmit : App -> ( App, Cmd Msg )
 addSubmit app =
     case app.page of
         App.Page.RiderAdd add ->
@@ -43,7 +43,7 @@ addSubmit app =
             ( app, Cmd.none )
 
 
-addName : String -> App -> ( App, Cmd RiderAdd.Msg )
+addName : String -> App -> ( App, Cmd Msg )
 addName name app =
     let
         page =
@@ -60,7 +60,7 @@ addName name app =
         ( nextApp, Cmd.none )
 
 
-addLicence : Licence -> App -> ( App, Cmd RiderAdd.Msg )
+addLicence : Licence -> App -> ( App, Cmd Msg )
 addLicence licence app =
     let
         page =

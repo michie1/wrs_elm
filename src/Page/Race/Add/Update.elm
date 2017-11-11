@@ -10,7 +10,7 @@ import Ui.Calendar
 import App.Model exposing (App)
 import App.Page
 import Page.Race.Add.Model as RaceAdd
-import Page.Race.Add.Msg exposing (Msg, Msg(..))
+import Page.Race.Add.Msg as Msg exposing (Msg)
 import Data.RaceType as RaceType exposing (raceTypeToString)
 
 
@@ -22,10 +22,10 @@ update msg app =
     case app.page of
         App.Page.RaceAdd page ->
             case msg of
-                RaceAddSubmit ->
+                Msg.Submit ->
                     addSubmit page app
 
-                RaceName name ->
+                Msg.Name name ->
                     let
                         nextPage =
                             App.Page.RaceAdd
@@ -33,7 +33,7 @@ update msg app =
                     in
                         ( { app | page = nextPage }, Cmd.none )
 
-                RaceAddRaceType raceType ->
+                Msg.RaceType raceType ->
                     let
                         nextPage =
                             App.Page.RaceAdd
@@ -41,8 +41,7 @@ update msg app =
                     in
                         ( { app | page = nextPage }, Cmd.none )
 
-
-                Calendar msg_ ->
+                Msg.Calendar msg_ ->
                     let
                         ( calendar, cmd ) =
                             Ui.Calendar.update msg_ page.calendar
@@ -52,7 +51,7 @@ update msg app =
                                 { page | calendar = calendar }
                     in
                         ( { app | page = nextPage }
-                        , Cmd.map Calendar cmd
+                        , Cmd.map Msg.Calendar cmd
                         )
 
         _ ->

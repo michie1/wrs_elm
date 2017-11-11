@@ -5,7 +5,7 @@ import Html.Attributes exposing (attribute, autofocus, value, autofocus, class, 
 import Html.Events exposing (onClick, onInput)
 import Data.Licence as Licence exposing (Licence)
 import Page.Rider.Add.Model exposing (Model)
-import Page.Rider.Add.Msg exposing (Msg, Msg(..))
+import Page.Rider.Add.Msg as Msg exposing (Msg)
 
 
 view : Model -> Html Msg
@@ -25,7 +25,7 @@ view add =
                         [ input
                             [ id "name"
                             , type_ "text"
-                            , onInput RiderAddName
+                            , onInput Msg.Name
                             , autofocus True
                             , value name
                             ]
@@ -39,7 +39,7 @@ view add =
                         [ button
                             [ class "waves-effect waves-light btn"
                             , type_ "submit"
-                            , onClick RiderAddSubmit
+                            , onClick Msg.Submit
                             , Html.Attributes.name "action"
                             , disabled submitDisabled
                             ]
@@ -64,7 +64,7 @@ licenceButtonCheck categoryName categoryText categoryModel maybeCurrent =
                     False
     in
         p []
-            [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (RiderAddLicence categoryModel) ] []
+            [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (Msg.Licence categoryModel) ] []
             , label [ for categoryName ] [ text categoryText ]
             ]
 

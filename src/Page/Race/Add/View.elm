@@ -10,7 +10,7 @@ import Ui.Calendar
 import Data.RaceType as RaceType exposing (RaceType)
 import Data.Race exposing (Race)
 import Page.Race.Add.Model exposing (Model)
-import Page.Race.Add.Msg exposing (Msg, Msg(..))
+import Page.Race.Add.Msg as Msg exposing (Msg)
 
 
 dateFormat : Date.Date -> String
@@ -38,7 +38,7 @@ view raceAdd =
                         [ input
                             [ id "name"
                             , type_ "text"
-                            , onInput RaceName
+                            , onInput Msg.Name
                             , autofocus True
                             , value name
                             ]
@@ -47,13 +47,13 @@ view raceAdd =
                         ]
                     ]
                 , div [ class "row" ] [ raceTypeButtons raceAdd.raceType ]
-                , div [] [ Html.map Calendar (Ui.Calendar.view "en_us" raceAdd.calendar) ]
+                , div [] [ Html.map Msg.Calendar (Ui.Calendar.view "en_us" raceAdd.calendar) ]
                 , div [ class "row" ]
                     [ div [ class "col s6" ]
                         [ button
                             [ class "waves-effect waves-light btn"
                             , type_ "submit"
-                            , onClick RaceAddSubmit
+                            , onClick Msg.Submit
                             , Html.Attributes.name "action"
                             , disabled submitDisabled
                             ]
@@ -73,7 +73,7 @@ raceTypeButtonCheck raceTypeName raceTypeText raceType current =
             raceType == current
     in
         p []
-            [ input [ checked isChecked, name "type", type_ "radio", id raceTypeName, onClick (RaceAddRaceType raceType) ] []
+            [ input [ checked isChecked, name "type", type_ "radio", id raceTypeName, onClick (Msg.RaceType raceType) ] []
             , label [ for raceTypeName ] [ text raceTypeText ]
             ]
 
