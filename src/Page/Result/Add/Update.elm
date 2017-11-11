@@ -1,4 +1,4 @@
-port module Page.Result.Add.Update exposing (addCategory, addResult, addSubmit, addOutfit, update)
+port module Page.Result.Add.Update exposing (update)
 
 import Json.Encode
 import Set

@@ -13,14 +13,12 @@ import Data.Rider exposing (ridersDecoder)
 import Page.Rider.Add.Model as RiderAdd
 import Page.Rider.Add.Update as RiderAdd
 import Page.Race.Add.Model as RaceAdd
-import Page.Race.Add.Update
+import Page.Race.Add.Update as RaceAdd
 import Page.Result.Add.Model as ResultAdd
 import Page.Result.Add.Update as ResultAdd
 import String
 import Json.Decode
 import Json.Decode.Pipeline
-import Ui.Calendar
-import Ui.Chooser
 
 
 type alias KeyResponse =
@@ -68,34 +66,12 @@ update msg app =
                         Err err ->
                             ( app, Cmd.none )
 
-            RaceAddSubmit ->
-                case app.page of
-                    App.Page.RaceAdd raceAdd ->
-                        Page.Race.Add.Update.addSubmit raceAdd app
-
-                    _ ->
-                        noOp
-
-            RaceName name ->
+            RaceAddMsg subMsg ->
                 let
-                    page =
-                        Page.Race.Add.Update.addPage msg app.page
+                    ( nextApp, nextCmd ) =
+                        RaceAdd.update subMsg app
                 in
-                    ( { app | page = page }, Cmd.none )
-
-            RaceAddRaceType raceType ->
-                let
-                    page =
-                        Page.Race.Add.Update.addPage msg app.page
-                in
-                    ( { app | page = page }, Cmd.none )
-
-            RaceDate newDate ->
-                let
-                    page =
-                        Page.Race.Add.Update.addPage msg app.page
-                in
-                    ( { app | page = page }, Cmd.none )
+                    ( nextApp, Cmd.map RaceAddMsg nextCmd )
 
             RaceAddedJson rawResponse ->
                 let
@@ -123,23 +99,6 @@ update msg app =
 
                     _ ->
                         ( app, Cmd.none )
-
-            Calendar msg_ ->
-                case app.page of
-                    App.Page.RaceAdd raceAdd ->
-                        let
-                            ( calendar, cmd ) =
-                                Ui.Calendar.update msg_ raceAdd.calendar
-
-                            nextRaceAdd =
-                                App.Page.RaceAdd { raceAdd | calendar = calendar }
-                        in
-                            ( { app | page = nextRaceAdd }
-                            , Cmd.map Calendar cmd
-                            )
-
-                    _ ->
-                        noOp
 
             RiderAddMsg subMsg ->
                 let
@@ -180,8 +139,6 @@ update msg app =
 
                         _ ->
                             ( app, Cmd.none )
-
-
 
             Noop ->
                 noOp

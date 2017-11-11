@@ -1,53 +1,62 @@
-port module Page.Race.Add.Update exposing (addPage, addSubmit)
+port module Page.Race.Add.Update exposing (update)
 
-import App.Msg exposing (Msg(..))
-import App.Model exposing (App)
-import App.Page
-import App.Helpers
-import Page.Race.Add.Model as RaceAdd
 import Date
-import Date.Extra
-import Task
-import App.Helpers
-import App.Routing
-import Json.Encode
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
-import Date
+import Json.Encode
 import Json.Decode
 import Json.Decode.Extra
-import Data.RaceType as RaceType exposing (RaceType, raceType, raceTypeToString)
-import Data.Race exposing (Race)
+import Ui.Calendar
+import App.Model exposing (App)
+import App.Page
+import Page.Race.Add.Model as RaceAdd
+import Page.Race.Add.Msg exposing (Msg, Msg(..))
+import Data.RaceType as RaceType exposing (raceTypeToString)
+
 
 port addRace : Json.Encode.Value -> Cmd msg
 
 
-addPage : App.Msg.Msg -> App.Page.Page -> App.Page.Page
-addPage msg page =
-    case page of
-        App.Page.RaceAdd raceAdd ->
+update : Msg -> App -> ( App, Cmd Msg )
+update msg app =
+    case app.page of
+        App.Page.RaceAdd page ->
             case msg of
+                RaceAddSubmit ->
+                    addSubmit page app
+
                 RaceName name ->
-                    App.Page.RaceAdd <| addName name raceAdd
+                    let
+                        nextPage =
+                            App.Page.RaceAdd
+                                { page | name = name }
+                    in
+                        ( { app | page = nextPage }, Cmd.none )
 
                 RaceAddRaceType raceType ->
-                    App.Page.RaceAdd <| addRaceType raceType raceAdd
+                    let
+                        nextPage =
+                            App.Page.RaceAdd
+                                { page | raceType = raceType }
+                    in
+                        ( { app | page = nextPage }, Cmd.none )
 
-                _ ->
-                    page
+
+                Calendar msg_ ->
+                    let
+                        ( calendar, cmd ) =
+                            Ui.Calendar.update msg_ page.calendar
+
+                        nextPage =
+                            App.Page.RaceAdd
+                                { page | calendar = calendar }
+                    in
+                        ( { app | page = nextPage }
+                        , Cmd.map Calendar cmd
+                        )
 
         _ ->
-            page
-
-
-addName : String -> RaceAdd.Model -> RaceAdd.Model
-addName newName raceAdd =
-    { raceAdd | name = newName }
-
-
-addRaceType : RaceType -> RaceAdd.Model -> RaceAdd.Model
-addRaceType raceType raceAdd =
-    { raceAdd | raceType = raceType }
+            ( app, Cmd.none )
 
 
 dateFormat : Date.Date -> String

@@ -1,4 +1,4 @@
-port module Page.Rider.Add.Update exposing (..)
+port module Page.Rider.Add.Update exposing (update)
 
 import App.Model exposing (App)
 import App.Page

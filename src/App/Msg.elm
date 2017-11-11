@@ -12,16 +12,17 @@ import Data.Licence exposing (Licence)
 import Data.ResultCategory exposing (ResultCategory)
 import Page.Result.Add.Msg as ResultAdd
 import Page.Rider.Add.Msg as RiderAdd
+import Page.Race.Add.Msg as RaceAdd
 
 
 type Msg
-    = RaceAddSubmit
-    | RaceName String
-    | RaceDate String
-    | RaceAddRaceType RaceType
-    | RacesJson Json.Decode.Value
+    = NavigateTo Page
+    | UrlUpdate Route
+    | Noop
+      --
+    | RaceAddMsg RaceAdd.Msg
     | RaceAddedJson Json.Decode.Value
-    | Calendar Ui.Calendar.Msg
+    | RacesJson Json.Decode.Value
       --
     | ResultAddMsg ResultAdd.Msg
     | ResultAddedJson Json.Decode.Value
@@ -30,7 +31,3 @@ type Msg
     | RiderAddMsg RiderAdd.Msg
     | RiderAddedJson Json.Decode.Value
     | RidersJson Json.Decode.Value
-      --
-    | NavigateTo Page
-    | UrlUpdate Route
-    | Noop

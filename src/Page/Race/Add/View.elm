@@ -1,8 +1,8 @@
 module Page.Race.Add.View exposing (view)
+
 import Html exposing (Html, node, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
 import Html.Attributes exposing (attribute, autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
-import App.Msg
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Date
@@ -10,6 +10,7 @@ import Ui.Calendar
 import Data.RaceType as RaceType exposing (RaceType)
 import Data.Race exposing (Race)
 import Page.Race.Add.Model exposing (Model)
+import Page.Race.Add.Msg exposing (Msg, Msg(..))
 
 
 dateFormat : Date.Date -> String
@@ -17,7 +18,7 @@ dateFormat date =
     Date.Extra.Format.format config "%Y-%m-%d" date
 
 
-view : Model -> Html App.Msg.Msg
+view : Model -> Html Msg
 view raceAdd =
     let
         name =
@@ -26,7 +27,8 @@ view raceAdd =
         submitDisabled =
             name == "" || String.length name > 100
 
-        dateString = dateFormat raceAdd.calendar.value
+        dateString =
+            dateFormat raceAdd.calendar.value
     in
         div []
             [ h2 [] [ text "Add Race" ]
@@ -36,7 +38,7 @@ view raceAdd =
                         [ input
                             [ id "name"
                             , type_ "text"
-                            , onInput App.Msg.RaceName
+                            , onInput RaceName
                             , autofocus True
                             , value name
                             ]
@@ -45,13 +47,13 @@ view raceAdd =
                         ]
                     ]
                 , div [ class "row" ] [ raceTypeButtons raceAdd.raceType ]
-                , div [] [ Html.map App.Msg.Calendar (Ui.Calendar.view "en_us" raceAdd.calendar) ]
+                , div [] [ Html.map Calendar (Ui.Calendar.view "en_us" raceAdd.calendar) ]
                 , div [ class "row" ]
                     [ div [ class "col s6" ]
                         [ button
                             [ class "waves-effect waves-light btn"
                             , type_ "submit"
-                            , onClick App.Msg.RaceAddSubmit
+                            , onClick RaceAddSubmit
                             , Html.Attributes.name "action"
                             , disabled submitDisabled
                             ]
@@ -64,19 +66,19 @@ view raceAdd =
             ]
 
 
-raceTypeButtonCheck : String -> String -> RaceType -> RaceType -> Html App.Msg.Msg
+raceTypeButtonCheck : String -> String -> RaceType -> RaceType -> Html Msg
 raceTypeButtonCheck raceTypeName raceTypeText raceType current =
     let
         isChecked =
             raceType == current
     in
         p []
-            [ input [ checked isChecked, name "type", type_ "radio", id raceTypeName, onClick (App.Msg.RaceAddRaceType raceType) ] []
+            [ input [ checked isChecked, name "type", type_ "radio", id raceTypeName, onClick (RaceAddRaceType raceType) ] []
             , label [ for raceTypeName ] [ text raceTypeText ]
             ]
 
 
-raceTypeButtons : RaceType -> Html App.Msg.Msg
+raceTypeButtons : RaceType -> Html Msg
 raceTypeButtons current =
     div [ class "col s6" ]
         [ label [ class "active" ] [ text "Category" ]
@@ -87,7 +89,7 @@ raceTypeButtons current =
         ]
 
 
-datepicker : String -> Html App.Msg.Msg
+datepicker : String -> Html Msg
 datepicker dateString =
     let
         inputDate =

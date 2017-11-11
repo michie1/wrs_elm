@@ -58,6 +58,7 @@ viewPage app races riders results =
 
         App.Page.RaceAdd raceAdd ->
             Page.Race.Add.View.view raceAdd
+                |> Html.map App.Msg.RaceAddMsg
 
         App.Page.ResultAdd add ->
             let
