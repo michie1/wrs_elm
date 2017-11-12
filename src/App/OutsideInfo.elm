@@ -16,15 +16,6 @@ port infoForElm : (GenericOutsideData -> msg) -> Sub msg
 sendInfoOutside : InfoForOutside -> Cmd msg
 sendInfoOutside info =
     case info of
-        LoadRiders ->
-            infoForOutside { tag = "LoadRiders", data = Json.Encode.null }
-
-        LoadRaces ->
-            infoForOutside { tag = "LoadRaces", data = Json.Encode.null }
-
-        LoadResults ->
-            infoForOutside { tag = "LoadResults", data = Json.Encode.null }
-
         RaceAdd payload ->
             infoForOutside { tag = "RaceAdd", data = payload }
 
@@ -97,10 +88,7 @@ getInfoFromOutside tagger onError =
 
 
 type InfoForOutside
-    = LoadRiders
-    | LoadRaces
-    | LoadResults
-    | RaceAdd Json.Encode.Value
+    = RaceAdd Json.Encode.Value
     | RiderAdd Json.Encode.Value
     | ResultAdd Json.Encode.Value
     | LogError String

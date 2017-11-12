@@ -5,18 +5,16 @@ function setup(firebase, app) {
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      console.log('user changed to logged in');
-      app.ports.login.send(user.email);
-      /*
-      firebase.database().ref('/riders/').once('value').then(function(snapshot) {
-        console.log('snapshot', snapshot.val());
-      });
-      */
+      console.log('user changed to logged in', user);
+      loadRiders();
+      loadRaces();
+      loadResults();
     } else {
       console.log('no user signed in');
     }
   });
 
+  firebase.auth().signInAnonymously();
 }
 
 var config = {
@@ -125,13 +123,7 @@ function addResult(result) {
 }
 
 app.ports.infoForOutside.subscribe(function (msg) {
-  if (msg.tag === 'LoadRiders') {
-    loadRiders();
-  } else if (msg.tag === 'LoadRaces') {
-    loadRaces();
-  } else if (msg.tag === 'LoadResults') {
-    loadResults();
-  } else if (msg.tag === 'RiderAdd') {
+  if (msg.tag === 'RiderAdd') {
     addRider(msg.data);
   } else if (msg.tag === 'RaceAdd') {
     addRace(msg.data);

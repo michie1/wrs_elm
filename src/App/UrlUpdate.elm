@@ -1,4 +1,4 @@
-module App.UrlUpdate exposing (urlUpdate, onUrlEnter)
+module App.UrlUpdate exposing (urlUpdate)
 
 import Task
 import Dom
@@ -14,8 +14,28 @@ import Page.Rider.Add.Model as RiderAdd
 import Data.RaceType as RaceType
 
 
-onUrlEnter : App.Routing.Route -> App -> ( App, Cmd Msg )
-onUrlEnter route app =
+routeToPage : App.Routing.Route -> Maybe App.Page.Page
+routeToPage route =
+    let
+        routePages =
+            [ ( App.Routing.Riders, App.Page.Riders )
+            , ( App.Routing.Races, App.Page.Races )
+            ]
+
+        maybeRoutePage =
+            List.filter (\f -> Tuple.first f == route) routePages
+                |> List.head
+    in
+        case maybeRoutePage of
+            Just ( _, p ) ->
+                Just p
+
+            Nothing ->
+                Nothing
+
+
+urlUpdate : App.Routing.Route -> App -> ( App, Cmd Msg )
+urlUpdate route app =
     case route of
         App.Routing.ResultAdd raceKey ->
             let
@@ -65,51 +85,3 @@ onUrlEnter route app =
                 Nothing ->
                     ( app, Cmd.none )
 
-
-routeToPage : App.Routing.Route -> Maybe App.Page.Page
-routeToPage route =
-    let
-        routePages =
-            [ ( App.Routing.Riders, App.Page.Riders )
-            , ( App.Routing.Races, App.Page.Races )
-            ]
-
-        maybeRoutePage =
-            List.filter (\f -> Tuple.first f == route) routePages
-                |> List.head
-    in
-        case maybeRoutePage of
-            Just ( _, p ) ->
-                Just p
-
-            Nothing ->
-                Nothing
-
-
-load : App -> List (Cmd Msg)
-load app =
-    [ if app.races == Nothing then
-        sendInfoOutside App.OutsideInfo.LoadRaces
-      else
-        Cmd.none
-    , if app.riders == Nothing then
-        sendInfoOutside App.OutsideInfo.LoadRiders
-      else
-        Cmd.none
-    , if app.results == Nothing then
-        sendInfoOutside App.OutsideInfo.LoadResults
-      else
-        Cmd.none
-    ]
-
-
-urlUpdate : App.Routing.Route -> App -> ( App, Cmd Msg )
-urlUpdate route app =
-    let
-        ( nextApp, routeCmd ) =
-            onUrlEnter route app
-
-        cmd =
-            Cmd.batch (routeCmd :: load app)
-    in
-        ( nextApp, cmd )
