@@ -29,72 +29,56 @@ type alias KeyResponse =
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
-    let
-        noOp =
+    case msg of
+        Msg.NavigateTo page ->
+            ( app, App.Helpers.navigate page )
+
+        Msg.UrlUpdate route ->
+            App.UrlUpdate.urlUpdate route app
+
+        Msg.Noop ->
             ( app, Cmd.none )
-    in
-        case msg of
-            Msg.ResultAdd subMsg ->
-                let
-                    ( nextApp, nextCmd ) =
-                        ResultAdd.update subMsg app
-                in
-                    ( nextApp, Cmd.map Msg.ResultAdd nextCmd )
 
-            Msg.ResultAddedJson rawResponse ->
-                let
-                    resultResult =
-                        Json.Decode.decodeValue resultDecoder rawResponse
-                in
-                    case resultResult of
-                        Ok result ->
-                            ( app, App.Helpers.navigate <| App.Page.RaceDetails result.raceKey )
+        Msg.Outside infoForElm ->
+            case infoForElm of
+                App.OutsideInfo.RidersLoaded riders ->
+                    ( { app | riders = Just riders }, Cmd.none )
 
-                        Err err ->
-                            ( app, Cmd.none )
+                App.OutsideInfo.RacesLoaded races ->
+                    ( { app | races = Just races }, Cmd.none )
 
-            Msg.RaceAdd subMsg ->
-                let
-                    ( nextApp, nextCmd ) =
-                        RaceAdd.update subMsg app
-                in
-                    ( nextApp, Cmd.map Msg.RaceAdd nextCmd )
+                App.OutsideInfo.ResultsLoaded results ->
+                    ( { app | results = Just results }, Cmd.none )
 
+                App.OutsideInfo.RaceAdded key ->
+                    ( app, App.Helpers.navigate <| App.Page.RaceDetails key )
 
-            Msg.RiderAdd subMsg ->
-                let
-                    ( nextApp, nextCmd ) =
-                        RiderAdd.update subMsg app
-                in
-                    ( nextApp, Cmd.map Msg.RiderAdd nextCmd )
+                App.OutsideInfo.RiderAdded key ->
+                    ( app, App.Helpers.navigate <| App.Page.RiderDetails key )
 
+                App.OutsideInfo.ResultAdded raceKey ->
+                    ( app, App.Helpers.navigate <| App.Page.RaceDetails raceKey )
 
-            Msg.Noop ->
-                noOp
+        Msg.LogErr err ->
+            ( app, App.OutsideInfo.sendInfoOutside <| App.OutsideInfo.LogError err )
 
-            Msg.UrlUpdate route ->
-                App.UrlUpdate.urlUpdate route app
+        Msg.RaceAdd subMsg ->
+            let
+                ( nextApp, nextCmd ) =
+                    RaceAdd.update subMsg app
+            in
+                ( nextApp, Cmd.map Msg.RaceAdd nextCmd )
 
-            Msg.NavigateTo page ->
-                ( app, App.Helpers.navigate page )
+        Msg.RiderAdd subMsg ->
+            let
+                ( nextApp, nextCmd ) =
+                    RiderAdd.update subMsg app
+            in
+                ( nextApp, Cmd.map Msg.RiderAdd nextCmd )
 
-            Msg.Outside infoForElm ->
-                case infoForElm of
-                    App.OutsideInfo.RidersLoaded riders ->
-                        ( { app | riders = Just riders }, Cmd.none )
-
-                    App.OutsideInfo.RacesLoaded races ->
-                        ( { app | races = Just races }, Cmd.none )
-
-                    App.OutsideInfo.ResultsLoaded results ->
-                        ( { app | results = Just results }, Cmd.none )
-
-                    App.OutsideInfo.RaceAdded key ->
-                        ( app, App.Helpers.navigate <| App.Page.RaceDetails key )
-
-                    App.OutsideInfo.RiderAdded key ->
-                        ( app, App.Helpers.navigate <| App.Page.RiderDetails key )
-
-
-            Msg.LogErr err ->
-                ( app, App.OutsideInfo.sendInfoOutside <| App.OutsideInfo.LogError err)
+        Msg.ResultAdd subMsg ->
+            let
+                ( nextApp, nextCmd ) =
+                    ResultAdd.update subMsg app
+            in
+                ( nextApp, Cmd.map Msg.ResultAdd nextCmd )

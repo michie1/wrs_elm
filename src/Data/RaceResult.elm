@@ -26,6 +26,11 @@ resultExists result results =
     )
         /= 0
 
+type alias ResultResponse = 
+    { key: String
+    , raceKey: String
+    }
+
 resultDecoder : Json.Decode.Decoder RaceResult
 resultDecoder =
     Json.Decode.Pipeline.decode RaceResult

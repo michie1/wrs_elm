@@ -4,12 +4,12 @@ import Page.Race.Add.Model as RaceAdd
 import Page.Result.Add.Model as ResultAdd
 
 type Page
-    = Riders
-    | RiderDetails String
-    | RiderAdd RiderAdd.Model
-    --
-    | Races
+    = Races
     | RaceDetails String
     | RaceAdd RaceAdd.Model
+    --
+    | Riders
+    | RiderDetails String
+    | RiderAdd RiderAdd.Model
     --
     | ResultAdd ResultAdd.Model

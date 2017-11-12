@@ -104,20 +104,23 @@ function addRider(rider) {
     });
 }
 
-app.ports.addResultPort.subscribe(function(result) {
+function addResult(result) {
   const pushedResult = firebase.database().ref('/results/').push();
   pushedResult.set(result)
     .then(function () {
-      app.ports.resultAdded.send({
-        key: pushedResult.key,
-        riderKey: result.riderKey,
-        raceKey: result.raceKey,
-        category: result.category,
-        result: result.result,
-        outfit: result.outfit
+      app.ports.infoForElm.send({
+        tag: 'ResultAdded',
+        data: {
+          key: pushedResult.key,
+          riderKey: result.riderKey,
+          raceKey: result.raceKey,
+          category: result.category,
+          result: result.result,
+          outfit: result.outfit
+        }
       });
     });
-});
+}
 
 app.ports.infoForOutside.subscribe(function (msg) {
   if (msg.tag === 'LoadRiders') {
@@ -130,6 +133,8 @@ app.ports.infoForOutside.subscribe(function (msg) {
     addRider(msg.data);
   } else if (msg.tag === 'RaceAdd') {
     addRace(msg.data);
+  } else if (msg.tag === 'ResultAdd') {
+    addResult(msg.data);
   } else {
     console.log('msg', msg);
   }

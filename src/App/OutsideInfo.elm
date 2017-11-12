@@ -1,11 +1,17 @@
-port module App.OutsideInfo exposing (..)
+port module App.OutsideInfo exposing (sendInfoOutside, InfoForOutside, InfoForOutside(..), InfoForElm, InfoForElm(..), getInfoFromOutside)
 
 import Json.Encode
 import Json.Decode exposing (decodeValue)
 import Json.Decode.Pipeline
 import Data.Rider exposing (Rider, ridersDecoder)
 import Data.Race exposing (Race, racesDecoder)
-import Data.RaceResult exposing (RaceResult, resultsDecoder)
+import Data.RaceResult exposing (RaceResult, resultsDecoder, resultDecoder)
+
+
+port infoForOutside : GenericOutsideData -> Cmd msg
+
+
+port infoForElm : (GenericOutsideData -> msg) -> Sub msg
 
 
 sendInfoOutside : InfoForOutside -> Cmd msg
@@ -25,6 +31,9 @@ sendInfoOutside info =
 
         RiderAdd payload ->
             infoForOutside { tag = "RiderAdd", data = payload }
+
+        ResultAdd payload ->
+            infoForOutside { tag = "ResultAdd", data = payload }
 
         LogError err ->
             infoForOutside { tag = "LogError", data = Json.Encode.string err }
@@ -75,9 +84,18 @@ getInfoFromOutside tagger onError =
                         Err e ->
                             onError e
 
+                "ResultAdded" ->
+                    case decodeValue resultDecoder outsideInfo.data of
+                        Ok response ->
+                            tagger <| ResultAdded response.key
+
+                        Err e ->
+                            onError e
+
                 _ ->
                     onError <| "Unexpected info from outside: " ++ toString outsideInfo
         )
+
 
 type InfoForOutside
     = LoadRiders
@@ -85,6 +103,7 @@ type InfoForOutside
     | LoadResults
     | RaceAdd Json.Encode.Value
     | RiderAdd Json.Encode.Value
+    | ResultAdd Json.Encode.Value
     | LogError String
 
 
@@ -94,13 +113,8 @@ type InfoForElm
     | ResultsLoaded (List RaceResult)
     | RaceAdded String
     | RiderAdded String
+    | ResultAdded String
 
 
 type alias GenericOutsideData =
     { tag : String, data : Json.Encode.Value }
-
-
-port infoForOutside : GenericOutsideData -> Cmd msg
-
-
-port infoForElm : (GenericOutsideData -> msg) -> Sub msg

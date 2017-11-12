@@ -1,4 +1,4 @@
-port module Main exposing (..)
+module Main exposing (..)
 
 import Navigation
 import Json.Decode
@@ -10,8 +10,6 @@ import App.UrlUpdate
 import App.View
 import App.Flags exposing (Flags)
 import App.OutsideInfo
-
-port resultAdded: (Json.Decode.Value -> msg) -> Sub msg
 
 main : Program Flags App Msg
 main =
@@ -47,6 +45,5 @@ init flags location =
 subscriptions : App -> Sub Msg
 subscriptions app =
     Sub.batch
-        [ resultAdded ResultAddedJson
-        , App.OutsideInfo.getInfoFromOutside App.Msg.Outside App.Msg.LogErr
+        [ App.OutsideInfo.getInfoFromOutside App.Msg.Outside App.Msg.LogErr
         ]
