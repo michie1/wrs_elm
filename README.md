@@ -1,27 +1,29 @@
 # Installation
 
 Prerequisites: 
- * Node 
- * Npm 
- * wrs_phoenix
+ * Node LTS
+ * Npm LTS
 
 Install elm:
 
 ```sh
-sudo npm install -g elm
+sudo npm install -g elm &&
+sudo npm install elm-github-install -g
 ```
 
 Get code:
 
 ```sh
-git clone https://github.com/michie1/wrs_elm
+git clone https://github.com/michie1/wrs_elm &&
 cd wrs_elm
 ```
 
 Install dependencies:
 
 ```sh
-sudo npm install 
+npm install &&
+elm-github-install
+
 ```
 
 Run dev mode:
