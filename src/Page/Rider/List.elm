@@ -1,7 +1,7 @@
 module Page.Rider.List exposing (view)
 
 import Html exposing (Html, h2, a, div, text, span, input, ul, li, table, td, tr, th, thead, tbody)
-import Html.Attributes exposing (href, class)
+import Html.Attributes exposing (href, class, style)
 import App.Model
 import App.Msg
 import App.Routing
@@ -30,7 +30,7 @@ view riders =
                     (\rider ->
                         tr []
                             [ td []
-                                [ a [ href ("#riders/" ++ rider.key) ]
+                                [ a [ href ("#riders/" ++ rider.key), style [("display", "block")] ]
                                     [ text rider.name ]
                                 ]
                             , td [] [ text (toString rider.licence) ]

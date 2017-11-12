@@ -153,7 +153,7 @@ resultRow result riders =
                 tr []
                     [ td []
                         [ a
-                            [ href ("#riders/" ++ rider.key) ]
+                            [ href ("#riders/" ++ rider.key), style [("display", "block")] ]
                             [ text rider.name ]
                         ]
                     , resultTd result.result

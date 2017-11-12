@@ -1,7 +1,7 @@
 module Page.Race.List exposing (view)
 
 import Html exposing (Html, h2, div, text, a, table, tr, td, th, thead, tbody)
-import Html.Attributes exposing (href, class)
+import Html.Attributes exposing (href, class, style)
 import Date
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
@@ -54,7 +54,7 @@ raceTable unsortedRaces results =
                             tr []
                                 [ td []
                                     [ a
-                                        [ href ("#races/" ++ race.key) ]
+                                        [ href ("#races/" ++ race.key), style [("display", "block")] ]
                                         [ text race.name ]
                                     ]
                                 , td [] [ text <| dateString ]
