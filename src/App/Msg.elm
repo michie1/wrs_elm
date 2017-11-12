@@ -9,7 +9,7 @@ import Page.Race.Add.Msg as RaceAdd
 
 
 type Msg
-    = NavigateTo Page
+    = Navigate Page
     | UrlUpdate Route
     | Outside InfoForElm
     | LogErr String

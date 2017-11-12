@@ -1,4 +1,5 @@
 module Data.Outfit exposing (Outfit, Outfit(..), outfitToString, outfitDecoder)
+
 import Json.Decode
 
 
@@ -20,6 +21,7 @@ outfitToString outfit =
         Other ->
             "other"
 
+
 outfitDecoder : String -> Json.Decode.Decoder Outfit
 outfitDecoder string =
     Json.Decode.succeed <|
@@ -35,4 +37,3 @@ outfitDecoder string =
 
             _ ->
                 Other
-

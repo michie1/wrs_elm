@@ -2,12 +2,14 @@ module Data.Licence exposing (Licence, Licence(..), licenceToString, licence, li
 
 import Json.Decode
 
+
 type Licence
     = Elite
     | Amateurs
     | Basislidmaatschap
     | Other
-    
+
+
 licenceToString : Maybe Licence -> String
 licenceToString maybeLicence =
     case maybeLicence of
@@ -26,6 +28,7 @@ licenceToString maybeLicence =
         Nothing ->
             "other"
 
+
 licence : String -> Licence
 licence string =
     case string of
@@ -40,6 +43,7 @@ licence string =
 
         _ ->
             Other
+
 
 licenceDecoder : String -> Json.Decode.Decoder Licence
 licenceDecoder string =

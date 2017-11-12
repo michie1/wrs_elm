@@ -3,17 +3,13 @@ module Page.Rider.Details exposing (view)
 import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, li, span, h2, p)
 import Html.Attributes exposing (class, href)
 import Date
-import Date.Extra
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import App.Model
 import App.Msg
-import App.Helpers
-import Data.Rider exposing (Rider)
 import Data.Race exposing (Race)
+import Data.Rider exposing (Rider)
 import Data.RaceResult exposing (RaceResult, getPointsByResult, getPointsByResults)
-import Page.Result.Add.Model as ResultAdd
-import Page.Race.Add.Model as RaceAdd
 
 
 dateFormat : Date.Date -> String
@@ -22,7 +18,7 @@ dateFormat date =
 
 
 view : App.Model.App -> String -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
-view app riderKey races riders results =
+view _ riderKey races riders results =
     let
         maybeRider =
             List.head
@@ -51,7 +47,7 @@ view app riderKey races riders results =
                     div [ class "col s12" ]
                         [ h2 [] [ text rider.name ]
                         , info rider points
-                        , resultsTable rider results races
+                        , resultsTable riderResults races
                         ]
 
 
@@ -66,8 +62,8 @@ info rider points =
         ]
 
 
-resultsTable : Rider -> List RaceResult -> List Race -> Html msg
-resultsTable rider results races =
+resultsTable : List RaceResult -> List Race -> Html msg
+resultsTable results races =
     table []
         [ thead []
             [ tr []
@@ -79,19 +75,12 @@ resultsTable rider results races =
                 ]
             ]
         , tbody []
-            (results
-                -- |> List.sortWith (\a b -> Date.Extra.compare a.race.date b.date) -- TODO: sort by race date of this result
-                |>
-                    List.map
-                        (\result ->
-                            raceRow result races
-                        )
-            )
+            (results |> List.map (raceRow races))
         ]
 
 
-raceRow : RaceResult -> List Race -> Html msg
-raceRow result races =
+raceRow : List Race -> RaceResult -> Html msg
+raceRow races result =
     let
         maybeRace =
             List.head

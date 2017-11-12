@@ -3,17 +3,12 @@ module Page.Result.Add.Update exposing (update)
 import Json.Encode
 import Set
 import Ui.Chooser
-import Json.Decode
 import App.Model exposing (App)
 import App.Page
-import App.UrlUpdate
-import App.Helpers
-import App.OutsideInfo exposing (sendInfoOutside, InfoForOutside)
-import Page.Result.Add.Model exposing (Model)
+import App.OutsideInfo exposing (sendInfoOutside)
 import Page.Result.Add.Msg as Msg exposing (Msg)
-import Data.Outfit as Outfit exposing (Outfit, outfitToString)
-import Data.RaceResult exposing (RaceResult, resultDecoder, resultsDecoder)
-import Data.ResultCategory as ResultCategory exposing (ResultCategory, categoryToString)
+import Data.Outfit exposing (outfitToString)
+import Data.ResultCategory exposing (categoryToString)
 
 
 update : Msg -> App -> ( App, Cmd Msg )

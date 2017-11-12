@@ -2,19 +2,16 @@ module App.UrlUpdate exposing (urlUpdate, onUrlEnter)
 
 import Task
 import Dom
-import Date
 import Ui.Calendar
-import Ui.Chooser
 import App.Msg as Msg exposing (Msg)
 import App.Page
 import App.Model exposing (App)
-import App.Routing exposing (Route)
-import App.OutsideInfo exposing (sendInfoOutside, InfoForOutside)
+import App.Routing
+import App.OutsideInfo exposing (sendInfoOutside)
 import Page.Result.Add.Model as ResultAdd
 import Page.Race.Add.Model as RaceAdd
 import Page.Rider.Add.Model as RiderAdd
 import Data.RaceType as RaceType
-import Data.RaceResult exposing (RaceResult)
 
 
 onUrlEnter : App.Routing.Route -> App -> ( App, Cmd Msg )
@@ -82,7 +79,7 @@ routeToPage route =
                 |> List.head
     in
         case maybeRoutePage of
-            Just ( r, p ) ->
+            Just ( _, p ) ->
                 Just p
 
             Nothing ->
@@ -104,12 +101,6 @@ load app =
       else
         Cmd.none
     ]
-
-
-replace : String -> String -> String -> String
-replace from to str =
-    String.split from str
-        |> String.join to
 
 
 urlUpdate : App.Routing.Route -> App -> ( App, Cmd Msg )

@@ -16,5 +16,5 @@ type alias App =
 
 
 initial : Flags -> App
-initial flags =
+initial _ =
     App App.Page.Races Nothing Nothing Nothing

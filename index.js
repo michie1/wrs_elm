@@ -35,6 +35,7 @@ var app = Elm.Main.embed(document.getElementById('main'), { });
 setup(firebase, app);
 
 function loadRiders() {
+  console.log('load riders');
   firebase.database().ref('/riders/').orderByChild('id').on('value', function(snapshot) {
     const val = snapshot.val();
     const arr = Object.keys(val).
@@ -43,6 +44,7 @@ function loadRiders() {
             key: key
           }, val[key]);
       });
+    console.log('riders loaded');
     app.ports.infoForElm.send({
       tag: 'RidersLoaded',
       data: arr

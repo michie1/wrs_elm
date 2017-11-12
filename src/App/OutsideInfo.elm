@@ -2,7 +2,6 @@ port module App.OutsideInfo exposing (sendInfoOutside, InfoForOutside, InfoForOu
 
 import Json.Encode
 import Json.Decode exposing (decodeValue)
-import Json.Decode.Pipeline
 import Data.Rider exposing (Rider, ridersDecoder)
 import Data.Race exposing (Race, racesDecoder)
 import Data.RaceResult exposing (RaceResult, resultsDecoder, resultDecoder)
@@ -117,4 +116,6 @@ type InfoForElm
 
 
 type alias GenericOutsideData =
-    { tag : String, data : Json.Encode.Value }
+    { tag : String
+    , data : Json.Encode.Value
+    }

@@ -1,7 +1,7 @@
 module Data.RaceType exposing (RaceType, RaceType(..), raceType, raceTypeToString, raceTypeDecoder, getPointsByRaceType)
 
 import Json.Decode
-import Json.Decode.Extra
+
 
 type RaceType
     = Classic
@@ -9,6 +9,7 @@ type RaceType
     | Regiocross
     | Other
     | Unknown
+
 
 raceType : String -> RaceType
 raceType string =
@@ -47,9 +48,11 @@ raceTypeToString category =
         Unknown ->
             "unknown"
 
+
 raceTypeDecoder : String -> Json.Decode.Decoder RaceType
 raceTypeDecoder string =
     Json.Decode.succeed (raceType string)
+
 
 getPointsByRaceType : RaceType -> Int
 getPointsByRaceType category =
@@ -68,6 +71,3 @@ getPointsByRaceType category =
 
         Unknown ->
             0
-
-
-

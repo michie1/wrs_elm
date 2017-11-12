@@ -1,4 +1,4 @@
-module App.Helpers exposing (..)
+module App.Helpers exposing (navigate, numMonth, leadingZero, formatTime, formatDate)
 
 import Date
 import Navigation
@@ -73,4 +73,4 @@ formatDate date =
         ++ "-"
         ++ toString (numMonth (Date.month date))
         ++ "-"
-        ++ (leadingZero (Date.day date))
+        ++ leadingZero (Date.day date)

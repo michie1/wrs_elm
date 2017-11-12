@@ -1,7 +1,7 @@
 module Page.Rider.Add.View exposing (view)
 
-import Html exposing (Html, node, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
-import Html.Attributes exposing (attribute, autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
+import Html exposing (Html, p, button, div, text, input, i, h2, label)
+import Html.Attributes exposing (value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
 import Data.Licence as Licence exposing (Licence)
 import Page.Rider.Add.Model exposing (Model)
@@ -11,11 +11,11 @@ import Page.Rider.Add.Msg as Msg exposing (Msg)
 view : Model -> Html Msg
 view add =
     let
-        name =
+        riderName =
             add.name
 
         submitDisabled =
-            name == "" || add.licence == Nothing || String.length name > 100
+            riderName == "" || add.licence == Nothing || String.length riderName > 100
     in
         div []
             [ h2 [] [ text "Add rider" ]
@@ -27,7 +27,7 @@ view add =
                             , type_ "text"
                             , onInput Msg.Name
                             , autofocus True
-                            , value name
+                            , value riderName
                             ]
                             []
                         , label [ for "name" ] [ text "Name" ]

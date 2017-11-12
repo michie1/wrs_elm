@@ -2,15 +2,11 @@ module Page.Rider.Add.Update exposing (update)
 
 import App.Model exposing (App)
 import App.Page
-import Json.Decode
 import Json.Encode
-import App.Routing
-import App.UrlUpdate
-import App.OutsideInfo exposing (sendInfoOutside, InfoForOutside)
-import Page.Rider.Add.Model exposing (Model)
+import App.OutsideInfo exposing (sendInfoOutside)
 import Page.Rider.Add.Msg as Msg exposing (Msg)
-import Data.Licence as Licence exposing (Licence, licenceToString)
-import Data.Rider exposing (Rider)
+import Data.Licence exposing (licenceToString)
+
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =

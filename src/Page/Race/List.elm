@@ -9,7 +9,6 @@ import Date.Extra
 import App.Msg
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
-import Page.Result.Add.Model as ResultAdd
 
 
 dateFormat : Date.Date -> String
@@ -34,7 +33,8 @@ addButton =
 raceTable : List Race -> List RaceResult -> Html App.Msg.Msg
 raceTable unsortedRaces results =
     let
-        races = unsortedRaces |> List.sortWith (\a b -> Date.Extra.compare a.date b.date) |> List.reverse
+        races =
+            unsortedRaces |> List.sortWith (\ra rb -> Date.Extra.compare ra.date rb.date) |> List.reverse
     in
         table []
             [ thead []
@@ -49,12 +49,13 @@ raceTable unsortedRaces results =
                 (List.map
                     (\race ->
                         let
-                            dateString = dateFormat race.date
+                            dateString =
+                                dateFormat race.date
                         in
                             tr []
                                 [ td []
                                     [ a
-                                        [ href ("#races/" ++ race.key), style [("display", "block")] ]
+                                        [ href ("#races/" ++ race.key), style [ ( "display", "block" ) ] ]
                                         [ text race.name ]
                                     ]
                                 , td [] [ text <| dateString ]

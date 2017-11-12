@@ -1,6 +1,5 @@
 module Page.Result.Add.Model exposing (Model, initial)
 
-import Data.Rider exposing (Rider)
 import Ui.Chooser
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.ResultCategory as ResultCategory exposing (ResultCategory)
@@ -26,8 +25,7 @@ initial =
     , outfit = Outfit.WTOS
     , strava = ""
     , chooser =
-        (Ui.Chooser.init ()
+        Ui.Chooser.init ()
             |> Ui.Chooser.closeOnSelect True
             |> Ui.Chooser.searchable True
-        )
     }

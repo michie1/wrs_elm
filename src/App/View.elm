@@ -1,12 +1,9 @@
 module App.View exposing (view)
 
-import Html exposing (Html, h2, h3, h4, h5, button, nav, div, text, span, a, input, ul, li, node)
-import Html.Attributes exposing (attribute, href, id, class)
-import Html.Events exposing (onInput, onClick)
-import Date.Extra
+import Html exposing (Html, h2, h4, div, text, a, ul, li)
+import Html.Attributes exposing (href, class)
 import App.Msg
 import App.Model exposing (App)
-import App.Routing
 import App.Page
 import Data.Race exposing (Race, lastRaces, getRace)
 import Data.Rider exposing (Rider)
@@ -17,9 +14,7 @@ import Page.Race.Add.View
 import Page.Rider.Details
 import Page.Rider.List
 import Page.Rider.Add.View
-import Page.Result.List
 import Page.Result.Add.View
-import Page.Result.Add.Msg
 
 
 view : App -> Html App.Msg.Msg
@@ -44,7 +39,7 @@ viewPage app races riders results =
             Page.Rider.Details.view app key races riders results
 
         App.Page.Riders ->
-            Page.Rider.List.view riders
+            Page.Rider.List.view riders races results
 
         App.Page.RiderAdd add ->
             Page.Rider.Add.View.view add
@@ -108,18 +103,17 @@ sidebar races =
         [ h2 [] [ text "WRS" ]
         , ul [ class "collection" ] <|
             [ li [ class "collection-header" ] [ h4 [] [ a [ href "#races" ] [ text "Races" ] ] ] ]
-            ++ (List.map raceLi <| lastRaces races)
-            ++ [ li [ class "collection-header" ] [ h4 [] [ a [ href "#riders" ] [ text "Riders" ] ] ] ]
-            ++ [ li [ class "collection-header" ] [ h5 [] [ a [ href "https://wtos.nl/topic/het-grote-verslagentopic-van-michiel/" ] [ text "Verslagen" ] ] ] ]
-            ++ [ li [ class "collection-header" ] [ h5 [] [ a [ href "https://wtos.nl/topic/wedstrijdrennerssysteem-v3/" ] [ text "Feedback" ] ] ] ]
+                ++ (List.map raceLi <| lastRaces races)
+                ++ [ li [ class "collection-header" ] [ h4 [] [ a [ href "#riders" ] [ text "Riders" ] ] ]
+                   , headerLi "https://wtos.nl/topic/het-grote-verslagentopic-van-michiel/" "Verslagen"
+                   , headerLi "https://wtos.nl/topic/wedstrijdrennerssysteem-v3/" "Feedback"
+                   ]
         ]
 
 
-userLi : App -> List (Html App.Msg.Msg)
-userLi app =
-    [ li [] [ a [ href "#races" ] [ text "Races" ] ]
-    , li [] [ a [ href "#riders" ] [ text "Riders" ] ]
-    ]
+headerLi : String -> String -> Html App.Msg.Msg
+headerLi url label =
+    li [ class "collection-header" ] [ h4 [] [ a [ href url ] [ text label ] ] ]
 
 
 raceLi : Race -> Html App.Msg.Msg

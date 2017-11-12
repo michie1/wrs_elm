@@ -1,6 +1,5 @@
 module Data.Race exposing (Race, lastRaces, getRace, racesDecoder, getRaceByKey)
 
-import Html exposing (Html)
 import Date exposing (Date)
 import Date.Extra
 import Json.Decode
@@ -48,6 +47,7 @@ race =
 racesDecoder : Json.Decode.Decoder (List Race)
 racesDecoder =
     Json.Decode.list race
+
 
 getRaceByKey : String -> List Race -> Maybe Race
 getRaceByKey raceKey races =

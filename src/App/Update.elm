@@ -2,35 +2,19 @@ module App.Update exposing (update)
 
 import App.Model exposing (App)
 import App.Msg as Msg exposing (Msg)
-import App.Routing
 import App.Page
 import App.UrlUpdate
 import App.Helpers
 import App.OutsideInfo
-import Data.Race exposing (Race, racesDecoder)
-import Data.RaceResult exposing (resultDecoder, resultsDecoder)
-import Data.Rider exposing (ridersDecoder)
-import Data.Outfit as Outfit exposing (Outfit)
-import Page.Rider.Add.Model as RiderAdd
 import Page.Rider.Add.Update as RiderAdd
-import Page.Race.Add.Model as RaceAdd
 import Page.Race.Add.Update as RaceAdd
-import Page.Result.Add.Model as ResultAdd
 import Page.Result.Add.Update as ResultAdd
-import String
-import Json.Decode
-import Json.Decode.Pipeline
-
-
-type alias KeyResponse =
-    { key : String
-    }
 
 
 update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
     case msg of
-        Msg.NavigateTo page ->
+        Msg.Navigate page ->
             ( app, App.Helpers.navigate page )
 
         Msg.UrlUpdate route ->

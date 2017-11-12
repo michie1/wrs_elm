@@ -1,7 +1,6 @@
 module Page.Result.List exposing (view)
 
-import Html exposing (Html, a, div, text, span, input, ul, li, table, tr, td, tbody, th, thead)
-import App.Model
+import Html exposing (Html, div, text, table, tr, td, tbody, th, thead)
 import App.Msg
 import Data.RaceResult exposing (RaceResult)
 

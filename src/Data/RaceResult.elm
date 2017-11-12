@@ -7,6 +7,7 @@ import Data.Outfit as Outfit exposing (Outfit, outfitDecoder)
 import Data.Race exposing (Race, getRaceByKey)
 import Data.RaceType exposing (getPointsByRaceType)
 
+
 type alias RaceResult =
     { key : String
     , riderKey : String
@@ -16,20 +17,16 @@ type alias RaceResult =
     , outfit : Outfit
     }
 
+
 resultExists : RaceResult -> List RaceResult -> Bool
 resultExists result results =
-    (List.length
+    List.length
         (List.filter
             (\r -> r.raceKey == result.raceKey && r.riderKey == result.riderKey)
             results
         )
-    )
         /= 0
 
-type alias ResultResponse = 
-    { key: String
-    , raceKey: String
-    }
 
 resultDecoder : Json.Decode.Decoder RaceResult
 resultDecoder =
@@ -47,9 +44,11 @@ resultDecoder =
                 |> Json.Decode.andThen outfitDecoder
             )
 
+
 resultsDecoder : Json.Decode.Decoder (List RaceResult)
 resultsDecoder =
     Json.Decode.list resultDecoder
+
 
 getPointsByResults : List RaceResult -> List Race -> Int
 getPointsByResults results races =

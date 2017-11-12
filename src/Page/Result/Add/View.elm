@@ -1,29 +1,16 @@
 module Page.Result.Add.View exposing (view)
 
-import Html exposing (Html, button, div, text, span, label, input, ul, li, h2, input, i, p)
-import Html.Attributes exposing (autofocus, class, id, type_, for, disabled, value, name, checked)
-import Html.Events exposing (onInput, onClick, on)
-import Json.Decode as Json
+import Html exposing (Html, button, div, text, label, h2, input, i, p)
+import Html.Attributes exposing (autofocus, class, id, type_, for, disabled, name, checked)
+import Html.Events exposing (onInput, onClick)
 import Ui.Chooser
-import Set
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race)
 import Data.Rider exposing (Rider)
 import Data.ResultCategory as ResultCategory exposing (ResultCategory)
 import Data.RaceResult exposing (RaceResult)
 import Page.Result.Add.Model exposing (Model)
-import Page.Result.Add.Msg as Msg exposing (Msg) 
-
-
-riderNameExists : String -> List Rider -> Bool
-riderNameExists name riders =
-    List.length (List.filter (\rider -> rider.name == name) riders) > 0
-
-
-
---resultExists : Int -> Int -> List RaceResult -> Bool
---resultExists raceId riderId results =
---True
+import Page.Result.Add.Msg as Msg exposing (Msg)
 
 
 view : Race -> Model -> List Rider -> List RaceResult -> Html Msg

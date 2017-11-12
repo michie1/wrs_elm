@@ -1,15 +1,15 @@
-module Main exposing (..)
+module Main exposing (main)
 
 import Navigation
-import Json.Decode
 import App.Model exposing (App)
 import App.Routing
-import App.Msg exposing (Msg(..))
+import App.Msg as Msg exposing (Msg)
 import App.Update
 import App.UrlUpdate
 import App.View
 import App.Flags exposing (Flags)
 import App.OutsideInfo
+
 
 main : Program Flags App Msg
 main =
@@ -24,7 +24,7 @@ main =
 
 parser : Navigation.Location -> Msg
 parser location =
-    UrlUpdate (App.Routing.routeParser location)
+    Msg.UrlUpdate (App.Routing.routeParser location)
 
 
 init : Flags -> Navigation.Location -> ( App, Cmd Msg )
@@ -43,7 +43,7 @@ init flags location =
 
 
 subscriptions : App -> Sub Msg
-subscriptions app =
+subscriptions _ =
     Sub.batch
-        [ App.OutsideInfo.getInfoFromOutside App.Msg.Outside App.Msg.LogErr
+        [ App.OutsideInfo.getInfoFromOutside Msg.Outside Msg.LogErr
         ]

@@ -47,18 +47,3 @@ getPointsByRiderId riderKey results races =
          )
         )
         races
-
-
-getRiderByName : String -> List Rider -> Maybe Rider
-getRiderByName name riders =
-    List.head (List.filter (\rider -> rider.name == name) riders)
-
-
-getRiderByLowerCaseName : String -> List Rider -> Maybe Rider
-getRiderByLowerCaseName name riders =
-    List.head (List.filter (\rider -> (String.toLower rider.name) == (String.toLower name)) riders)
-
-
-getRiderByResultId : String -> List Rider -> Maybe Rider
-getRiderByResultId key riders =
-    List.head (List.filter (\rider -> rider.key == key) riders)

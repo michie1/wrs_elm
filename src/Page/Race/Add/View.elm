@@ -1,34 +1,22 @@
 module Page.Race.Add.View exposing (view)
 
-import Html exposing (Html, node, p, form, button, div, text, span, input, ul, li, a, i, h2, label)
-import Html.Attributes exposing (attribute, autofocus, value, autofocus, class, name, type_, id, for, checked, disabled)
+import Html exposing (Html, p, button, div, text, input, i, h2, label)
+import Html.Attributes exposing (value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
-import Date.Extra.Format
-import Date.Extra.Config.Config_nl_nl exposing (config)
-import Date
 import Ui.Calendar
 import Data.RaceType as RaceType exposing (RaceType)
-import Data.Race exposing (Race)
 import Page.Race.Add.Model exposing (Model)
 import Page.Race.Add.Msg as Msg exposing (Msg)
-
-
-dateFormat : Date.Date -> String
-dateFormat date =
-    Date.Extra.Format.format config "%Y-%m-%d" date
 
 
 view : Model -> Html Msg
 view raceAdd =
     let
-        name =
+        raceName =
             raceAdd.name
 
         submitDisabled =
-            name == "" || String.length name > 100
-
-        dateString =
-            dateFormat raceAdd.calendar.value
+            raceName == "" || String.length raceName > 100
     in
         div []
             [ h2 [] [ text "Add Race" ]
@@ -40,7 +28,7 @@ view raceAdd =
                             , type_ "text"
                             , onInput Msg.Name
                             , autofocus True
-                            , value name
+                            , value raceName
                             ]
                             []
                         , label [ for "name" ] [ text "Name" ]
@@ -87,22 +75,3 @@ raceTypeButtons current =
         , raceTypeButtonCheck "regiocross" "Regiocross" RaceType.Regiocross current
         , raceTypeButtonCheck "other" "Other" RaceType.Other current
         ]
-
-
-datepicker : String -> Html Msg
-datepicker dateString =
-    let
-        inputDate =
-            Debug.log "dateString" (String.join "/" (String.split "-" dateString))
-    in
-        div [ class "col s6" ]
-            [ label [ class "active" ] [ text "Date" ]
-            , node "app-datepicker"
-                [ id "datepicker"
-                , attribute "first-day-of-week" "1"
-                , attribute "input-date" inputDate
-                , attribute "disable-days" "[]"
-                , attribute "auto-update-date" "true"
-                ]
-                []
-            ]
