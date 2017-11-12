@@ -87,7 +87,7 @@ getInfoFromOutside tagger onError =
                 "ResultAdded" ->
                     case decodeValue resultDecoder outsideInfo.data of
                         Ok response ->
-                            tagger <| ResultAdded response.key
+                            tagger <| ResultAdded response.raceKey
 
                         Err e ->
                             onError e

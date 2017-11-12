@@ -1,4 +1,4 @@
-port module Page.Result.Add.Update exposing (update)
+module Page.Result.Add.Update exposing (update)
 
 import Json.Encode
 import Set
@@ -8,14 +8,12 @@ import App.Model exposing (App)
 import App.Page
 import App.UrlUpdate
 import App.Helpers
+import App.OutsideInfo exposing (sendInfoOutside, InfoForOutside)
 import Page.Result.Add.Model exposing (Model)
 import Page.Result.Add.Msg as Msg exposing (Msg)
 import Data.Outfit as Outfit exposing (Outfit, outfitToString)
 import Data.RaceResult exposing (RaceResult, resultDecoder, resultsDecoder)
 import Data.ResultCategory as ResultCategory exposing (ResultCategory, categoryToString)
-
-
-port addResultPort : Json.Encode.Value -> Cmd msg
 
 
 update : Msg -> App -> ( App, Cmd Msg )
@@ -34,7 +32,7 @@ update msg app =
                                 , ( "outfit", Json.Encode.string <| outfitToString page.outfit )
                                 ]
                     in
-                        ( app, addResultPort payload )
+                        ( app, sendInfoOutside <| App.OutsideInfo.ResultAdd payload )
 
                 Msg.Outfit outfit ->
                     let

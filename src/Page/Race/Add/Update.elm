@@ -35,7 +35,6 @@ update msg app =
                                 , ( "category", Json.Encode.string <| raceTypeToString page.raceType )
                                 ]
                     in
-                        -- ( app, addRace payload )
                         ( app, sendInfoOutside <| App.OutsideInfo.RaceAdd payload )
 
                 Msg.Name name ->
