@@ -5,18 +5,13 @@ function setup(firebase, app) {
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      console.log('user changed to logged in');
-      app.ports.login.send(user.email);
-      /*
-      firebase.database().ref('/riders/').once('value').then(function(snapshot) {
-        console.log('snapshot', snapshot.val());
-      });
-      */
-    } else {
-      console.log('no user signed in');
+      loadRiders();
+      loadRaces();
+      loadResults();
     }
   });
 
+  firebase.auth().signInAnonymously();
 }
 
 var config = {
@@ -34,8 +29,8 @@ var app = Elm.Main.embed(document.getElementById('main'));
 
 setup(firebase, app);
 
-app.ports.loadRiders.subscribe(function() {
-  firebase.database().ref('/riders/').orderByChild('id').once('value').then(function(snapshot) {
+function loadRiders() {
+  firebase.database().ref('/riders/').orderByChild('id').on('value', function(snapshot) {
     const val = snapshot.val();
     const arr = Object.keys(val).
       map(function (key) {
@@ -43,11 +38,14 @@ app.ports.loadRiders.subscribe(function() {
             key: key
           }, val[key]);
       });
-    app.ports.setRiders.send(arr);
+    app.ports.infoForElm.send({
+      tag: 'RidersLoaded',
+      data: arr
+    });
   });
-});
+}
 
-app.ports.loadRaces.subscribe(function() {
+function loadRaces() {
   firebase.database().ref('/races/').on('value', function(snapshot) {
     const val = snapshot.val();
     const arr = Object.keys(val).
@@ -56,11 +54,14 @@ app.ports.loadRaces.subscribe(function() {
             key: key
           }, val[key]);
       });
-    app.ports.setRaces.send(arr);
+    app.ports.infoForElm.send({
+      tag: 'RacesLoaded',
+      data: arr
+    });
   });
-});
+}
 
-app.ports.loadResults.subscribe(function() {
+function loadResults() {
   firebase.database().ref('/results/').on('value', function(snapshot) {
     const val = snapshot.val();
     const arr = Object.keys(val).
@@ -69,43 +70,61 @@ app.ports.loadResults.subscribe(function() {
             key: key
           }, val[key]);
       });
-    app.ports.setResults.send(arr);
+    app.ports.infoForElm.send({
+      tag: 'ResultsLoaded',
+      data: arr
+    });
   });
-});
+}
 
-app.ports.addRace.subscribe(function(race) {
+function addRace(race) {
   const pushedRace = firebase.database().ref('/races/').push();
   pushedRace.set(race)
     .then(function () {
-      app.ports.raceAdded.send({
-        key: pushedRace.key
+      app.ports.infoForElm.send({
+        tag: 'RaceAdded',
+        data: pushedRace.key
       });
     });
-});
+}
 
-app.ports.addRider.subscribe(function(rider) {
+function addRider(rider) {
   const pushedRider = firebase.database().ref('/riders/').push();
   pushedRider.set(rider)
     .then(function () {
-      app.ports.riderAdded.send({
-        key: pushedRider.key,
-        name: rider.name,
-        licence: rider.licence
+      app.ports.infoForElm.send({
+        tag: 'RiderAdded',
+        data: pushedRider.key
       });
     });
-});
+}
 
-app.ports.addResultPort.subscribe(function(result) {
+function addResult(result) {
   const pushedResult = firebase.database().ref('/results/').push();
   pushedResult.set(result)
     .then(function () {
-      app.ports.resultAdded.send({
-        key: pushedResult.key,
-        riderKey: result.riderKey,
-        raceKey: result.raceKey,
-        category: result.category,
-        result: result.result,
-        outfit: result.outfit
+      app.ports.infoForElm.send({
+        tag: 'ResultAdded',
+        data: {
+          key: pushedResult.key,
+          riderKey: result.riderKey,
+          raceKey: result.raceKey,
+          category: result.category,
+          result: result.result,
+          outfit: result.outfit
+        }
       });
     });
+}
+
+app.ports.infoForOutside.subscribe(function (msg) {
+  if (msg.tag === 'RiderAdd') {
+    addRider(msg.data);
+  } else if (msg.tag === 'RaceAdd') {
+    addRace(msg.data);
+  } else if (msg.tag === 'ResultAdd') {
+    addResult(msg.data);
+  } else {
+    console.log('msg', msg);
+  }
 });

@@ -11034,175 +11034,6 @@ var _elm_lang$http$Http$StringPart = F2(
 	});
 var _elm_lang$http$Http$stringPart = _elm_lang$http$Http$StringPart;
 
-var _elm_lang$keyboard$Keyboard$onSelfMsg = F3(
-	function (router, _p0, state) {
-		var _p1 = _p0;
-		var _p2 = A2(_elm_lang$core$Dict$get, _p1.category, state);
-		if (_p2.ctor === 'Nothing') {
-			return _elm_lang$core$Task$succeed(state);
-		} else {
-			var send = function (tagger) {
-				return A2(
-					_elm_lang$core$Platform$sendToApp,
-					router,
-					tagger(_p1.keyCode));
-			};
-			return A2(
-				_elm_lang$core$Task$andThen,
-				function (_p3) {
-					return _elm_lang$core$Task$succeed(state);
-				},
-				_elm_lang$core$Task$sequence(
-					A2(_elm_lang$core$List$map, send, _p2._0.taggers)));
-		}
-	});
-var _elm_lang$keyboard$Keyboard_ops = _elm_lang$keyboard$Keyboard_ops || {};
-_elm_lang$keyboard$Keyboard_ops['&>'] = F2(
-	function (task1, task2) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (_p4) {
-				return task2;
-			},
-			task1);
-	});
-var _elm_lang$keyboard$Keyboard$init = _elm_lang$core$Task$succeed(_elm_lang$core$Dict$empty);
-var _elm_lang$keyboard$Keyboard$categorizeHelpHelp = F2(
-	function (value, maybeValues) {
-		var _p5 = maybeValues;
-		if (_p5.ctor === 'Nothing') {
-			return _elm_lang$core$Maybe$Just(
-				{
-					ctor: '::',
-					_0: value,
-					_1: {ctor: '[]'}
-				});
-		} else {
-			return _elm_lang$core$Maybe$Just(
-				{ctor: '::', _0: value, _1: _p5._0});
-		}
-	});
-var _elm_lang$keyboard$Keyboard$categorizeHelp = F2(
-	function (subs, subDict) {
-		categorizeHelp:
-		while (true) {
-			var _p6 = subs;
-			if (_p6.ctor === '[]') {
-				return subDict;
-			} else {
-				var _v4 = _p6._1,
-					_v5 = A3(
-					_elm_lang$core$Dict$update,
-					_p6._0._0,
-					_elm_lang$keyboard$Keyboard$categorizeHelpHelp(_p6._0._1),
-					subDict);
-				subs = _v4;
-				subDict = _v5;
-				continue categorizeHelp;
-			}
-		}
-	});
-var _elm_lang$keyboard$Keyboard$categorize = function (subs) {
-	return A2(_elm_lang$keyboard$Keyboard$categorizeHelp, subs, _elm_lang$core$Dict$empty);
-};
-var _elm_lang$keyboard$Keyboard$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
-var _elm_lang$keyboard$Keyboard$subscription = _elm_lang$core$Native_Platform.leaf('Keyboard');
-var _elm_lang$keyboard$Keyboard$Watcher = F2(
-	function (a, b) {
-		return {taggers: a, pid: b};
-	});
-var _elm_lang$keyboard$Keyboard$Msg = F2(
-	function (a, b) {
-		return {category: a, keyCode: b};
-	});
-var _elm_lang$keyboard$Keyboard$onEffects = F3(
-	function (router, newSubs, oldState) {
-		var rightStep = F3(
-			function (category, taggers, task) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (state) {
-						return A2(
-							_elm_lang$core$Task$andThen,
-							function (pid) {
-								return _elm_lang$core$Task$succeed(
-									A3(
-										_elm_lang$core$Dict$insert,
-										category,
-										A2(_elm_lang$keyboard$Keyboard$Watcher, taggers, pid),
-										state));
-							},
-							_elm_lang$core$Process$spawn(
-								A3(
-									_elm_lang$dom$Dom_LowLevel$onDocument,
-									category,
-									_elm_lang$keyboard$Keyboard$keyCode,
-									function (_p7) {
-										return A2(
-											_elm_lang$core$Platform$sendToSelf,
-											router,
-											A2(_elm_lang$keyboard$Keyboard$Msg, category, _p7));
-									})));
-					},
-					task);
-			});
-		var bothStep = F4(
-			function (category, _p8, taggers, task) {
-				var _p9 = _p8;
-				return A2(
-					_elm_lang$core$Task$map,
-					A2(
-						_elm_lang$core$Dict$insert,
-						category,
-						A2(_elm_lang$keyboard$Keyboard$Watcher, taggers, _p9.pid)),
-					task);
-			});
-		var leftStep = F3(
-			function (category, _p10, task) {
-				var _p11 = _p10;
-				return A2(
-					_elm_lang$keyboard$Keyboard_ops['&>'],
-					_elm_lang$core$Process$kill(_p11.pid),
-					task);
-			});
-		return A6(
-			_elm_lang$core$Dict$merge,
-			leftStep,
-			bothStep,
-			rightStep,
-			oldState,
-			_elm_lang$keyboard$Keyboard$categorize(newSubs),
-			_elm_lang$core$Task$succeed(_elm_lang$core$Dict$empty));
-	});
-var _elm_lang$keyboard$Keyboard$MySub = F2(
-	function (a, b) {
-		return {ctor: 'MySub', _0: a, _1: b};
-	});
-var _elm_lang$keyboard$Keyboard$presses = function (tagger) {
-	return _elm_lang$keyboard$Keyboard$subscription(
-		A2(_elm_lang$keyboard$Keyboard$MySub, 'keypress', tagger));
-};
-var _elm_lang$keyboard$Keyboard$downs = function (tagger) {
-	return _elm_lang$keyboard$Keyboard$subscription(
-		A2(_elm_lang$keyboard$Keyboard$MySub, 'keydown', tagger));
-};
-var _elm_lang$keyboard$Keyboard$ups = function (tagger) {
-	return _elm_lang$keyboard$Keyboard$subscription(
-		A2(_elm_lang$keyboard$Keyboard$MySub, 'keyup', tagger));
-};
-var _elm_lang$keyboard$Keyboard$subMap = F2(
-	function (func, _p12) {
-		var _p13 = _p12;
-		return A2(
-			_elm_lang$keyboard$Keyboard$MySub,
-			_p13._0,
-			function (_p14) {
-				return func(
-					_p13._1(_p14));
-			});
-	});
-_elm_lang$core$Native_Platform.effectManagers['Keyboard'] = {pkg: 'elm-lang/keyboard', init: _elm_lang$keyboard$Keyboard$init, onEffects: _elm_lang$keyboard$Keyboard$onEffects, onSelfMsg: _elm_lang$keyboard$Keyboard$onSelfMsg, tag: 'sub', subMap: _elm_lang$keyboard$Keyboard$subMap};
-
 var _elm_lang$lazy$Native_Lazy = function() {
 
 function memoize(thunk)
@@ -12243,541 +12074,6 @@ var _elm_lang$svg$Svg_Attributes$accumulate = _elm_lang$virtual_dom$VirtualDom$a
 var _elm_lang$svg$Svg_Attributes$accelerate = _elm_lang$virtual_dom$VirtualDom$attribute('accelerate');
 var _elm_lang$svg$Svg_Attributes$accentHeight = _elm_lang$virtual_dom$VirtualDom$attribute('accent-height');
 
-var _elm_lang$websocket$Native_WebSocket = function() {
-
-function open(url, settings)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		try
-		{
-			var socket = new WebSocket(url);
-			socket.elm_web_socket = true;
-		}
-		catch(err)
-		{
-			return callback(_elm_lang$core$Native_Scheduler.fail({
-				ctor: err.name === 'SecurityError' ? 'BadSecurity' : 'BadArgs',
-				_0: err.message
-			}));
-		}
-
-		socket.addEventListener("open", function(event) {
-			callback(_elm_lang$core$Native_Scheduler.succeed(socket));
-		});
-
-		socket.addEventListener("message", function(event) {
-			_elm_lang$core$Native_Scheduler.rawSpawn(A2(settings.onMessage, socket, event.data));
-		});
-
-		socket.addEventListener("close", function(event) {
-			_elm_lang$core$Native_Scheduler.rawSpawn(settings.onClose({
-				code: event.code,
-				reason: event.reason,
-				wasClean: event.wasClean
-			}));
-		});
-
-		return function()
-		{
-			if (socket && socket.close)
-			{
-				socket.close();
-			}
-		};
-	});
-}
-
-function send(socket, string)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		var result =
-			socket.readyState === WebSocket.OPEN
-				? _elm_lang$core$Maybe$Nothing
-				: _elm_lang$core$Maybe$Just({ ctor: 'NotOpen' });
-
-		try
-		{
-			socket.send(string);
-		}
-		catch(err)
-		{
-			result = _elm_lang$core$Maybe$Just({ ctor: 'BadString' });
-		}
-
-		callback(_elm_lang$core$Native_Scheduler.succeed(result));
-	});
-}
-
-function close(code, reason, socket)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
-		try
-		{
-			socket.close(code, reason);
-		}
-		catch(err)
-		{
-			return callback(_elm_lang$core$Native_Scheduler.fail(_elm_lang$core$Maybe$Just({
-				ctor: err.name === 'SyntaxError' ? 'BadReason' : 'BadCode'
-			})));
-		}
-		callback(_elm_lang$core$Native_Scheduler.succeed(_elm_lang$core$Maybe$Nothing));
-	});
-}
-
-function bytesQueued(socket)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
-		callback(_elm_lang$core$Native_Scheduler.succeed(socket.bufferedAmount));
-	});
-}
-
-return {
-	open: F2(open),
-	send: F2(send),
-	close: F3(close),
-	bytesQueued: bytesQueued
-};
-
-}();
-
-var _elm_lang$websocket$WebSocket_LowLevel$bytesQueued = _elm_lang$websocket$Native_WebSocket.bytesQueued;
-var _elm_lang$websocket$WebSocket_LowLevel$send = _elm_lang$websocket$Native_WebSocket.send;
-var _elm_lang$websocket$WebSocket_LowLevel$closeWith = _elm_lang$websocket$Native_WebSocket.close;
-var _elm_lang$websocket$WebSocket_LowLevel$close = function (socket) {
-	return A2(
-		_elm_lang$core$Task$map,
-		_elm_lang$core$Basics$always(
-			{ctor: '_Tuple0'}),
-		A3(_elm_lang$websocket$WebSocket_LowLevel$closeWith, 1000, '', socket));
-};
-var _elm_lang$websocket$WebSocket_LowLevel$open = _elm_lang$websocket$Native_WebSocket.open;
-var _elm_lang$websocket$WebSocket_LowLevel$Settings = F2(
-	function (a, b) {
-		return {onMessage: a, onClose: b};
-	});
-var _elm_lang$websocket$WebSocket_LowLevel$WebSocket = {ctor: 'WebSocket'};
-var _elm_lang$websocket$WebSocket_LowLevel$BadArgs = {ctor: 'BadArgs'};
-var _elm_lang$websocket$WebSocket_LowLevel$BadSecurity = {ctor: 'BadSecurity'};
-var _elm_lang$websocket$WebSocket_LowLevel$BadReason = {ctor: 'BadReason'};
-var _elm_lang$websocket$WebSocket_LowLevel$BadCode = {ctor: 'BadCode'};
-var _elm_lang$websocket$WebSocket_LowLevel$BadString = {ctor: 'BadString'};
-var _elm_lang$websocket$WebSocket_LowLevel$NotOpen = {ctor: 'NotOpen'};
-
-var _elm_lang$websocket$WebSocket$closeConnection = function (connection) {
-	var _p0 = connection;
-	if (_p0.ctor === 'Opening') {
-		return _elm_lang$core$Process$kill(_p0._1);
-	} else {
-		return _elm_lang$websocket$WebSocket_LowLevel$close(_p0._0);
-	}
-};
-var _elm_lang$websocket$WebSocket$after = function (backoff) {
-	return (_elm_lang$core$Native_Utils.cmp(backoff, 1) < 0) ? _elm_lang$core$Task$succeed(
-		{ctor: '_Tuple0'}) : _elm_lang$core$Process$sleep(
-		_elm_lang$core$Basics$toFloat(
-			10 * Math.pow(2, backoff)));
-};
-var _elm_lang$websocket$WebSocket$removeQueue = F2(
-	function (name, state) {
-		return _elm_lang$core$Native_Utils.update(
-			state,
-			{
-				queues: A2(_elm_lang$core$Dict$remove, name, state.queues)
-			});
-	});
-var _elm_lang$websocket$WebSocket$updateSocket = F3(
-	function (name, connection, state) {
-		return _elm_lang$core$Native_Utils.update(
-			state,
-			{
-				sockets: A3(_elm_lang$core$Dict$insert, name, connection, state.sockets)
-			});
-	});
-var _elm_lang$websocket$WebSocket$add = F2(
-	function (value, maybeList) {
-		var _p1 = maybeList;
-		if (_p1.ctor === 'Nothing') {
-			return _elm_lang$core$Maybe$Just(
-				{
-					ctor: '::',
-					_0: value,
-					_1: {ctor: '[]'}
-				});
-		} else {
-			return _elm_lang$core$Maybe$Just(
-				{ctor: '::', _0: value, _1: _p1._0});
-		}
-	});
-var _elm_lang$websocket$WebSocket$buildSubDict = F2(
-	function (subs, dict) {
-		buildSubDict:
-		while (true) {
-			var _p2 = subs;
-			if (_p2.ctor === '[]') {
-				return dict;
-			} else {
-				if (_p2._0.ctor === 'Listen') {
-					var _v3 = _p2._1,
-						_v4 = A3(
-						_elm_lang$core$Dict$update,
-						_p2._0._0,
-						_elm_lang$websocket$WebSocket$add(_p2._0._1),
-						dict);
-					subs = _v3;
-					dict = _v4;
-					continue buildSubDict;
-				} else {
-					var _v5 = _p2._1,
-						_v6 = A3(
-						_elm_lang$core$Dict$update,
-						_p2._0._0,
-						function (_p3) {
-							return _elm_lang$core$Maybe$Just(
-								A2(
-									_elm_lang$core$Maybe$withDefault,
-									{ctor: '[]'},
-									_p3));
-						},
-						dict);
-					subs = _v5;
-					dict = _v6;
-					continue buildSubDict;
-				}
-			}
-		}
-	});
-var _elm_lang$websocket$WebSocket_ops = _elm_lang$websocket$WebSocket_ops || {};
-_elm_lang$websocket$WebSocket_ops['&>'] = F2(
-	function (t1, t2) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (_p4) {
-				return t2;
-			},
-			t1);
-	});
-var _elm_lang$websocket$WebSocket$sendMessagesHelp = F3(
-	function (cmds, socketsDict, queuesDict) {
-		sendMessagesHelp:
-		while (true) {
-			var _p5 = cmds;
-			if (_p5.ctor === '[]') {
-				return _elm_lang$core$Task$succeed(queuesDict);
-			} else {
-				var _p9 = _p5._1;
-				var _p8 = _p5._0._0;
-				var _p7 = _p5._0._1;
-				var _p6 = A2(_elm_lang$core$Dict$get, _p8, socketsDict);
-				if ((_p6.ctor === 'Just') && (_p6._0.ctor === 'Connected')) {
-					return A2(
-						_elm_lang$websocket$WebSocket_ops['&>'],
-						A2(_elm_lang$websocket$WebSocket_LowLevel$send, _p6._0._0, _p7),
-						A3(_elm_lang$websocket$WebSocket$sendMessagesHelp, _p9, socketsDict, queuesDict));
-				} else {
-					var _v9 = _p9,
-						_v10 = socketsDict,
-						_v11 = A3(
-						_elm_lang$core$Dict$update,
-						_p8,
-						_elm_lang$websocket$WebSocket$add(_p7),
-						queuesDict);
-					cmds = _v9;
-					socketsDict = _v10;
-					queuesDict = _v11;
-					continue sendMessagesHelp;
-				}
-			}
-		}
-	});
-var _elm_lang$websocket$WebSocket$subscription = _elm_lang$core$Native_Platform.leaf('WebSocket');
-var _elm_lang$websocket$WebSocket$command = _elm_lang$core$Native_Platform.leaf('WebSocket');
-var _elm_lang$websocket$WebSocket$State = F3(
-	function (a, b, c) {
-		return {sockets: a, queues: b, subs: c};
-	});
-var _elm_lang$websocket$WebSocket$init = _elm_lang$core$Task$succeed(
-	A3(_elm_lang$websocket$WebSocket$State, _elm_lang$core$Dict$empty, _elm_lang$core$Dict$empty, _elm_lang$core$Dict$empty));
-var _elm_lang$websocket$WebSocket$Send = F2(
-	function (a, b) {
-		return {ctor: 'Send', _0: a, _1: b};
-	});
-var _elm_lang$websocket$WebSocket$send = F2(
-	function (url, message) {
-		return _elm_lang$websocket$WebSocket$command(
-			A2(_elm_lang$websocket$WebSocket$Send, url, message));
-	});
-var _elm_lang$websocket$WebSocket$cmdMap = F2(
-	function (_p11, _p10) {
-		var _p12 = _p10;
-		return A2(_elm_lang$websocket$WebSocket$Send, _p12._0, _p12._1);
-	});
-var _elm_lang$websocket$WebSocket$KeepAlive = function (a) {
-	return {ctor: 'KeepAlive', _0: a};
-};
-var _elm_lang$websocket$WebSocket$keepAlive = function (url) {
-	return _elm_lang$websocket$WebSocket$subscription(
-		_elm_lang$websocket$WebSocket$KeepAlive(url));
-};
-var _elm_lang$websocket$WebSocket$Listen = F2(
-	function (a, b) {
-		return {ctor: 'Listen', _0: a, _1: b};
-	});
-var _elm_lang$websocket$WebSocket$listen = F2(
-	function (url, tagger) {
-		return _elm_lang$websocket$WebSocket$subscription(
-			A2(_elm_lang$websocket$WebSocket$Listen, url, tagger));
-	});
-var _elm_lang$websocket$WebSocket$subMap = F2(
-	function (func, sub) {
-		var _p13 = sub;
-		if (_p13.ctor === 'Listen') {
-			return A2(
-				_elm_lang$websocket$WebSocket$Listen,
-				_p13._0,
-				function (_p14) {
-					return func(
-						_p13._1(_p14));
-				});
-		} else {
-			return _elm_lang$websocket$WebSocket$KeepAlive(_p13._0);
-		}
-	});
-var _elm_lang$websocket$WebSocket$Connected = function (a) {
-	return {ctor: 'Connected', _0: a};
-};
-var _elm_lang$websocket$WebSocket$Opening = F2(
-	function (a, b) {
-		return {ctor: 'Opening', _0: a, _1: b};
-	});
-var _elm_lang$websocket$WebSocket$BadOpen = function (a) {
-	return {ctor: 'BadOpen', _0: a};
-};
-var _elm_lang$websocket$WebSocket$GoodOpen = F2(
-	function (a, b) {
-		return {ctor: 'GoodOpen', _0: a, _1: b};
-	});
-var _elm_lang$websocket$WebSocket$Die = function (a) {
-	return {ctor: 'Die', _0: a};
-};
-var _elm_lang$websocket$WebSocket$Receive = F2(
-	function (a, b) {
-		return {ctor: 'Receive', _0: a, _1: b};
-	});
-var _elm_lang$websocket$WebSocket$open = F2(
-	function (name, router) {
-		return A2(
-			_elm_lang$websocket$WebSocket_LowLevel$open,
-			name,
-			{
-				onMessage: F2(
-					function (_p15, msg) {
-						return A2(
-							_elm_lang$core$Platform$sendToSelf,
-							router,
-							A2(_elm_lang$websocket$WebSocket$Receive, name, msg));
-					}),
-				onClose: function (details) {
-					return A2(
-						_elm_lang$core$Platform$sendToSelf,
-						router,
-						_elm_lang$websocket$WebSocket$Die(name));
-				}
-			});
-	});
-var _elm_lang$websocket$WebSocket$attemptOpen = F3(
-	function (router, backoff, name) {
-		var badOpen = function (_p16) {
-			return A2(
-				_elm_lang$core$Platform$sendToSelf,
-				router,
-				_elm_lang$websocket$WebSocket$BadOpen(name));
-		};
-		var goodOpen = function (ws) {
-			return A2(
-				_elm_lang$core$Platform$sendToSelf,
-				router,
-				A2(_elm_lang$websocket$WebSocket$GoodOpen, name, ws));
-		};
-		var actuallyAttemptOpen = A2(
-			_elm_lang$core$Task$onError,
-			badOpen,
-			A2(
-				_elm_lang$core$Task$andThen,
-				goodOpen,
-				A2(_elm_lang$websocket$WebSocket$open, name, router)));
-		return _elm_lang$core$Process$spawn(
-			A2(
-				_elm_lang$websocket$WebSocket_ops['&>'],
-				_elm_lang$websocket$WebSocket$after(backoff),
-				actuallyAttemptOpen));
-	});
-var _elm_lang$websocket$WebSocket$onEffects = F4(
-	function (router, cmds, subs, state) {
-		var newSubs = A2(_elm_lang$websocket$WebSocket$buildSubDict, subs, _elm_lang$core$Dict$empty);
-		var cleanup = function (newQueues) {
-			var rightStep = F3(
-				function (name, connection, getNewSockets) {
-					return A2(
-						_elm_lang$websocket$WebSocket_ops['&>'],
-						_elm_lang$websocket$WebSocket$closeConnection(connection),
-						getNewSockets);
-				});
-			var bothStep = F4(
-				function (name, _p17, connection, getNewSockets) {
-					return A2(
-						_elm_lang$core$Task$map,
-						A2(_elm_lang$core$Dict$insert, name, connection),
-						getNewSockets);
-				});
-			var leftStep = F3(
-				function (name, _p18, getNewSockets) {
-					return A2(
-						_elm_lang$core$Task$andThen,
-						function (newSockets) {
-							return A2(
-								_elm_lang$core$Task$andThen,
-								function (pid) {
-									return _elm_lang$core$Task$succeed(
-										A3(
-											_elm_lang$core$Dict$insert,
-											name,
-											A2(_elm_lang$websocket$WebSocket$Opening, 0, pid),
-											newSockets));
-								},
-								A3(_elm_lang$websocket$WebSocket$attemptOpen, router, 0, name));
-						},
-						getNewSockets);
-				});
-			var newEntries = A2(
-				_elm_lang$core$Dict$union,
-				newQueues,
-				A2(
-					_elm_lang$core$Dict$map,
-					F2(
-						function (k, v) {
-							return {ctor: '[]'};
-						}),
-					newSubs));
-			var collectNewSockets = A6(
-				_elm_lang$core$Dict$merge,
-				leftStep,
-				bothStep,
-				rightStep,
-				newEntries,
-				state.sockets,
-				_elm_lang$core$Task$succeed(_elm_lang$core$Dict$empty));
-			return A2(
-				_elm_lang$core$Task$andThen,
-				function (newSockets) {
-					return _elm_lang$core$Task$succeed(
-						A3(_elm_lang$websocket$WebSocket$State, newSockets, newQueues, newSubs));
-				},
-				collectNewSockets);
-		};
-		var sendMessagesGetNewQueues = A3(_elm_lang$websocket$WebSocket$sendMessagesHelp, cmds, state.sockets, state.queues);
-		return A2(_elm_lang$core$Task$andThen, cleanup, sendMessagesGetNewQueues);
-	});
-var _elm_lang$websocket$WebSocket$onSelfMsg = F3(
-	function (router, selfMsg, state) {
-		var _p19 = selfMsg;
-		switch (_p19.ctor) {
-			case 'Receive':
-				var sends = A2(
-					_elm_lang$core$List$map,
-					function (tagger) {
-						return A2(
-							_elm_lang$core$Platform$sendToApp,
-							router,
-							tagger(_p19._1));
-					},
-					A2(
-						_elm_lang$core$Maybe$withDefault,
-						{ctor: '[]'},
-						A2(_elm_lang$core$Dict$get, _p19._0, state.subs)));
-				return A2(
-					_elm_lang$websocket$WebSocket_ops['&>'],
-					_elm_lang$core$Task$sequence(sends),
-					_elm_lang$core$Task$succeed(state));
-			case 'Die':
-				var _p21 = _p19._0;
-				var _p20 = A2(_elm_lang$core$Dict$get, _p21, state.sockets);
-				if (_p20.ctor === 'Nothing') {
-					return _elm_lang$core$Task$succeed(state);
-				} else {
-					return A2(
-						_elm_lang$core$Task$andThen,
-						function (pid) {
-							return _elm_lang$core$Task$succeed(
-								A3(
-									_elm_lang$websocket$WebSocket$updateSocket,
-									_p21,
-									A2(_elm_lang$websocket$WebSocket$Opening, 0, pid),
-									state));
-						},
-						A3(_elm_lang$websocket$WebSocket$attemptOpen, router, 0, _p21));
-				}
-			case 'GoodOpen':
-				var _p24 = _p19._1;
-				var _p23 = _p19._0;
-				var _p22 = A2(_elm_lang$core$Dict$get, _p23, state.queues);
-				if (_p22.ctor === 'Nothing') {
-					return _elm_lang$core$Task$succeed(
-						A3(
-							_elm_lang$websocket$WebSocket$updateSocket,
-							_p23,
-							_elm_lang$websocket$WebSocket$Connected(_p24),
-							state));
-				} else {
-					return A3(
-						_elm_lang$core$List$foldl,
-						F2(
-							function (msg, task) {
-								return A2(
-									_elm_lang$websocket$WebSocket_ops['&>'],
-									A2(_elm_lang$websocket$WebSocket_LowLevel$send, _p24, msg),
-									task);
-							}),
-						_elm_lang$core$Task$succeed(
-							A2(
-								_elm_lang$websocket$WebSocket$removeQueue,
-								_p23,
-								A3(
-									_elm_lang$websocket$WebSocket$updateSocket,
-									_p23,
-									_elm_lang$websocket$WebSocket$Connected(_p24),
-									state))),
-						_p22._0);
-				}
-			default:
-				var _p27 = _p19._0;
-				var _p25 = A2(_elm_lang$core$Dict$get, _p27, state.sockets);
-				if (_p25.ctor === 'Nothing') {
-					return _elm_lang$core$Task$succeed(state);
-				} else {
-					if (_p25._0.ctor === 'Opening') {
-						var _p26 = _p25._0._0;
-						return A2(
-							_elm_lang$core$Task$andThen,
-							function (pid) {
-								return _elm_lang$core$Task$succeed(
-									A3(
-										_elm_lang$websocket$WebSocket$updateSocket,
-										_p27,
-										A2(_elm_lang$websocket$WebSocket$Opening, _p26 + 1, pid),
-										state));
-							},
-							A3(_elm_lang$websocket$WebSocket$attemptOpen, router, _p26 + 1, _p27));
-					} else {
-						return _elm_lang$core$Task$succeed(state);
-					}
-				}
-		}
-	});
-_elm_lang$core$Native_Platform.effectManagers['WebSocket'] = {pkg: 'elm-lang/websocket', init: _elm_lang$websocket$WebSocket$init, onEffects: _elm_lang$websocket$WebSocket$onEffects, onSelfMsg: _elm_lang$websocket$WebSocket$onSelfMsg, tag: 'fx', cmdMap: _elm_lang$websocket$WebSocket$cmdMap, subMap: _elm_lang$websocket$WebSocket$subMap};
-
 var _elm_lang$window$Native_Window = function()
 {
 
@@ -12899,145 +12195,6 @@ var _elm_lang$window$Window$subMap = F2(
 			});
 	});
 _elm_lang$core$Native_Platform.effectManagers['Window'] = {pkg: 'elm-lang/window', init: _elm_lang$window$Window$init, onEffects: _elm_lang$window$Window$onEffects, onSelfMsg: _elm_lang$window$Window$onSelfMsg, tag: 'sub', subMap: _elm_lang$window$Window$subMap};
-
-var _evancz$elm_markdown$Native_Markdown = function() {
-
-
-// VIRTUAL-DOM WIDGETS
-
-function toHtml(options, factList, rawMarkdown)
-{
-	var model = {
-		options: options,
-		markdown: rawMarkdown
-	};
-	return _elm_lang$virtual_dom$Native_VirtualDom.custom(factList, model, implementation);
-}
-
-
-// WIDGET IMPLEMENTATION
-
-var implementation = {
-	render: render,
-	diff: diff
-};
-
-function render(model)
-{
-	var html = marked(model.markdown, formatOptions(model.options));
-	var div = document.createElement('div');
-	div.innerHTML = html;
-	return div;
-}
-
-function diff(a, b)
-{
-	
-	if (a.model.markdown === b.model.markdown && a.model.options === b.model.options)
-	{
-		return null;
-	}
-
-	return {
-		applyPatch: applyPatch,
-		data: marked(b.model.markdown, formatOptions(b.model.options))
-	};
-}
-
-function applyPatch(domNode, data)
-{
-	domNode.innerHTML = data;
-	return domNode;
-}
-
-
-// ACTUAL MARKDOWN PARSER
-
-var marked = function() {
-	// catch the `marked` object regardless of the outer environment.
-	// (ex. a CommonJS module compatible environment.)
-	// note that this depends on marked's implementation of environment detection.
-	var module = {};
-	var exports = module.exports = {};
-
-	/**
-	 * marked - a markdown parser
-	 * Copyright (c) 2011-2014, Christopher Jeffrey. (MIT Licensed)
-	 * https://github.com/chjj/marked
-	 */
-	(function(){var block={newline:/^\n+/,code:/^( {4}[^\n]+\n*)+/,fences:noop,hr:/^( *[-*_]){3,} *(?:\n+|$)/,heading:/^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,nptable:noop,lheading:/^([^\n]+)\n *(=|-){2,} *(?:\n+|$)/,blockquote:/^( *>[^\n]+(\n(?!def)[^\n]+)*\n*)+/,list:/^( *)(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/,html:/^ *(?:comment|closed|closing) *(?:\n{2,}|\s*$)/,def:/^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$)/,table:noop,paragraph:/^((?:[^\n]+\n?(?!hr|heading|lheading|blockquote|tag|def))+)\n*/,text:/^[^\n]+/};block.bullet=/(?:[*+-]|\d+\.)/;block.item=/^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/;block.item=replace(block.item,"gm")(/bull/g,block.bullet)();block.list=replace(block.list)(/bull/g,block.bullet)("hr","\\n+(?=\\1?(?:[-*_] *){3,}(?:\\n+|$))")("def","\\n+(?="+block.def.source+")")();block.blockquote=replace(block.blockquote)("def",block.def)();block._tag="(?!(?:"+"a|em|strong|small|s|cite|q|dfn|abbr|data|time|code"+"|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo"+"|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|[^\\w\\s@]*@)\\b";block.html=replace(block.html)("comment",/<!--[\s\S]*?-->/)("closed",/<(tag)[\s\S]+?<\/\1>/)("closing",/<tag(?:"[^"]*"|'[^']*'|[^'">])*?>/)(/tag/g,block._tag)();block.paragraph=replace(block.paragraph)("hr",block.hr)("heading",block.heading)("lheading",block.lheading)("blockquote",block.blockquote)("tag","<"+block._tag)("def",block.def)();block.normal=merge({},block);block.gfm=merge({},block.normal,{fences:/^ *(`{3,}|~{3,}) *(\S+)? *\n([\s\S]+?)\s*\1 *(?:\n+|$)/,paragraph:/^/});block.gfm.paragraph=replace(block.paragraph)("(?!","(?!"+block.gfm.fences.source.replace("\\1","\\2")+"|"+block.list.source.replace("\\1","\\3")+"|")();block.tables=merge({},block.gfm,{nptable:/^ *(\S.*\|.*)\n *([-:]+ *\|[-| :]*)\n((?:.*\|.*(?:\n|$))*)\n*/,table:/^ *\|(.+)\n *\|( *[-:]+[-| :]*)\n((?: *\|.*(?:\n|$))*)\n*/});function Lexer(options){this.tokens=[];this.tokens.links={};this.options=options||marked.defaults;this.rules=block.normal;if(this.options.gfm){if(this.options.tables){this.rules=block.tables}else{this.rules=block.gfm}}}Lexer.rules=block;Lexer.lex=function(src,options){var lexer=new Lexer(options);return lexer.lex(src)};Lexer.prototype.lex=function(src){src=src.replace(/\r\n|\r/g,"\n").replace(/\t/g,"    ").replace(/\u00a0/g," ").replace(/\u2424/g,"\n");return this.token(src,true)};Lexer.prototype.token=function(src,top,bq){var src=src.replace(/^ +$/gm,""),next,loose,cap,bull,b,item,space,i,l;while(src){if(cap=this.rules.newline.exec(src)){src=src.substring(cap[0].length);if(cap[0].length>1){this.tokens.push({type:"space"})}}if(cap=this.rules.code.exec(src)){src=src.substring(cap[0].length);cap=cap[0].replace(/^ {4}/gm,"");this.tokens.push({type:"code",text:!this.options.pedantic?cap.replace(/\n+$/,""):cap});continue}if(cap=this.rules.fences.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"code",lang:cap[2],text:cap[3]});continue}if(cap=this.rules.heading.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"heading",depth:cap[1].length,text:cap[2]});continue}if(top&&(cap=this.rules.nptable.exec(src))){src=src.substring(cap[0].length);item={type:"table",header:cap[1].replace(/^ *| *\| *$/g,"").split(/ *\| */),align:cap[2].replace(/^ *|\| *$/g,"").split(/ *\| */),cells:cap[3].replace(/\n$/,"").split("\n")};for(i=0;i<item.align.length;i++){if(/^ *-+: *$/.test(item.align[i])){item.align[i]="right"}else if(/^ *:-+: *$/.test(item.align[i])){item.align[i]="center"}else if(/^ *:-+ *$/.test(item.align[i])){item.align[i]="left"}else{item.align[i]=null}}for(i=0;i<item.cells.length;i++){item.cells[i]=item.cells[i].split(/ *\| */)}this.tokens.push(item);continue}if(cap=this.rules.lheading.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"heading",depth:cap[2]==="="?1:2,text:cap[1]});continue}if(cap=this.rules.hr.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"hr"});continue}if(cap=this.rules.blockquote.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"blockquote_start"});cap=cap[0].replace(/^ *> ?/gm,"");this.token(cap,top,true);this.tokens.push({type:"blockquote_end"});continue}if(cap=this.rules.list.exec(src)){src=src.substring(cap[0].length);bull=cap[2];this.tokens.push({type:"list_start",ordered:bull.length>1});cap=cap[0].match(this.rules.item);next=false;l=cap.length;i=0;for(;i<l;i++){item=cap[i];space=item.length;item=item.replace(/^ *([*+-]|\d+\.) +/,"");if(~item.indexOf("\n ")){space-=item.length;item=!this.options.pedantic?item.replace(new RegExp("^ {1,"+space+"}","gm"),""):item.replace(/^ {1,4}/gm,"")}if(this.options.smartLists&&i!==l-1){b=block.bullet.exec(cap[i+1])[0];if(bull!==b&&!(bull.length>1&&b.length>1)){src=cap.slice(i+1).join("\n")+src;i=l-1}}loose=next||/\n\n(?!\s*$)/.test(item);if(i!==l-1){next=item.charAt(item.length-1)==="\n";if(!loose)loose=next}this.tokens.push({type:loose?"loose_item_start":"list_item_start"});this.token(item,false,bq);this.tokens.push({type:"list_item_end"})}this.tokens.push({type:"list_end"});continue}if(cap=this.rules.html.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:this.options.sanitize?"paragraph":"html",pre:cap[1]==="pre"||cap[1]==="script"||cap[1]==="style",text:cap[0]});continue}if(!bq&&top&&(cap=this.rules.def.exec(src))){src=src.substring(cap[0].length);this.tokens.links[cap[1].toLowerCase()]={href:cap[2],title:cap[3]};continue}if(top&&(cap=this.rules.table.exec(src))){src=src.substring(cap[0].length);item={type:"table",header:cap[1].replace(/^ *| *\| *$/g,"").split(/ *\| */),align:cap[2].replace(/^ *|\| *$/g,"").split(/ *\| */),cells:cap[3].replace(/(?: *\| *)?\n$/,"").split("\n")};for(i=0;i<item.align.length;i++){if(/^ *-+: *$/.test(item.align[i])){item.align[i]="right"}else if(/^ *:-+: *$/.test(item.align[i])){item.align[i]="center"}else if(/^ *:-+ *$/.test(item.align[i])){item.align[i]="left"}else{item.align[i]=null}}for(i=0;i<item.cells.length;i++){item.cells[i]=item.cells[i].replace(/^ *\| *| *\| *$/g,"").split(/ *\| */)}this.tokens.push(item);continue}if(top&&(cap=this.rules.paragraph.exec(src))){src=src.substring(cap[0].length);this.tokens.push({type:"paragraph",text:cap[1].charAt(cap[1].length-1)==="\n"?cap[1].slice(0,-1):cap[1]});continue}if(cap=this.rules.text.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"text",text:cap[0]});continue}if(src){throw new Error("Infinite loop on byte: "+src.charCodeAt(0))}}return this.tokens};var inline={escape:/^\\([\\`*{}\[\]()#+\-.!_>])/,autolink:/^<([^ >]+(@|:\/)[^ >]+)>/,url:noop,tag:/^<!--[\s\S]*?-->|^<\/?\w+(?:"[^"]*"|'[^']*'|[^'">])*?>/,link:/^!?\[(inside)\]\(href\)/,reflink:/^!?\[(inside)\]\s*\[([^\]]*)\]/,nolink:/^!?\[((?:\[[^\]]*\]|[^\[\]])*)\]/,strong:/^__([\s\S]+?)__(?!_)|^\*\*([\s\S]+?)\*\*(?!\*)/,em:/^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,code:/^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/,br:/^ {2,}\n(?!\s*$)/,del:noop,text:/^[\s\S]+?(?=[\\<!\[_*`]| {2,}\n|$)/};inline._inside=/(?:\[[^\]]*\]|[^\[\]]|\](?=[^\[]*\]))*/;inline._href=/\s*<?([\s\S]*?)>?(?:\s+['"]([\s\S]*?)['"])?\s*/;inline.link=replace(inline.link)("inside",inline._inside)("href",inline._href)();inline.reflink=replace(inline.reflink)("inside",inline._inside)();inline.normal=merge({},inline);inline.pedantic=merge({},inline.normal,{strong:/^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,em:/^_(?=\S)([\s\S]*?\S)_(?!_)|^\*(?=\S)([\s\S]*?\S)\*(?!\*)/});inline.gfm=merge({},inline.normal,{escape:replace(inline.escape)("])","~|])")(),url:/^(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/,del:/^~~(?=\S)([\s\S]*?\S)~~/,text:replace(inline.text)("]|","~]|")("|","|https?://|")()});inline.breaks=merge({},inline.gfm,{br:replace(inline.br)("{2,}","*")(),text:replace(inline.gfm.text)("{2,}","*")()});function InlineLexer(links,options){this.options=options||marked.defaults;this.links=links;this.rules=inline.normal;this.renderer=this.options.renderer||new Renderer;this.renderer.options=this.options;if(!this.links){throw new Error("Tokens array requires a `links` property.")}if(this.options.gfm){if(this.options.breaks){this.rules=inline.breaks}else{this.rules=inline.gfm}}else if(this.options.pedantic){this.rules=inline.pedantic}}InlineLexer.rules=inline;InlineLexer.output=function(src,links,options){var inline=new InlineLexer(links,options);return inline.output(src)};InlineLexer.prototype.output=function(src){var out="",link,text,href,cap;while(src){if(cap=this.rules.escape.exec(src)){src=src.substring(cap[0].length);out+=cap[1];continue}if(cap=this.rules.autolink.exec(src)){src=src.substring(cap[0].length);if(cap[2]==="@"){text=cap[1].charAt(6)===":"?this.mangle(cap[1].substring(7)):this.mangle(cap[1]);href=this.mangle("mailto:")+text}else{text=escape(cap[1]);href=text}out+=this.renderer.link(href,null,text);continue}if(!this.inLink&&(cap=this.rules.url.exec(src))){src=src.substring(cap[0].length);text=escape(cap[1]);href=text;out+=this.renderer.link(href,null,text);continue}if(cap=this.rules.tag.exec(src)){if(!this.inLink&&/^<a /i.test(cap[0])){this.inLink=true}else if(this.inLink&&/^<\/a>/i.test(cap[0])){this.inLink=false}src=src.substring(cap[0].length);out+=this.options.sanitize?escape(cap[0]):cap[0];continue}if(cap=this.rules.link.exec(src)){src=src.substring(cap[0].length);this.inLink=true;out+=this.outputLink(cap,{href:cap[2],title:cap[3]});this.inLink=false;continue}if((cap=this.rules.reflink.exec(src))||(cap=this.rules.nolink.exec(src))){src=src.substring(cap[0].length);link=(cap[2]||cap[1]).replace(/\s+/g," ");link=this.links[link.toLowerCase()];if(!link||!link.href){out+=cap[0].charAt(0);src=cap[0].substring(1)+src;continue}this.inLink=true;out+=this.outputLink(cap,link);this.inLink=false;continue}if(cap=this.rules.strong.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.strong(this.output(cap[2]||cap[1]));continue}if(cap=this.rules.em.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.em(this.output(cap[2]||cap[1]));continue}if(cap=this.rules.code.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.codespan(escape(cap[2],true));continue}if(cap=this.rules.br.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.br();continue}if(cap=this.rules.del.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.del(this.output(cap[1]));continue}if(cap=this.rules.text.exec(src)){src=src.substring(cap[0].length);out+=escape(this.smartypants(cap[0]));continue}if(src){throw new Error("Infinite loop on byte: "+src.charCodeAt(0))}}return out};InlineLexer.prototype.outputLink=function(cap,link){var href=escape(link.href),title=link.title?escape(link.title):null;return cap[0].charAt(0)!=="!"?this.renderer.link(href,title,this.output(cap[1])):this.renderer.image(href,title,escape(cap[1]))};InlineLexer.prototype.smartypants=function(text){if(!this.options.smartypants)return text;return text.replace(/--/g,"—").replace(/(^|[-\u2014/(\[{"\s])'/g,"$1‘").replace(/'/g,"’").replace(/(^|[-\u2014/(\[{\u2018\s])"/g,"$1“").replace(/"/g,"”").replace(/\.{3}/g,"…")};InlineLexer.prototype.mangle=function(text){var out="",l=text.length,i=0,ch;for(;i<l;i++){ch=text.charCodeAt(i);if(Math.random()>.5){ch="x"+ch.toString(16)}out+="&#"+ch+";"}return out};function Renderer(options){this.options=options||{}}Renderer.prototype.code=function(code,lang,escaped){if(this.options.highlight){var out=this.options.highlight(code,lang);if(out!=null&&out!==code){escaped=true;code=out}}if(!lang){return"<pre><code>"+(escaped?code:escape(code,true))+"\n</code></pre>"}return'<pre><code class="'+this.options.langPrefix+escape(lang,true)+'">'+(escaped?code:escape(code,true))+"\n</code></pre>\n"};Renderer.prototype.blockquote=function(quote){return"<blockquote>\n"+quote+"</blockquote>\n"};Renderer.prototype.html=function(html){return html};Renderer.prototype.heading=function(text,level,raw){return"<h"+level+' id="'+this.options.headerPrefix+raw.toLowerCase().replace(/[^\w]+/g,"-")+'">'+text+"</h"+level+">\n"};Renderer.prototype.hr=function(){return this.options.xhtml?"<hr/>\n":"<hr>\n"};Renderer.prototype.list=function(body,ordered){var type=ordered?"ol":"ul";return"<"+type+">\n"+body+"</"+type+">\n"};Renderer.prototype.listitem=function(text){return"<li>"+text+"</li>\n"};Renderer.prototype.paragraph=function(text){return"<p>"+text+"</p>\n"};Renderer.prototype.table=function(header,body){return"<table>\n"+"<thead>\n"+header+"</thead>\n"+"<tbody>\n"+body+"</tbody>\n"+"</table>\n"};Renderer.prototype.tablerow=function(content){return"<tr>\n"+content+"</tr>\n"};Renderer.prototype.tablecell=function(content,flags){var type=flags.header?"th":"td";var tag=flags.align?"<"+type+' style="text-align:'+flags.align+'">':"<"+type+">";return tag+content+"</"+type+">\n"};Renderer.prototype.strong=function(text){return"<strong>"+text+"</strong>"};Renderer.prototype.em=function(text){return"<em>"+text+"</em>"};Renderer.prototype.codespan=function(text){return"<code>"+text+"</code>"};Renderer.prototype.br=function(){return this.options.xhtml?"<br/>":"<br>"};Renderer.prototype.del=function(text){return"<del>"+text+"</del>"};Renderer.prototype.link=function(href,title,text){if(this.options.sanitize){try{var prot=decodeURIComponent(unescape(href)).replace(/[^\w:]/g,"").toLowerCase()}catch(e){return""}if(prot.indexOf("javascript:")===0){return""}}var out='<a href="'+href+'"';if(title){out+=' title="'+title+'"'}out+=">"+text+"</a>";return out};Renderer.prototype.image=function(href,title,text){var out='<img src="'+href+'" alt="'+text+'"';if(title){out+=' title="'+title+'"'}out+=this.options.xhtml?"/>":">";return out};function Parser(options){this.tokens=[];this.token=null;this.options=options||marked.defaults;this.options.renderer=this.options.renderer||new Renderer;this.renderer=this.options.renderer;this.renderer.options=this.options}Parser.parse=function(src,options,renderer){var parser=new Parser(options,renderer);return parser.parse(src)};Parser.prototype.parse=function(src){this.inline=new InlineLexer(src.links,this.options,this.renderer);this.tokens=src.reverse();var out="";while(this.next()){out+=this.tok()}return out};Parser.prototype.next=function(){return this.token=this.tokens.pop()};Parser.prototype.peek=function(){return this.tokens[this.tokens.length-1]||0};Parser.prototype.parseText=function(){var body=this.token.text;while(this.peek().type==="text"){body+="\n"+this.next().text}return this.inline.output(body)};Parser.prototype.tok=function(){switch(this.token.type){case"space":{return""}case"hr":{return this.renderer.hr()}case"heading":{return this.renderer.heading(this.inline.output(this.token.text),this.token.depth,this.token.text)}case"code":{return this.renderer.code(this.token.text,this.token.lang,this.token.escaped)}case"table":{var header="",body="",i,row,cell,flags,j;cell="";for(i=0;i<this.token.header.length;i++){flags={header:true,align:this.token.align[i]};cell+=this.renderer.tablecell(this.inline.output(this.token.header[i]),{header:true,align:this.token.align[i]})}header+=this.renderer.tablerow(cell);for(i=0;i<this.token.cells.length;i++){row=this.token.cells[i];cell="";for(j=0;j<row.length;j++){cell+=this.renderer.tablecell(this.inline.output(row[j]),{header:false,align:this.token.align[j]})}body+=this.renderer.tablerow(cell)}return this.renderer.table(header,body)}case"blockquote_start":{var body="";while(this.next().type!=="blockquote_end"){body+=this.tok()}return this.renderer.blockquote(body)}case"list_start":{var body="",ordered=this.token.ordered;while(this.next().type!=="list_end"){body+=this.tok()}return this.renderer.list(body,ordered)}case"list_item_start":{var body="";while(this.next().type!=="list_item_end"){body+=this.token.type==="text"?this.parseText():this.tok()}return this.renderer.listitem(body)}case"loose_item_start":{var body="";while(this.next().type!=="list_item_end"){body+=this.tok()}return this.renderer.listitem(body)}case"html":{var html=!this.token.pre&&!this.options.pedantic?this.inline.output(this.token.text):this.token.text;return this.renderer.html(html)}case"paragraph":{return this.renderer.paragraph(this.inline.output(this.token.text))}case"text":{return this.renderer.paragraph(this.parseText())}}};function escape(html,encode){return html.replace(!encode?/&(?!#?\w+;)/g:/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}function unescape(html){return html.replace(/&([#\w]+);/g,function(_,n){n=n.toLowerCase();if(n==="colon")return":";if(n.charAt(0)==="#"){return n.charAt(1)==="x"?String.fromCharCode(parseInt(n.substring(2),16)):String.fromCharCode(+n.substring(1))}return""})}function replace(regex,opt){regex=regex.source;opt=opt||"";return function self(name,val){if(!name)return new RegExp(regex,opt);val=val.source||val;val=val.replace(/(^|[^\[])\^/g,"$1");regex=regex.replace(name,val);return self}}function noop(){}noop.exec=noop;function merge(obj){var i=1,target,key;for(;i<arguments.length;i++){target=arguments[i];for(key in target){if(Object.prototype.hasOwnProperty.call(target,key)){obj[key]=target[key]}}}return obj}function marked(src,opt,callback){if(callback||typeof opt==="function"){if(!callback){callback=opt;opt=null}opt=merge({},marked.defaults,opt||{});var highlight=opt.highlight,tokens,pending,i=0;try{tokens=Lexer.lex(src,opt)}catch(e){return callback(e)}pending=tokens.length;var done=function(err){if(err){opt.highlight=highlight;return callback(err)}var out;try{out=Parser.parse(tokens,opt)}catch(e){err=e}opt.highlight=highlight;return err?callback(err):callback(null,out)};if(!highlight||highlight.length<3){return done()}delete opt.highlight;if(!pending)return done();for(;i<tokens.length;i++){(function(token){if(token.type!=="code"){return--pending||done()}return highlight(token.text,token.lang,function(err,code){if(err)return done(err);if(code==null||code===token.text){return--pending||done()}token.text=code;token.escaped=true;--pending||done()})})(tokens[i])}return}try{if(opt)opt=merge({},marked.defaults,opt);return Parser.parse(Lexer.lex(src,opt),opt)}catch(e){e.message+="\nPlease report this to https://github.com/chjj/marked.";if((opt||marked.defaults).silent){return"<p>An error occured:</p><pre>"+escape(e.message+"",true)+"</pre>"}throw e}}marked.options=marked.setOptions=function(opt){merge(marked.defaults,opt);return marked};marked.defaults={gfm:true,tables:true,breaks:false,pedantic:false,sanitize:false,smartLists:false,silent:false,highlight:null,langPrefix:"lang-",smartypants:false,headerPrefix:"",renderer:new Renderer,xhtml:false};marked.Parser=Parser;marked.parser=Parser.parse;marked.Renderer=Renderer;marked.Lexer=Lexer;marked.lexer=Lexer.lex;marked.InlineLexer=InlineLexer;marked.inlineLexer=InlineLexer.output;marked.parse=marked;if(typeof module!=="undefined"&&typeof exports==="object"){module.exports=marked}else if(typeof define==="function"&&define.amd){define(function(){return marked})}else{this.marked=marked}}).call(function(){return this||(typeof window!=="undefined"?window:global)}());
-
-	return module.exports;
-}();
-
-
-// FORMAT OPTIONS FOR MARKED IMPLEMENTATION
-
-function formatOptions(options)
-{
-	function toHighlight(code, lang)
-	{
-		if (!lang && options.defaultHighlighting.ctor === 'Just')
-		{
-			lang = options.defaultHighlighting._0;
-		}
-
-		if (typeof hljs !== 'undefined' && lang && hljs.listLanguages().indexOf(lang) >= 0)
-		{
-			return hljs.highlight(lang, code, true).value;
-		}
-
-		return code;
-	}
-
-	var gfm = options.githubFlavored;
-	if (gfm.ctor === 'Just')
-	{
-		return {
-			highlight: toHighlight,
-			gfm: true,
-			tables: gfm._0.tables,
-			breaks: gfm._0.breaks,
-			sanitize: options.sanitize,
-			smartypants: options.smartypants
-		};
-	}
-
-	return {
-		highlight: toHighlight,
-		gfm: false,
-		tables: false,
-		breaks: false,
-		sanitize: options.sanitize,
-		smartypants: options.smartypants
-	};
-}
-
-
-// EXPORTS
-
-return {
-	toHtml: F3(toHtml)
-};
-
-}();
-
-var _evancz$elm_markdown$Markdown$toHtmlWith = _evancz$elm_markdown$Native_Markdown.toHtml;
-var _evancz$elm_markdown$Markdown$defaultOptions = {
-	githubFlavored: _elm_lang$core$Maybe$Just(
-		{tables: false, breaks: false}),
-	defaultHighlighting: _elm_lang$core$Maybe$Nothing,
-	sanitize: false,
-	smartypants: false
-};
-var _evancz$elm_markdown$Markdown$toHtml = F2(
-	function (attrs, string) {
-		return A3(_evancz$elm_markdown$Native_Markdown.toHtml, _evancz$elm_markdown$Markdown$defaultOptions, attrs, string);
-	});
-var _evancz$elm_markdown$Markdown$Options = F4(
-	function (a, b, c, d) {
-		return {githubFlavored: a, defaultHighlighting: b, sanitize: c, smartypants: d};
-	});
 
 var _evancz$url_parser$UrlParser$toKeyValuePair = function (segment) {
 	var _p0 = A2(_elm_lang$core$String$split, '=', segment);
@@ -13289,605 +12446,6 @@ var _evancz$url_parser$UrlParser$stringParam = function (name) {
 var _evancz$url_parser$UrlParser$intParam = function (name) {
 	return A2(_evancz$url_parser$UrlParser$customParam, name, _evancz$url_parser$UrlParser$intParamHelp);
 };
-
-var _fbonetti$elm_phoenix_socket$Phoenix_Helpers$emptyPayload = _elm_lang$core$Json_Encode$object(
-	{ctor: '[]'});
-var _fbonetti$elm_phoenix_socket$Phoenix_Helpers$maybeInt = function (maybe) {
-	var _p0 = maybe;
-	if (_p0.ctor === 'Just') {
-		return _elm_lang$core$Json_Encode$int(_p0._0);
-	} else {
-		return _elm_lang$core$Json_Encode$null;
-	}
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Helpers$messageEncoder = function (_p1) {
-	var _p2 = _p1;
-	return _elm_lang$core$Json_Encode$object(
-		{
-			ctor: '::',
-			_0: {
-				ctor: '_Tuple2',
-				_0: 'event',
-				_1: _elm_lang$core$Json_Encode$string(_p2.event)
-			},
-			_1: {
-				ctor: '::',
-				_0: {
-					ctor: '_Tuple2',
-					_0: 'topic',
-					_1: _elm_lang$core$Json_Encode$string(_p2.topic)
-				},
-				_1: {
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 'payload', _1: _p2.payload},
-					_1: {
-						ctor: '::',
-						_0: {
-							ctor: '_Tuple2',
-							_0: 'ref',
-							_1: _fbonetti$elm_phoenix_socket$Phoenix_Helpers$maybeInt(_p2.ref)
-						},
-						_1: {ctor: '[]'}
-					}
-				}
-			}
-		});
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Helpers$encodeMessage = function (_p3) {
-	return A2(
-		_elm_lang$core$Json_Encode$encode,
-		0,
-		_fbonetti$elm_phoenix_socket$Phoenix_Helpers$messageEncoder(_p3));
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Helpers$nullOrInt = _elm_lang$core$Json_Decode$oneOf(
-	{
-		ctor: '::',
-		_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
-		_1: {
-			ctor: '::',
-			_0: A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Maybe$Just, _elm_lang$core$Json_Decode$int),
-			_1: {ctor: '[]'}
-		}
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Helpers$Message = F4(
-	function (a, b, c, d) {
-		return {event: a, topic: b, payload: c, ref: d};
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Helpers$messageDecoder = A5(
-	_elm_lang$core$Json_Decode$map4,
-	_fbonetti$elm_phoenix_socket$Phoenix_Helpers$Message,
-	A2(_elm_lang$core$Json_Decode$field, 'event', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'topic', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'payload', _elm_lang$core$Json_Decode$value),
-	A2(_elm_lang$core$Json_Decode$field, 'ref', _fbonetti$elm_phoenix_socket$Phoenix_Helpers$nullOrInt));
-
-var _fbonetti$elm_phoenix_socket$Phoenix_Channel$setState = F2(
-	function (state, channel) {
-		return _elm_lang$core$Native_Utils.update(
-			channel,
-			{state: state});
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Channel$onJoinError = F2(
-	function (valueToMsg, channel) {
-		return _elm_lang$core$Native_Utils.update(
-			channel,
-			{
-				onJoinError: _elm_lang$core$Maybe$Just(valueToMsg)
-			});
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Channel$onJoin = F2(
-	function (valueToMsg, channel) {
-		return _elm_lang$core$Native_Utils.update(
-			channel,
-			{
-				onJoin: _elm_lang$core$Maybe$Just(valueToMsg)
-			});
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Channel$onClose = F2(
-	function (valueToMsg, channel) {
-		return _elm_lang$core$Native_Utils.update(
-			channel,
-			{
-				onClose: _elm_lang$core$Maybe$Just(valueToMsg)
-			});
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Channel$onError = F2(
-	function (valueToMsg, channel) {
-		return _elm_lang$core$Native_Utils.update(
-			channel,
-			{
-				onError: _elm_lang$core$Maybe$Just(valueToMsg)
-			});
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Channel$withPayload = F2(
-	function (payload, channel) {
-		return _elm_lang$core$Native_Utils.update(
-			channel,
-			{payload: payload});
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Channel$Channel = F9(
-	function (a, b, c, d, e, f, g, h, i) {
-		return {name: a, payload: b, state: c, onClose: d, onError: e, onJoin: f, onJoinError: g, joinRef: h, leaveRef: i};
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Channel$Leaving = {ctor: 'Leaving'};
-var _fbonetti$elm_phoenix_socket$Phoenix_Channel$Joining = {ctor: 'Joining'};
-var _fbonetti$elm_phoenix_socket$Phoenix_Channel$Joined = {ctor: 'Joined'};
-var _fbonetti$elm_phoenix_socket$Phoenix_Channel$Errored = {ctor: 'Errored'};
-var _fbonetti$elm_phoenix_socket$Phoenix_Channel$Closed = {ctor: 'Closed'};
-var _fbonetti$elm_phoenix_socket$Phoenix_Channel$init = function (name) {
-	return {name: name, payload: _fbonetti$elm_phoenix_socket$Phoenix_Helpers$emptyPayload, state: _fbonetti$elm_phoenix_socket$Phoenix_Channel$Closed, onClose: _elm_lang$core$Maybe$Nothing, onError: _elm_lang$core$Maybe$Nothing, onJoin: _elm_lang$core$Maybe$Nothing, onJoinError: _elm_lang$core$Maybe$Nothing, joinRef: -1, leaveRef: -1};
-};
-
-var _fbonetti$elm_phoenix_socket$Phoenix_Push$onError = F2(
-	function (valueToMsg, push) {
-		return _elm_lang$core$Native_Utils.update(
-			push,
-			{
-				onError: _elm_lang$core$Maybe$Just(valueToMsg)
-			});
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Push$onOk = F2(
-	function (valueToMsg, push) {
-		return _elm_lang$core$Native_Utils.update(
-			push,
-			{
-				onOk: _elm_lang$core$Maybe$Just(valueToMsg)
-			});
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Push$withPayload = F2(
-	function (payload, push) {
-		return _elm_lang$core$Native_Utils.update(
-			push,
-			{payload: payload});
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Push$Push = F5(
-	function (a, b, c, d, e) {
-		return {event: a, channel: b, payload: c, onOk: d, onError: e};
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Push$init = F2(
-	function (event, channel) {
-		return A5(_fbonetti$elm_phoenix_socket$Phoenix_Push$Push, event, channel, _fbonetti$elm_phoenix_socket$Phoenix_Helpers$emptyPayload, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing);
-	});
-
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$replyDecoder = A3(
-	_elm_lang$core$Json_Decode$map2,
-	F2(
-		function (v0, v1) {
-			return {ctor: '_Tuple2', _0: v0, _1: v1};
-		}),
-	A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'response', _elm_lang$core$Json_Decode$value));
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$decodeMessage = function (_p0) {
-	return _elm_lang$core$Result$toMaybe(
-		A2(_elm_lang$core$Json_Decode$decodeString, _fbonetti$elm_phoenix_socket$Phoenix_Helpers$messageDecoder, _p0));
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$debugIfEnabled = function (socket) {
-	return socket.debug ? _elm_lang$core$Debug$log('phx_message') : _elm_lang$core$Basics$identity;
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$phoenixMessages = function (socket) {
-	return A2(_elm_lang$websocket$WebSocket$listen, socket.path, _fbonetti$elm_phoenix_socket$Phoenix_Socket$decodeMessage);
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$mapAll = F2(
-	function (fn, internalMsg) {
-		var _p1 = internalMsg;
-		if (_p1.ctor === 'ExternalMsg') {
-			return _p1._0;
-		} else {
-			return fn(internalMsg);
-		}
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$sendMessage = F2(
-	function (path, message) {
-		return A2(
-			_elm_lang$websocket$WebSocket$send,
-			path,
-			_fbonetti$elm_phoenix_socket$Phoenix_Helpers$encodeMessage(message));
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$send = F4(
-	function (_p2, event, channel, payload) {
-		var _p3 = _p2;
-		return A2(
-			_fbonetti$elm_phoenix_socket$Phoenix_Socket$sendMessage,
-			_p3.path,
-			A4(
-				_fbonetti$elm_phoenix_socket$Phoenix_Helpers$Message,
-				event,
-				channel,
-				payload,
-				_elm_lang$core$Maybe$Just(_p3.ref)));
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$off = F3(
-	function (eventName, channelName, socket) {
-		return _elm_lang$core$Native_Utils.update(
-			socket,
-			{
-				events: A2(
-					_elm_lang$core$Dict$remove,
-					{ctor: '_Tuple2', _0: eventName, _1: channelName},
-					socket.events)
-			});
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$on = F4(
-	function (eventName, channelName, onReceive, socket) {
-		return _elm_lang$core$Native_Utils.update(
-			socket,
-			{
-				events: A3(
-					_elm_lang$core$Dict$insert,
-					{ctor: '_Tuple2', _0: eventName, _1: channelName},
-					onReceive,
-					socket.events)
-			});
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$push = F2(
-	function (push_, socket) {
-		return {
-			ctor: '_Tuple2',
-			_0: _elm_lang$core$Native_Utils.update(
-				socket,
-				{
-					pushes: A3(_elm_lang$core$Dict$insert, socket.ref, push_, socket.pushes),
-					ref: socket.ref + 1
-				}),
-			_1: A4(_fbonetti$elm_phoenix_socket$Phoenix_Socket$send, socket, push_.event, push_.channel, push_.payload)
-		};
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$heartbeat = function (socket) {
-	var push_ = A2(_fbonetti$elm_phoenix_socket$Phoenix_Push$init, 'heartbeat', 'phoenix');
-	return A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$push, push_, socket);
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$leave = F2(
-	function (channelName, socket) {
-		var _p4 = A2(_elm_lang$core$Dict$get, channelName, socket.channels);
-		if (_p4.ctor === 'Just') {
-			var _p5 = _p4._0;
-			if (_elm_lang$core$Native_Utils.eq(_p5.state, _fbonetti$elm_phoenix_socket$Phoenix_Channel$Joining) || _elm_lang$core$Native_Utils.eq(_p5.state, _fbonetti$elm_phoenix_socket$Phoenix_Channel$Joined)) {
-				var channel_ = _elm_lang$core$Native_Utils.update(
-					_p5,
-					{state: _fbonetti$elm_phoenix_socket$Phoenix_Channel$Leaving, leaveRef: socket.ref});
-				var socket_ = _elm_lang$core$Native_Utils.update(
-					socket,
-					{
-						channels: A3(_elm_lang$core$Dict$insert, channelName, channel_, socket.channels)
-					});
-				var push_ = A2(_fbonetti$elm_phoenix_socket$Phoenix_Push$init, 'phx_leave', _p5.name);
-				return A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$push, push_, socket_);
-			} else {
-				return {ctor: '_Tuple2', _0: socket, _1: _elm_lang$core$Platform_Cmd$none};
-			}
-		} else {
-			return {ctor: '_Tuple2', _0: socket, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$joinChannel = F2(
-	function (channel, socket) {
-		var channel_ = _elm_lang$core$Native_Utils.update(
-			channel,
-			{state: _fbonetti$elm_phoenix_socket$Phoenix_Channel$Joining, joinRef: socket.ref});
-		var socket_ = _elm_lang$core$Native_Utils.update(
-			socket,
-			{
-				channels: A3(_elm_lang$core$Dict$insert, channel.name, channel_, socket.channels)
-			});
-		var push_ = A5(_fbonetti$elm_phoenix_socket$Phoenix_Push$Push, 'phx_join', channel.name, channel.payload, channel.onJoin, channel.onError);
-		return A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$push, push_, socket_);
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$join = F2(
-	function (channel, socket) {
-		var _p6 = A2(_elm_lang$core$Dict$get, channel.name, socket.channels);
-		if (_p6.ctor === 'Just') {
-			var _p7 = _p6._0.state;
-			return (_elm_lang$core$Native_Utils.eq(_p7, _fbonetti$elm_phoenix_socket$Phoenix_Channel$Joined) || _elm_lang$core$Native_Utils.eq(_p7, _fbonetti$elm_phoenix_socket$Phoenix_Channel$Joining)) ? {ctor: '_Tuple2', _0: socket, _1: _elm_lang$core$Platform_Cmd$none} : A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$joinChannel, channel, socket);
-		} else {
-			return A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$joinChannel, channel, socket);
-		}
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$withoutHeartbeat = function (socket) {
-	return _elm_lang$core$Native_Utils.update(
-		socket,
-		{withoutHeartbeat: true});
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$withHeartbeatInterval = F2(
-	function (intervalSeconds, socket) {
-		return _elm_lang$core$Native_Utils.update(
-			socket,
-			{heartbeatIntervalSeconds: intervalSeconds});
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$withDebug = function (socket) {
-	return _elm_lang$core$Native_Utils.update(
-		socket,
-		{debug: true});
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$update = F2(
-	function (msg, socket) {
-		var _p8 = msg;
-		switch (_p8.ctor) {
-			case 'ChannelErrored':
-				var channels = A3(
-					_elm_lang$core$Dict$update,
-					_p8._0,
-					_elm_lang$core$Maybe$map(
-						_fbonetti$elm_phoenix_socket$Phoenix_Channel$setState(_fbonetti$elm_phoenix_socket$Phoenix_Channel$Errored)),
-					socket.channels);
-				var socket_ = _elm_lang$core$Native_Utils.update(
-					socket,
-					{channels: channels});
-				return {ctor: '_Tuple2', _0: socket_, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'ChannelClosed':
-				var _p11 = _p8._0;
-				var _p9 = A2(_elm_lang$core$Dict$get, _p11, socket.channels);
-				if (_p9.ctor === 'Just') {
-					var _p10 = _p9._0;
-					var pushes = A2(_elm_lang$core$Dict$remove, _p10.joinRef, socket.pushes);
-					var channels = A3(
-						_elm_lang$core$Dict$insert,
-						_p11,
-						A2(_fbonetti$elm_phoenix_socket$Phoenix_Channel$setState, _fbonetti$elm_phoenix_socket$Phoenix_Channel$Closed, _p10),
-						socket.channels);
-					var socket_ = _elm_lang$core$Native_Utils.update(
-						socket,
-						{channels: channels, pushes: pushes});
-					return {ctor: '_Tuple2', _0: socket_, _1: _elm_lang$core$Platform_Cmd$none};
-				} else {
-					return {ctor: '_Tuple2', _0: socket, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			case 'ChannelJoined':
-				var _p14 = _p8._0;
-				var _p12 = A2(_elm_lang$core$Dict$get, _p14, socket.channels);
-				if (_p12.ctor === 'Just') {
-					var _p13 = _p12._0;
-					var pushes = A2(_elm_lang$core$Dict$remove, _p13.joinRef, socket.pushes);
-					var channels = A3(
-						_elm_lang$core$Dict$insert,
-						_p14,
-						A2(_fbonetti$elm_phoenix_socket$Phoenix_Channel$setState, _fbonetti$elm_phoenix_socket$Phoenix_Channel$Joined, _p13),
-						socket.channels);
-					var socket_ = _elm_lang$core$Native_Utils.update(
-						socket,
-						{channels: channels, pushes: pushes});
-					return {ctor: '_Tuple2', _0: socket_, _1: _elm_lang$core$Platform_Cmd$none};
-				} else {
-					return {ctor: '_Tuple2', _0: socket, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			case 'Heartbeat':
-				return _fbonetti$elm_phoenix_socket$Phoenix_Socket$heartbeat(socket);
-			default:
-				return {ctor: '_Tuple2', _0: socket, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$init = function (path) {
-	return {
-		path: path,
-		debug: false,
-		channels: _elm_lang$core$Dict$fromList(
-			{ctor: '[]'}),
-		events: _elm_lang$core$Dict$fromList(
-			{ctor: '[]'}),
-		pushes: _elm_lang$core$Dict$fromList(
-			{ctor: '[]'}),
-		ref: 0,
-		heartbeatIntervalSeconds: 30,
-		withoutHeartbeat: false
-	};
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$Socket = F8(
-	function (a, b, c, d, e, f, g, h) {
-		return {path: a, debug: b, channels: c, events: d, pushes: e, ref: f, heartbeatIntervalSeconds: g, withoutHeartbeat: h};
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$Heartbeat = function (a) {
-	return {ctor: 'Heartbeat', _0: a};
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$heartbeatSubscription = function (socket) {
-	return socket.withoutHeartbeat ? _elm_lang$core$Platform_Sub$none : A2(_elm_lang$core$Time$every, _elm_lang$core$Time$second * socket.heartbeatIntervalSeconds, _fbonetti$elm_phoenix_socket$Phoenix_Socket$Heartbeat);
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$ReceiveReply = F2(
-	function (a, b) {
-		return {ctor: 'ReceiveReply', _0: a, _1: b};
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$ChannelJoined = function (a) {
-	return {ctor: 'ChannelJoined', _0: a};
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$ChannelClosed = function (a) {
-	return {ctor: 'ChannelClosed', _0: a};
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$ChannelErrored = function (a) {
-	return {ctor: 'ChannelErrored', _0: a};
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$ExternalMsg = function (a) {
-	return {ctor: 'ExternalMsg', _0: a};
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$NoOp = {ctor: 'NoOp'};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$handleInternalPhxReply = F2(
-	function (socket, message) {
-		var msg = A2(
-			_elm_lang$core$Maybe$andThen,
-			function (_p15) {
-				var _p16 = _p15;
-				return A2(
-					_elm_lang$core$Maybe$andThen,
-					function (ref) {
-						return A2(
-							_elm_lang$core$Maybe$andThen,
-							function (channel) {
-								return _elm_lang$core$Native_Utils.eq(_p16._0, 'ok') ? (_elm_lang$core$Native_Utils.eq(ref, channel.joinRef) ? _elm_lang$core$Maybe$Just(
-									_fbonetti$elm_phoenix_socket$Phoenix_Socket$ChannelJoined(message.topic)) : (_elm_lang$core$Native_Utils.eq(ref, channel.leaveRef) ? _elm_lang$core$Maybe$Just(
-									_fbonetti$elm_phoenix_socket$Phoenix_Socket$ChannelClosed(message.topic)) : _elm_lang$core$Maybe$Nothing)) : _elm_lang$core$Maybe$Nothing;
-							},
-							A2(_elm_lang$core$Dict$get, message.topic, socket.channels));
-					},
-					message.ref);
-			},
-			_elm_lang$core$Result$toMaybe(
-				A2(_elm_lang$core$Json_Decode$decodeValue, _fbonetti$elm_phoenix_socket$Phoenix_Socket$replyDecoder, message.payload)));
-		return A2(_elm_lang$core$Maybe$withDefault, _fbonetti$elm_phoenix_socket$Phoenix_Socket$NoOp, msg);
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$mapInternalMsgs = F2(
-	function (socket, maybeMessage) {
-		var _p17 = maybeMessage;
-		if (_p17.ctor === 'Just') {
-			var _p19 = _p17._0;
-			var message = socket.debug ? A2(_elm_lang$core$Debug$log, 'Phoenix message', _p19) : _p19;
-			var _p18 = message.event;
-			switch (_p18) {
-				case 'phx_reply':
-					return A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$handleInternalPhxReply, socket, message);
-				case 'phx_error':
-					return _fbonetti$elm_phoenix_socket$Phoenix_Socket$ChannelErrored(message.topic);
-				case 'phx_close':
-					return _fbonetti$elm_phoenix_socket$Phoenix_Socket$ChannelClosed(message.topic);
-				default:
-					return _fbonetti$elm_phoenix_socket$Phoenix_Socket$NoOp;
-			}
-		} else {
-			return _fbonetti$elm_phoenix_socket$Phoenix_Socket$NoOp;
-		}
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$internalMsgs = function (socket) {
-	return A2(
-		_elm_lang$core$Platform_Sub$map,
-		_fbonetti$elm_phoenix_socket$Phoenix_Socket$mapInternalMsgs(socket),
-		_fbonetti$elm_phoenix_socket$Phoenix_Socket$phoenixMessages(socket));
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$handlePhxReply = F2(
-	function (socket, message) {
-		var msg = A2(
-			_elm_lang$core$Maybe$andThen,
-			function (_p20) {
-				var _p21 = _p20;
-				var _p25 = _p21._1;
-				return A2(
-					_elm_lang$core$Maybe$andThen,
-					function (ref) {
-						return A2(
-							_elm_lang$core$Maybe$andThen,
-							function (push) {
-								var _p22 = _p21._0;
-								switch (_p22) {
-									case 'ok':
-										return A2(
-											_elm_lang$core$Maybe$map,
-											function (f) {
-												return function (_p23) {
-													return _fbonetti$elm_phoenix_socket$Phoenix_Socket$ExternalMsg(
-														f(_p23));
-												}(_p25);
-											},
-											push.onOk);
-									case 'error':
-										return A2(
-											_elm_lang$core$Maybe$map,
-											function (f) {
-												return function (_p24) {
-													return _fbonetti$elm_phoenix_socket$Phoenix_Socket$ExternalMsg(
-														f(_p24));
-												}(_p25);
-											},
-											push.onError);
-									default:
-										return _elm_lang$core$Maybe$Nothing;
-								}
-							},
-							A2(_elm_lang$core$Dict$get, ref, socket.pushes));
-					},
-					message.ref);
-			},
-			_elm_lang$core$Result$toMaybe(
-				A2(_elm_lang$core$Json_Decode$decodeValue, _fbonetti$elm_phoenix_socket$Phoenix_Socket$replyDecoder, message.payload)));
-		return A2(_elm_lang$core$Maybe$withDefault, _fbonetti$elm_phoenix_socket$Phoenix_Socket$NoOp, msg);
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$handleEvent = F2(
-	function (socket, message) {
-		var _p26 = A2(
-			_elm_lang$core$Dict$get,
-			{ctor: '_Tuple2', _0: message.event, _1: message.topic},
-			socket.events);
-		if (_p26.ctor === 'Just') {
-			return _fbonetti$elm_phoenix_socket$Phoenix_Socket$ExternalMsg(
-				_p26._0(message.payload));
-		} else {
-			return _fbonetti$elm_phoenix_socket$Phoenix_Socket$NoOp;
-		}
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$mapExternalMsgs = F2(
-	function (socket, maybeMessage) {
-		var _p27 = maybeMessage;
-		if (_p27.ctor === 'Just') {
-			var _p31 = _p27._0;
-			var _p28 = _p31.event;
-			switch (_p28) {
-				case 'phx_reply':
-					return A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$handlePhxReply, socket, _p31);
-				case 'phx_error':
-					var channel = A2(_elm_lang$core$Dict$get, _p31.topic, socket.channels);
-					var onError = A2(
-						_elm_lang$core$Maybe$andThen,
-						function (_) {
-							return _.onError;
-						},
-						channel);
-					var msg = A2(
-						_elm_lang$core$Maybe$map,
-						function (f) {
-							return function (_p29) {
-								return _fbonetti$elm_phoenix_socket$Phoenix_Socket$ExternalMsg(
-									f(_p29));
-							}(_p31.payload);
-						},
-						onError);
-					return A2(_elm_lang$core$Maybe$withDefault, _fbonetti$elm_phoenix_socket$Phoenix_Socket$NoOp, msg);
-				case 'phx_close':
-					var channel = A2(_elm_lang$core$Dict$get, _p31.topic, socket.channels);
-					var onClose = A2(
-						_elm_lang$core$Maybe$andThen,
-						function (_) {
-							return _.onClose;
-						},
-						channel);
-					var msg = A2(
-						_elm_lang$core$Maybe$map,
-						function (f) {
-							return function (_p30) {
-								return _fbonetti$elm_phoenix_socket$Phoenix_Socket$ExternalMsg(
-									f(_p30));
-							}(_p31.payload);
-						},
-						onClose);
-					return A2(_elm_lang$core$Maybe$withDefault, _fbonetti$elm_phoenix_socket$Phoenix_Socket$NoOp, msg);
-				default:
-					return A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$handleEvent, socket, _p31);
-			}
-		} else {
-			return _fbonetti$elm_phoenix_socket$Phoenix_Socket$NoOp;
-		}
-	});
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$externalMsgs = function (socket) {
-	return A2(
-		_elm_lang$core$Platform_Sub$map,
-		_fbonetti$elm_phoenix_socket$Phoenix_Socket$mapExternalMsgs(socket),
-		_fbonetti$elm_phoenix_socket$Phoenix_Socket$phoenixMessages(socket));
-};
-var _fbonetti$elm_phoenix_socket$Phoenix_Socket$listen = F2(
-	function (socket, fn) {
-		return function (_p32) {
-			return A2(
-				_elm_lang$core$Platform_Sub$map,
-				_fbonetti$elm_phoenix_socket$Phoenix_Socket$mapAll(fn),
-				_elm_lang$core$Platform_Sub$batch(_p32));
-		}(
-			{
-				ctor: '::',
-				_0: _fbonetti$elm_phoenix_socket$Phoenix_Socket$internalMsgs(socket),
-				_1: {
-					ctor: '::',
-					_0: _fbonetti$elm_phoenix_socket$Phoenix_Socket$externalMsgs(socket),
-					_1: {
-						ctor: '::',
-						_0: _fbonetti$elm_phoenix_socket$Phoenix_Socket$heartbeatSubscription(socket),
-						_1: {ctor: '[]'}
-					}
-				}
-			});
-	});
 
 var _gdotdesign$elm_dom$Native_DOM = function() {
   var task = _elm_lang$core$Native_Scheduler.nativeBinding
@@ -14252,40 +12810,6 @@ var _gdotdesign$elm_dom$DOM_Window$scrollTop = function (_p3) {
 	return _gdotdesign$elm_dom$Native_DOM.windowScrollTop(
 		{ctor: '_Tuple0'});
 };
-
-var _gdotdesign$elm_ui$Native_Number = function() {
-
-  /* Formats a number using fixed-point notation */
-  function toFixed(value, decimals) {
-    return value.toFixed(decimals)
-  }
-
-  /* Return remainder */
-  function rem(a, b) {
-    return a % b
-  }
-
-  /* Interface */
-  return {
-    toFixed: F2(toFixed),
-    rem: F2(rem),
-  }
-}()
-
-var _gdotdesign$elm_ui$Ext_Number$roundTo = F2(
-	function (precision, number) {
-		var magnitude = _elm_lang$core$Basics$toFloat(10 * precision);
-		return _elm_lang$core$Basics$toFloat(
-			_elm_lang$core$Basics$round(number * magnitude)) / magnitude;
-	});
-var _gdotdesign$elm_ui$Ext_Number$remFloat = F2(
-	function (a, b) {
-		return A2(_gdotdesign$elm_ui$Native_Number.rem, a, b);
-	});
-var _gdotdesign$elm_ui$Ext_Number$toFixed = F2(
-	function (precision, number) {
-		return A2(_gdotdesign$elm_ui$Native_Number.toFixed, number, precision);
-	});
 
 var _gdotdesign$elm_ui$Native_DateTime = function() {
   /* Function to return the current day. */
@@ -21430,375 +19954,6 @@ var _gdotdesign$elm_ui$Ui_Chooser$view = function (model) {
 	return A2(_elm_lang$html$Html_Lazy$lazy, _gdotdesign$elm_ui$Ui_Chooser$render, model);
 };
 
-var _gdotdesign$elm_ui$Ui_Styles_Ratings$style = function (theme) {
-	return _gdotdesign$elm_ui$Ui_Css$mixin(
-		{
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$defaults,
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$inlineBlock),
-				_1: {
-					ctor: '::',
-					_0: _gdotdesign$elm_ui$Ui_Css_Properties$cursor(_gdotdesign$elm_ui$Ui_Css_Properties$pointer),
-					_1: {
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Ui_Css_Properties$height(
-							_gdotdesign$elm_ui$Ui_Css_Properties$px(36)),
-						_1: {
-							ctor: '::',
-							_0: _gdotdesign$elm_ui$Ui_Css_Properties$outline(_gdotdesign$elm_ui$Ui_Css_Properties$none),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_gdotdesign$elm_ui$Ui_Css$selector,
-									'ui-ratings-star',
-									{
-										ctor: '::',
-										_0: _gdotdesign$elm_ui$Ui_Css_Properties$justifyContent(_gdotdesign$elm_ui$Ui_Css_Properties$center),
-										_1: {
-											ctor: '::',
-											_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$inlineFlex),
-											_1: {
-												ctor: '::',
-												_0: _gdotdesign$elm_ui$Ui_Css_Properties$alignItems(_gdotdesign$elm_ui$Ui_Css_Properties$center),
-												_1: {
-													ctor: '::',
-													_0: _gdotdesign$elm_ui$Ui_Css_Properties$height(
-														_gdotdesign$elm_ui$Ui_Css_Properties$px(36)),
-													_1: {
-														ctor: '::',
-														_0: _gdotdesign$elm_ui$Ui_Css_Properties$width(
-															_gdotdesign$elm_ui$Ui_Css_Properties$px(36)),
-														_1: {
-															ctor: '::',
-															_0: A2(
-																_gdotdesign$elm_ui$Ui_Css$selector,
-																'svg',
-																{
-																	ctor: '::',
-																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$fill(theme.colors.input.bw),
-																	_1: {
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$height(
-																			_gdotdesign$elm_ui$Ui_Css_Properties$px(28)),
-																		_1: {
-																			ctor: '::',
-																			_0: _gdotdesign$elm_ui$Ui_Css_Properties$width(
-																				_gdotdesign$elm_ui$Ui_Css_Properties$px(28)),
-																			_1: {ctor: '[]'}
-																		}
-																	}
-																}),
-															_1: {ctor: '[]'}
-														}
-													}
-												}
-											}
-										}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_gdotdesign$elm_ui$Ui_Css$selector,
-										'&:not([disabled])',
-										{
-											ctor: '::',
-											_0: A2(
-												_gdotdesign$elm_ui$Ui_Css$selectors,
-												{
-													ctor: '::',
-													_0: '&:focus svg',
-													_1: {
-														ctor: '::',
-														_0: '&:hover svg',
-														_1: {ctor: '[]'}
-													}
-												},
-												{
-													ctor: '::',
-													_0: _gdotdesign$elm_ui$Ui_Css_Properties$fill(theme.colors.focus.color),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_gdotdesign$elm_ui$Ui_Css$selector,
-											'&[disabled]',
-											{
-												ctor: '::',
-												_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$disabled,
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_gdotdesign$elm_ui$Ui_Css$selector,
-														'svg',
-														{
-															ctor: '::',
-															_0: _gdotdesign$elm_ui$Ui_Css_Properties$fill(theme.colors.disabled.color),
-															_1: {ctor: '[]'}
-														}),
-													_1: {ctor: '[]'}
-												}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_gdotdesign$elm_ui$Ui_Css$selector,
-												'&[readonly]',
-												{
-													ctor: '::',
-													_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$disabled,
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Styles_Ratings$defaultStyle = _gdotdesign$elm_ui$Ui_Styles$attributes(
-	_gdotdesign$elm_ui$Ui_Styles_Ratings$style(_gdotdesign$elm_ui$Ui_Styles_Theme$default));
-
-var _gdotdesign$elm_ui$Ui_Ratings$sendValue = function (model) {
-	return A2(_gdotdesign$elm_ui$Ui_Helpers_Emitter$sendFloat, model.uid, model.value);
-};
-var _gdotdesign$elm_ui$Ui_Ratings$valueAsStars = F2(
-	function (value, model) {
-		return _elm_lang$core$Basics$round(
-			value * _elm_lang$core$Basics$toFloat(model.size));
-	});
-var _gdotdesign$elm_ui$Ui_Ratings$calculateValue = F2(
-	function (index, model) {
-		var currentIndex = A2(_gdotdesign$elm_ui$Ui_Ratings$valueAsStars, model.value, model);
-		var value = A3(
-			_elm_lang$core$Basics$clamp,
-			0,
-			1,
-			_elm_lang$core$Basics$toFloat(index) / _elm_lang$core$Basics$toFloat(model.size));
-		return (_elm_lang$core$Native_Utils.eq(currentIndex, index) && model.clearable) ? 0 : value;
-	});
-var _gdotdesign$elm_ui$Ui_Ratings$setValue = F2(
-	function (value_, model) {
-		var value = A2(_gdotdesign$elm_ui$Ext_Number$roundTo, 2, value_);
-		return (_elm_lang$core$Native_Utils.eq(model.value, value) && _elm_lang$core$Native_Utils.eq(model.hoverValue, value)) ? model : _elm_lang$core$Native_Utils.update(
-			model,
-			{value: value, hoverValue: value});
-	});
-var _gdotdesign$elm_ui$Ui_Ratings$setValueAsStars = F2(
-	function (value_, model) {
-		var value = A3(
-			_elm_lang$core$Basics$clamp,
-			0,
-			1,
-			_elm_lang$core$Basics$toFloat(value_) / _elm_lang$core$Basics$toFloat(model.size));
-		return A2(_gdotdesign$elm_ui$Ui_Ratings$setValue, value, model);
-	});
-var _gdotdesign$elm_ui$Ui_Ratings$setAndSendValue = F2(
-	function (value, model) {
-		var updatedModel = A2(_gdotdesign$elm_ui$Ui_Ratings$setValue, value, model);
-		return _elm_lang$core$Native_Utils.eq(model.value, updatedModel.value) ? {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none} : {
-			ctor: '_Tuple2',
-			_0: updatedModel,
-			_1: _gdotdesign$elm_ui$Ui_Ratings$sendValue(updatedModel)
-		};
-	});
-var _gdotdesign$elm_ui$Ui_Ratings$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
-			case 'MouseEnter':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							hoverValue: A2(_gdotdesign$elm_ui$Ui_Ratings$calculateValue, _p0._0, model)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'MouseLeave':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{hoverValue: model.value}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'Increment':
-				return A2(
-					_gdotdesign$elm_ui$Ui_Ratings$setAndSendValue,
-					A3(
-						_elm_lang$core$Basics$clamp,
-						0,
-						1,
-						model.value + (1 / _elm_lang$core$Basics$toFloat(model.size))),
-					model);
-			case 'Decrement':
-				var oneStarValue = 1 / _elm_lang$core$Basics$toFloat(model.size);
-				var min = model.clearable ? 0 : oneStarValue;
-				return A2(
-					_gdotdesign$elm_ui$Ui_Ratings$setAndSendValue,
-					A3(_elm_lang$core$Basics$clamp, oneStarValue, 1, model.value - oneStarValue),
-					model);
-			default:
-				return A2(
-					_gdotdesign$elm_ui$Ui_Ratings$setAndSendValue,
-					A2(_gdotdesign$elm_ui$Ui_Ratings$calculateValue, _p0._0, model),
-					model);
-		}
-	});
-var _gdotdesign$elm_ui$Ui_Ratings$size = F2(
-	function (value, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{size: value});
-	});
-var _gdotdesign$elm_ui$Ui_Ratings$onChange = F2(
-	function (msg, model) {
-		return A2(_gdotdesign$elm_ui$Ui_Helpers_Emitter$listenFloat, model.uid, msg);
-	});
-var _gdotdesign$elm_ui$Ui_Ratings$init = function (_p1) {
-	return {
-		clearable: false,
-		uid: _gdotdesign$elm_ui$Ui_Native_Uid$uid(
-			{ctor: '_Tuple0'}),
-		disabled: false,
-		readonly: false,
-		hoverValue: 0,
-		value: 0,
-		size: 5
-	};
-};
-var _gdotdesign$elm_ui$Ui_Ratings$Model = F7(
-	function (a, b, c, d, e, f, g) {
-		return {hoverValue: a, clearable: b, disabled: c, readonly: d, value: e, uid: f, size: g};
-	});
-var _gdotdesign$elm_ui$Ui_Ratings$Click = function (a) {
-	return {ctor: 'Click', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Ratings$Decrement = {ctor: 'Decrement'};
-var _gdotdesign$elm_ui$Ui_Ratings$Increment = {ctor: 'Increment'};
-var _gdotdesign$elm_ui$Ui_Ratings$MouseLeave = {ctor: 'MouseLeave'};
-var _gdotdesign$elm_ui$Ui_Ratings$MouseEnter = function (a) {
-	return {ctor: 'MouseEnter', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Ratings$renderStar = F2(
-	function (model, index) {
-		var icon = (_elm_lang$core$Native_Utils.cmp(
-			_elm_lang$core$Basics$toFloat(index) / _elm_lang$core$Basics$toFloat(model.size),
-			model.hoverValue) < 1) ? _gdotdesign$elm_ui$Ui_Icons$starFull : _gdotdesign$elm_ui$Ui_Icons$starEmpty;
-		var actions = A2(
-			_gdotdesign$elm_ui$Ui$enabledActions,
-			model,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onMouseEnter(
-					_gdotdesign$elm_ui$Ui_Ratings$MouseEnter(index)),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Events$onMouseLeave(_gdotdesign$elm_ui$Ui_Ratings$MouseLeave),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html_Events$onClick(
-							_gdotdesign$elm_ui$Ui_Ratings$Click(index)),
-						_1: {ctor: '[]'}
-					}
-				}
-			});
-		return A3(
-			_elm_lang$html$Html$node,
-			'ui-ratings-star',
-			actions,
-			{
-				ctor: '::',
-				_0: icon(
-					{ctor: '[]'}),
-				_1: {ctor: '[]'}
-			});
-	});
-var _gdotdesign$elm_ui$Ui_Ratings$render = function (model) {
-	var stars = _elm_lang$core$Array$toList(
-		A2(
-			_elm_lang$core$Array$initialize,
-			model.size,
-			F2(
-				function (x, y) {
-					return x + y;
-				})(1)));
-	var actions = A2(
-		_gdotdesign$elm_ui$Ui$enabledActions,
-		model,
-		{
-			ctor: '::',
-			_0: A2(
-				_gdotdesign$elm_ui$Html_Events_Extra$onKeys,
-				true,
-				{
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 40, _1: _gdotdesign$elm_ui$Ui_Ratings$Decrement},
-					_1: {
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 38, _1: _gdotdesign$elm_ui$Ui_Ratings$Increment},
-						_1: {
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 37, _1: _gdotdesign$elm_ui$Ui_Ratings$Decrement},
-							_1: {
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 39, _1: _gdotdesign$elm_ui$Ui_Ratings$Increment},
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}),
-			_1: {ctor: '[]'}
-		});
-	return A3(
-		_elm_lang$html$Html$node,
-		'ui-ratings',
-		_elm_lang$core$List$concat(
-			{
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui$attributeList(
-					{
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'disabled', _1: model.disabled},
-						_1: {
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'readonly', _1: model.readonly},
-							_1: {ctor: '[]'}
-						}
-					}),
-				_1: {
-					ctor: '::',
-					_0: _gdotdesign$elm_ui$Ui_Styles$apply(_gdotdesign$elm_ui$Ui_Styles_Ratings$defaultStyle),
-					_1: {
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Ui$tabIndex(model),
-						_1: {
-							ctor: '::',
-							_0: actions,
-							_1: {ctor: '[]'}
-						}
-					}
-				}
-			}),
-		A2(
-			_elm_lang$core$List$map,
-			_gdotdesign$elm_ui$Ui_Ratings$renderStar(model),
-			stars));
-};
-var _gdotdesign$elm_ui$Ui_Ratings$view = function (model) {
-	return A2(_elm_lang$html$Html_Lazy$lazy, _gdotdesign$elm_ui$Ui_Ratings$render, model);
-};
-
 var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond = 1000;
 var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute = 60 * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond;
 var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour = 60 * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute;
@@ -23494,1011 +21649,206 @@ var _justinmimbs$elm_date_extra$Date_Extra$equalBy = F3(
 var _justinmimbs$elm_date_extra$Date_Extra$Second = {ctor: 'Second'};
 var _justinmimbs$elm_date_extra$Date_Extra$Millisecond = {ctor: 'Millisecond'};
 
-var _ohanhi$keyboard_extra$Keyboard_Arrows$boolToInt = function (bool) {
-	return bool ? 1 : 0;
-};
-var _ohanhi$keyboard_extra$Keyboard_Arrows$determineArrows = function (keys) {
-	var toInt = function (key) {
-		return _ohanhi$keyboard_extra$Keyboard_Arrows$boolToInt(
-			A2(_elm_lang$core$Set$member, key, keys));
-	};
-	var x = toInt(39) - toInt(37);
-	var y = toInt(38) - toInt(40);
-	return {x: x, y: y};
-};
-var _ohanhi$keyboard_extra$Keyboard_Arrows$determineWasd = function (keys) {
-	var toInt = function (key) {
-		return _ohanhi$keyboard_extra$Keyboard_Arrows$boolToInt(
-			A2(_elm_lang$core$Set$member, key, keys));
-	};
-	var x = toInt(68) - toInt(65);
-	var y = toInt(87) - toInt(83);
-	return {x: x, y: y};
-};
-var _ohanhi$keyboard_extra$Keyboard_Arrows$init = {x: 0, y: 0};
-var _ohanhi$keyboard_extra$Keyboard_Arrows$Arrows = F2(
-	function (a, b) {
-		return {x: a, y: b};
-	});
-
-var _ohanhi$keyboard_extra$Keyboard_Extra$wasd = function (model) {
-	return _ohanhi$keyboard_extra$Keyboard_Arrows$determineWasd(model.keysDown);
-};
-var _ohanhi$keyboard_extra$Keyboard_Extra$arrows = function (model) {
-	return _ohanhi$keyboard_extra$Keyboard_Arrows$determineArrows(model.keysDown);
-};
-var _ohanhi$keyboard_extra$Keyboard_Extra$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		if (_p0.ctor === 'Down') {
-			var keysDown = A2(_elm_lang$core$Set$insert, _p0._0, model.keysDown);
-			return A2(
-				_elm_lang$core$Platform_Cmd_ops['!'],
-				_elm_lang$core$Native_Utils.update(
-					model,
-					{keysDown: keysDown}),
-				{ctor: '[]'});
-		} else {
-			var keysDown = A2(_elm_lang$core$Set$remove, _p0._0, model.keysDown);
-			return A2(
-				_elm_lang$core$Platform_Cmd_ops['!'],
-				_elm_lang$core$Native_Utils.update(
-					model,
-					{keysDown: keysDown}),
-				{ctor: '[]'});
+var _user$project$Data_Licence$licenceToString = function (maybeLicence) {
+	var _p0 = maybeLicence;
+	if (_p0.ctor === 'Just') {
+		switch (_p0._0.ctor) {
+			case 'Elite':
+				return 'elite';
+			case 'Amateurs':
+				return 'amateurs';
+			case 'Basislidmaatschap':
+				return 'basislidmaatschap';
+			default:
+				return 'other';
 		}
-	});
-var _ohanhi$keyboard_extra$Keyboard_Extra$Model = function (a) {
-	return {keysDown: a};
-};
-var _ohanhi$keyboard_extra$Keyboard_Extra$init = {
-	ctor: '_Tuple2',
-	_0: _ohanhi$keyboard_extra$Keyboard_Extra$Model(_elm_lang$core$Set$empty),
-	_1: _elm_lang$core$Platform_Cmd$none
-};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Up = function (a) {
-	return {ctor: 'Up', _0: a};
-};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Down = function (a) {
-	return {ctor: 'Down', _0: a};
-};
-var _ohanhi$keyboard_extra$Keyboard_Extra$subscriptions = _elm_lang$core$Platform_Sub$batch(
-	{
-		ctor: '::',
-		_0: _elm_lang$keyboard$Keyboard$downs(_ohanhi$keyboard_extra$Keyboard_Extra$Down),
-		_1: {
-			ctor: '::',
-			_0: _elm_lang$keyboard$Keyboard$ups(_ohanhi$keyboard_extra$Keyboard_Extra$Up),
-			_1: {ctor: '[]'}
-		}
-	});
-var _ohanhi$keyboard_extra$Keyboard_Extra$NoDirection = {ctor: 'NoDirection'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$NorthWest = {ctor: 'NorthWest'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$West = {ctor: 'West'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$SouthWest = {ctor: 'SouthWest'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$South = {ctor: 'South'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$SouthEast = {ctor: 'SouthEast'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$East = {ctor: 'East'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$NorthEast = {ctor: 'NorthEast'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$North = {ctor: 'North'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$arrowsToDir = function (_p1) {
-	var _p2 = _p1;
-	var _p3 = {ctor: '_Tuple2', _0: _p2.x, _1: _p2.y};
-	_v2_8:
-	do {
-		if (_p3.ctor === '_Tuple2') {
-			switch (_p3._0) {
-				case 1:
-					switch (_p3._1) {
-						case 1:
-							return _ohanhi$keyboard_extra$Keyboard_Extra$NorthEast;
-						case 0:
-							return _ohanhi$keyboard_extra$Keyboard_Extra$East;
-						case -1:
-							return _ohanhi$keyboard_extra$Keyboard_Extra$SouthEast;
-						default:
-							break _v2_8;
-					}
-				case 0:
-					switch (_p3._1) {
-						case 1:
-							return _ohanhi$keyboard_extra$Keyboard_Extra$North;
-						case -1:
-							return _ohanhi$keyboard_extra$Keyboard_Extra$South;
-						default:
-							break _v2_8;
-					}
-				case -1:
-					switch (_p3._1) {
-						case -1:
-							return _ohanhi$keyboard_extra$Keyboard_Extra$SouthWest;
-						case 0:
-							return _ohanhi$keyboard_extra$Keyboard_Extra$West;
-						case 1:
-							return _ohanhi$keyboard_extra$Keyboard_Extra$NorthWest;
-						default:
-							break _v2_8;
-					}
-				default:
-					break _v2_8;
-			}
-		} else {
-			break _v2_8;
-		}
-	} while(false);
-	return _ohanhi$keyboard_extra$Keyboard_Extra$NoDirection;
-};
-var _ohanhi$keyboard_extra$Keyboard_Extra$arrowsDirection = function (_p4) {
-	return _ohanhi$keyboard_extra$Keyboard_Extra$arrowsToDir(
-		_ohanhi$keyboard_extra$Keyboard_Extra$arrows(_p4));
-};
-var _ohanhi$keyboard_extra$Keyboard_Extra$wasdDirection = function (_p5) {
-	return _ohanhi$keyboard_extra$Keyboard_Extra$arrowsToDir(
-		_ohanhi$keyboard_extra$Keyboard_Extra$wasd(_p5));
-};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Other = {ctor: 'Other'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Altgr = {ctor: 'Altgr'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Meta = {ctor: 'Meta'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Quote = {ctor: 'Quote'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CloseBracket = {ctor: 'CloseBracket'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$BackSlash = {ctor: 'BackSlash'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$OpenBracket = {ctor: 'OpenBracket'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$BackQuote = {ctor: 'BackQuote'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Slash = {ctor: 'Slash'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Period = {ctor: 'Period'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Minus = {ctor: 'Minus'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Comma = {ctor: 'Comma'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$VolumeUp = {ctor: 'VolumeUp'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$VolumeDown = {ctor: 'VolumeDown'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$VolumeMute = {ctor: 'VolumeMute'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Tilde = {ctor: 'Tilde'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CloseCurlyBracket = {ctor: 'CloseCurlyBracket'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$OpenCurlyBracket = {ctor: 'OpenCurlyBracket'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$HyphenMinus = {ctor: 'HyphenMinus'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Pipe = {ctor: 'Pipe'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Plus = {ctor: 'Plus'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Asterisk = {ctor: 'Asterisk'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CloseParen = {ctor: 'CloseParen'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$OpenParen = {ctor: 'OpenParen'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Underscore = {ctor: 'Underscore'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Ampersand = {ctor: 'Ampersand'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Percent = {ctor: 'Percent'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Dollar = {ctor: 'Dollar'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Hash = {ctor: 'Hash'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$DoubleQuote = {ctor: 'DoubleQuote'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Exclamation = {ctor: 'Exclamation'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Circumflex = {ctor: 'Circumflex'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$ScrollLock = {ctor: 'ScrollLock'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$NumLock = {ctor: 'NumLock'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F24 = {ctor: 'F24'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F23 = {ctor: 'F23'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F22 = {ctor: 'F22'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F21 = {ctor: 'F21'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F20 = {ctor: 'F20'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F19 = {ctor: 'F19'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F18 = {ctor: 'F18'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F17 = {ctor: 'F17'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F16 = {ctor: 'F16'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F15 = {ctor: 'F15'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F14 = {ctor: 'F14'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F13 = {ctor: 'F13'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F12 = {ctor: 'F12'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F11 = {ctor: 'F11'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F10 = {ctor: 'F10'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F9 = {ctor: 'F9'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F8 = {ctor: 'F8'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F7 = {ctor: 'F7'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F6 = {ctor: 'F6'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F5 = {ctor: 'F5'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F4 = {ctor: 'F4'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F3 = {ctor: 'F3'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F2 = {ctor: 'F2'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$F1 = {ctor: 'F1'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Divide = {ctor: 'Divide'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Decimal = {ctor: 'Decimal'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Subtract = {ctor: 'Subtract'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Separator = {ctor: 'Separator'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Add = {ctor: 'Add'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Multiply = {ctor: 'Multiply'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Numpad9 = {ctor: 'Numpad9'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Numpad8 = {ctor: 'Numpad8'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Numpad7 = {ctor: 'Numpad7'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Numpad6 = {ctor: 'Numpad6'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Numpad5 = {ctor: 'Numpad5'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Numpad4 = {ctor: 'Numpad4'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Numpad3 = {ctor: 'Numpad3'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Numpad2 = {ctor: 'Numpad2'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Numpad1 = {ctor: 'Numpad1'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Numpad0 = {ctor: 'Numpad0'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Sleep = {ctor: 'Sleep'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$ContextMenu = {ctor: 'ContextMenu'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Super = {ctor: 'Super'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharZ = {ctor: 'CharZ'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharY = {ctor: 'CharY'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharX = {ctor: 'CharX'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharW = {ctor: 'CharW'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharV = {ctor: 'CharV'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharU = {ctor: 'CharU'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharT = {ctor: 'CharT'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharS = {ctor: 'CharS'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharR = {ctor: 'CharR'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharQ = {ctor: 'CharQ'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharP = {ctor: 'CharP'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharO = {ctor: 'CharO'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharN = {ctor: 'CharN'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharM = {ctor: 'CharM'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharL = {ctor: 'CharL'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharK = {ctor: 'CharK'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharJ = {ctor: 'CharJ'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharI = {ctor: 'CharI'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharH = {ctor: 'CharH'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharG = {ctor: 'CharG'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharF = {ctor: 'CharF'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharE = {ctor: 'CharE'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharD = {ctor: 'CharD'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharC = {ctor: 'CharC'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharB = {ctor: 'CharB'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CharA = {ctor: 'CharA'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$At = {ctor: 'At'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$QuestionMark = {ctor: 'QuestionMark'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$GreaterThan = {ctor: 'GreaterThan'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Equals = {ctor: 'Equals'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$LessThan = {ctor: 'LessThan'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Semicolon = {ctor: 'Semicolon'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Colon = {ctor: 'Colon'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Number9 = {ctor: 'Number9'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Number8 = {ctor: 'Number8'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Number7 = {ctor: 'Number7'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Number6 = {ctor: 'Number6'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Number5 = {ctor: 'Number5'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Number4 = {ctor: 'Number4'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Number3 = {ctor: 'Number3'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Number2 = {ctor: 'Number2'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Number1 = {ctor: 'Number1'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Number0 = {ctor: 'Number0'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Delete = {ctor: 'Delete'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Insert = {ctor: 'Insert'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$PrintScreen = {ctor: 'PrintScreen'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Execute = {ctor: 'Execute'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Print = {ctor: 'Print'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Select = {ctor: 'Select'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$ArrowDown = {ctor: 'ArrowDown'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$ArrowRight = {ctor: 'ArrowRight'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$ArrowUp = {ctor: 'ArrowUp'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$ArrowLeft = {ctor: 'ArrowLeft'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Home = {ctor: 'Home'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$End = {ctor: 'End'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$PageDown = {ctor: 'PageDown'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$PageUp = {ctor: 'PageUp'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Space = {ctor: 'Space'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$ModeChange = {ctor: 'ModeChange'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Accept = {ctor: 'Accept'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$NonConvert = {ctor: 'NonConvert'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Convert = {ctor: 'Convert'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Escape = {ctor: 'Escape'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$CapsLock = {ctor: 'CapsLock'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Pause = {ctor: 'Pause'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Alt = {ctor: 'Alt'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Control = {ctor: 'Control'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Shift = {ctor: 'Shift'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Enter = {ctor: 'Enter'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Clear = {ctor: 'Clear'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Tab = {ctor: 'Tab'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$BackSpace = {ctor: 'BackSpace'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Help = {ctor: 'Help'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$Cancel = {ctor: 'Cancel'};
-var _ohanhi$keyboard_extra$Keyboard_Extra$codeBook = {
-	ctor: '::',
-	_0: {ctor: '_Tuple2', _0: 3, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Cancel},
-	_1: {
-		ctor: '::',
-		_0: {ctor: '_Tuple2', _0: 6, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Help},
-		_1: {
-			ctor: '::',
-			_0: {ctor: '_Tuple2', _0: 8, _1: _ohanhi$keyboard_extra$Keyboard_Extra$BackSpace},
-			_1: {
-				ctor: '::',
-				_0: {ctor: '_Tuple2', _0: 9, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Tab},
-				_1: {
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 12, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Clear},
-					_1: {
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 13, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Enter},
-						_1: {
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 16, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Shift},
-							_1: {
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 17, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Control},
-								_1: {
-									ctor: '::',
-									_0: {ctor: '_Tuple2', _0: 18, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Alt},
-									_1: {
-										ctor: '::',
-										_0: {ctor: '_Tuple2', _0: 19, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Pause},
-										_1: {
-											ctor: '::',
-											_0: {ctor: '_Tuple2', _0: 20, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CapsLock},
-											_1: {
-												ctor: '::',
-												_0: {ctor: '_Tuple2', _0: 27, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Escape},
-												_1: {
-													ctor: '::',
-													_0: {ctor: '_Tuple2', _0: 28, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Convert},
-													_1: {
-														ctor: '::',
-														_0: {ctor: '_Tuple2', _0: 29, _1: _ohanhi$keyboard_extra$Keyboard_Extra$NonConvert},
-														_1: {
-															ctor: '::',
-															_0: {ctor: '_Tuple2', _0: 30, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Accept},
-															_1: {
-																ctor: '::',
-																_0: {ctor: '_Tuple2', _0: 31, _1: _ohanhi$keyboard_extra$Keyboard_Extra$ModeChange},
-																_1: {
-																	ctor: '::',
-																	_0: {ctor: '_Tuple2', _0: 32, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Space},
-																	_1: {
-																		ctor: '::',
-																		_0: {ctor: '_Tuple2', _0: 33, _1: _ohanhi$keyboard_extra$Keyboard_Extra$PageUp},
-																		_1: {
-																			ctor: '::',
-																			_0: {ctor: '_Tuple2', _0: 34, _1: _ohanhi$keyboard_extra$Keyboard_Extra$PageDown},
-																			_1: {
-																				ctor: '::',
-																				_0: {ctor: '_Tuple2', _0: 35, _1: _ohanhi$keyboard_extra$Keyboard_Extra$End},
-																				_1: {
-																					ctor: '::',
-																					_0: {ctor: '_Tuple2', _0: 36, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Home},
-																					_1: {
-																						ctor: '::',
-																						_0: {ctor: '_Tuple2', _0: 37, _1: _ohanhi$keyboard_extra$Keyboard_Extra$ArrowLeft},
-																						_1: {
-																							ctor: '::',
-																							_0: {ctor: '_Tuple2', _0: 38, _1: _ohanhi$keyboard_extra$Keyboard_Extra$ArrowUp},
-																							_1: {
-																								ctor: '::',
-																								_0: {ctor: '_Tuple2', _0: 39, _1: _ohanhi$keyboard_extra$Keyboard_Extra$ArrowRight},
-																								_1: {
-																									ctor: '::',
-																									_0: {ctor: '_Tuple2', _0: 40, _1: _ohanhi$keyboard_extra$Keyboard_Extra$ArrowDown},
-																									_1: {
-																										ctor: '::',
-																										_0: {ctor: '_Tuple2', _0: 41, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Select},
-																										_1: {
-																											ctor: '::',
-																											_0: {ctor: '_Tuple2', _0: 42, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Print},
-																											_1: {
-																												ctor: '::',
-																												_0: {ctor: '_Tuple2', _0: 43, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Execute},
-																												_1: {
-																													ctor: '::',
-																													_0: {ctor: '_Tuple2', _0: 44, _1: _ohanhi$keyboard_extra$Keyboard_Extra$PrintScreen},
-																													_1: {
-																														ctor: '::',
-																														_0: {ctor: '_Tuple2', _0: 45, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Insert},
-																														_1: {
-																															ctor: '::',
-																															_0: {ctor: '_Tuple2', _0: 46, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Delete},
-																															_1: {
-																																ctor: '::',
-																																_0: {ctor: '_Tuple2', _0: 48, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Number0},
-																																_1: {
-																																	ctor: '::',
-																																	_0: {ctor: '_Tuple2', _0: 49, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Number1},
-																																	_1: {
-																																		ctor: '::',
-																																		_0: {ctor: '_Tuple2', _0: 50, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Number2},
-																																		_1: {
-																																			ctor: '::',
-																																			_0: {ctor: '_Tuple2', _0: 51, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Number3},
-																																			_1: {
-																																				ctor: '::',
-																																				_0: {ctor: '_Tuple2', _0: 52, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Number4},
-																																				_1: {
-																																					ctor: '::',
-																																					_0: {ctor: '_Tuple2', _0: 53, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Number5},
-																																					_1: {
-																																						ctor: '::',
-																																						_0: {ctor: '_Tuple2', _0: 54, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Number6},
-																																						_1: {
-																																							ctor: '::',
-																																							_0: {ctor: '_Tuple2', _0: 55, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Number7},
-																																							_1: {
-																																								ctor: '::',
-																																								_0: {ctor: '_Tuple2', _0: 56, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Number8},
-																																								_1: {
-																																									ctor: '::',
-																																									_0: {ctor: '_Tuple2', _0: 57, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Number9},
-																																									_1: {
-																																										ctor: '::',
-																																										_0: {ctor: '_Tuple2', _0: 58, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Colon},
-																																										_1: {
-																																											ctor: '::',
-																																											_0: {ctor: '_Tuple2', _0: 59, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Semicolon},
-																																											_1: {
-																																												ctor: '::',
-																																												_0: {ctor: '_Tuple2', _0: 60, _1: _ohanhi$keyboard_extra$Keyboard_Extra$LessThan},
-																																												_1: {
-																																													ctor: '::',
-																																													_0: {ctor: '_Tuple2', _0: 61, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Equals},
-																																													_1: {
-																																														ctor: '::',
-																																														_0: {ctor: '_Tuple2', _0: 62, _1: _ohanhi$keyboard_extra$Keyboard_Extra$GreaterThan},
-																																														_1: {
-																																															ctor: '::',
-																																															_0: {ctor: '_Tuple2', _0: 63, _1: _ohanhi$keyboard_extra$Keyboard_Extra$QuestionMark},
-																																															_1: {
-																																																ctor: '::',
-																																																_0: {ctor: '_Tuple2', _0: 64, _1: _ohanhi$keyboard_extra$Keyboard_Extra$At},
-																																																_1: {
-																																																	ctor: '::',
-																																																	_0: {ctor: '_Tuple2', _0: 65, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharA},
-																																																	_1: {
-																																																		ctor: '::',
-																																																		_0: {ctor: '_Tuple2', _0: 66, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharB},
-																																																		_1: {
-																																																			ctor: '::',
-																																																			_0: {ctor: '_Tuple2', _0: 67, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharC},
-																																																			_1: {
-																																																				ctor: '::',
-																																																				_0: {ctor: '_Tuple2', _0: 68, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharD},
-																																																				_1: {
-																																																					ctor: '::',
-																																																					_0: {ctor: '_Tuple2', _0: 69, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharE},
-																																																					_1: {
-																																																						ctor: '::',
-																																																						_0: {ctor: '_Tuple2', _0: 70, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharF},
-																																																						_1: {
-																																																							ctor: '::',
-																																																							_0: {ctor: '_Tuple2', _0: 71, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharG},
-																																																							_1: {
-																																																								ctor: '::',
-																																																								_0: {ctor: '_Tuple2', _0: 72, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharH},
-																																																								_1: {
-																																																									ctor: '::',
-																																																									_0: {ctor: '_Tuple2', _0: 73, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharI},
-																																																									_1: {
-																																																										ctor: '::',
-																																																										_0: {ctor: '_Tuple2', _0: 74, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharJ},
-																																																										_1: {
-																																																											ctor: '::',
-																																																											_0: {ctor: '_Tuple2', _0: 75, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharK},
-																																																											_1: {
-																																																												ctor: '::',
-																																																												_0: {ctor: '_Tuple2', _0: 76, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharL},
-																																																												_1: {
-																																																													ctor: '::',
-																																																													_0: {ctor: '_Tuple2', _0: 77, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharM},
-																																																													_1: {
-																																																														ctor: '::',
-																																																														_0: {ctor: '_Tuple2', _0: 78, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharN},
-																																																														_1: {
-																																																															ctor: '::',
-																																																															_0: {ctor: '_Tuple2', _0: 79, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharO},
-																																																															_1: {
-																																																																ctor: '::',
-																																																																_0: {ctor: '_Tuple2', _0: 80, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharP},
-																																																																_1: {
-																																																																	ctor: '::',
-																																																																	_0: {ctor: '_Tuple2', _0: 81, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharQ},
-																																																																	_1: {
-																																																																		ctor: '::',
-																																																																		_0: {ctor: '_Tuple2', _0: 82, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharR},
-																																																																		_1: {
-																																																																			ctor: '::',
-																																																																			_0: {ctor: '_Tuple2', _0: 83, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharS},
-																																																																			_1: {
-																																																																				ctor: '::',
-																																																																				_0: {ctor: '_Tuple2', _0: 84, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharT},
-																																																																				_1: {
-																																																																					ctor: '::',
-																																																																					_0: {ctor: '_Tuple2', _0: 85, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharU},
-																																																																					_1: {
-																																																																						ctor: '::',
-																																																																						_0: {ctor: '_Tuple2', _0: 86, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharV},
-																																																																						_1: {
-																																																																							ctor: '::',
-																																																																							_0: {ctor: '_Tuple2', _0: 87, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharW},
-																																																																							_1: {
-																																																																								ctor: '::',
-																																																																								_0: {ctor: '_Tuple2', _0: 88, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharX},
-																																																																								_1: {
-																																																																									ctor: '::',
-																																																																									_0: {ctor: '_Tuple2', _0: 89, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharY},
-																																																																									_1: {
-																																																																										ctor: '::',
-																																																																										_0: {ctor: '_Tuple2', _0: 90, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CharZ},
-																																																																										_1: {
-																																																																											ctor: '::',
-																																																																											_0: {ctor: '_Tuple2', _0: 91, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Super},
-																																																																											_1: {
-																																																																												ctor: '::',
-																																																																												_0: {ctor: '_Tuple2', _0: 93, _1: _ohanhi$keyboard_extra$Keyboard_Extra$ContextMenu},
-																																																																												_1: {
-																																																																													ctor: '::',
-																																																																													_0: {ctor: '_Tuple2', _0: 95, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Sleep},
-																																																																													_1: {
-																																																																														ctor: '::',
-																																																																														_0: {ctor: '_Tuple2', _0: 96, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Numpad0},
-																																																																														_1: {
-																																																																															ctor: '::',
-																																																																															_0: {ctor: '_Tuple2', _0: 97, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Numpad1},
-																																																																															_1: {
-																																																																																ctor: '::',
-																																																																																_0: {ctor: '_Tuple2', _0: 98, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Numpad2},
-																																																																																_1: {
-																																																																																	ctor: '::',
-																																																																																	_0: {ctor: '_Tuple2', _0: 99, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Numpad3},
-																																																																																	_1: {
-																																																																																		ctor: '::',
-																																																																																		_0: {ctor: '_Tuple2', _0: 100, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Numpad4},
-																																																																																		_1: {
-																																																																																			ctor: '::',
-																																																																																			_0: {ctor: '_Tuple2', _0: 101, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Numpad5},
-																																																																																			_1: {
-																																																																																				ctor: '::',
-																																																																																				_0: {ctor: '_Tuple2', _0: 102, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Numpad6},
-																																																																																				_1: {
-																																																																																					ctor: '::',
-																																																																																					_0: {ctor: '_Tuple2', _0: 103, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Numpad7},
-																																																																																					_1: {
-																																																																																						ctor: '::',
-																																																																																						_0: {ctor: '_Tuple2', _0: 104, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Numpad8},
-																																																																																						_1: {
-																																																																																							ctor: '::',
-																																																																																							_0: {ctor: '_Tuple2', _0: 105, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Numpad9},
-																																																																																							_1: {
-																																																																																								ctor: '::',
-																																																																																								_0: {ctor: '_Tuple2', _0: 106, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Multiply},
-																																																																																								_1: {
-																																																																																									ctor: '::',
-																																																																																									_0: {ctor: '_Tuple2', _0: 107, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Add},
-																																																																																									_1: {
-																																																																																										ctor: '::',
-																																																																																										_0: {ctor: '_Tuple2', _0: 108, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Separator},
-																																																																																										_1: {
-																																																																																											ctor: '::',
-																																																																																											_0: {ctor: '_Tuple2', _0: 109, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Subtract},
-																																																																																											_1: {
-																																																																																												ctor: '::',
-																																																																																												_0: {ctor: '_Tuple2', _0: 110, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Decimal},
-																																																																																												_1: {
-																																																																																													ctor: '::',
-																																																																																													_0: {ctor: '_Tuple2', _0: 111, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Divide},
-																																																																																													_1: {
-																																																																																														ctor: '::',
-																																																																																														_0: {ctor: '_Tuple2', _0: 112, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F1},
-																																																																																														_1: {
-																																																																																															ctor: '::',
-																																																																																															_0: {ctor: '_Tuple2', _0: 113, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F2},
-																																																																																															_1: {
-																																																																																																ctor: '::',
-																																																																																																_0: {ctor: '_Tuple2', _0: 114, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F3},
-																																																																																																_1: {
-																																																																																																	ctor: '::',
-																																																																																																	_0: {ctor: '_Tuple2', _0: 115, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F4},
-																																																																																																	_1: {
-																																																																																																		ctor: '::',
-																																																																																																		_0: {ctor: '_Tuple2', _0: 116, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F5},
-																																																																																																		_1: {
-																																																																																																			ctor: '::',
-																																																																																																			_0: {ctor: '_Tuple2', _0: 117, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F6},
-																																																																																																			_1: {
-																																																																																																				ctor: '::',
-																																																																																																				_0: {ctor: '_Tuple2', _0: 118, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F7},
-																																																																																																				_1: {
-																																																																																																					ctor: '::',
-																																																																																																					_0: {ctor: '_Tuple2', _0: 119, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F8},
-																																																																																																					_1: {
-																																																																																																						ctor: '::',
-																																																																																																						_0: {ctor: '_Tuple2', _0: 120, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F9},
-																																																																																																						_1: {
-																																																																																																							ctor: '::',
-																																																																																																							_0: {ctor: '_Tuple2', _0: 121, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F10},
-																																																																																																							_1: {
-																																																																																																								ctor: '::',
-																																																																																																								_0: {ctor: '_Tuple2', _0: 122, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F11},
-																																																																																																								_1: {
-																																																																																																									ctor: '::',
-																																																																																																									_0: {ctor: '_Tuple2', _0: 123, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F12},
-																																																																																																									_1: {
-																																																																																																										ctor: '::',
-																																																																																																										_0: {ctor: '_Tuple2', _0: 124, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F13},
-																																																																																																										_1: {
-																																																																																																											ctor: '::',
-																																																																																																											_0: {ctor: '_Tuple2', _0: 125, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F14},
-																																																																																																											_1: {
-																																																																																																												ctor: '::',
-																																																																																																												_0: {ctor: '_Tuple2', _0: 126, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F15},
-																																																																																																												_1: {
-																																																																																																													ctor: '::',
-																																																																																																													_0: {ctor: '_Tuple2', _0: 127, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F16},
-																																																																																																													_1: {
-																																																																																																														ctor: '::',
-																																																																																																														_0: {ctor: '_Tuple2', _0: 128, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F17},
-																																																																																																														_1: {
-																																																																																																															ctor: '::',
-																																																																																																															_0: {ctor: '_Tuple2', _0: 129, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F18},
-																																																																																																															_1: {
-																																																																																																																ctor: '::',
-																																																																																																																_0: {ctor: '_Tuple2', _0: 130, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F19},
-																																																																																																																_1: {
-																																																																																																																	ctor: '::',
-																																																																																																																	_0: {ctor: '_Tuple2', _0: 131, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F20},
-																																																																																																																	_1: {
-																																																																																																																		ctor: '::',
-																																																																																																																		_0: {ctor: '_Tuple2', _0: 132, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F21},
-																																																																																																																		_1: {
-																																																																																																																			ctor: '::',
-																																																																																																																			_0: {ctor: '_Tuple2', _0: 133, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F22},
-																																																																																																																			_1: {
-																																																																																																																				ctor: '::',
-																																																																																																																				_0: {ctor: '_Tuple2', _0: 134, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F23},
-																																																																																																																				_1: {
-																																																																																																																					ctor: '::',
-																																																																																																																					_0: {ctor: '_Tuple2', _0: 135, _1: _ohanhi$keyboard_extra$Keyboard_Extra$F24},
-																																																																																																																					_1: {
-																																																																																																																						ctor: '::',
-																																																																																																																						_0: {ctor: '_Tuple2', _0: 144, _1: _ohanhi$keyboard_extra$Keyboard_Extra$NumLock},
-																																																																																																																						_1: {
-																																																																																																																							ctor: '::',
-																																																																																																																							_0: {ctor: '_Tuple2', _0: 145, _1: _ohanhi$keyboard_extra$Keyboard_Extra$ScrollLock},
-																																																																																																																							_1: {
-																																																																																																																								ctor: '::',
-																																																																																																																								_0: {ctor: '_Tuple2', _0: 160, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Circumflex},
-																																																																																																																								_1: {
-																																																																																																																									ctor: '::',
-																																																																																																																									_0: {ctor: '_Tuple2', _0: 161, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Exclamation},
-																																																																																																																									_1: {
-																																																																																																																										ctor: '::',
-																																																																																																																										_0: {ctor: '_Tuple2', _0: 162, _1: _ohanhi$keyboard_extra$Keyboard_Extra$DoubleQuote},
-																																																																																																																										_1: {
-																																																																																																																											ctor: '::',
-																																																																																																																											_0: {ctor: '_Tuple2', _0: 163, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Hash},
-																																																																																																																											_1: {
-																																																																																																																												ctor: '::',
-																																																																																																																												_0: {ctor: '_Tuple2', _0: 164, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Dollar},
-																																																																																																																												_1: {
-																																																																																																																													ctor: '::',
-																																																																																																																													_0: {ctor: '_Tuple2', _0: 165, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Percent},
-																																																																																																																													_1: {
-																																																																																																																														ctor: '::',
-																																																																																																																														_0: {ctor: '_Tuple2', _0: 166, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Ampersand},
-																																																																																																																														_1: {
-																																																																																																																															ctor: '::',
-																																																																																																																															_0: {ctor: '_Tuple2', _0: 167, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Underscore},
-																																																																																																																															_1: {
-																																																																																																																																ctor: '::',
-																																																																																																																																_0: {ctor: '_Tuple2', _0: 168, _1: _ohanhi$keyboard_extra$Keyboard_Extra$OpenParen},
-																																																																																																																																_1: {
-																																																																																																																																	ctor: '::',
-																																																																																																																																	_0: {ctor: '_Tuple2', _0: 169, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CloseParen},
-																																																																																																																																	_1: {
-																																																																																																																																		ctor: '::',
-																																																																																																																																		_0: {ctor: '_Tuple2', _0: 170, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Asterisk},
-																																																																																																																																		_1: {
-																																																																																																																																			ctor: '::',
-																																																																																																																																			_0: {ctor: '_Tuple2', _0: 171, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Plus},
-																																																																																																																																			_1: {
-																																																																																																																																				ctor: '::',
-																																																																																																																																				_0: {ctor: '_Tuple2', _0: 172, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Pipe},
-																																																																																																																																				_1: {
-																																																																																																																																					ctor: '::',
-																																																																																																																																					_0: {ctor: '_Tuple2', _0: 173, _1: _ohanhi$keyboard_extra$Keyboard_Extra$HyphenMinus},
-																																																																																																																																					_1: {
-																																																																																																																																						ctor: '::',
-																																																																																																																																						_0: {ctor: '_Tuple2', _0: 174, _1: _ohanhi$keyboard_extra$Keyboard_Extra$OpenCurlyBracket},
-																																																																																																																																						_1: {
-																																																																																																																																							ctor: '::',
-																																																																																																																																							_0: {ctor: '_Tuple2', _0: 175, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CloseCurlyBracket},
-																																																																																																																																							_1: {
-																																																																																																																																								ctor: '::',
-																																																																																																																																								_0: {ctor: '_Tuple2', _0: 176, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Tilde},
-																																																																																																																																								_1: {
-																																																																																																																																									ctor: '::',
-																																																																																																																																									_0: {ctor: '_Tuple2', _0: 181, _1: _ohanhi$keyboard_extra$Keyboard_Extra$VolumeMute},
-																																																																																																																																									_1: {
-																																																																																																																																										ctor: '::',
-																																																																																																																																										_0: {ctor: '_Tuple2', _0: 182, _1: _ohanhi$keyboard_extra$Keyboard_Extra$VolumeDown},
-																																																																																																																																										_1: {
-																																																																																																																																											ctor: '::',
-																																																																																																																																											_0: {ctor: '_Tuple2', _0: 183, _1: _ohanhi$keyboard_extra$Keyboard_Extra$VolumeUp},
-																																																																																																																																											_1: {
-																																																																																																																																												ctor: '::',
-																																																																																																																																												_0: {ctor: '_Tuple2', _0: 186, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Semicolon},
-																																																																																																																																												_1: {
-																																																																																																																																													ctor: '::',
-																																																																																																																																													_0: {ctor: '_Tuple2', _0: 187, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Equals},
-																																																																																																																																													_1: {
-																																																																																																																																														ctor: '::',
-																																																																																																																																														_0: {ctor: '_Tuple2', _0: 188, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Comma},
-																																																																																																																																														_1: {
-																																																																																																																																															ctor: '::',
-																																																																																																																																															_0: {ctor: '_Tuple2', _0: 189, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Minus},
-																																																																																																																																															_1: {
-																																																																																																																																																ctor: '::',
-																																																																																																																																																_0: {ctor: '_Tuple2', _0: 190, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Period},
-																																																																																																																																																_1: {
-																																																																																																																																																	ctor: '::',
-																																																																																																																																																	_0: {ctor: '_Tuple2', _0: 191, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Slash},
-																																																																																																																																																	_1: {
-																																																																																																																																																		ctor: '::',
-																																																																																																																																																		_0: {ctor: '_Tuple2', _0: 192, _1: _ohanhi$keyboard_extra$Keyboard_Extra$BackQuote},
-																																																																																																																																																		_1: {
-																																																																																																																																																			ctor: '::',
-																																																																																																																																																			_0: {ctor: '_Tuple2', _0: 219, _1: _ohanhi$keyboard_extra$Keyboard_Extra$OpenBracket},
-																																																																																																																																																			_1: {
-																																																																																																																																																				ctor: '::',
-																																																																																																																																																				_0: {ctor: '_Tuple2', _0: 220, _1: _ohanhi$keyboard_extra$Keyboard_Extra$BackSlash},
-																																																																																																																																																				_1: {
-																																																																																																																																																					ctor: '::',
-																																																																																																																																																					_0: {ctor: '_Tuple2', _0: 221, _1: _ohanhi$keyboard_extra$Keyboard_Extra$CloseBracket},
-																																																																																																																																																					_1: {
-																																																																																																																																																						ctor: '::',
-																																																																																																																																																						_0: {ctor: '_Tuple2', _0: 222, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Quote},
-																																																																																																																																																						_1: {
-																																																																																																																																																							ctor: '::',
-																																																																																																																																																							_0: {ctor: '_Tuple2', _0: 224, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Meta},
-																																																																																																																																																							_1: {
-																																																																																																																																																								ctor: '::',
-																																																																																																																																																								_0: {ctor: '_Tuple2', _0: 225, _1: _ohanhi$keyboard_extra$Keyboard_Extra$Altgr},
-																																																																																																																																																								_1: {ctor: '[]'}
-																																																																																																																																																							}
-																																																																																																																																																						}
-																																																																																																																																																					}
-																																																																																																																																																				}
-																																																																																																																																																			}
-																																																																																																																																																		}
-																																																																																																																																																	}
-																																																																																																																																																}
-																																																																																																																																															}
-																																																																																																																																														}
-																																																																																																																																													}
-																																																																																																																																												}
-																																																																																																																																											}
-																																																																																																																																										}
-																																																																																																																																									}
-																																																																																																																																								}
-																																																																																																																																							}
-																																																																																																																																						}
-																																																																																																																																					}
-																																																																																																																																				}
-																																																																																																																																			}
-																																																																																																																																		}
-																																																																																																																																	}
-																																																																																																																																}
-																																																																																																																															}
-																																																																																																																														}
-																																																																																																																													}
-																																																																																																																												}
-																																																																																																																											}
-																																																																																																																										}
-																																																																																																																									}
-																																																																																																																								}
-																																																																																																																							}
-																																																																																																																						}
-																																																																																																																					}
-																																																																																																																				}
-																																																																																																																			}
-																																																																																																																		}
-																																																																																																																	}
-																																																																																																																}
-																																																																																																															}
-																																																																																																														}
-																																																																																																													}
-																																																																																																												}
-																																																																																																											}
-																																																																																																										}
-																																																																																																									}
-																																																																																																								}
-																																																																																																							}
-																																																																																																						}
-																																																																																																					}
-																																																																																																				}
-																																																																																																			}
-																																																																																																		}
-																																																																																																	}
-																																																																																																}
-																																																																																															}
-																																																																																														}
-																																																																																													}
-																																																																																												}
-																																																																																											}
-																																																																																										}
-																																																																																									}
-																																																																																								}
-																																																																																							}
-																																																																																						}
-																																																																																					}
-																																																																																				}
-																																																																																			}
-																																																																																		}
-																																																																																	}
-																																																																																}
-																																																																															}
-																																																																														}
-																																																																													}
-																																																																												}
-																																																																											}
-																																																																										}
-																																																																									}
-																																																																								}
-																																																																							}
-																																																																						}
-																																																																					}
-																																																																				}
-																																																																			}
-																																																																		}
-																																																																	}
-																																																																}
-																																																															}
-																																																														}
-																																																													}
-																																																												}
-																																																											}
-																																																										}
-																																																									}
-																																																								}
-																																																							}
-																																																						}
-																																																					}
-																																																				}
-																																																			}
-																																																		}
-																																																	}
-																																																}
-																																															}
-																																														}
-																																													}
-																																												}
-																																											}
-																																										}
-																																									}
-																																								}
-																																							}
-																																						}
-																																					}
-																																				}
-																																			}
-																																		}
-																																	}
-																																}
-																															}
-																														}
-																													}
-																												}
-																											}
-																										}
-																									}
-																								}
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+	} else {
+		return 'other';
 	}
 };
-var _ohanhi$keyboard_extra$Keyboard_Extra$toCode = function (key) {
-	return A2(
-		_elm_lang$core$Maybe$withDefault,
-		0,
-		_elm_lang$core$List$head(
-			A2(
-				_elm_lang$core$List$map,
-				_elm_lang$core$Tuple$first,
-				A2(
-					_elm_lang$core$List$filter,
-					function (_p6) {
-						return A2(
-							F2(
-								function (x, y) {
-									return _elm_lang$core$Native_Utils.eq(x, y);
-								}),
-							key,
-							_elm_lang$core$Tuple$second(_p6));
-					},
-					_ohanhi$keyboard_extra$Keyboard_Extra$codeBook))));
+var _user$project$Data_Licence$Other = {ctor: 'Other'};
+var _user$project$Data_Licence$Basislidmaatschap = {ctor: 'Basislidmaatschap'};
+var _user$project$Data_Licence$Amateurs = {ctor: 'Amateurs'};
+var _user$project$Data_Licence$Elite = {ctor: 'Elite'};
+var _user$project$Data_Licence$licence = function (string) {
+	var _p1 = string;
+	switch (_p1) {
+		case 'elite':
+			return _user$project$Data_Licence$Elite;
+		case 'amateurs':
+			return _user$project$Data_Licence$Amateurs;
+		case 'basislidmaatschap':
+			return _user$project$Data_Licence$Basislidmaatschap;
+		default:
+			return _user$project$Data_Licence$Other;
+	}
 };
-var _ohanhi$keyboard_extra$Keyboard_Extra$isPressed = F2(
-	function (key, model) {
-		return A2(
-			_elm_lang$core$Set$member,
-			_ohanhi$keyboard_extra$Keyboard_Extra$toCode(key),
-			model.keysDown);
-	});
-var _ohanhi$keyboard_extra$Keyboard_Extra$codeDict = _elm_lang$core$Dict$fromList(_ohanhi$keyboard_extra$Keyboard_Extra$codeBook);
-var _ohanhi$keyboard_extra$Keyboard_Extra$fromCode = function (code) {
-	return A2(
-		_elm_lang$core$Maybe$withDefault,
-		_ohanhi$keyboard_extra$Keyboard_Extra$Other,
-		A2(_elm_lang$core$Dict$get, code, _ohanhi$keyboard_extra$Keyboard_Extra$codeDict));
+var _user$project$Data_Licence$licenceDecoder = function (string) {
+	return _elm_lang$core$Json_Decode$succeed(
+		_user$project$Data_Licence$licence(string));
 };
-var _ohanhi$keyboard_extra$Keyboard_Extra$pressedDown = function (model) {
-	return A2(
-		_elm_lang$core$List$map,
-		_ohanhi$keyboard_extra$Keyboard_Extra$fromCode,
-		_elm_lang$core$Set$toList(model.keysDown));
-};
-var _ohanhi$keyboard_extra$Keyboard_Extra$targetKey = A2(
-	_elm_lang$core$Json_Decode$map,
-	_ohanhi$keyboard_extra$Keyboard_Extra$fromCode,
-	A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int));
 
-var _user$project$Rider_Model$Rider = F3(
-	function (a, b, c) {
-		return {key: a, name: b, licence: c};
-	});
-var _user$project$Rider_Model$Add = F2(
+var _user$project$Page_Rider_Add_Model$Model = F2(
 	function (a, b) {
 		return {name: a, licence: b};
 	});
-var _user$project$Rider_Model$Other = {ctor: 'Other'};
-var _user$project$Rider_Model$Basislidmaatschap = {ctor: 'Basislidmaatschap'};
-var _user$project$Rider_Model$Amateurs = {ctor: 'Amateurs'};
-var _user$project$Rider_Model$Elite = {ctor: 'Elite'};
 
-var _user$project$Result_Model$initialResults = {ctor: '[]'};
-var _user$project$Result_Model$Result = F6(
-	function (a, b, c, d, e, f) {
-		return {key: a, riderKey: b, raceKey: c, result: d, category: e, outfit: f};
+var _user$project$Data_RaceType$getPointsByRaceType = function (category) {
+	var _p0 = category;
+	switch (_p0.ctor) {
+		case 'Classic':
+			return 4;
+		case 'Criterium':
+			return 3;
+		case 'Regiocross':
+			return 2;
+		case 'Other':
+			return 0;
+		default:
+			return 0;
+	}
+};
+var _user$project$Data_RaceType$raceTypeToString = function (category) {
+	var _p1 = category;
+	switch (_p1.ctor) {
+		case 'Classic':
+			return 'classic';
+		case 'Criterium':
+			return 'criterium';
+		case 'Regiocross':
+			return 'regiocross';
+		case 'Other':
+			return 'other';
+		default:
+			return 'unknown';
+	}
+};
+var _user$project$Data_RaceType$Unknown = {ctor: 'Unknown'};
+var _user$project$Data_RaceType$Other = {ctor: 'Other'};
+var _user$project$Data_RaceType$Regiocross = {ctor: 'Regiocross'};
+var _user$project$Data_RaceType$Criterium = {ctor: 'Criterium'};
+var _user$project$Data_RaceType$Classic = {ctor: 'Classic'};
+var _user$project$Data_RaceType$raceType = function (string) {
+	var _p2 = string;
+	switch (_p2) {
+		case 'classic':
+			return _user$project$Data_RaceType$Classic;
+		case 'criterium':
+			return _user$project$Data_RaceType$Criterium;
+		case 'regiocross':
+			return _user$project$Data_RaceType$Regiocross;
+		case 'other':
+			return _user$project$Data_RaceType$Other;
+		default:
+			return _user$project$Data_RaceType$Other;
+	}
+};
+var _user$project$Data_RaceType$raceTypeDecoder = function (string) {
+	return _elm_lang$core$Json_Decode$succeed(
+		_user$project$Data_RaceType$raceType(string));
+};
+
+var _user$project$Page_Race_Add_Model$Model = F3(
+	function (a, b, c) {
+		return {name: a, raceType: b, calendar: c};
 	});
-var _user$project$Result_Model$Add = F7(
-	function (a, b, c, d, e, f, g) {
-		return {raceKey: a, riderKey: b, result: c, category: d, outfit: e, strava: f, chooser: g};
-	});
-var _user$project$Result_Model$Unknown = {ctor: 'Unknown'};
-var _user$project$Result_Model$CatB = {ctor: 'CatB'};
-var _user$project$Result_Model$CatA = {ctor: 'CatA'};
-var _user$project$Result_Model$Basislidmaatschap = {ctor: 'Basislidmaatschap'};
-var _user$project$Result_Model$Amateurs = {ctor: 'Amateurs'};
-var _user$project$Result_Model$categories = {
+
+var _user$project$Data_Outfit$outfitToString = function (outfit) {
+	var _p0 = outfit;
+	switch (_p0.ctor) {
+		case 'WTOS':
+			return 'wtos';
+		case 'WASP':
+			return 'wasp';
+		default:
+			return 'other';
+	}
+};
+var _user$project$Data_Outfit$Other = {ctor: 'Other'};
+var _user$project$Data_Outfit$WASP = {ctor: 'WASP'};
+var _user$project$Data_Outfit$WTOS = {ctor: 'WTOS'};
+var _user$project$Data_Outfit$outfitDecoder = function (string) {
+	return _elm_lang$core$Json_Decode$succeed(
+		function () {
+			var _p1 = string;
+			switch (_p1) {
+				case 'wtos':
+					return _user$project$Data_Outfit$WTOS;
+				case 'wasp':
+					return _user$project$Data_Outfit$WASP;
+				case 'other':
+					return _user$project$Data_Outfit$Other;
+				default:
+					return _user$project$Data_Outfit$Other;
+			}
+		}());
+};
+
+var _user$project$Data_ResultCategory$categoryToString = function (category) {
+	var _p0 = category;
+	switch (_p0.ctor) {
+		case 'Amateurs':
+			return 'amateurs';
+		case 'Basislidmaatschap':
+			return 'basislidmaatschap';
+		case 'CatA':
+			return 'cata';
+		case 'CatB':
+			return 'catb';
+		default:
+			return 'unknown';
+	}
+};
+var _user$project$Data_ResultCategory$Unknown = {ctor: 'Unknown'};
+var _user$project$Data_ResultCategory$CatB = {ctor: 'CatB'};
+var _user$project$Data_ResultCategory$CatA = {ctor: 'CatA'};
+var _user$project$Data_ResultCategory$Basislidmaatschap = {ctor: 'Basislidmaatschap'};
+var _user$project$Data_ResultCategory$Amateurs = {ctor: 'Amateurs'};
+var _user$project$Data_ResultCategory$resultCategories = {
 	ctor: '::',
-	_0: _user$project$Result_Model$Amateurs,
+	_0: _user$project$Data_ResultCategory$Amateurs,
 	_1: {
 		ctor: '::',
-		_0: _user$project$Result_Model$Basislidmaatschap,
+		_0: _user$project$Data_ResultCategory$Basislidmaatschap,
 		_1: {
 			ctor: '::',
-			_0: _user$project$Result_Model$CatA,
+			_0: _user$project$Data_ResultCategory$CatA,
 			_1: {
 				ctor: '::',
-				_0: _user$project$Result_Model$CatB,
+				_0: _user$project$Data_ResultCategory$CatB,
 				_1: {
 					ctor: '::',
-					_0: _user$project$Result_Model$Unknown,
+					_0: _user$project$Data_ResultCategory$Unknown,
 					_1: {ctor: '[]'}
 				}
 			}
 		}
 	}
 };
-var _user$project$Result_Model$Other = {ctor: 'Other'};
-var _user$project$Result_Model$WASP = {ctor: 'WASP'};
-var _user$project$Result_Model$WTOS = {ctor: 'WTOS'};
-var _user$project$Result_Model$initialAdd = {
+var _user$project$Data_ResultCategory$resultCategoryDecoder = function (string) {
+	var _p1 = string;
+	switch (_p1) {
+		case 'amateurs':
+			return _elm_lang$core$Json_Decode$succeed(_user$project$Data_ResultCategory$Amateurs);
+		case 'basislidmaatschap':
+			return _elm_lang$core$Json_Decode$succeed(_user$project$Data_ResultCategory$Basislidmaatschap);
+		case 'cata':
+			return _elm_lang$core$Json_Decode$succeed(_user$project$Data_ResultCategory$CatA);
+		case 'catb':
+			return _elm_lang$core$Json_Decode$succeed(_user$project$Data_ResultCategory$CatB);
+		case 'unknown':
+			return _elm_lang$core$Json_Decode$succeed(_user$project$Data_ResultCategory$Unknown);
+		default:
+			return _elm_lang$core$Json_Decode$succeed(_user$project$Data_ResultCategory$Unknown);
+	}
+};
+
+var _user$project$Page_Result_Add_Model$initial = {
 	raceKey: '',
 	riderKey: _elm_lang$core$Maybe$Nothing,
 	result: '',
-	category: _user$project$Result_Model$Amateurs,
-	outfit: _user$project$Result_Model$WTOS,
+	category: _user$project$Data_ResultCategory$Amateurs,
+	outfit: _user$project$Data_Outfit$WTOS,
 	strava: '',
 	chooser: A2(
 		_gdotdesign$elm_ui$Ui_Chooser$searchable,
@@ -24509,70 +21859,44 @@ var _user$project$Result_Model$initialAdd = {
 			_gdotdesign$elm_ui$Ui_Chooser$init(
 				{ctor: '_Tuple0'})))
 };
-
-var _user$project$Race_Model$categoryString = function (category) {
-	var _p0 = category;
-	switch (_p0.ctor) {
-		case 'Classic':
-			return 'Klassieker';
-		case 'Criterium':
-			return 'Criterum';
-		case 'Regiocross':
-			return 'Regiocross';
-		case 'Other':
-			return 'Other';
-		default:
-			return 'Unknown';
-	}
-};
-var _user$project$Race_Model$initialRaces = {ctor: '[]'};
-var _user$project$Race_Model$Race = F4(
-	function (a, b, c, d) {
-		return {key: a, name: b, date: c, category: d};
+var _user$project$Page_Result_Add_Model$Model = F7(
+	function (a, b, c, d, e, f, g) {
+		return {raceKey: a, riderKey: b, result: c, category: d, outfit: e, strava: f, chooser: g};
 	});
-var _user$project$Race_Model$Add = F3(
-	function (a, b, c) {
-		return {name: a, category: b, calendar: c};
-	});
-var _user$project$Race_Model$Unknown = {ctor: 'Unknown'};
-var _user$project$Race_Model$Other = {ctor: 'Other'};
-var _user$project$Race_Model$Regiocross = {ctor: 'Regiocross'};
-var _user$project$Race_Model$Criterium = {ctor: 'Criterium'};
-var _user$project$Race_Model$Classic = {ctor: 'Classic'};
 
-var _user$project$App_Page$Races = {ctor: 'Races'};
-var _user$project$App_Page$RaceDetails = function (a) {
-	return {ctor: 'RaceDetails', _0: a};
-};
-var _user$project$App_Page$Riders = {ctor: 'Riders'};
-var _user$project$App_Page$RiderDetails = function (a) {
-	return {ctor: 'RiderDetails', _0: a};
+var _user$project$App_Page$ResultAdd = function (a) {
+	return {ctor: 'ResultAdd', _0: a};
 };
 var _user$project$App_Page$RiderAdd = function (a) {
 	return {ctor: 'RiderAdd', _0: a};
 };
-var _user$project$App_Page$ResultAdd = function (a) {
-	return {ctor: 'ResultAdd', _0: a};
+var _user$project$App_Page$RiderDetails = function (a) {
+	return {ctor: 'RiderDetails', _0: a};
 };
+var _user$project$App_Page$Riders = {ctor: 'Riders'};
 var _user$project$App_Page$RaceAdd = function (a) {
 	return {ctor: 'RaceAdd', _0: a};
 };
+var _user$project$App_Page$RaceDetails = function (a) {
+	return {ctor: 'RaceDetails', _0: a};
+};
+var _user$project$App_Page$Races = {ctor: 'Races'};
 
 var _user$project$App_Routing$url = function (page) {
 	var _p0 = page;
 	switch (_p0.ctor) {
 		case 'Riders':
 			return '#riders';
-		case 'RiderAdd':
-			return '#riders/add';
 		case 'RiderDetails':
 			return A2(_elm_lang$core$Basics_ops['++'], '#riders/', _p0._0);
+		case 'RiderAdd':
+			return '#riders/add';
 		case 'Races':
 			return '#races';
-		case 'RaceAdd':
-			return '#races/add';
 		case 'RaceDetails':
 			return A2(_elm_lang$core$Basics_ops['++'], '#races/', _p0._0);
+		case 'RaceAdd':
+			return '#races/add';
 		default:
 			return A2(
 				_elm_lang$core$Basics_ops['++'],
@@ -24690,231 +22014,103 @@ var _user$project$App_Routing$routeParser = function (location) {
 		_user$project$App_Routing$Races,
 		A2(_evancz$url_parser$UrlParser$parseHash, _user$project$App_Routing$matchers, location));
 };
-var _user$project$App_Routing$Home = {ctor: 'Home'};
 
-var _user$project$App_Msg$Chooser = function (a) {
-	return {ctor: 'Chooser', _0: a};
-};
-var _user$project$App_Msg$Calendar = function (a) {
-	return {ctor: 'Calendar', _0: a};
-};
-var _user$project$App_Msg$DatePicked = function (a) {
-	return {ctor: 'DatePicked', _0: a};
-};
-var _user$project$App_Msg$OnUpdatedRider = function (a) {
-	return {ctor: 'OnUpdatedRider', _0: a};
-};
-var _user$project$App_Msg$OnCreatedResult = function (a) {
-	return {ctor: 'OnCreatedResult', _0: a};
-};
-var _user$project$App_Msg$HandleSendError = function (a) {
-	return {ctor: 'HandleSendError', _0: a};
-};
-var _user$project$App_Msg$RidersJson = function (a) {
-	return {ctor: 'RidersJson', _0: a};
-};
-var _user$project$App_Msg$ReceiveRiders = function (a) {
-	return {ctor: 'ReceiveRiders', _0: a};
-};
-var _user$project$App_Msg$ReceiveMessage = function (a) {
-	return {ctor: 'ReceiveMessage', _0: a};
-};
-var _user$project$App_Msg$NewMessage = function (a) {
-	return {ctor: 'NewMessage', _0: a};
-};
-var _user$project$App_Msg$Noop = {ctor: 'Noop'};
-var _user$project$App_Msg$UrlUpdate = function (a) {
-	return {ctor: 'UrlUpdate', _0: a};
-};
-var _user$project$App_Msg$NavigateTo = function (a) {
-	return {ctor: 'NavigateTo', _0: a};
-};
-var _user$project$App_Msg$RiderAddedJson = function (a) {
-	return {ctor: 'RiderAddedJson', _0: a};
-};
-var _user$project$App_Msg$RiderAddName = function (a) {
-	return {ctor: 'RiderAddName', _0: a};
-};
-var _user$project$App_Msg$RiderAddLicence = function (a) {
-	return {ctor: 'RiderAddLicence', _0: a};
-};
-var _user$project$App_Msg$RiderAddSubmit = {ctor: 'RiderAddSubmit'};
-var _user$project$App_Msg$ResultsJson = function (a) {
-	return {ctor: 'ResultsJson', _0: a};
-};
-var _user$project$App_Msg$ResultAddedJson = function (a) {
-	return {ctor: 'ResultAddedJson', _0: a};
-};
-var _user$project$App_Msg$ResultAddResult = function (a) {
-	return {ctor: 'ResultAddResult', _0: a};
-};
-var _user$project$App_Msg$ResultAddOutfit = function (a) {
-	return {ctor: 'ResultAddOutfit', _0: a};
-};
-var _user$project$App_Msg$ResultAddCategory = function (a) {
-	return {ctor: 'ResultAddCategory', _0: a};
-};
-var _user$project$App_Msg$ResultAddSubmit = {ctor: 'ResultAddSubmit'};
-var _user$project$App_Msg$RaceAddedJson = function (a) {
-	return {ctor: 'RaceAddedJson', _0: a};
-};
-var _user$project$App_Msg$RacesJson = function (a) {
-	return {ctor: 'RacesJson', _0: a};
-};
-var _user$project$App_Msg$RaceAddCategory = function (a) {
-	return {ctor: 'RaceAddCategory', _0: a};
-};
-var _user$project$App_Msg$RaceDate = function (a) {
-	return {ctor: 'RaceDate', _0: a};
-};
-var _user$project$App_Msg$RaceName = function (a) {
-	return {ctor: 'RaceName', _0: a};
-};
-var _user$project$App_Msg$RaceAddSubmit = {ctor: 'RaceAddSubmit'};
-var _user$project$App_Msg$RaceAdd = {ctor: 'RaceAdd'};
-
-var _user$project$App_Flags$Flags = {};
-
-var _user$project$App_Model$App = F6(
-	function (a, b, c, d, e, f) {
-		return {page: a, riders: b, races: c, results: d, now: e, messages: f};
+var _user$project$Data_Race$getRaceByKey = F2(
+	function (raceKey, races) {
+		return _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$filter,
+				function (race) {
+					return _elm_lang$core$Native_Utils.eq(race.key, raceKey);
+				},
+				races));
 	});
-var _user$project$App_Model$initial = function (flags) {
-	return {
-		ctor: '_Tuple2',
-		_0: A6(
-			_user$project$App_Model$App,
-			_user$project$App_Page$Races,
-			_elm_lang$core$Maybe$Nothing,
-			_elm_lang$core$Maybe$Nothing,
-			_elm_lang$core$Maybe$Nothing,
-			_elm_lang$core$Maybe$Nothing,
-			{ctor: '[]'}),
-		_1: _elm_lang$core$Platform_Cmd$none
-	};
+var _user$project$Data_Race$getRace = F2(
+	function (raceKey, races) {
+		return _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$filter,
+				function (race) {
+					return _elm_lang$core$Native_Utils.eq(race.key, raceKey);
+				},
+				races));
+	});
+var _user$project$Data_Race$lastRaces = function (races) {
+	return A2(
+		_elm_lang$core$List$take,
+		5,
+		_elm_lang$core$List$reverse(
+			A2(
+				_elm_lang$core$List$sortWith,
+				F2(
+					function (a, b) {
+						return A2(_justinmimbs$elm_date_extra$Date_Extra$compare, a.date, b.date);
+					}),
+				races)));
 };
-
-var _user$project$App_Decoder$page = A2(_elm_lang$core$Json_Decode$field, 'page', _elm_lang$core$Json_Decode$string);
-var _user$project$App_Decoder$resultCategory = function (string) {
-	var _p0 = string;
-	switch (_p0) {
-		case 'amateurs':
-			return _user$project$Result_Model$Amateurs;
-		case 'basislidmaatschap':
-			return _user$project$Result_Model$Basislidmaatschap;
-		case 'cata':
-			return _user$project$Result_Model$CatA;
-		case 'catb':
-			return _user$project$Result_Model$CatB;
-		default:
-			return _user$project$Result_Model$Unknown;
-	}
-};
-var _user$project$App_Decoder$resultOutfit = function (string) {
-	var _p1 = string;
-	switch (_p1) {
-		case 'wtos':
-			return _user$project$Result_Model$WTOS;
-		case 'wasp':
-			return _user$project$Result_Model$WASP;
-		case 'other':
-			return _user$project$Result_Model$Other;
-		default:
-			return _user$project$Result_Model$Other;
-	}
-};
-var _user$project$App_Decoder$decodeResultOutfit = function (string) {
-	return _elm_lang$core$Json_Decode$succeed(
-		_user$project$App_Decoder$resultOutfit(string));
-};
-var _user$project$App_Decoder$decodeResultCategory = function (string) {
-	return _elm_lang$core$Json_Decode$succeed(
-		_user$project$App_Decoder$resultCategory(string));
-};
-var _user$project$App_Decoder$result = A7(
-	_elm_lang$core$Json_Decode$map6,
-	_user$project$Result_Model$Result,
+var _user$project$Data_Race$Race = F4(
+	function (a, b, c, d) {
+		return {key: a, name: b, date: c, raceType: d};
+	});
+var _user$project$Data_Race$race = A5(
+	_elm_lang$core$Json_Decode$map4,
+	_user$project$Data_Race$Race,
 	A2(_elm_lang$core$Json_Decode$field, 'key', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'riderKey', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'raceKey', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'result', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'date', _elm_community$json_extra$Json_Decode_Extra$date),
 	A2(
 		_elm_lang$core$Json_Decode$field,
 		'category',
-		A2(_elm_lang$core$Json_Decode$andThen, _user$project$App_Decoder$decodeResultCategory, _elm_lang$core$Json_Decode$string)),
-	A2(
-		_elm_lang$core$Json_Decode$field,
-		'outfit',
-		A2(_elm_lang$core$Json_Decode$andThen, _user$project$App_Decoder$decodeResultOutfit, _elm_lang$core$Json_Decode$string)));
-var _user$project$App_Decoder$licence = function (string) {
-	var _p2 = string;
-	switch (_p2) {
-		case 'elite':
-			return _user$project$Rider_Model$Elite;
-		case 'amateurs':
-			return _user$project$Rider_Model$Amateurs;
-		case 'basislidmaatschap':
-			return _user$project$Rider_Model$Basislidmaatschap;
-		default:
-			return _user$project$Rider_Model$Other;
-	}
-};
-var _user$project$App_Decoder$date = function () {
-	var convert = function (raw) {
-		var _p3 = _elm_lang$core$Date$fromString(raw);
-		if (_p3.ctor === 'Ok') {
-			return _elm_lang$core$Json_Decode$succeed(_p3._0);
+		A2(_elm_lang$core$Json_Decode$andThen, _user$project$Data_RaceType$raceTypeDecoder, _elm_lang$core$Json_Decode$string)));
+var _user$project$Data_Race$racesDecoder = _elm_lang$core$Json_Decode$list(_user$project$Data_Race$race);
+
+var _user$project$Data_RaceResult$getPointsByResult = F2(
+	function (result, races) {
+		if (_elm_lang$core$Native_Utils.eq(result.outfit, _user$project$Data_Outfit$WTOS)) {
+			var _p0 = A2(_user$project$Data_Race$getRaceByKey, result.raceKey, races);
+			if (_p0.ctor === 'Just') {
+				return _user$project$Data_RaceType$getPointsByRaceType(_p0._0.raceType);
+			} else {
+				return 0;
+			}
 		} else {
-			return _elm_lang$core$Json_Decode$succeed(
-				_elm_lang$core$Date$fromTime(0));
+			return 0;
 		}
-	};
-	return A2(_elm_lang$core$Json_Decode$andThen, convert, _elm_lang$core$Json_Decode$string);
-}();
-var _user$project$App_Decoder$resultOutfitDecoder = function (string) {
-	return _elm_lang$core$Json_Decode$succeed(
-		function () {
-			var _p4 = string;
-			switch (_p4) {
-				case 'wtos':
-					return _user$project$Result_Model$WTOS;
-				case 'wasp':
-					return _user$project$Result_Model$WASP;
-				case 'other':
-					return _user$project$Result_Model$Other;
-				default:
-					return _user$project$Result_Model$Other;
-			}
-		}());
-};
-var _user$project$App_Decoder$resultCategoryDecoder = function (string) {
-	return _elm_lang$core$Json_Decode$succeed(
-		function () {
-			var _p5 = string;
-			switch (_p5) {
-				case 'amateurs':
-					return _user$project$Result_Model$Amateurs;
-				case 'basislidmaatschap':
-					return _user$project$Result_Model$Basislidmaatschap;
-				case 'cata':
-					return _user$project$Result_Model$CatA;
-				case 'catb':
-					return _user$project$Result_Model$CatB;
-				case 'unknown':
-					return _user$project$Result_Model$Unknown;
-				default:
-					return _user$project$Result_Model$Unknown;
-			}
-		}());
-};
-var _user$project$App_Decoder$resultDecoder = A3(
+	});
+var _user$project$Data_RaceResult$getPointsByResults = F2(
+	function (results, races) {
+		return _elm_lang$core$List$sum(
+			A2(
+				_elm_lang$core$List$map,
+				function (result) {
+					return A2(_user$project$Data_RaceResult$getPointsByResult, result, races);
+				},
+				results));
+	});
+var _user$project$Data_RaceResult$resultExists = F2(
+	function (result, results) {
+		return !_elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$List$length(
+				A2(
+					_elm_lang$core$List$filter,
+					function (r) {
+						return _elm_lang$core$Native_Utils.eq(r.raceKey, result.raceKey) && _elm_lang$core$Native_Utils.eq(r.riderKey, result.riderKey);
+					},
+					results)),
+			0);
+	});
+var _user$project$Data_RaceResult$RaceResult = F6(
+	function (a, b, c, d, e, f) {
+		return {key: a, riderKey: b, raceKey: c, result: d, category: e, outfit: f};
+	});
+var _user$project$Data_RaceResult$resultDecoder = A3(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 	'outfit',
-	A2(_elm_lang$core$Json_Decode$andThen, _user$project$App_Decoder$resultOutfitDecoder, _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$andThen, _user$project$Data_Outfit$outfitDecoder, _elm_lang$core$Json_Decode$string),
 	A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 		'category',
-		A2(_elm_lang$core$Json_Decode$andThen, _user$project$App_Decoder$resultCategoryDecoder, _elm_lang$core$Json_Decode$string),
+		A2(_elm_lang$core$Json_Decode$andThen, _user$project$Data_ResultCategory$resultCategoryDecoder, _elm_lang$core$Json_Decode$string),
 		A3(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 			'result',
@@ -24931,232 +22127,13 @@ var _user$project$App_Decoder$resultDecoder = A3(
 						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 						'key',
 						_elm_lang$core$Json_Decode$string,
-						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Result_Model$Result)))))));
-var _user$project$App_Decoder$raceCategoryDecoder = function (string) {
-	return _elm_lang$core$Json_Decode$succeed(
-		function () {
-			var _p6 = string;
-			switch (_p6) {
-				case 'classic':
-					return _user$project$Race_Model$Classic;
-				case 'criterum':
-					return _user$project$Race_Model$Criterium;
-				case 'regiocross':
-					return _user$project$Race_Model$Regiocross;
-				case 'other':
-					return _user$project$Race_Model$Other;
-				case 'unknown':
-					return _user$project$Race_Model$Unknown;
-				default:
-					return _user$project$Race_Model$Unknown;
-			}
-		}());
-};
-var _user$project$App_Decoder$raceDecoder = A3(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-	'category',
-	A2(_elm_lang$core$Json_Decode$andThen, _user$project$App_Decoder$raceCategoryDecoder, _elm_lang$core$Json_Decode$string),
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'date',
-		_user$project$App_Decoder$date,
-		A3(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'name',
-			_elm_lang$core$Json_Decode$string,
-			A3(
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'key',
-				_elm_lang$core$Json_Decode$string,
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Race_Model$Race)))));
-var _user$project$App_Decoder$licenceDecoder = function (string) {
-	var _p7 = string;
-	switch (_p7) {
-		case 'elite':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Rider_Model$Elite);
-		case 'amateurs':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Rider_Model$Amateurs);
-		case 'basislidmaatschap':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Rider_Model$Basislidmaatschap);
-		case 'other':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Rider_Model$Other);
-		default:
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Rider_Model$Other);
-	}
-};
-var _user$project$App_Decoder$riderDecoder = A3(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-	'licence',
-	A2(_elm_lang$core$Json_Decode$andThen, _user$project$App_Decoder$licenceDecoder, _elm_lang$core$Json_Decode$string),
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'name',
-		_elm_lang$core$Json_Decode$string,
-		A3(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'key',
-			_elm_lang$core$Json_Decode$string,
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Rider_Model$Rider))));
-var _user$project$App_Decoder$decodeLicence = function (string) {
-	return _elm_lang$core$Json_Decode$succeed(
-		_user$project$App_Decoder$licence(string));
-};
-var _user$project$App_Decoder$rider = A4(
-	_elm_lang$core$Json_Decode$map3,
-	_user$project$Rider_Model$Rider,
-	A2(_elm_lang$core$Json_Decode$field, 'key', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
-	A2(
-		_elm_lang$core$Json_Decode$field,
-		'licence',
-		A2(_elm_lang$core$Json_Decode$andThen, _user$project$App_Decoder$decodeLicence, _elm_lang$core$Json_Decode$string)));
-var _user$project$App_Decoder$category = function (string) {
-	var _p8 = string;
-	switch (_p8) {
-		case 'Klassieker':
-			return _user$project$Race_Model$Classic;
-		case 'Criterium':
-			return _user$project$Race_Model$Criterium;
-		case 'Regiocross':
-			return _user$project$Race_Model$Regiocross;
-		case 'Other':
-			return _user$project$Race_Model$Other;
-		default:
-			return _user$project$Race_Model$Unknown;
-	}
-};
-var _user$project$App_Decoder$decodeCategory = function (string) {
-	return _elm_lang$core$Json_Decode$succeed(
-		_user$project$App_Decoder$category(string));
-};
-var _user$project$App_Decoder$App = F3(
-	function (a, b, c) {
-		return {page: a, riders: b, results: c};
-	});
-var _user$project$App_Decoder$app = A4(
-	_elm_lang$core$Json_Decode$map3,
-	_user$project$App_Decoder$App,
-	A2(_elm_lang$core$Json_Decode$field, 'page', _elm_lang$core$Json_Decode$string),
-	A2(
-		_elm_lang$core$Json_Decode$field,
-		'riders',
-		_elm_lang$core$Json_Decode$list(_user$project$App_Decoder$rider)),
-	A2(
-		_elm_lang$core$Json_Decode$field,
-		'results',
-		_elm_lang$core$Json_Decode$list(_user$project$App_Decoder$result)));
+						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_RaceResult$RaceResult)))))));
+var _user$project$Data_RaceResult$resultsDecoder = _elm_lang$core$Json_Decode$list(_user$project$Data_RaceResult$resultDecoder);
 
-var _user$project$App_Encoder$resultOutfit = function (outfit) {
-	var _p0 = outfit;
-	switch (_p0.ctor) {
-		case 'WTOS':
-			return _elm_lang$core$Json_Encode$string('wtos');
-		case 'WASP':
-			return _elm_lang$core$Json_Encode$string('wasp');
-		default:
-			return _elm_lang$core$Json_Encode$string('other');
-	}
-};
-var _user$project$App_Encoder$resultCategory = function (category) {
-	var _p1 = category;
-	switch (_p1.ctor) {
-		case 'Amateurs':
-			return _elm_lang$core$Json_Encode$string('amateurs');
-		case 'Basislidmaatschap':
-			return _elm_lang$core$Json_Encode$string('basislidmaatschap');
-		case 'CatA':
-			return _elm_lang$core$Json_Encode$string('cata');
-		case 'CatB':
-			return _elm_lang$core$Json_Encode$string('catb');
-		default:
-			return _elm_lang$core$Json_Encode$string('unknown');
-	}
-};
-var _user$project$App_Encoder$raceCategory = function (category) {
-	var _p2 = category;
-	switch (_p2.ctor) {
-		case 'Classic':
-			return _elm_lang$core$Json_Encode$string('classic');
-		case 'Criterium':
-			return _elm_lang$core$Json_Encode$string('criterium');
-		case 'Regiocross':
-			return _elm_lang$core$Json_Encode$string('regiocross');
-		case 'Other':
-			return _elm_lang$core$Json_Encode$string('other');
-		default:
-			return _elm_lang$core$Json_Encode$string('unknown');
-	}
-};
-var _user$project$App_Encoder$licence = function (maybeLicence) {
-	var _p3 = maybeLicence;
-	if (_p3.ctor === 'Just') {
-		switch (_p3._0.ctor) {
-			case 'Elite':
-				return _elm_lang$core$Json_Encode$string('elite');
-			case 'Amateurs':
-				return _elm_lang$core$Json_Encode$string('amateurs');
-			case 'Basislidmaatschap':
-				return _elm_lang$core$Json_Encode$string('basislidmaatschap');
-			default:
-				return _elm_lang$core$Json_Encode$string('other');
-		}
-	} else {
-		return _elm_lang$core$Json_Encode$null;
-	}
-};
-
-var _user$project$App_Helpers$getRaceByKey = F2(
-	function (raceKey, races) {
-		return _elm_lang$core$List$head(
-			A2(
-				_elm_lang$core$List$filter,
-				function (race) {
-					return _elm_lang$core$Native_Utils.eq(race.key, raceKey);
-				},
-				races));
-	});
-var _user$project$App_Helpers$getPointsByCategory = function (category) {
-	var _p0 = category;
-	switch (_p0.ctor) {
-		case 'Classic':
-			return 4;
-		case 'Criterium':
-			return 3;
-		case 'Regiocross':
-			return 2;
-		case 'Other':
-			return 0;
-		default:
-			return 0;
-	}
-};
-var _user$project$App_Helpers$getPointsByResult = F2(
-	function (result, races) {
-		if (_elm_lang$core$Native_Utils.eq(result.outfit, _user$project$Result_Model$WTOS)) {
-			var _p1 = A2(_user$project$App_Helpers$getRaceByKey, result.raceKey, races);
-			if (_p1.ctor === 'Just') {
-				return _user$project$App_Helpers$getPointsByCategory(_p1._0.category);
-			} else {
-				return 0;
-			}
-		} else {
-			return 0;
-		}
-	});
-var _user$project$App_Helpers$getPointsByResults = F2(
-	function (results, races) {
-		return _elm_lang$core$List$sum(
-			A2(
-				_elm_lang$core$List$map,
-				function (result) {
-					return A2(_user$project$App_Helpers$getPointsByResult, result, races);
-				},
-				results));
-	});
-var _user$project$App_Helpers$getPointsByRiderId = F3(
+var _user$project$Data_Rider$getPointsByRiderId = F3(
 	function (riderKey, results, races) {
 		return A2(
-			_user$project$App_Helpers$getPointsByResults,
+			_user$project$Data_RaceResult$getPointsByResults,
 			A2(
 				_elm_lang$core$List$filter,
 				function (result) {
@@ -25165,6 +22142,224 @@ var _user$project$App_Helpers$getPointsByRiderId = F3(
 				results),
 			races);
 	});
+var _user$project$Data_Rider$getRiderById = F2(
+	function (key, riders) {
+		return _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$filter,
+				function (rider) {
+					return _elm_lang$core$Native_Utils.eq(rider.key, key);
+				},
+				riders));
+	});
+var _user$project$Data_Rider$Rider = F3(
+	function (a, b, c) {
+		return {key: a, name: b, licence: c};
+	});
+var _user$project$Data_Rider$rider = A4(
+	_elm_lang$core$Json_Decode$map3,
+	_user$project$Data_Rider$Rider,
+	A2(_elm_lang$core$Json_Decode$field, 'key', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
+	A2(
+		_elm_lang$core$Json_Decode$field,
+		'licence',
+		A2(_elm_lang$core$Json_Decode$andThen, _user$project$Data_Licence$licenceDecoder, _elm_lang$core$Json_Decode$string)));
+var _user$project$Data_Rider$ridersDecoder = _elm_lang$core$Json_Decode$list(_user$project$Data_Rider$rider);
+
+var _user$project$App_OutsideInfo$infoForOutside = _elm_lang$core$Native_Platform.outgoingPort(
+	'infoForOutside',
+	function (v) {
+		return {tag: v.tag, data: v.data};
+	});
+var _user$project$App_OutsideInfo$sendInfoOutside = function (info) {
+	var _p0 = info;
+	switch (_p0.ctor) {
+		case 'RaceAdd':
+			return _user$project$App_OutsideInfo$infoForOutside(
+				{tag: 'RaceAdd', data: _p0._0});
+		case 'RiderAdd':
+			return _user$project$App_OutsideInfo$infoForOutside(
+				{tag: 'RiderAdd', data: _p0._0});
+		case 'ResultAdd':
+			return _user$project$App_OutsideInfo$infoForOutside(
+				{tag: 'ResultAdd', data: _p0._0});
+		default:
+			return _user$project$App_OutsideInfo$infoForOutside(
+				{
+					tag: 'LogError',
+					data: _elm_lang$core$Json_Encode$string(_p0._0)
+				});
+	}
+};
+var _user$project$App_OutsideInfo$infoForElm = _elm_lang$core$Native_Platform.incomingPort(
+	'infoForElm',
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (tag) {
+			return A2(
+				_elm_lang$core$Json_Decode$andThen,
+				function (data) {
+					return _elm_lang$core$Json_Decode$succeed(
+						{tag: tag, data: data});
+				},
+				A2(_elm_lang$core$Json_Decode$field, 'data', _elm_lang$core$Json_Decode$value));
+		},
+		A2(_elm_lang$core$Json_Decode$field, 'tag', _elm_lang$core$Json_Decode$string)));
+var _user$project$App_OutsideInfo$GenericOutsideData = F2(
+	function (a, b) {
+		return {tag: a, data: b};
+	});
+var _user$project$App_OutsideInfo$LogError = function (a) {
+	return {ctor: 'LogError', _0: a};
+};
+var _user$project$App_OutsideInfo$ResultAdd = function (a) {
+	return {ctor: 'ResultAdd', _0: a};
+};
+var _user$project$App_OutsideInfo$RiderAdd = function (a) {
+	return {ctor: 'RiderAdd', _0: a};
+};
+var _user$project$App_OutsideInfo$RaceAdd = function (a) {
+	return {ctor: 'RaceAdd', _0: a};
+};
+var _user$project$App_OutsideInfo$ResultAdded = function (a) {
+	return {ctor: 'ResultAdded', _0: a};
+};
+var _user$project$App_OutsideInfo$RiderAdded = function (a) {
+	return {ctor: 'RiderAdded', _0: a};
+};
+var _user$project$App_OutsideInfo$RaceAdded = function (a) {
+	return {ctor: 'RaceAdded', _0: a};
+};
+var _user$project$App_OutsideInfo$ResultsLoaded = function (a) {
+	return {ctor: 'ResultsLoaded', _0: a};
+};
+var _user$project$App_OutsideInfo$RacesLoaded = function (a) {
+	return {ctor: 'RacesLoaded', _0: a};
+};
+var _user$project$App_OutsideInfo$RidersLoaded = function (a) {
+	return {ctor: 'RidersLoaded', _0: a};
+};
+var _user$project$App_OutsideInfo$getInfoFromOutside = F2(
+	function (tagger, onError) {
+		return _user$project$App_OutsideInfo$infoForElm(
+			function (outsideInfo) {
+				var _p1 = outsideInfo.tag;
+				switch (_p1) {
+					case 'RidersLoaded':
+						var _p2 = A2(_elm_lang$core$Json_Decode$decodeValue, _user$project$Data_Rider$ridersDecoder, outsideInfo.data);
+						if (_p2.ctor === 'Ok') {
+							return tagger(
+								_user$project$App_OutsideInfo$RidersLoaded(_p2._0));
+						} else {
+							return onError(_p2._0);
+						}
+					case 'RacesLoaded':
+						var _p3 = A2(_elm_lang$core$Json_Decode$decodeValue, _user$project$Data_Race$racesDecoder, outsideInfo.data);
+						if (_p3.ctor === 'Ok') {
+							return tagger(
+								_user$project$App_OutsideInfo$RacesLoaded(_p3._0));
+						} else {
+							return onError(_p3._0);
+						}
+					case 'ResultsLoaded':
+						var _p4 = A2(_elm_lang$core$Json_Decode$decodeValue, _user$project$Data_RaceResult$resultsDecoder, outsideInfo.data);
+						if (_p4.ctor === 'Ok') {
+							return tagger(
+								_user$project$App_OutsideInfo$ResultsLoaded(_p4._0));
+						} else {
+							return onError(_p4._0);
+						}
+					case 'RaceAdded':
+						var _p5 = A2(_elm_lang$core$Json_Decode$decodeValue, _elm_lang$core$Json_Decode$string, outsideInfo.data);
+						if (_p5.ctor === 'Ok') {
+							return tagger(
+								_user$project$App_OutsideInfo$RaceAdded(_p5._0));
+						} else {
+							return onError(_p5._0);
+						}
+					case 'RiderAdded':
+						var _p6 = A2(_elm_lang$core$Json_Decode$decodeValue, _elm_lang$core$Json_Decode$string, outsideInfo.data);
+						if (_p6.ctor === 'Ok') {
+							return tagger(
+								_user$project$App_OutsideInfo$RiderAdded(_p6._0));
+						} else {
+							return onError(_p6._0);
+						}
+					case 'ResultAdded':
+						var _p7 = A2(_elm_lang$core$Json_Decode$decodeValue, _user$project$Data_RaceResult$resultDecoder, outsideInfo.data);
+						if (_p7.ctor === 'Ok') {
+							return tagger(
+								_user$project$App_OutsideInfo$ResultAdded(_p7._0.raceKey));
+						} else {
+							return onError(_p7._0);
+						}
+					default:
+						return onError(
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'Unexpected info from outside: ',
+								_elm_lang$core$Basics$toString(outsideInfo)));
+				}
+			});
+	});
+
+var _user$project$Page_Result_Add_Msg$Chooser = function (a) {
+	return {ctor: 'Chooser', _0: a};
+};
+var _user$project$Page_Result_Add_Msg$Result = function (a) {
+	return {ctor: 'Result', _0: a};
+};
+var _user$project$Page_Result_Add_Msg$Outfit = function (a) {
+	return {ctor: 'Outfit', _0: a};
+};
+var _user$project$Page_Result_Add_Msg$Category = function (a) {
+	return {ctor: 'Category', _0: a};
+};
+var _user$project$Page_Result_Add_Msg$Submit = {ctor: 'Submit'};
+
+var _user$project$Page_Rider_Add_Msg$Name = function (a) {
+	return {ctor: 'Name', _0: a};
+};
+var _user$project$Page_Rider_Add_Msg$Licence = function (a) {
+	return {ctor: 'Licence', _0: a};
+};
+var _user$project$Page_Rider_Add_Msg$Submit = {ctor: 'Submit'};
+
+var _user$project$Page_Race_Add_Msg$Calendar = function (a) {
+	return {ctor: 'Calendar', _0: a};
+};
+var _user$project$Page_Race_Add_Msg$RaceType = function (a) {
+	return {ctor: 'RaceType', _0: a};
+};
+var _user$project$Page_Race_Add_Msg$Name = function (a) {
+	return {ctor: 'Name', _0: a};
+};
+var _user$project$Page_Race_Add_Msg$Submit = {ctor: 'Submit'};
+
+var _user$project$App_Msg$ResultAdd = function (a) {
+	return {ctor: 'ResultAdd', _0: a};
+};
+var _user$project$App_Msg$RiderAdd = function (a) {
+	return {ctor: 'RiderAdd', _0: a};
+};
+var _user$project$App_Msg$RaceAdd = function (a) {
+	return {ctor: 'RaceAdd', _0: a};
+};
+var _user$project$App_Msg$Noop = {ctor: 'Noop'};
+var _user$project$App_Msg$LogErr = function (a) {
+	return {ctor: 'LogErr', _0: a};
+};
+var _user$project$App_Msg$Outside = function (a) {
+	return {ctor: 'Outside', _0: a};
+};
+var _user$project$App_Msg$UrlUpdate = function (a) {
+	return {ctor: 'UrlUpdate', _0: a};
+};
+var _user$project$App_Msg$Navigate = function (a) {
+	return {ctor: 'Navigate', _0: a};
+};
+
 var _user$project$App_Helpers$leadingZero = function (value) {
 	return (_elm_lang$core$Native_Utils.cmp(value, 10) < 0) ? A2(
 		_elm_lang$core$Basics_ops['++'],
@@ -25183,8 +22378,8 @@ var _user$project$App_Helpers$formatTime = function (datetime) {
 				_elm_lang$core$Date$minute(datetime))));
 };
 var _user$project$App_Helpers$numMonth = function (month) {
-	var _p2 = month;
-	switch (_p2.ctor) {
+	var _p0 = month;
+	switch (_p0.ctor) {
 		case 'Jan':
 			return 1;
 		case 'Feb':
@@ -25230,81 +22425,17 @@ var _user$project$App_Helpers$formatDate = function (date) {
 					_user$project$App_Helpers$leadingZero(
 						_elm_lang$core$Date$day(date))))));
 };
-var _user$project$App_Helpers$calcRaceId = function (races) {
-	return _elm_lang$core$List$length(races) + 1;
-};
-var _user$project$App_Helpers$getRiderByResultId = F2(
-	function (key, riders) {
-		return _elm_lang$core$List$head(
-			A2(
-				_elm_lang$core$List$filter,
-				function (rider) {
-					return _elm_lang$core$Native_Utils.eq(rider.key, key);
-				},
-				riders));
-	});
-var _user$project$App_Helpers$getRiderByLowerCaseName = F2(
-	function (name, riders) {
-		return _elm_lang$core$List$head(
-			A2(
-				_elm_lang$core$List$filter,
-				function (rider) {
-					return _elm_lang$core$Native_Utils.eq(
-						_elm_lang$core$String$toLower(rider.name),
-						_elm_lang$core$String$toLower(name));
-				},
-				riders));
-	});
-var _user$project$App_Helpers$getRiderByName = F2(
-	function (name, riders) {
-		return _elm_lang$core$List$head(
-			A2(
-				_elm_lang$core$List$filter,
-				function (rider) {
-					return _elm_lang$core$Native_Utils.eq(rider.name, name);
-				},
-				riders));
-	});
-var _user$project$App_Helpers$updateRiderLicence = F3(
-	function (riderKey, licence, riders) {
-		return A2(
-			_elm_lang$core$List$map,
-			function (rider) {
-				var _p3 = _elm_lang$core$Native_Utils.eq(rider.key, riderKey);
-				if (_p3 === true) {
-					return _elm_lang$core$Native_Utils.update(
-						rider,
-						{licence: licence});
-				} else {
-					return rider;
-				}
-			},
-			riders);
-	});
 var _user$project$App_Helpers$navigate = function (page) {
 	return _elm_lang$navigation$Navigation$newUrl(
 		_user$project$App_Routing$url(page));
 };
 
-var _user$project$App_UrlUpdate$resultExists = F3(
-	function (riderKey, raceKey, results) {
-		return _elm_lang$core$Native_Utils.eq(
-			_elm_lang$core$List$length(
-				A2(
-					_elm_lang$core$List$filter,
-					function (result) {
-						return _elm_lang$core$Native_Utils.eq(result.riderKey, riderKey) && _elm_lang$core$Native_Utils.eq(result.raceKey, raceKey);
-					},
-					results)),
-			1);
+var _user$project$App_Model$App = F4(
+	function (a, b, c, d) {
+		return {page: a, riders: b, races: c, results: d};
 	});
-var _user$project$App_UrlUpdate$replace = F3(
-	function (from, to, str) {
-		return A2(
-			_elm_lang$core$String$join,
-			to,
-			A2(_elm_lang$core$String$split, from, str));
-	});
+var _user$project$App_Model$initial = A4(_user$project$App_Model$App, _user$project$App_Page$Races, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing);
+
 var _user$project$App_UrlUpdate$routeToPage = function (route) {
 	var routePages = {
 		ctor: '::',
@@ -25312,11 +22443,7 @@ var _user$project$App_UrlUpdate$routeToPage = function (route) {
 		_1: {
 			ctor: '::',
 			_0: {ctor: '_Tuple2', _0: _user$project$App_Routing$Races, _1: _user$project$App_Page$Races},
-			_1: {
-				ctor: '::',
-				_0: {ctor: '_Tuple2', _0: _user$project$App_Routing$Home, _1: _user$project$App_Page$Races},
-				_1: {ctor: '[]'}
-			}
+			_1: {ctor: '[]'}
 		}
 	};
 	var maybeRoutePage = _elm_lang$core$List$head(
@@ -25335,12 +22462,12 @@ var _user$project$App_UrlUpdate$routeToPage = function (route) {
 		return _elm_lang$core$Maybe$Nothing;
 	}
 };
-var _user$project$App_UrlUpdate$onUrlEnter = F2(
+var _user$project$App_UrlUpdate$urlUpdate = F2(
 	function (route, app) {
 		var _p1 = route;
 		switch (_p1.ctor) {
 			case 'ResultAdd':
-				var resultAdd = _user$project$Result_Model$initialAdd;
+				var resultAdd = _user$project$Page_Result_Add_Model$initial;
 				var resultAddWithRaceKey = _elm_lang$core$Native_Utils.update(
 					resultAdd,
 					{raceKey: _p1._0});
@@ -25358,9 +22485,9 @@ var _user$project$App_UrlUpdate$onUrlEnter = F2(
 				};
 			case 'RaceAdd':
 				var raceAdd = A3(
-					_user$project$Race_Model$Add,
+					_user$project$Page_Race_Add_Model$Model,
 					'',
-					_user$project$Race_Model$Classic,
+					_user$project$Data_RaceType$Classic,
 					_gdotdesign$elm_ui$Ui_Calendar$init(
 						{ctor: '_Tuple0'}));
 				return {
@@ -25376,7 +22503,7 @@ var _user$project$App_UrlUpdate$onUrlEnter = F2(
 						_elm_lang$dom$Dom$focus('name'))
 				};
 			case 'RiderAdd':
-				var add = A2(_user$project$Rider_Model$Add, '', _elm_lang$core$Maybe$Nothing);
+				var add = A2(_user$project$Page_Rider_Add_Model$Model, '', _elm_lang$core$Maybe$Nothing);
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -25424,1428 +22551,392 @@ var _user$project$App_UrlUpdate$onUrlEnter = F2(
 				}
 		}
 	});
-var _user$project$App_UrlUpdate$loadRiders = _elm_lang$core$Native_Platform.outgoingPort(
-	'loadRiders',
-	function (v) {
-		return null;
-	});
-var _user$project$App_UrlUpdate$loadRaces = _elm_lang$core$Native_Platform.outgoingPort(
-	'loadRaces',
-	function (v) {
-		return null;
-	});
-var _user$project$App_UrlUpdate$loadResults = _elm_lang$core$Native_Platform.outgoingPort(
-	'loadResults',
-	function (v) {
-		return null;
-	});
-var _user$project$App_UrlUpdate$load = function (app) {
-	return {
-		ctor: '::',
-		_0: _elm_lang$core$Native_Utils.eq(app.races, _elm_lang$core$Maybe$Nothing) ? _user$project$App_UrlUpdate$loadRaces(
-			{ctor: '_Tuple0'}) : _elm_lang$core$Platform_Cmd$none,
-		_1: {
-			ctor: '::',
-			_0: _elm_lang$core$Native_Utils.eq(app.riders, _elm_lang$core$Maybe$Nothing) ? _user$project$App_UrlUpdate$loadRiders(
-				{ctor: '_Tuple0'}) : _elm_lang$core$Platform_Cmd$none,
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$core$Native_Utils.eq(app.results, _elm_lang$core$Maybe$Nothing) ? _user$project$App_UrlUpdate$loadResults(
-					{ctor: '_Tuple0'}) : _elm_lang$core$Platform_Cmd$none,
-				_1: {ctor: '[]'}
+
+var _user$project$Page_Rider_Add_Update$update = F2(
+	function (msg, app) {
+		var _p0 = app.page;
+		if (_p0.ctor === 'RiderAdd') {
+			var _p2 = _p0._0;
+			var _p1 = msg;
+			switch (_p1.ctor) {
+				case 'Submit':
+					var payload = _elm_lang$core$Json_Encode$object(
+						{
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'name',
+								_1: _elm_lang$core$Json_Encode$string(_p2.name)
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'licence',
+									_1: _elm_lang$core$Json_Encode$string(
+										_user$project$Data_Licence$licenceToString(_p2.licence))
+								},
+								_1: {ctor: '[]'}
+							}
+						});
+					return {
+						ctor: '_Tuple2',
+						_0: app,
+						_1: _user$project$App_OutsideInfo$sendInfoOutside(
+							_user$project$App_OutsideInfo$RiderAdd(payload))
+					};
+				case 'Name':
+					var nextPage = _user$project$App_Page$RiderAdd(
+						_elm_lang$core$Native_Utils.update(
+							_p2,
+							{name: _p1._0}));
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							app,
+							{page: nextPage}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				default:
+					var nextPage = _user$project$App_Page$RiderAdd(
+						_elm_lang$core$Native_Utils.update(
+							_p2,
+							{
+								licence: _elm_lang$core$Maybe$Just(_p1._0)
+							}));
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							app,
+							{page: nextPage}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
 			}
+		} else {
+			return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
 		}
-	};
-};
-var _user$project$App_UrlUpdate$urlUpdate = F2(
-	function (route, app) {
-		var _p3 = A2(_user$project$App_UrlUpdate$onUrlEnter, route, app);
-		var nextApp = _p3._0;
-		var routeCmd = _p3._1;
-		var cmd = _elm_lang$core$Platform_Cmd$batch(
-			{
-				ctor: '::',
-				_0: routeCmd,
-				_1: _user$project$App_UrlUpdate$load(app)
-			});
-		return {ctor: '_Tuple2', _0: nextApp, _1: cmd};
 	});
 
-var _user$project$Result_Helpers$calcResultId = function (results) {
-	return _elm_lang$core$List$length(results) + 1;
+var _user$project$Page_Race_Add_Update$dateFormat = function (date) {
+	return A3(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config, '%Y-%m-%d 00:00:00', date);
 };
-var _user$project$Result_Helpers$resultExists = F2(
-	function (result, results) {
-		return !_elm_lang$core$Native_Utils.eq(
-			_elm_lang$core$List$length(
-				A2(
-					_elm_lang$core$List$filter,
-					function (r) {
-						return _elm_lang$core$Native_Utils.eq(r.raceKey, result.raceKey) && _elm_lang$core$Native_Utils.eq(r.riderKey, result.riderKey);
-					},
-					results)),
-			0);
+var _user$project$Page_Race_Add_Update$update = F2(
+	function (msg, app) {
+		var _p0 = app.page;
+		if (_p0.ctor === 'RaceAdd') {
+			var _p3 = _p0._0;
+			var _p1 = msg;
+			switch (_p1.ctor) {
+				case 'Submit':
+					var dateString = _user$project$Page_Race_Add_Update$dateFormat(_p3.calendar.value);
+					var payload = _elm_lang$core$Json_Encode$object(
+						{
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'name',
+								_1: _elm_lang$core$Json_Encode$string(_p3.name)
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'date',
+									_1: _elm_lang$core$Json_Encode$string(dateString)
+								},
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple2',
+										_0: 'category',
+										_1: _elm_lang$core$Json_Encode$string(
+											_user$project$Data_RaceType$raceTypeToString(_p3.raceType))
+									},
+									_1: {ctor: '[]'}
+								}
+							}
+						});
+					return {
+						ctor: '_Tuple2',
+						_0: app,
+						_1: _user$project$App_OutsideInfo$sendInfoOutside(
+							_user$project$App_OutsideInfo$RaceAdd(payload))
+					};
+				case 'Name':
+					var nextPage = _user$project$App_Page$RaceAdd(
+						_elm_lang$core$Native_Utils.update(
+							_p3,
+							{name: _p1._0}));
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							app,
+							{page: nextPage}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				case 'RaceType':
+					var nextPage = _user$project$App_Page$RaceAdd(
+						_elm_lang$core$Native_Utils.update(
+							_p3,
+							{raceType: _p1._0}));
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							app,
+							{page: nextPage}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				default:
+					var _p2 = A2(_gdotdesign$elm_ui$Ui_Calendar$update, _p1._0, _p3.calendar);
+					var calendar = _p2._0;
+					var cmd = _p2._1;
+					var nextPage = _user$project$App_Page$RaceAdd(
+						_elm_lang$core$Native_Utils.update(
+							_p3,
+							{calendar: calendar}));
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							app,
+							{page: nextPage}),
+						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Page_Race_Add_Msg$Calendar, cmd)
+					};
+			}
+		} else {
+			return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
+		}
 	});
 
-var _user$project$Result_Update$riderKey = function (chooser) {
+var _user$project$Page_Result_Add_Update$riderKey = function (chooser) {
 	return A2(
 		_elm_lang$core$Maybe$withDefault,
 		'',
 		_elm_lang$core$List$head(
 			_elm_lang$core$Set$toList(chooser.selected)));
 };
-var _user$project$Result_Update$resultCategoryDecoder = function (string) {
-	var _p0 = string;
-	switch (_p0) {
-		case 'amateurs':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Result_Model$Amateurs);
-		case 'basislidmaatschap':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Result_Model$Basislidmaatschap);
-		case 'cata':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Result_Model$CatA);
-		case 'catb':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Result_Model$CatB);
-		case 'unknown':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Result_Model$Unknown);
-		default:
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Result_Model$Unknown);
-	}
-};
-var _user$project$Result_Update$resultDecoder = A3(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-	'outfit',
-	A2(_elm_lang$core$Json_Decode$andThen, _user$project$App_Decoder$resultOutfitDecoder, _elm_lang$core$Json_Decode$string),
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'category',
-		A2(_elm_lang$core$Json_Decode$andThen, _user$project$Result_Update$resultCategoryDecoder, _elm_lang$core$Json_Decode$string),
-		A3(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'result',
-			_elm_lang$core$Json_Decode$string,
-			A3(
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'raceKey',
-				_elm_lang$core$Json_Decode$string,
-				A3(
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-					'riderKey',
-					_elm_lang$core$Json_Decode$string,
-					A3(
-						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-						'key',
-						_elm_lang$core$Json_Decode$string,
-						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Result_Model$Result)))))));
-var _user$project$Result_Update$resultsDecoder = _elm_lang$core$Json_Decode$list(_user$project$Result_Update$resultDecoder);
-var _user$project$Result_Update$resultsJson = F2(
-	function (json, app) {
-		var nextResults = A2(
-			_elm_lang$core$Debug$log,
-			'results',
-			A2(_elm_lang$core$Json_Decode$decodeValue, _user$project$Result_Update$resultsDecoder, json));
-		var _p1 = nextResults;
-		if (_p1.ctor === 'Ok') {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					app,
-					{
-						results: _elm_lang$core$Maybe$Just(_p1._0)
-					}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
-		} else {
-			var _p2 = A2(_elm_lang$core$Debug$log, 'err', _p1._0);
-			return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
-var _user$project$Result_Update$addedJson = F2(
-	function (rawResponse, app) {
-		var resultResult = A2(_elm_lang$core$Json_Decode$decodeValue, _user$project$Result_Update$resultDecoder, rawResponse);
-		var _p3 = resultResult;
-		if (_p3.ctor === 'Ok') {
-			return {
-				ctor: '_Tuple2',
-				_0: app,
-				_1: _user$project$App_Helpers$navigate(
-					_user$project$App_Page$RaceDetails(_p3._0.raceKey))
-			};
-		} else {
-			var _p4 = A2(_elm_lang$core$Debug$log, 'err', _p3._0);
-			return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
-var _user$project$Result_Update$addResult = F2(
-	function (value, app) {
-		var _p5 = app.page;
-		if (_p5.ctor === 'ResultAdd') {
-			var nextAdd = _elm_lang$core$Native_Utils.update(
-				_p5._0,
-				{result: value});
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					app,
-					{
-						page: _user$project$App_Page$ResultAdd(nextAdd)
-					}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
-		} else {
-			return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
-var _user$project$Result_Update$addOutfit = F2(
-	function (outfit, app) {
-		var _p6 = app.page;
-		if (_p6.ctor === 'ResultAdd') {
-			var nextAdd = _elm_lang$core$Native_Utils.update(
-				_p6._0,
-				{outfit: outfit});
-			var nextApp = _elm_lang$core$Native_Utils.update(
-				app,
-				{
-					page: _user$project$App_Page$ResultAdd(nextAdd)
-				});
-			return {ctor: '_Tuple2', _0: nextApp, _1: _elm_lang$core$Platform_Cmd$none};
-		} else {
-			return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
-var _user$project$Result_Update$addCategory = F2(
-	function (category, resultAdd) {
-		return _elm_lang$core$Native_Utils.update(
-			resultAdd,
-			{category: category});
-	});
-var _user$project$Result_Update$addResultPort = _elm_lang$core$Native_Platform.outgoingPort(
-	'addResultPort',
-	function (v) {
-		return v;
-	});
-var _user$project$Result_Update$addSubmit = function (app) {
-	var _p7 = app.page;
-	if (_p7.ctor === 'ResultAdd') {
-		var _p8 = _p7._0;
-		var payload = _elm_lang$core$Json_Encode$object(
-			{
-				ctor: '::',
-				_0: {
-					ctor: '_Tuple2',
-					_0: 'raceKey',
-					_1: _elm_lang$core$Json_Encode$string(_p8.raceKey)
-				},
-				_1: {
-					ctor: '::',
-					_0: {
-						ctor: '_Tuple2',
-						_0: 'riderKey',
-						_1: _elm_lang$core$Json_Encode$string(
-							_user$project$Result_Update$riderKey(_p8.chooser))
-					},
-					_1: {
-						ctor: '::',
-						_0: {
-							ctor: '_Tuple2',
-							_0: 'result',
-							_1: _elm_lang$core$Json_Encode$string(_p8.result)
-						},
-						_1: {
+var _user$project$Page_Result_Add_Update$update = F2(
+	function (msg, app) {
+		var _p0 = app.page;
+		if (_p0.ctor === 'ResultAdd') {
+			var _p3 = _p0._0;
+			var _p1 = msg;
+			switch (_p1.ctor) {
+				case 'Submit':
+					var payload = _elm_lang$core$Json_Encode$object(
+						{
 							ctor: '::',
 							_0: {
 								ctor: '_Tuple2',
-								_0: 'category',
-								_1: _user$project$App_Encoder$resultCategory(_p8.category)
+								_0: 'raceKey',
+								_1: _elm_lang$core$Json_Encode$string(_p3.raceKey)
 							},
 							_1: {
 								ctor: '::',
 								_0: {
 									ctor: '_Tuple2',
-									_0: 'outfit',
-									_1: _user$project$App_Encoder$resultOutfit(_p8.outfit)
+									_0: 'riderKey',
+									_1: _elm_lang$core$Json_Encode$string(
+										_user$project$Page_Result_Add_Update$riderKey(_p3.chooser))
 								},
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}
-			});
-		return {
-			ctor: '_Tuple2',
-			_0: app,
-			_1: _user$project$Result_Update$addResultPort(payload)
-		};
-	} else {
-		return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
-	}
-};
-
-var _user$project$Race_Update$category = function (string) {
-	var _p0 = string;
-	switch (_p0) {
-		case 'classic':
-			return _user$project$Race_Model$Classic;
-		case 'criterium':
-			return _user$project$Race_Model$Criterium;
-		case 'regiocross':
-			return _user$project$Race_Model$Regiocross;
-		case 'other':
-			return _user$project$Race_Model$Other;
-		default:
-			return _user$project$Race_Model$Other;
-	}
-};
-var _user$project$Race_Update$categoryDecoder = function (string) {
-	return _elm_lang$core$Json_Decode$succeed(
-		_user$project$Race_Update$category(string));
-};
-var _user$project$Race_Update$race = A5(
-	_elm_lang$core$Json_Decode$map4,
-	_user$project$Race_Model$Race,
-	A2(_elm_lang$core$Json_Decode$field, 'key', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'date', _elm_community$json_extra$Json_Decode_Extra$date),
-	A2(
-		_elm_lang$core$Json_Decode$field,
-		'category',
-		A2(_elm_lang$core$Json_Decode$andThen, _user$project$Race_Update$categoryDecoder, _elm_lang$core$Json_Decode$string)));
-var _user$project$Race_Update$racesDecoder = _elm_lang$core$Json_Decode$list(_user$project$Race_Update$race);
-var _user$project$Race_Update$racesJson = F2(
-	function (json, app) {
-		var nextRacesResult = A2(_elm_lang$core$Json_Decode$decodeValue, _user$project$Race_Update$racesDecoder, json);
-		var _p1 = nextRacesResult;
-		if (_p1.ctor === 'Ok') {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					app,
-					{
-						races: _elm_lang$core$Maybe$Just(_p1._0)
-					}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
-		} else {
-			return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
-var _user$project$Race_Update$dateFormat = function (date) {
-	return A3(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config, '%Y-%m-%d 00:00:00', date);
-};
-var _user$project$Race_Update$addCategory = F2(
-	function (category, raceAdd) {
-		return _elm_lang$core$Native_Utils.update(
-			raceAdd,
-			{category: category});
-	});
-var _user$project$Race_Update$addName = F2(
-	function (newName, raceAdd) {
-		return _elm_lang$core$Native_Utils.update(
-			raceAdd,
-			{name: newName});
-	});
-var _user$project$Race_Update$addPage = F2(
-	function (msg, maybeRaceAdd) {
-		var _p2 = maybeRaceAdd;
-		if (_p2.ctor === 'Just') {
-			var _p4 = _p2._0;
-			var _p3 = msg;
-			switch (_p3.ctor) {
-				case 'RaceName':
-					return _elm_lang$core$Maybe$Just(
-						A2(_user$project$Race_Update$addName, _p3._0, _p4));
-				case 'RaceAddCategory':
-					return _elm_lang$core$Maybe$Just(
-						A2(_user$project$Race_Update$addCategory, _p3._0, _p4));
-				default:
-					return _elm_lang$core$Maybe$Nothing;
-			}
-		} else {
-			return _elm_lang$core$Maybe$Nothing;
-		}
-	});
-var _user$project$Race_Update$addPage2 = F2(
-	function (msg, page) {
-		var _p5 = page;
-		if (_p5.ctor === 'RaceAdd') {
-			var _p7 = _p5._0;
-			var _p6 = msg;
-			switch (_p6.ctor) {
-				case 'RaceName':
-					return _user$project$App_Page$RaceAdd(
-						A2(_user$project$Race_Update$addName, _p6._0, _p7));
-				case 'RaceAddCategory':
-					return _user$project$App_Page$RaceAdd(
-						A2(_user$project$Race_Update$addCategory, _p6._0, _p7));
-				default:
-					return page;
-			}
-		} else {
-			return page;
-		}
-	});
-var _user$project$Race_Update$addRace = _elm_lang$core$Native_Platform.outgoingPort(
-	'addRace',
-	function (v) {
-		return v;
-	});
-var _user$project$Race_Update$addSubmit = F2(
-	function (raceAdd, app) {
-		var dateString = _user$project$Race_Update$dateFormat(raceAdd.calendar.value);
-		var payload = _elm_lang$core$Json_Encode$object(
-			{
-				ctor: '::',
-				_0: {
-					ctor: '_Tuple2',
-					_0: 'name',
-					_1: _elm_lang$core$Json_Encode$string(raceAdd.name)
-				},
-				_1: {
-					ctor: '::',
-					_0: {
-						ctor: '_Tuple2',
-						_0: 'date',
-						_1: _elm_lang$core$Json_Encode$string(dateString)
-					},
-					_1: {
-						ctor: '::',
-						_0: {
-							ctor: '_Tuple2',
-							_0: 'category',
-							_1: _user$project$App_Encoder$raceCategory(raceAdd.category)
-						},
-						_1: {ctor: '[]'}
-					}
-				}
-			});
-		return {
-			ctor: '_Tuple2',
-			_0: app,
-			_1: _user$project$Race_Update$addRace(payload)
-		};
-	});
-
-var _user$project$Rider_Update$addLicence = F2(
-	function (licence, app) {
-		var page = function () {
-			var _p0 = app.page;
-			if (_p0.ctor === 'RiderAdd') {
-				return _user$project$App_Page$RiderAdd(
-					_elm_lang$core$Native_Utils.update(
-						_p0._0,
-						{
-							licence: _elm_lang$core$Maybe$Just(licence)
-						}));
-			} else {
-				return app.page;
-			}
-		}();
-		var nextApp = _elm_lang$core$Native_Utils.update(
-			app,
-			{page: page});
-		return {ctor: '_Tuple2', _0: nextApp, _1: _elm_lang$core$Platform_Cmd$none};
-	});
-var _user$project$Rider_Update$addName = F2(
-	function (name, app) {
-		var page = function () {
-			var _p1 = app.page;
-			if (_p1.ctor === 'RiderAdd') {
-				return _user$project$App_Page$RiderAdd(
-					_elm_lang$core$Native_Utils.update(
-						_p1._0,
-						{name: name}));
-			} else {
-				return app.page;
-			}
-		}();
-		var nextApp = _elm_lang$core$Native_Utils.update(
-			app,
-			{page: page});
-		return {ctor: '_Tuple2', _0: nextApp, _1: _elm_lang$core$Platform_Cmd$none};
-	});
-var _user$project$Rider_Update$licence = function (string) {
-	var _p2 = string;
-	switch (_p2) {
-		case 'elite':
-			return _user$project$Rider_Model$Elite;
-		case 'amateurs':
-			return _user$project$Rider_Model$Amateurs;
-		case 'basislidmaatschap':
-			return _user$project$Rider_Model$Basislidmaatschap;
-		default:
-			return _user$project$Rider_Model$Other;
-	}
-};
-var _user$project$Rider_Update$licenceDecoder = function (string) {
-	return _elm_lang$core$Json_Decode$succeed(
-		_user$project$Rider_Update$licence(string));
-};
-var _user$project$Rider_Update$rider = A4(
-	_elm_lang$core$Json_Decode$map3,
-	_user$project$Rider_Model$Rider,
-	A2(_elm_lang$core$Json_Decode$field, 'key', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
-	A2(
-		_elm_lang$core$Json_Decode$field,
-		'licence',
-		A2(_elm_lang$core$Json_Decode$andThen, _user$project$Rider_Update$licenceDecoder, _elm_lang$core$Json_Decode$string)));
-var _user$project$Rider_Update$ridersDecoder = _elm_lang$core$Json_Decode$list(_user$project$Rider_Update$rider);
-var _user$project$Rider_Update$ridersJson = F2(
-	function (json, app) {
-		var nextRidersResult = A2(_elm_lang$core$Json_Decode$decodeValue, _user$project$Rider_Update$ridersDecoder, json);
-		var _p3 = nextRidersResult;
-		if (_p3.ctor === 'Ok') {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					app,
-					{
-						riders: _elm_lang$core$Maybe$Just(_p3._0)
-					}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
-		} else {
-			return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
-var _user$project$Rider_Update$addRider = _elm_lang$core$Native_Platform.outgoingPort(
-	'addRider',
-	function (v) {
-		return v;
-	});
-var _user$project$Rider_Update$addSubmit = function (app) {
-	var _p4 = app.page;
-	if (_p4.ctor === 'RiderAdd') {
-		var _p5 = _p4._0;
-		var payload = _elm_lang$core$Json_Encode$object(
-			{
-				ctor: '::',
-				_0: {
-					ctor: '_Tuple2',
-					_0: 'name',
-					_1: _elm_lang$core$Json_Encode$string(_p5.name)
-				},
-				_1: {
-					ctor: '::',
-					_0: {
-						ctor: '_Tuple2',
-						_0: 'licence',
-						_1: _user$project$App_Encoder$licence(_p5.licence)
-					},
-					_1: {ctor: '[]'}
-				}
-			});
-		return {
-			ctor: '_Tuple2',
-			_0: app,
-			_1: _user$project$Rider_Update$addRider(payload)
-		};
-	} else {
-		return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
-	}
-};
-
-var _user$project$App_Update$setLocalStorage = _elm_lang$core$Native_Platform.outgoingPort(
-	'setLocalStorage',
-	function (v) {
-		return [v._0, v._1];
-	});
-var _user$project$App_Update$getLocalStorage = _elm_lang$core$Native_Platform.outgoingPort(
-	'getLocalStorage',
-	function (v) {
-		return v;
-	});
-var _user$project$App_Update$RaceResponse = function (a) {
-	return {key: a};
-};
-var _user$project$App_Update$update = F2(
-	function (msg, app) {
-		var noOp = {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
-		var _p0 = msg;
-		switch (_p0.ctor) {
-			case 'RaceAddSubmit':
-				var _p1 = app.page;
-				if (_p1.ctor === 'RaceAdd') {
-					return A2(_user$project$Race_Update$addSubmit, _p1._0, app);
-				} else {
-					return noOp;
-				}
-			case 'RaceAdd':
-				var _p2 = app.page;
-				if (_p2.ctor === 'RaceAdd') {
-					return noOp;
-				} else {
-					return noOp;
-				}
-			case 'RaceName':
-				var page = A2(_user$project$Race_Update$addPage2, msg, app.page);
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						app,
-						{page: page}),
-					{ctor: '[]'});
-			case 'RaceAddCategory':
-				var page = A2(_user$project$Race_Update$addPage2, msg, app.page);
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						app,
-						{page: page}),
-					{ctor: '[]'});
-			case 'RaceDate':
-				var page = A2(_user$project$Race_Update$addPage2, msg, app.page);
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						app,
-						{page: page}),
-					{ctor: '[]'});
-			case 'RacesJson':
-				return A2(_user$project$Race_Update$racesJson, _p0._0, app);
-			case 'ResultsJson':
-				return A2(_user$project$Result_Update$resultsJson, _p0._0, app);
-			case 'ResultAddedJson':
-				return A2(_user$project$Result_Update$addedJson, _p0._0, app);
-			case 'ResultAddSubmit':
-				return _user$project$Result_Update$addSubmit(app);
-			case 'ResultAddOutfit':
-				return A2(_user$project$Result_Update$addOutfit, _p0._0, app);
-			case 'ResultAddCategory':
-				return {
-					ctor: '_Tuple2',
-					_0: function () {
-						var _p3 = app.page;
-						if (_p3.ctor === 'ResultAdd') {
-							return _elm_lang$core$Native_Utils.update(
-								app,
-								{
-									page: _user$project$App_Page$ResultAdd(
-										A2(_user$project$Result_Update$addCategory, _p0._0, _p3._0))
-								});
-						} else {
-							return app;
-						}
-					}(),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'ResultAddResult':
-				return A2(_user$project$Result_Update$addResult, _p0._0, app);
-			case 'UrlUpdate':
-				return A2(_user$project$App_UrlUpdate$urlUpdate, _p0._0, app);
-			case 'NavigateTo':
-				return {
-					ctor: '_Tuple2',
-					_0: app,
-					_1: _user$project$App_Helpers$navigate(_p0._0)
-				};
-			case 'RiderAddedJson':
-				var riderResult = A2(
-					_elm_lang$core$Json_Decode$decodeValue,
-					_user$project$App_Decoder$riderDecoder,
-					A2(_elm_lang$core$Debug$log, 'rawresponse', _p0._0));
-				var _p4 = riderResult;
-				if (_p4.ctor === 'Ok') {
-					var _p5 = _p4._0;
-					var newRider = A3(_user$project$Rider_Model$Rider, _p5.key, _p5.name, _p5.licence);
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{
-								riders: _elm_lang$core$Maybe$Just(
-									{
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple2',
+										_0: 'result',
+										_1: _elm_lang$core$Json_Encode$string(_p3.result)
+									},
+									_1: {
 										ctor: '::',
-										_0: newRider,
-										_1: A2(
-											_elm_lang$core$Maybe$withDefault,
-											{ctor: '[]'},
-											app.riders)
-									})
-							}),
-						_1: _user$project$App_Helpers$navigate(
-							_user$project$App_Page$RiderDetails(_p5.key))
-					};
-				} else {
-					var _p6 = A2(_elm_lang$core$Debug$log, 'err', _p4._0);
-					return noOp;
-				}
-			case 'RaceAddedJson':
-				var decoder = A3(
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-					'key',
-					_elm_lang$core$Json_Decode$string,
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$App_Update$RaceResponse));
-				var raceResult = A2(_elm_lang$core$Json_Decode$decodeValue, decoder, _p0._0);
-				var _p7 = raceResult;
-				if (_p7.ctor === 'Ok') {
-					var _p9 = _p7._0;
-					var _p8 = A2(_elm_lang$core$Debug$log, 'raceKey', _p9.key);
+										_0: {
+											ctor: '_Tuple2',
+											_0: 'category',
+											_1: _elm_lang$core$Json_Encode$string(
+												_user$project$Data_ResultCategory$categoryToString(_p3.category))
+										},
+										_1: {
+											ctor: '::',
+											_0: {
+												ctor: '_Tuple2',
+												_0: 'outfit',
+												_1: _elm_lang$core$Json_Encode$string(
+													_user$project$Data_Outfit$outfitToString(_p3.outfit))
+											},
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						});
 					return {
 						ctor: '_Tuple2',
 						_0: app,
-						_1: _user$project$App_Helpers$navigate(
-							_user$project$App_Page$RaceDetails(_p9.key))
+						_1: _user$project$App_OutsideInfo$sendInfoOutside(
+							_user$project$App_OutsideInfo$ResultAdd(payload))
 					};
-				} else {
-					var _p10 = A2(_elm_lang$core$Debug$log, 'hoi', _p7._0);
-					return noOp;
-				}
-			case 'OnCreatedResult':
-				var resultResult = A2(_elm_lang$core$Json_Decode$decodeValue, _user$project$App_Decoder$resultDecoder, _p0._0);
-				var _p11 = resultResult;
-				if (_p11.ctor === 'Ok') {
-					var _p12 = _p11._0;
-					var newResult = A6(_user$project$Result_Model$Result, _p12.key, _p12.riderKey, _p12.raceKey, _p12.result, _user$project$Result_Model$CatA, _user$project$Result_Model$WTOS);
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{
-								results: _elm_lang$core$Maybe$Just(
-									{
-										ctor: '::',
-										_0: newResult,
-										_1: A2(
-											_elm_lang$core$Maybe$withDefault,
-											{ctor: '[]'},
-											app.results)
-									})
-							}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					return noOp;
-				}
-			case 'OnUpdatedRider':
-				var riderResult = A2(
-					_elm_lang$core$Debug$log,
-					'riderResult in onUpdatedRider',
-					A2(_elm_lang$core$Json_Decode$decodeValue, _user$project$App_Decoder$riderDecoder, _p0._0));
-				var _p13 = riderResult;
-				if (_p13.ctor === 'Ok') {
-					var _p14 = _p13._0;
-					var riders = A2(
-						_elm_lang$core$Debug$log,
-						'updatedRiders: ',
-						A3(
-							_user$project$App_Helpers$updateRiderLicence,
-							_p14.key,
-							_p14.licence,
-							A2(
-								_elm_lang$core$Maybe$withDefault,
-								{ctor: '[]'},
-								app.riders)));
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{
-								riders: _elm_lang$core$Maybe$Just(riders)
-							}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					return noOp;
-				}
-			case 'Noop':
-				return noOp;
-			case 'ReceiveRiders':
-				var _p16 = _p0._0;
-				var messages = {
-					ctor: '::',
-					_0: _elm_lang$core$Basics$toString(_p16),
-					_1: app.messages
-				};
-				var resultRiders = A2(
-					_elm_lang$core$Json_Decode$decodeValue,
-					A2(
-						_elm_lang$core$Json_Decode$field,
-						'riders',
-						_elm_lang$core$Json_Decode$list(_user$project$App_Decoder$riderDecoder)),
-					_p16);
-				var _p15 = resultRiders;
-				if (_p15.ctor === 'Ok') {
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{
-								messages: messages,
-								riders: _elm_lang$core$Maybe$Just(_p15._0)
-							}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{messages: messages}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				}
-			case 'RidersJson':
-				return A2(_user$project$Rider_Update$ridersJson, _p0._0, app);
-			case 'RiderAddSubmit':
-				return _user$project$Rider_Update$addSubmit(app);
-			case 'RiderAddName':
-				return A2(_user$project$Rider_Update$addName, _p0._0, app);
-			case 'RiderAddLicence':
-				return A2(_user$project$Rider_Update$addLicence, _p0._0, app);
-			case 'ReceiveMessage':
-				var _p17 = A2(_elm_lang$core$Debug$log, 'receiveMessage', _p0._0);
-				return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'HandleSendError':
-				return noOp;
-			case 'NewMessage':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						app,
-						{
-							messages: {ctor: '::', _0: _p0._0, _1: app.messages}
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'DatePicked':
-				var _p18 = app.page;
-				if (_p18.ctor === 'RaceAdd') {
-					var page = A2(
-						_user$project$Race_Update$addPage2,
-						_user$project$App_Msg$RaceDate(_p0._0),
-						app.page);
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{page: page}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			case 'Calendar':
-				var _p19 = app.page;
-				if (_p19.ctor === 'RaceAdd') {
-					var _p21 = _p19._0;
-					var _p20 = A2(_gdotdesign$elm_ui$Ui_Calendar$update, _p0._0, _p21.calendar);
-					var calendar = _p20._0;
-					var cmd = _p20._1;
-					var nextRaceAdd = _user$project$App_Page$RaceAdd(
+				case 'Outfit':
+					var nextPage = _user$project$App_Page$ResultAdd(
 						_elm_lang$core$Native_Utils.update(
-							_p21,
-							{calendar: calendar}));
+							_p3,
+							{outfit: _p1._0}));
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							app,
-							{page: nextRaceAdd}),
-						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$Calendar, cmd)
+							{page: nextPage}),
+						_1: _elm_lang$core$Platform_Cmd$none
 					};
-				} else {
-					return noOp;
-				}
-			default:
-				var _p22 = app.page;
-				if (_p22.ctor === 'ResultAdd') {
-					var _p24 = _p22._0;
-					var _p23 = A2(_gdotdesign$elm_ui$Ui_Chooser$update, _p0._0, _p24.chooser);
-					var chooser = _p23._0;
-					var cmd = _p23._1;
-					var nextResultAdd = _user$project$App_Page$ResultAdd(
+				case 'Category':
+					var nextPage = _user$project$App_Page$ResultAdd(
 						_elm_lang$core$Native_Utils.update(
-							_p24,
+							_p3,
+							{category: _p1._0}));
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							app,
+							{page: nextPage}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				case 'Result':
+					var nextPage = _user$project$App_Page$ResultAdd(
+						_elm_lang$core$Native_Utils.update(
+							_p3,
+							{result: _p1._0}));
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							app,
+							{page: nextPage}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				default:
+					var _p2 = A2(_gdotdesign$elm_ui$Ui_Chooser$update, _p1._0, _p3.chooser);
+					var chooser = _p2._0;
+					var cmd = _p2._1;
+					var nextPage = _user$project$App_Page$ResultAdd(
+						_elm_lang$core$Native_Utils.update(
+							_p3,
 							{chooser: chooser}));
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							app,
-							{page: nextResultAdd}),
-						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$Chooser, cmd)
+							{page: nextPage}),
+						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Page_Result_Add_Msg$Chooser, cmd)
 					};
-				} else {
-					return noOp;
-				}
+			}
+		} else {
+			return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 
-var _user$project$Race_View_Add$datepicker = function (dateString) {
-	var inputDate = A2(
-		_elm_lang$core$Debug$log,
-		'dateString',
-		A2(
-			_elm_lang$core$String$join,
-			'/',
-			A2(_elm_lang$core$String$split, '-', dateString)));
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('col s6'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$label,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('active'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('Date'),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A3(
-					_elm_lang$html$Html$node,
-					'app-datepicker',
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$id('datepicker'),
-						_1: {
-							ctor: '::',
-							_0: A2(_elm_lang$html$Html_Attributes$attribute, 'first-day-of-week', '1'),
-							_1: {
-								ctor: '::',
-								_0: A2(_elm_lang$html$Html_Attributes$attribute, 'input-date', inputDate),
-								_1: {
-									ctor: '::',
-									_0: A2(_elm_lang$html$Html_Attributes$attribute, 'disable-days', '[]'),
-									_1: {
-										ctor: '::',
-										_0: A2(_elm_lang$html$Html_Attributes$attribute, 'auto-update-date', 'true'),
-										_1: {ctor: '[]'}
-									}
-								}
-							}
-						}
-					},
-					{ctor: '[]'}),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _user$project$Race_View_Add$categoryButtonCheck = F4(
-	function (categoryName, categoryText, categoryModel, current) {
-		var isChecked = _elm_lang$core$Native_Utils.eq(categoryModel, current);
-		return A2(
-			_elm_lang$html$Html$p,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$input,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$checked(isChecked),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$name('category'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$type_('radio'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$id(categoryName),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Events$onClick(
-											_user$project$App_Msg$RaceAddCategory(categoryModel)),
-										_1: {ctor: '[]'}
-									}
-								}
-							}
-						}
-					},
-					{ctor: '[]'}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$label,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$for(categoryName),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(categoryText),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
-			});
-	});
-var _user$project$Race_View_Add$categoryButtons = function (current) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('col s6'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$label,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('active'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('Category'),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A4(_user$project$Race_View_Add$categoryButtonCheck, 'classic', 'Klassieker', _user$project$Race_Model$Classic, current),
-				_1: {
-					ctor: '::',
-					_0: A4(_user$project$Race_View_Add$categoryButtonCheck, 'criterum', 'Criterium', _user$project$Race_Model$Criterium, current),
-					_1: {
-						ctor: '::',
-						_0: A4(_user$project$Race_View_Add$categoryButtonCheck, 'regiocross', 'Regiocross', _user$project$Race_Model$Regiocross, current),
-						_1: {
-							ctor: '::',
-							_0: A4(_user$project$Race_View_Add$categoryButtonCheck, 'other', 'Other', _user$project$Race_Model$Other, current),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
-			}
-		});
-};
-var _user$project$Race_View_Add$dateFormat = function (date) {
-	return A3(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config, '%Y-%m-%d', date);
-};
-var _user$project$Race_View_Add$render = function (raceAdd) {
-	var dateString = _user$project$Race_View_Add$dateFormat(raceAdd.calendar.value);
-	var name = raceAdd.name;
-	var submitDisabled = _elm_lang$core$Native_Utils.eq(name, '') || (_elm_lang$core$Native_Utils.cmp(
-		_elm_lang$core$String$length(name),
-		100) > 0);
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$h2,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('Add Race'),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('row'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('col s6 input-field'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$input,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$id('name'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$type_('text'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onInput(_user$project$App_Msg$RaceName),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$autofocus(true),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$value(name),
-																_1: {ctor: '[]'}
-															}
-														}
-													}
-												}
-											},
-											{ctor: '[]'}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$label,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$for('name'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Name'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
+var _user$project$App_Update$update = F2(
+	function (msg, app) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'Navigate':
+				return {
+					ctor: '_Tuple2',
+					_0: app,
+					_1: _user$project$App_Helpers$navigate(_p0._0)
+				};
+			case 'UrlUpdate':
+				return A2(_user$project$App_UrlUpdate$urlUpdate, _p0._0, app);
+			case 'Noop':
+				return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'Outside':
+				var _p1 = _p0._0;
+				switch (_p1.ctor) {
+					case 'RidersLoaded':
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								app,
 								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('row'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _user$project$Race_View_Add$categoryButtons(raceAdd.category),
-									_1: {ctor: '[]'}
+									riders: _elm_lang$core$Maybe$Just(_p1._0)
 								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{ctor: '[]'},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$map,
-											_user$project$App_Msg$Calendar,
-											A2(_gdotdesign$elm_ui$Ui_Calendar$view, 'en_us', raceAdd.calendar)),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('row'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$div,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('col s6'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$button,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('waves-effect waves-light btn'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$type_('submit'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Events$onClick(_user$project$App_Msg$RaceAddSubmit),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$name('action'),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
-																			_1: {ctor: '[]'}
-																		}
-																	}
-																}
-															}
-														},
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html$text('Add Race'),
-															_1: {
-																ctor: '::',
-																_0: A2(
-																	_elm_lang$html$Html$i,
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$class('material-icons right'),
-																		_1: {ctor: '[]'}
-																	},
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html$text('send'),
-																		_1: {ctor: '[]'}
-																	}),
-																_1: {ctor: '[]'}
-															}
-														}),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}
-							}
-						}
-					}),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-
-var _user$project$Race_View_List$countParticipants = F2(
-	function (raceKey, results) {
-		return _elm_lang$core$List$length(
-			A2(
-				_elm_lang$core$List$filter,
-				function (result) {
-					return _elm_lang$core$Native_Utils.eq(result.raceKey, raceKey);
-				},
-				results));
-	});
-var _user$project$Race_View_List$addButton = A2(
-	_elm_lang$html$Html$div,
-	{ctor: '[]'},
-	{
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$a,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$href('#races/add'),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('waves-effect waves-light btn'),
-					_1: {ctor: '[]'}
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					case 'RacesLoaded':
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								app,
+								{
+									races: _elm_lang$core$Maybe$Just(_p1._0)
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					case 'ResultsLoaded':
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								app,
+								{
+									results: _elm_lang$core$Maybe$Just(_p1._0)
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					case 'RaceAdded':
+						return {
+							ctor: '_Tuple2',
+							_0: app,
+							_1: _user$project$App_Helpers$navigate(
+								_user$project$App_Page$RaceDetails(_p1._0))
+						};
+					case 'RiderAdded':
+						return {
+							ctor: '_Tuple2',
+							_0: app,
+							_1: _user$project$App_Helpers$navigate(
+								_user$project$App_Page$RiderDetails(_p1._0))
+						};
+					default:
+						return {
+							ctor: '_Tuple2',
+							_0: app,
+							_1: _user$project$App_Helpers$navigate(
+								_user$project$App_Page$RaceDetails(_p1._0))
+						};
 				}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text('Add race'),
-				_1: {ctor: '[]'}
-			}),
-		_1: {ctor: '[]'}
-	});
-var _user$project$Race_View_List$dateFormat = function (date) {
-	return A3(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config, '%d-%m-%Y', date);
-};
-var _user$project$Race_View_List$raceTable = F2(
-	function (unsortedRaces, results) {
-		var races = _elm_lang$core$List$reverse(
-			A2(
-				_elm_lang$core$List$sortWith,
-				F2(
-					function (a, b) {
-						return A2(_justinmimbs$elm_date_extra$Date_Extra$compare, a.date, b.date);
-					}),
-				unsortedRaces));
-		return A2(
-			_elm_lang$html$Html$table,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$thead,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$tr,
-							{ctor: '[]'},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$th,
-									{ctor: '[]'},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Name'),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$th,
-										{ctor: '[]'},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Date'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$th,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Category'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$th,
-												{ctor: '[]'},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Riders'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}
-									}
-								}
-							}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$tbody,
-						{ctor: '[]'},
-						A2(
-							_elm_lang$core$List$map,
-							function (race) {
-								var dateString = _user$project$Race_View_List$dateFormat(race.date);
-								return A2(
-									_elm_lang$html$Html$tr,
-									{ctor: '[]'},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$td,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$a,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$href(
-															A2(_elm_lang$core$Basics_ops['++'], '#races/', race.key)),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text(race.name),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$td,
-												{ctor: '[]'},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text(dateString),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$td,
-													{ctor: '[]'},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text(
-															_elm_lang$core$Basics$toString(race.category)),
-														_1: {ctor: '[]'}
-													}),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$td,
-														{ctor: '[]'},
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html$text(
-																_elm_lang$core$Basics$toString(
-																	A2(_user$project$Race_View_List$countParticipants, race.key, results))),
-															_1: {ctor: '[]'}
-														}),
-													_1: {ctor: '[]'}
-												}
-											}
-										}
-									});
-							},
-							races)),
-					_1: {ctor: '[]'}
-				}
-			});
-	});
-var _user$project$Race_View_List$render = F2(
-	function (maybeRaces, maybeResults) {
-		return A2(
-			_elm_lang$html$Html$div,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$h2,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text('Races'),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: _user$project$Race_View_List$addButton,
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_user$project$Race_View_List$raceTable,
-							A2(
-								_elm_lang$core$Maybe$withDefault,
-								{ctor: '[]'},
-								maybeRaces),
-							A2(
-								_elm_lang$core$Maybe$withDefault,
-								{ctor: '[]'},
-								maybeResults)),
-						_1: {ctor: '[]'}
-					}
-				}
-			});
+			case 'LogErr':
+				return {
+					ctor: '_Tuple2',
+					_0: app,
+					_1: _user$project$App_OutsideInfo$sendInfoOutside(
+						_user$project$App_OutsideInfo$LogError(_p0._0))
+				};
+			case 'RaceAdd':
+				var _p2 = A2(_user$project$Page_Race_Add_Update$update, _p0._0, app);
+				var nextApp = _p2._0;
+				var nextCmd = _p2._1;
+				return {
+					ctor: '_Tuple2',
+					_0: nextApp,
+					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$RaceAdd, nextCmd)
+				};
+			case 'RiderAdd':
+				var _p3 = A2(_user$project$Page_Rider_Add_Update$update, _p0._0, app);
+				var nextApp = _p3._0;
+				var nextCmd = _p3._1;
+				return {
+					ctor: '_Tuple2',
+					_0: nextApp,
+					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$RiderAdd, nextCmd)
+				};
+			default:
+				var _p4 = A2(_user$project$Page_Result_Add_Update$update, _p0._0, app);
+				var nextApp = _p4._0;
+				var nextCmd = _p4._1;
+				return {
+					ctor: '_Tuple2',
+					_0: nextApp,
+					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$ResultAdd, nextCmd)
+				};
+		}
 	});
 
-var _user$project$Race_View_Details$getRiderById = F2(
-	function (key, riders) {
-		return _elm_lang$core$List$head(
-			A2(
-				_elm_lang$core$List$filter,
-				function (rider) {
-					return _elm_lang$core$Native_Utils.eq(rider.key, key);
-				},
-				riders));
-	});
-var _user$project$Race_View_Details$resultTd = function (result) {
+var _user$project$Page_Race_Details$resultTd = function (result) {
 	return A2(
 		_elm_lang$html$Html$td,
 		{ctor: '[]'},
@@ -26862,7 +22953,7 @@ var _user$project$Race_View_Details$resultTd = function (result) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Race_View_Details$resultRow = F2(
+var _user$project$Page_Race_Details$resultRow = F2(
 	function (result, riders) {
 		var maybeRider = _elm_lang$core$List$head(
 			A2(
@@ -26906,7 +22997,16 @@ var _user$project$Race_View_Details$resultRow = F2(
 									ctor: '::',
 									_0: _elm_lang$html$Html_Attributes$href(
 										A2(_elm_lang$core$Basics_ops['++'], '#riders/', _p1.key)),
-									_1: {ctor: '[]'}
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$style(
+											{
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'display', _1: 'block'},
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
 								},
 								{
 									ctor: '::',
@@ -26917,13 +23017,13 @@ var _user$project$Race_View_Details$resultRow = F2(
 						}),
 					_1: {
 						ctor: '::',
-						_0: _user$project$Race_View_Details$resultTd(result.result),
+						_0: _user$project$Page_Race_Details$resultTd(result.result),
 						_1: {ctor: '[]'}
 					}
 				});
 		}
 	});
-var _user$project$Race_View_Details$resultsByCategory = F3(
+var _user$project$Page_Race_Details$resultsByCategory = F3(
 	function (category, results, riders) {
 		var catResults = A2(
 			_elm_lang$core$List$sortBy,
@@ -27005,7 +23105,7 @@ var _user$project$Race_View_Details$resultsByCategory = F3(
 										A2(
 											_elm_lang$core$List$map,
 											function (result) {
-												return A2(_user$project$Race_View_Details$resultRow, result, riders);
+												return A2(_user$project$Page_Race_Details$resultRow, result, riders);
 											},
 											catResults)),
 									_1: {ctor: '[]'}
@@ -27016,20 +23116,50 @@ var _user$project$Race_View_Details$resultsByCategory = F3(
 				});
 		}
 	});
-var _user$project$Race_View_Details$resultsTable = F3(
-	function (race, results, riders) {
+var _user$project$Page_Race_Details$resultsTable = F2(
+	function (results, riders) {
 		return A2(
 			_elm_lang$html$Html$div,
 			{ctor: '[]'},
 			A2(
 				_elm_lang$core$List$map,
 				function (category) {
-					return A3(_user$project$Race_View_Details$resultsByCategory, category, results, riders);
+					return A3(_user$project$Page_Race_Details$resultsByCategory, category, results, riders);
 				},
-				_user$project$Result_Model$categories));
+				_user$project$Data_ResultCategory$resultCategories));
 	});
-var _user$project$Race_View_Details$addResultButton = function (race) {
-	var initialAdd = _user$project$Result_Model$initialAdd;
+var _user$project$Page_Race_Details$infoLi = F2(
+	function (label, spanText) {
+		return A2(
+			_elm_lang$html$Html$li,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('collection-item'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(label),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$span,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('secondary-content'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(spanText),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Page_Race_Details$addResultButton = function (race) {
+	var initialAdd = _user$project$Page_Result_Add_Model$initial;
 	var resultAdd = _elm_lang$core$Native_Utils.update(
 		initialAdd,
 		{raceKey: race.key});
@@ -27041,7 +23171,7 @@ var _user$project$Race_View_Details$addResultButton = function (race) {
 			_1: {
 				ctor: '::',
 				_0: _elm_lang$html$Html_Events$onClick(
-					_user$project$App_Msg$NavigateTo(
+					_user$project$App_Msg$Navigate(
 						_user$project$App_Page$ResultAdd(resultAdd))),
 				_1: {
 					ctor: '::',
@@ -27056,11 +23186,11 @@ var _user$project$Race_View_Details$addResultButton = function (race) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Race_View_Details$dateFormat = function (date) {
+var _user$project$Page_Race_Details$dateFormat = function (date) {
 	return A3(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config, '%Y-%m-%d', date);
 };
-var _user$project$Race_View_Details$info = function (race) {
-	var dateString = _user$project$Race_View_Details$dateFormat(race.date);
+var _user$project$Page_Race_Details$info = function (race) {
+	var dateString = _user$project$Page_Race_Details$dateFormat(race.date);
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -27088,123 +23218,23 @@ var _user$project$Race_View_Details$info = function (race) {
 						},
 						{
 							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$li,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('collection-item'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Name '),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$span,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('secondary-content'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text(race.name),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
-								}),
+							_0: A2(_user$project$Page_Race_Details$infoLi, 'Name ', race.name),
 							_1: {
 								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$li,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('collection-item'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Date '),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$span,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('secondary-content'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text(dateString),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}
-									}),
+								_0: A2(_user$project$Page_Race_Details$infoLi, 'Date ', dateString),
 								_1: {
 									ctor: '::',
 									_0: A2(
-										_elm_lang$html$Html$li,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('collection-item'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Category '),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$span,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('secondary-content'),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text(
-															_elm_lang$core$Basics$toString(race.category)),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}
-										}),
+										_user$project$Page_Race_Details$infoLi,
+										'Category ',
+										_elm_lang$core$Basics$toString(race.raceType)),
 									_1: {
 										ctor: '::',
 										_0: A2(
-											_elm_lang$html$Html$li,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('collection-item'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Points '),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$span,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('secondary-content'),
-															_1: {ctor: '[]'}
-														},
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html$text(
-																_elm_lang$core$Basics$toString(
-																	_user$project$App_Helpers$getPointsByCategory(race.category))),
-															_1: {ctor: '[]'}
-														}),
-													_1: {ctor: '[]'}
-												}
-											}),
+											_user$project$Page_Race_Details$infoLi,
+											'Points ',
+											_elm_lang$core$Basics$toString(
+												_user$project$Data_RaceType$getPointsByRaceType(race.raceType))),
 										_1: {ctor: '[]'}
 									}
 								}
@@ -27215,136 +23245,99 @@ var _user$project$Race_View_Details$info = function (race) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Race_View_Details$render = F2(
-	function (app, raceKey) {
-		var _p3 = {ctor: '_Tuple2', _0: app.races, _1: app.riders};
-		if (_p3._0.ctor === 'Nothing') {
-			if (_p3._1.ctor === 'Nothing') {
-				return A2(
-					_elm_lang$html$Html$div,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text('Races and riders not loaded.'),
-						_1: {ctor: '[]'}
-					});
-			} else {
-				return A2(
-					_elm_lang$html$Html$div,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text('Races not loaded.'),
-						_1: {ctor: '[]'}
-					});
-			}
+var _user$project$Page_Race_Details$view = F5(
+	function (_p3, raceKey, races, riders, results) {
+		var maybeRace = _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$filter,
+				function (race) {
+					return _elm_lang$core$Native_Utils.eq(race.key, raceKey);
+				},
+				races));
+		var _p4 = maybeRace;
+		if (_p4.ctor === 'Nothing') {
+			return A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Race does not exist'),
+					_1: {ctor: '[]'}
+				});
 		} else {
-			if (_p3._1.ctor === 'Nothing') {
-				return A2(
-					_elm_lang$html$Html$div,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text('Riders not loaded.'),
-						_1: {ctor: '[]'}
-					});
-			} else {
-				var maybeRace = _elm_lang$core$List$head(
-					A2(
-						_elm_lang$core$List$filter,
-						function (race) {
-							return _elm_lang$core$Native_Utils.eq(race.key, raceKey);
-						},
-						_p3._0._0));
-				var _p4 = maybeRace;
-				if (_p4.ctor === 'Nothing') {
-					return A2(
-						_elm_lang$html$Html$div,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Race does not exist'),
-							_1: {ctor: '[]'}
-						});
-				} else {
-					var _p5 = _p4._0;
-					var results = A2(
-						_elm_lang$core$List$filter,
-						function (result) {
-							return _elm_lang$core$Native_Utils.eq(result.raceKey, _p5.key);
-						},
-						A2(
-							_elm_lang$core$Maybe$withDefault,
-							{ctor: '[]'},
-							app.results));
-					return A2(
+			var _p5 = _p4._0;
+			var raceResults = A2(
+				_elm_lang$core$List$filter,
+				function (result) {
+					return _elm_lang$core$Native_Utils.eq(result.raceKey, _p5.key);
+				},
+				results);
+			return A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: A2(
 						_elm_lang$html$Html$div,
 						{ctor: '[]'},
 						{
 							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$div,
+								_elm_lang$html$Html$h2,
 								{ctor: '[]'},
 								{
 									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$h2,
-										{ctor: '[]'},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text(_p5.name),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: _user$project$Race_View_Details$info(_p5),
-										_1: {ctor: '[]'}
-									}
+									_0: _elm_lang$html$Html$text(_p5.name),
+									_1: {ctor: '[]'}
 								}),
 							_1: {
 								ctor: '::',
+								_0: _user$project$Page_Race_Details$info(_p5),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{ctor: '[]'},
+							{
+								ctor: '::',
 								_0: A2(
-									_elm_lang$html$Html$div,
+									_elm_lang$html$Html$h3,
 									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$h3,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Results'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: _user$project$Race_View_Details$addResultButton(_p5),
-											_1: {ctor: '[]'}
-										}
+										_0: _elm_lang$html$Html$text('Results'),
+										_1: {ctor: '[]'}
 									}),
 								_1: {
 									ctor: '::',
-									_0: A3(_user$project$Race_View_Details$resultsTable, _p5, results, _p3._1._0),
+									_0: _user$project$Page_Race_Details$addResultButton(_p5),
 									_1: {ctor: '[]'}
 								}
-							}
-						});
-				}
-			}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(_user$project$Page_Race_Details$resultsTable, raceResults, riders),
+							_1: {ctor: '[]'}
+						}
+					}
+				});
 		}
 	});
 
-var _user$project$Rider_View_List$countResultsByRiderId = F2(
-	function (riderKey, results) {
+var _user$project$Page_Race_List$countParticipants = F2(
+	function (raceKey, results) {
 		return _elm_lang$core$List$length(
 			A2(
 				_elm_lang$core$List$filter,
 				function (result) {
-					return _elm_lang$core$Native_Utils.eq(result.riderKey, riderKey);
+					return _elm_lang$core$Native_Utils.eq(result.raceKey, raceKey);
 				},
 				results));
 	});
-var _user$project$Rider_View_List$addButton = A2(
+var _user$project$Page_Race_List$addButton = A2(
 	_elm_lang$html$Html$div,
 	{ctor: '[]'},
 	{
@@ -27353,7 +23346,7 @@ var _user$project$Rider_View_List$addButton = A2(
 			_elm_lang$html$Html$a,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$href('#riders/add'),
+				_0: _elm_lang$html$Html_Attributes$href('#races/add'),
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$html$Html_Attributes$class('waves-effect waves-light btn'),
@@ -27362,12 +23355,295 @@ var _user$project$Rider_View_List$addButton = A2(
 			},
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html$text('Add rider'),
+				_0: _elm_lang$html$Html$text('Add race'),
 				_1: {ctor: '[]'}
 			}),
 		_1: {ctor: '[]'}
 	});
-var _user$project$Rider_View_List$render = function (riders) {
+var _user$project$Page_Race_List$dateFormat = function (date) {
+	return A3(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config, '%d-%m-%Y', date);
+};
+var _user$project$Page_Race_List$raceTable = F2(
+	function (unsortedRaces, results) {
+		var races = _elm_lang$core$List$reverse(
+			A2(
+				_elm_lang$core$List$sortWith,
+				F2(
+					function (ra, rb) {
+						return A2(_justinmimbs$elm_date_extra$Date_Extra$compare, ra.date, rb.date);
+					}),
+				unsortedRaces));
+		return A2(
+			_elm_lang$html$Html$table,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$thead,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$tr,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$th,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Name'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$th,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Date'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$th,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Category'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$th,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Riders'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$tbody,
+						{ctor: '[]'},
+						A2(
+							_elm_lang$core$List$map,
+							function (race) {
+								var dateString = _user$project$Page_Race_List$dateFormat(race.date);
+								return A2(
+									_elm_lang$html$Html$tr,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$td,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$a,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$href(
+															A2(_elm_lang$core$Basics_ops['++'], '#races/', race.key)),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$style(
+																{
+																	ctor: '::',
+																	_0: {ctor: '_Tuple2', _0: 'display', _1: 'block'},
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(race.name),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$td,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text(dateString),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$td,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(
+															_elm_lang$core$Basics$toString(race.raceType)),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$td,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text(
+																_elm_lang$core$Basics$toString(
+																	A2(_user$project$Page_Race_List$countParticipants, race.key, results))),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									});
+							},
+							races)),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Page_Race_List$view = F2(
+	function (races, results) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$h2,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Races'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _user$project$Page_Race_List$addButton,
+					_1: {
+						ctor: '::',
+						_0: A2(_user$project$Page_Race_List$raceTable, races, results),
+						_1: {ctor: '[]'}
+					}
+				}
+			});
+	});
+
+var _user$project$Page_Race_Add_View$raceTypeButtonCheck = F4(
+	function (raceTypeName, raceTypeText, raceType, current) {
+		var isChecked = _elm_lang$core$Native_Utils.eq(raceType, current);
+		return A2(
+			_elm_lang$html$Html$p,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$input,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$checked(isChecked),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$name('type'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$type_('radio'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$id(raceTypeName),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(
+											_user$project$Page_Race_Add_Msg$RaceType(raceType)),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$label,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$for(raceTypeName),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(raceTypeText),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Page_Race_Add_View$raceTypeButtons = function (current) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('col s6'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$label,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('active'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Category'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'classic', 'Klassieker', _user$project$Data_RaceType$Classic, current),
+				_1: {
+					ctor: '::',
+					_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'criterum', 'Criterium', _user$project$Data_RaceType$Criterium, current),
+					_1: {
+						ctor: '::',
+						_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'regiocross', 'Regiocross', _user$project$Data_RaceType$Regiocross, current),
+						_1: {
+							ctor: '::',
+							_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'other', 'Other', _user$project$Data_RaceType$Other, current),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		});
+};
+var _user$project$Page_Race_Add_View$view = function (raceAdd) {
+	var raceName = raceAdd.name;
+	var submitDisabled = _elm_lang$core$Native_Utils.eq(raceName, '') || (_elm_lang$core$Native_Utils.cmp(
+		_elm_lang$core$String$length(raceName),
+		100) > 0);
 	return A2(
 		_elm_lang$html$Html$div,
 		{ctor: '[]'},
@@ -27378,111 +23654,182 @@ var _user$project$Rider_View_List$render = function (riders) {
 				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Riders'),
+					_0: _elm_lang$html$Html$text('Add Race'),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
 				ctor: '::',
-				_0: _user$project$Rider_View_List$addButton,
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$table,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$thead,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$tr,
-										{ctor: '[]'},
-										{
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('row'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('col s6 input-field'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$input,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$id('name'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$type_('text'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Events$onInput(_user$project$Page_Race_Add_Msg$Name),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$autofocus(true),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$value(raceName),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											},
+											{ctor: '[]'}),
+										_1: {
 											ctor: '::',
 											_0: A2(
-												_elm_lang$html$Html$th,
-												{ctor: '[]'},
+												_elm_lang$html$Html$label,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$for('name'),
+													_1: {ctor: '[]'}
+												},
 												{
 													ctor: '::',
 													_0: _elm_lang$html$Html$text('Name'),
 													_1: {ctor: '[]'}
 												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$th,
-													{ctor: '[]'},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text('Licence'),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}
-										}),
+											_1: {ctor: '[]'}
+										}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('row'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _user$project$Page_Race_Add_View$raceTypeButtons(raceAdd.raceType),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
 								ctor: '::',
 								_0: A2(
-									_elm_lang$html$Html$tbody,
+									_elm_lang$html$Html$div,
 									{ctor: '[]'},
-									A2(
-										_elm_lang$core$List$map,
-										function (rider) {
-											return A2(
-												_elm_lang$html$Html$tr,
-												{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$map,
+											_user$project$Page_Race_Add_Msg$Calendar,
+											A2(_gdotdesign$elm_ui$Ui_Calendar$view, 'en_us', raceAdd.calendar)),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('row'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$div,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('col s6'),
+													_1: {ctor: '[]'}
+												},
 												{
 													ctor: '::',
 													_0: A2(
-														_elm_lang$html$Html$td,
-														{ctor: '[]'},
+														_elm_lang$html$Html$button,
 														{
 															ctor: '::',
-															_0: A2(
-																_elm_lang$html$Html$a,
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$href(
-																		A2(_elm_lang$core$Basics_ops['++'], '#riders/', rider.key)),
-																	_1: {ctor: '[]'}
-																},
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html$text(rider.name),
-																	_1: {ctor: '[]'}
-																}),
-															_1: {ctor: '[]'}
-														}),
-													_1: {
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$td,
-															{ctor: '[]'},
-															{
+															_0: _elm_lang$html$Html_Attributes$class('waves-effect waves-light btn'),
+															_1: {
 																ctor: '::',
-																_0: _elm_lang$html$Html$text(
-																	_elm_lang$core$Basics$toString(rider.licence)),
+																_0: _elm_lang$html$Html_Attributes$type_('submit'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Events$onClick(_user$project$Page_Race_Add_Msg$Submit),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$name('action'),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
+																			_1: {ctor: '[]'}
+																		}
+																	}
+																}
+															}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Add Race'),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$i,
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$class('material-icons right'),
+																		_1: {ctor: '[]'}
+																	},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text('send'),
+																		_1: {ctor: '[]'}
+																	}),
 																_1: {ctor: '[]'}
-															}),
-														_1: {ctor: '[]'}
-													}
-												});
-										},
-										riders)),
-								_1: {ctor: '[]'}
+															}
+														}),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
 							}
-						}),
-					_1: {ctor: '[]'}
-				}
+						}
+					}),
+				_1: {ctor: '[]'}
 			}
 		});
 };
 
-var _user$project$Rider_View_Details$info = F2(
+var _user$project$Page_Rider_Details$info = F2(
 	function (rider, points) {
 		return A2(
 			_elm_lang$html$Html$div,
@@ -27596,11 +23943,11 @@ var _user$project$Rider_View_Details$info = F2(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Rider_View_Details$dateFormat = function (date) {
+var _user$project$Page_Rider_Details$dateFormat = function (date) {
 	return A3(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config, '%Y-%m-%d', date);
 };
-var _user$project$Rider_View_Details$raceRow = F2(
-	function (result, races) {
+var _user$project$Page_Rider_Details$raceRow = F2(
+	function (races, result) {
 		var maybeRace = _elm_lang$core$List$head(
 			A2(
 				_elm_lang$core$List$filter,
@@ -27627,7 +23974,7 @@ var _user$project$Rider_View_Details$raceRow = F2(
 				});
 		} else {
 			var _p1 = _p0._0;
-			var dateString = _user$project$Rider_View_Details$dateFormat(_p1.date);
+			var dateString = _user$project$Page_Rider_Details$dateFormat(_p1.date);
 			return A2(
 				_elm_lang$html$Html$tr,
 				{ctor: '[]'},
@@ -27672,7 +24019,7 @@ var _user$project$Rider_View_Details$raceRow = F2(
 									ctor: '::',
 									_0: _elm_lang$html$Html$text(
 										_elm_lang$core$Basics$toString(
-											A2(_user$project$App_Helpers$getPointsByResult, result, races))),
+											A2(_user$project$Data_RaceResult$getPointsByResult, result, races))),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -27704,8 +24051,8 @@ var _user$project$Rider_View_Details$raceRow = F2(
 				});
 		}
 	});
-var _user$project$Rider_View_Details$resultsTable = F3(
-	function (rider, results, races) {
+var _user$project$Page_Rider_Details$resultsTable = F2(
+	function (results, races) {
 		return A2(
 			_elm_lang$html$Html$table,
 			{ctor: '[]'},
@@ -27784,478 +24131,23 @@ var _user$project$Rider_View_Details$resultsTable = F3(
 						{ctor: '[]'},
 						A2(
 							_elm_lang$core$List$map,
-							function (result) {
-								return A2(_user$project$Rider_View_Details$raceRow, result, races);
-							},
+							_user$project$Page_Rider_Details$raceRow(races),
 							results)),
 					_1: {ctor: '[]'}
 				}
 			});
 	});
-var _user$project$Rider_View_Details$render = F2(
-	function (app, riderKey) {
-		var _p2 = app.riders;
-		if (_p2.ctor === 'Just') {
-			var _p3 = app.races;
-			if (_p3.ctor === 'Just') {
-				var maybeRider = _elm_lang$core$List$head(
-					A2(
-						_elm_lang$core$List$filter,
-						function (rider) {
-							return _elm_lang$core$Native_Utils.eq(rider.key, riderKey);
-						},
-						_p2._0));
-				var _p4 = maybeRider;
-				if (_p4.ctor === 'Nothing') {
-					return A2(
-						_elm_lang$html$Html$div,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$h2,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Rider'),
-									_1: {ctor: '[]'}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$p,
-									{ctor: '[]'},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Rider does not exist.'),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							}
-						});
-				} else {
-					var _p5 = _p4._0;
-					var results = A2(
-						_elm_lang$core$List$filter,
-						function (result) {
-							return _elm_lang$core$Native_Utils.eq(result.riderKey, _p5.key);
-						},
-						A2(
-							_elm_lang$core$Maybe$withDefault,
-							{ctor: '[]'},
-							app.results));
-					var points = A2(_user$project$App_Helpers$getPointsByResults, results, _p3._0);
-					return A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('col s12'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$h2,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text(_p5.name),
-									_1: {ctor: '[]'}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(_user$project$Rider_View_Details$info, _p5, points),
-								_1: {
-									ctor: '::',
-									_0: A3(
-										_user$project$Rider_View_Details$resultsTable,
-										_p5,
-										results,
-										A2(
-											_elm_lang$core$Maybe$withDefault,
-											{ctor: '[]'},
-											app.races)),
-									_1: {ctor: '[]'}
-								}
-							}
-						});
-				}
-			} else {
-				return A2(
-					_elm_lang$html$Html$div,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text('No races loaded.'),
-						_1: {ctor: '[]'}
-					});
-			}
-		} else {
-			return A2(
-				_elm_lang$html$Html$div,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('No riders loaded.'),
-					_1: {ctor: '[]'}
-				});
-		}
-	});
-
-var _user$project$Result_View_List$resultsTable = function (results) {
-	return A2(
-		_elm_lang$html$Html$table,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$thead,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$tr,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$th,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('key'),
-									_1: {ctor: '[]'}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$th,
-									{ctor: '[]'},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('raceKey'),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$th,
-										{ctor: '[]'},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('riderKey'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$th,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Result'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
-								}
-							}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$tbody,
-					{ctor: '[]'},
-					A2(
-						_elm_lang$core$List$map,
-						function (result) {
-							return A2(
-								_elm_lang$html$Html$tr,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$td,
-										{ctor: '[]'},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text(result.key),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$td,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text(
-													_elm_lang$core$Basics$toString(result.raceKey)),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$td,
-												{ctor: '[]'},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text(
-														_elm_lang$core$Basics$toString(result.riderKey)),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$td,
-													{ctor: '[]'},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text(result.result),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}
-										}
-									}
-								});
-						},
-						results)),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _user$project$Result_View_List$render = function (maybeResults) {
-	var _p0 = maybeResults;
-	if (_p0.ctor === 'Nothing') {
-		return A2(
-			_elm_lang$html$Html$div,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text('No results loaded'),
-				_1: {ctor: '[]'}
-			});
-	} else {
-		return _user$project$Result_View_List$resultsTable(_p0._0);
-	}
-};
-
-var _user$project$Result_View_Add$outfitButton = F4(
-	function (outfitName, outfitLabel, outfit, isChecked) {
-		return A2(
-			_elm_lang$html$Html$p,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$input,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$checked(isChecked),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$name('outfit'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$type_('radio'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$id(outfitName),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Events$onClick(
-											_user$project$App_Msg$ResultAddOutfit(outfit)),
-										_1: {ctor: '[]'}
-									}
-								}
-							}
-						}
-					},
-					{ctor: '[]'}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$label,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$for(outfitName),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(outfitLabel),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
-			});
-	});
-var _user$project$Result_View_Add$outfitButtons = A2(
-	_elm_lang$html$Html$div,
-	{ctor: '[]'},
-	{
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$label,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$for('result'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text('Outfit'),
-				_1: {ctor: '[]'}
-			}),
-		_1: {
-			ctor: '::',
-			_0: A4(_user$project$Result_View_Add$outfitButton, 'wtos', 'WTOS', _user$project$Result_Model$WTOS, true),
-			_1: {
-				ctor: '::',
-				_0: A4(_user$project$Result_View_Add$outfitButton, 'wasp', 'WASP', _user$project$Result_Model$WASP, false),
-				_1: {
-					ctor: '::',
-					_0: A4(_user$project$Result_View_Add$outfitButton, 'other', 'Other', _user$project$Result_Model$Other, false),
-					_1: {ctor: '[]'}
-				}
-			}
-		}
-	});
-var _user$project$Result_View_Add$categoryButtonCheck = F4(
-	function (categoryName, categoryText, category, isChecked) {
-		return A2(
-			_elm_lang$html$Html$p,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$input,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$checked(isChecked),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$name('category'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$type_('radio'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$id(categoryName),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Events$onClick(
-											_user$project$App_Msg$ResultAddCategory(category)),
-										_1: {ctor: '[]'}
-									}
-								}
-							}
-						}
-					},
-					{ctor: '[]'}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$label,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$for(categoryName),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(categoryText),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
-			});
-	});
-var _user$project$Result_View_Add$categoryButton = F3(
-	function (categoryName, categoryText, category) {
-		return A4(_user$project$Result_View_Add$categoryButtonCheck, categoryName, categoryText, category, false);
-	});
-var _user$project$Result_View_Add$categoryButtons = A2(
-	_elm_lang$html$Html$div,
-	{ctor: '[]'},
-	{
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$label,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$for('result'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text('Category'),
-				_1: {ctor: '[]'}
-			}),
-		_1: {
-			ctor: '::',
-			_0: A4(_user$project$Result_View_Add$categoryButtonCheck, 'amateurs', 'Amateurs', _user$project$Result_Model$Amateurs, true),
-			_1: {
-				ctor: '::',
-				_0: A3(_user$project$Result_View_Add$categoryButton, 'basislidmaatschap', 'Basislidmaatschap', _user$project$Result_Model$Basislidmaatschap),
-				_1: {
-					ctor: '::',
-					_0: A3(_user$project$Result_View_Add$categoryButton, 'cata', 'Cat A', _user$project$Result_Model$CatA),
-					_1: {
-						ctor: '::',
-						_0: A3(_user$project$Result_View_Add$categoryButton, 'catb', 'Cat B', _user$project$Result_Model$CatB),
-						_1: {ctor: '[]'}
-					}
-				}
-			}
-		}
-	});
-var _user$project$Result_View_Add$resultExists = F3(
-	function (rider, race, results) {
-		return _elm_lang$core$Native_Utils.eq(
-			_elm_lang$core$List$length(
-				A2(
-					_elm_lang$core$List$filter,
-					function (result) {
-						return _elm_lang$core$Native_Utils.eq(race.key, result.raceKey) && _elm_lang$core$Native_Utils.eq(rider.key, result.riderKey);
-					},
-					results)),
-			1);
-	});
-var _user$project$Result_View_Add$render = F4(
-	function (race, resultAdd, riders, maybeResults) {
-		var submitDisabled = _elm_lang$core$String$isEmpty(resultAdd.result);
-		var results = A2(
-			_elm_lang$core$Maybe$withDefault,
-			{ctor: '[]'},
-			maybeResults);
-		var filteredRiders = A2(
-			_elm_lang$core$List$filter,
-			function (rider) {
-				return !A3(_user$project$Result_View_Add$resultExists, rider, race, results);
-			},
-			riders);
-		var items = A2(
-			_elm_lang$core$List$map,
-			function (rider) {
-				return {id: rider.key, label: rider.name, value: rider.key};
-			},
-			filteredRiders);
-		var chooser = A2(_gdotdesign$elm_ui$Ui_Chooser$items, items, resultAdd.chooser);
-		var _p0 = maybeResults;
-		if (_p0.ctor === 'Nothing') {
-			return A2(
-				_elm_lang$html$Html$div,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('Results not loaded yet'),
-					_1: {ctor: '[]'}
-				});
-		} else {
+var _user$project$Page_Rider_Details$view = F5(
+	function (_p2, riderKey, races, riders, results) {
+		var maybeRider = _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$filter,
+				function (rider) {
+					return _elm_lang$core$Native_Utils.eq(rider.key, riderKey);
+				},
+				riders));
+		var _p3 = maybeRider;
+		if (_p3.ctor === 'Nothing') {
 			return A2(
 				_elm_lang$html$Html$div,
 				{ctor: '[]'},
@@ -28266,230 +24158,234 @@ var _user$project$Result_View_Add$render = F4(
 						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(
-								A2(_elm_lang$core$Basics_ops['++'], 'Add result for ', race.name)),
+							_0: _elm_lang$html$Html$text('Rider'),
 							_1: {ctor: '[]'}
 						}),
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$div,
+							_elm_lang$html$Html$p,
+							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('row'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('input-field col s6'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$input,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$id('result'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$type_('text'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onInput(_user$project$App_Msg$ResultAddResult),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$autofocus(true),
-															_1: {ctor: '[]'}
-														}
-													}
-												}
-											},
-											{ctor: '[]'}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$label,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$for('result'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Result'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}
-									}),
+								_0: _elm_lang$html$Html$text('Rider does not exist.'),
 								_1: {ctor: '[]'}
 							}),
+						_1: {ctor: '[]'}
+					}
+				});
+		} else {
+			var _p4 = _p3._0;
+			var riderResults = A2(
+				_elm_lang$core$List$filter,
+				function (result) {
+					return _elm_lang$core$Native_Utils.eq(result.riderKey, _p4.key);
+				},
+				results);
+			var points = A2(_user$project$Data_RaceResult$getPointsByResults, riderResults, races);
+			return A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('col s12'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$h2,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(_p4.name),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(_user$project$Page_Rider_Details$info, _p4, points),
 						_1: {
 							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('row'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('input-field col s6'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$div,
-												{ctor: '[]'},
-												{
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$map,
-														_user$project$App_Msg$Chooser,
-														_gdotdesign$elm_ui$Ui_Chooser$view(chooser)),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$label,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$for('rider'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('active'),
-															_1: {ctor: '[]'}
-														}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text('Rider'),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}
-										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('row'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _user$project$Result_View_Add$categoryButtons,
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('row'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _user$project$Result_View_Add$outfitButtons,
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$div,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('row'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$button,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('waves-effect waves-light btn'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$type_('submit'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onClick(_user$project$App_Msg$ResultAddSubmit),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$name('action'),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
-																		_1: {ctor: '[]'}
-																	}
-																}
-															}
-														}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text('Add result'),
-														_1: {
-															ctor: '::',
-															_0: A2(
-																_elm_lang$html$Html$i,
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$class('material-icons right'),
-																	_1: {ctor: '[]'}
-																},
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html$text('send'),
-																	_1: {ctor: '[]'}
-																}),
-															_1: {ctor: '[]'}
-														}
-													}),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
-								}
-							}
+							_0: A2(_user$project$Page_Rider_Details$resultsTable, riderResults, races),
+							_1: {ctor: '[]'}
 						}
 					}
 				});
 		}
 	});
-var _user$project$Result_View_Add$riderNameExists = F2(
-	function (name, riders) {
-		return _elm_lang$core$Native_Utils.cmp(
-			_elm_lang$core$List$length(
-				A2(
-					_elm_lang$core$List$filter,
-					function (rider) {
-						return _elm_lang$core$Native_Utils.eq(rider.name, name);
-					},
-					riders)),
-			0) > 0;
+
+var _user$project$Page_Rider_List$addButton = A2(
+	_elm_lang$html$Html$div,
+	{ctor: '[]'},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$a,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$href('#riders/add'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('waves-effect waves-light btn'),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Add rider'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {ctor: '[]'}
+	});
+var _user$project$Page_Rider_List$view = F3(
+	function (riders, races, results) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$h2,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Riders'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _user$project$Page_Rider_List$addButton,
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$table,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$thead,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$tr,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$th,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Name'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$th,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Licence'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$th,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('Points'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}
+												}
+											}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$tbody,
+										{ctor: '[]'},
+										A2(
+											_elm_lang$core$List$map,
+											function (rider) {
+												return A2(
+													_elm_lang$html$Html$tr,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$td,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$a,
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$href(
+																			A2(_elm_lang$core$Basics_ops['++'], '#riders/', rider.key)),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$style(
+																				{
+																					ctor: '::',
+																					_0: {ctor: '_Tuple2', _0: 'display', _1: 'block'},
+																					_1: {ctor: '[]'}
+																				}),
+																			_1: {ctor: '[]'}
+																		}
+																	},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text(rider.name),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$td,
+																{ctor: '[]'},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text(
+																		_elm_lang$core$Basics$toString(rider.licence)),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$td,
+																	{ctor: '[]'},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text(
+																			_elm_lang$core$Basics$toString(
+																				A3(_user$project$Data_Rider$getPointsByRiderId, rider.key, results, races))),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}
+													});
+											},
+											riders)),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}
+			});
 	});
 
-var _user$project$Rider_View_Add$categoryButtonCheck = F4(
+var _user$project$Page_Rider_Add_View$licenceButtonCheck = F4(
 	function (categoryName, categoryText, categoryModel, maybeCurrent) {
 		var isChecked = function () {
 			var _p0 = maybeCurrent;
@@ -28521,7 +24417,7 @@ var _user$project$Rider_View_Add$categoryButtonCheck = F4(
 									_1: {
 										ctor: '::',
 										_0: _elm_lang$html$Html_Events$onClick(
-											_user$project$App_Msg$RiderAddLicence(categoryModel)),
+											_user$project$Page_Rider_Add_Msg$Licence(categoryModel)),
 										_1: {ctor: '[]'}
 									}
 								}
@@ -28547,7 +24443,7 @@ var _user$project$Rider_View_Add$categoryButtonCheck = F4(
 				}
 			});
 	});
-var _user$project$Rider_View_Add$categoryButtons = function (maybeCurrent) {
+var _user$project$Page_Rider_Add_View$licenceButtons = function (maybeCurrent) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -28571,16 +24467,16 @@ var _user$project$Rider_View_Add$categoryButtons = function (maybeCurrent) {
 				}),
 			_1: {
 				ctor: '::',
-				_0: A4(_user$project$Rider_View_Add$categoryButtonCheck, 'elite', 'Elite', _user$project$Rider_Model$Elite, maybeCurrent),
+				_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'elite', 'Elite', _user$project$Data_Licence$Elite, maybeCurrent),
 				_1: {
 					ctor: '::',
-					_0: A4(_user$project$Rider_View_Add$categoryButtonCheck, 'amateurs', 'Amateurs', _user$project$Rider_Model$Amateurs, maybeCurrent),
+					_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'amateurs', 'Amateurs', _user$project$Data_Licence$Amateurs, maybeCurrent),
 					_1: {
 						ctor: '::',
-						_0: A4(_user$project$Rider_View_Add$categoryButtonCheck, 'basislidmaatschap', 'Basislidmaatschap', _user$project$Rider_Model$Basislidmaatschap, maybeCurrent),
+						_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'basislidmaatschap', 'Basislidmaatschap', _user$project$Data_Licence$Basislidmaatschap, maybeCurrent),
 						_1: {
 							ctor: '::',
-							_0: A4(_user$project$Rider_View_Add$categoryButtonCheck, 'other', 'Other', _user$project$Rider_Model$Other, maybeCurrent),
+							_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'other', 'Other', _user$project$Data_Licence$Other, maybeCurrent),
 							_1: {ctor: '[]'}
 						}
 					}
@@ -28588,10 +24484,10 @@ var _user$project$Rider_View_Add$categoryButtons = function (maybeCurrent) {
 			}
 		});
 };
-var _user$project$Rider_View_Add$render = function (add) {
-	var name = add.name;
-	var submitDisabled = _elm_lang$core$Native_Utils.eq(name, '') || (_elm_lang$core$Native_Utils.eq(add.licence, _elm_lang$core$Maybe$Nothing) || (_elm_lang$core$Native_Utils.cmp(
-		_elm_lang$core$String$length(name),
+var _user$project$Page_Rider_Add_View$view = function (add) {
+	var riderName = add.name;
+	var submitDisabled = _elm_lang$core$Native_Utils.eq(riderName, '') || (_elm_lang$core$Native_Utils.eq(add.licence, _elm_lang$core$Maybe$Nothing) || (_elm_lang$core$Native_Utils.cmp(
+		_elm_lang$core$String$length(riderName),
 		100) > 0));
 	return A2(
 		_elm_lang$html$Html$div,
@@ -28641,13 +24537,13 @@ var _user$project$Rider_View_Add$render = function (add) {
 													_0: _elm_lang$html$Html_Attributes$type_('text'),
 													_1: {
 														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onInput(_user$project$App_Msg$RiderAddName),
+														_0: _elm_lang$html$Html_Events$onInput(_user$project$Page_Rider_Add_Msg$Name),
 														_1: {
 															ctor: '::',
 															_0: _elm_lang$html$Html_Attributes$autofocus(true),
 															_1: {
 																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$value(name),
+																_0: _elm_lang$html$Html_Attributes$value(riderName),
 																_1: {ctor: '[]'}
 															}
 														}
@@ -28685,7 +24581,7 @@ var _user$project$Rider_View_Add$render = function (add) {
 								},
 								{
 									ctor: '::',
-									_0: _user$project$Rider_View_Add$categoryButtons(add.licence),
+									_0: _user$project$Page_Rider_Add_View$licenceButtons(add.licence),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -28718,7 +24614,7 @@ var _user$project$Rider_View_Add$render = function (add) {
 															_0: _elm_lang$html$Html_Attributes$type_('submit'),
 															_1: {
 																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onClick(_user$project$App_Msg$RiderAddSubmit),
+																_0: _elm_lang$html$Html_Events$onClick(_user$project$Page_Rider_Add_Msg$Submit),
 																_1: {
 																	ctor: '::',
 																	_0: _elm_lang$html$Html_Attributes$name('action'),
@@ -28764,95 +24660,521 @@ var _user$project$Rider_View_Add$render = function (add) {
 		});
 };
 
-var _user$project$App_View$getRace = F2(
-	function (raceKey, races) {
-		return _elm_lang$core$List$head(
-			A2(
-				_elm_lang$core$List$filter,
-				function (race) {
-					return _elm_lang$core$Native_Utils.eq(race.key, raceKey);
-				},
-				races));
-	});
-var _user$project$App_View$viewMessage = function (reponse) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text(reponse),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$App_View$header = function (app) {
-	return A2(
-		_elm_lang$html$Html$nav,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('nav-wrapper blue darken-4'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$a,
-						{
+var _user$project$Page_Result_Add_View$outfitButton = F4(
+	function (outfitName, outfitLabel, outfit, isChecked) {
+		return A2(
+			_elm_lang$html$Html$p,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$input,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$checked(isChecked),
+						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('brand-logo left'),
+							_0: _elm_lang$html$Html_Attributes$name('outfit'),
 							_1: {
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$href('#races'),
-								_1: {ctor: '[]'}
+								_0: _elm_lang$html$Html_Attributes$type_('radio'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$id(outfitName),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(
+											_user$project$Page_Result_Add_Msg$Outfit(outfit)),
+										_1: {ctor: '[]'}
+									}
+								}
 							}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$label,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$for(outfitName),
+							_1: {ctor: '[]'}
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text('WRS'),
+							_0: _elm_lang$html$Html$text(outfitLabel),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Page_Result_Add_View$outfitButtons = A2(
+	_elm_lang$html$Html$div,
+	{ctor: '[]'},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$label,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$for('result'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Outfit'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A4(_user$project$Page_Result_Add_View$outfitButton, 'wtos', 'WTOS', _user$project$Data_Outfit$WTOS, true),
+			_1: {
+				ctor: '::',
+				_0: A4(_user$project$Page_Result_Add_View$outfitButton, 'wasp', 'WASP', _user$project$Data_Outfit$WASP, false),
+				_1: {
+					ctor: '::',
+					_0: A4(_user$project$Page_Result_Add_View$outfitButton, 'other', 'Other', _user$project$Data_Outfit$Other, false),
+					_1: {ctor: '[]'}
+				}
+			}
+		}
+	});
+var _user$project$Page_Result_Add_View$resultCategoryButtonCheck = F4(
+	function (resultCategoryName, resultCategoryText, category, isChecked) {
+		return A2(
+			_elm_lang$html$Html$p,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$input,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$checked(isChecked),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$name('resultCategory'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$type_('radio'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$id(resultCategoryName),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(
+											_user$project$Page_Result_Add_Msg$Category(category)),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$label,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$for(resultCategoryName),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(resultCategoryText),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Page_Result_Add_View$resultCategoryButton = F3(
+	function (resultCategoryName, resultCategoryText, resultCategory) {
+		return A4(_user$project$Page_Result_Add_View$resultCategoryButtonCheck, resultCategoryName, resultCategoryText, resultCategory, false);
+	});
+var _user$project$Page_Result_Add_View$resultCategoryButtons = A2(
+	_elm_lang$html$Html$div,
+	{ctor: '[]'},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$label,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$for('result'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Category'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A4(_user$project$Page_Result_Add_View$resultCategoryButtonCheck, 'amateurs', 'Amateurs', _user$project$Data_ResultCategory$Amateurs, true),
+			_1: {
+				ctor: '::',
+				_0: A3(_user$project$Page_Result_Add_View$resultCategoryButton, 'basislidmaatschap', 'Basislidmaatschap', _user$project$Data_ResultCategory$Basislidmaatschap),
+				_1: {
+					ctor: '::',
+					_0: A3(_user$project$Page_Result_Add_View$resultCategoryButton, 'cata', 'Cat A', _user$project$Data_ResultCategory$CatA),
+					_1: {
+						ctor: '::',
+						_0: A3(_user$project$Page_Result_Add_View$resultCategoryButton, 'catb', 'Cat B', _user$project$Data_ResultCategory$CatB),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		}
+	});
+var _user$project$Page_Result_Add_View$resultExists = F3(
+	function (rider, race, results) {
+		return _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$List$length(
+				A2(
+					_elm_lang$core$List$filter,
+					function (result) {
+						return _elm_lang$core$Native_Utils.eq(race.key, result.raceKey) && _elm_lang$core$Native_Utils.eq(rider.key, result.riderKey);
+					},
+					results)),
+			1);
+	});
+var _user$project$Page_Result_Add_View$view = F4(
+	function (race, resultAdd, riders, results) {
+		var filteredRiders = A2(
+			_elm_lang$core$List$filter,
+			function (rider) {
+				return !A3(_user$project$Page_Result_Add_View$resultExists, rider, race, results);
+			},
+			riders);
+		var items = A2(
+			_elm_lang$core$List$map,
+			function (rider) {
+				return {id: rider.key, label: rider.name, value: rider.key};
+			},
+			filteredRiders);
+		var chooser = A2(_gdotdesign$elm_ui$Ui_Chooser$items, items, resultAdd.chooser);
+		var submitDisabled = _elm_lang$core$String$isEmpty(resultAdd.result);
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$h2,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							A2(_elm_lang$core$Basics_ops['++'], 'Add result for ', race.name)),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('row'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('input-field col s6'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$input,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$id('result'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$type_('text'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Events$onInput(_user$project$Page_Result_Add_Msg$Result),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$autofocus(true),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$label,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$for('result'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Result'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}),
 							_1: {ctor: '[]'}
 						}),
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$ul,
+							_elm_lang$html$Html$div,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$id('nav-mobile'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('right'),
-									_1: {ctor: '[]'}
-								}
+								_0: _elm_lang$html$Html_Attributes$class('row'),
+								_1: {ctor: '[]'}
 							},
 							{
 								ctor: '::',
 								_0: A2(
-									_elm_lang$html$Html$li,
-									{ctor: '[]'},
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('input-field col s6'),
+										_1: {ctor: '[]'}
+									},
 									{
 										ctor: '::',
 										_0: A2(
-											_elm_lang$html$Html$a,
+											_elm_lang$html$Html$div,
+											{ctor: '[]'},
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$href('#races'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Races'),
+												_0: A2(
+													_elm_lang$html$Html$map,
+													_user$project$Page_Result_Add_Msg$Chooser,
+													_gdotdesign$elm_ui$Ui_Chooser$view(chooser)),
 												_1: {ctor: '[]'}
 											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$label,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$for('rider'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('active'),
+														_1: {ctor: '[]'}
+													}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Rider'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('row'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _user$project$Page_Result_Add_View$resultCategoryButtons,
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('row'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _user$project$Page_Result_Add_View$outfitButtons,
 										_1: {ctor: '[]'}
 									}),
 								_1: {
 									ctor: '::',
 									_0: A2(
-										_elm_lang$html$Html$li,
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('row'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$button,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('waves-effect waves-light btn'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$type_('submit'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Events$onClick(_user$project$Page_Result_Add_Msg$Submit),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$name('action'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
+																	_1: {ctor: '[]'}
+																}
+															}
+														}
+													}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Add result'),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$i,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('material-icons right'),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('send'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}
+			});
+	});
+
+var _user$project$App_View$raceLi = function (race) {
+	return A2(
+		_elm_lang$html$Html$li,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$a,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('collection-item'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$href(
+							A2(_elm_lang$core$Basics_ops['++'], '#races/', race.key)),
+						_1: {ctor: '[]'}
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(race.name),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$App_View$headerLi = F2(
+	function (url, label) {
+		return A2(
+			_elm_lang$html$Html$li,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('collection-header'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$h4,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$a,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$href(url),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(label),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$App_View$sidebar = function (races) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h2,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('WRS'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$ul,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('collection'),
+						_1: {ctor: '[]'}
+					},
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$li,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('collection-header'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$h4,
 										{ctor: '[]'},
 										{
 											ctor: '::',
@@ -28860,144 +25182,71 @@ var _user$project$App_View$header = function (app) {
 												_elm_lang$html$Html$a,
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$href('#riders'),
+													_0: _elm_lang$html$Html_Attributes$href('#races'),
 													_1: {ctor: '[]'}
 												},
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html$text('Riders'),
+													_0: _elm_lang$html$Html$text('Races'),
 													_1: {ctor: '[]'}
 												}),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {ctor: '[]'}
-					}
-				}),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$App_View$userLi = function (app) {
-	return {
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$li,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$a,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$href('#races'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text('Races'),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			}),
-		_1: {
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$li,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$a,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$href('#riders'),
+								}),
 							_1: {ctor: '[]'}
 						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Riders'),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		}
-	};
-};
-var _user$project$App_View$viewPage = function (app) {
-	var _p0 = app.page;
-	switch (_p0.ctor) {
-		case 'Riders':
-			var _p1 = app.riders;
-			if (_p1.ctor === 'Just') {
-				return _user$project$Rider_View_List$render(_p1._0);
-			} else {
-				return A2(
-					_elm_lang$html$Html$div,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text('No riders loaded.'),
-						_1: {ctor: '[]'}
-					});
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							A2(
+								_elm_lang$core$List$map,
+								_user$project$App_View$raceLi,
+								_user$project$Data_Race$lastRaces(races)),
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$li,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('collection-header'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$h4,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$a,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$href('#riders'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Riders'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(_user$project$App_View$headerLi, 'https://wtos.nl/topic/het-grote-verslagentopic-van-michiel/', 'Verslagen'),
+									_1: {
+										ctor: '::',
+										_0: A2(_user$project$App_View$headerLi, 'https://wtos.nl/topic/wedstrijdrennerssysteem-v3/', 'Feedback'),
+										_1: {ctor: '[]'}
+									}
+								}
+							}))),
+				_1: {ctor: '[]'}
 			}
-		case 'RiderDetails':
-			return A2(_user$project$Rider_View_Details$render, app, _p0._0);
-		case 'RiderAdd':
-			return _user$project$Rider_View_Add$render(_p0._0);
-		case 'Races':
-			return A2(_user$project$Race_View_List$render, app.races, app.results);
-		case 'RaceDetails':
-			return A2(_user$project$Race_View_Details$render, app, _p0._0);
-		case 'RaceAdd':
-			return _user$project$Race_View_Add$render(_p0._0);
-		default:
-			var _p3 = _p0._0;
-			var maybeRace = A2(
-				_user$project$App_View$getRace,
-				_p3.raceKey,
-				A2(
-					_elm_lang$core$Maybe$withDefault,
-					{ctor: '[]'},
-					app.races));
-			var _p2 = {ctor: '_Tuple2', _0: maybeRace, _1: app.riders};
-			if (_p2._0.ctor === 'Nothing') {
-				if (_p2._1.ctor === 'Nothing') {
-					return A2(
-						_elm_lang$html$Html$div,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Race does not exist and riders not loaded.'),
-							_1: {ctor: '[]'}
-						});
-				} else {
-					return A2(
-						_elm_lang$html$Html$div,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Race does not exist.'),
-							_1: {ctor: '[]'}
-						});
-				}
-			} else {
-				if (_p2._1.ctor === 'Nothing') {
-					return A2(
-						_elm_lang$html$Html$div,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Riders not yet loaded.'),
-							_1: {ctor: '[]'}
-						});
-				} else {
-					return A4(_user$project$Result_View_Add$render, _p2._0._0, _p3, _p2._1._0, app.results);
-				}
-			}
-	}
+		});
 };
 var _user$project$App_View$spinner = A2(
 	_elm_lang$html$Html$div,
@@ -29084,191 +25333,90 @@ var _user$project$App_View$spinner = A2(
 			}),
 		_1: {ctor: '[]'}
 	});
-var _user$project$App_View$raceLi = function (race) {
-	return A2(
-		_elm_lang$html$Html$li,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$a,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('collection-item'),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$href(
-							A2(_elm_lang$core$Basics_ops['++'], '#races/', race.key)),
-						_1: {ctor: '[]'}
-					}
-				},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text(race.name),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$App_View$lastRaces = function (maybeRaces) {
-	return A2(
-		_elm_lang$core$List$map,
-		_user$project$App_View$raceLi,
-		A2(
-			_elm_lang$core$List$take,
-			5,
-			_elm_lang$core$List$reverse(
-				A2(
-					_elm_lang$core$List$sortWith,
-					F2(
-						function (a, b) {
-							return A2(_justinmimbs$elm_date_extra$Date_Extra$compare, a.date, b.date);
-						}),
-					A2(
-						_elm_lang$core$Maybe$withDefault,
+var _user$project$App_View$viewPage = F4(
+	function (app, races, riders, results) {
+		var _p0 = app.page;
+		switch (_p0.ctor) {
+			case 'RiderDetails':
+				return A5(_user$project$Page_Rider_Details$view, app, _p0._0, races, riders, results);
+			case 'Riders':
+				return A3(_user$project$Page_Rider_List$view, riders, races, results);
+			case 'RiderAdd':
+				return A2(
+					_elm_lang$html$Html$map,
+					_user$project$App_Msg$RiderAdd,
+					_user$project$Page_Rider_Add_View$view(_p0._0));
+			case 'RaceDetails':
+				return A5(_user$project$Page_Race_Details$view, app, _p0._0, races, riders, results);
+			case 'Races':
+				return A2(_user$project$Page_Race_List$view, races, results);
+			case 'RaceAdd':
+				return A2(
+					_elm_lang$html$Html$map,
+					_user$project$App_Msg$RaceAdd,
+					_user$project$Page_Race_Add_View$view(_p0._0));
+			default:
+				var _p2 = _p0._0;
+				var maybeRace = A2(_user$project$Data_Race$getRace, _p2.raceKey, races);
+				var _p1 = maybeRace;
+				if (_p1.ctor === 'Just') {
+					return A2(
+						_elm_lang$html$Html$map,
+						_user$project$App_Msg$ResultAdd,
+						A4(_user$project$Page_Result_Add_View$view, _p1._0, _p2, riders, results));
+				} else {
+					return A2(
+						_elm_lang$html$Html$div,
 						{ctor: '[]'},
-						maybeRaces)))));
-};
-var _user$project$App_View$sidebar = function (app) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$h2,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('WRS'),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$ul,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('collection'),
-						_1: {ctor: '[]'}
-					},
-					A2(
-						_elm_lang$core$Basics_ops['++'],
 						{
 							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$li,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('collection-header'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$h4,
-										{ctor: '[]'},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$a,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$href('#riders'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Riders'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}),
+							_0: _elm_lang$html$Html$text('Race does not exist.'),
 							_1: {ctor: '[]'}
-						},
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$li,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('collection-header'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$h4,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$a,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$href('#races'),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text('Races'),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							},
-							_user$project$App_View$lastRaces(app.races)))),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _user$project$App_View$mainView = function (app) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('col s3 m4'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: _user$project$App_View$sidebar(app),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
+						});
+				}
+		}
+	});
+var _user$project$App_View$mainView = F4(
+	function (app, races, riders, results) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{
 				ctor: '::',
 				_0: A2(
 					_elm_lang$html$Html$div,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('col s9 m8'),
+						_0: _elm_lang$html$Html_Attributes$class('col s3 m4'),
 						_1: {ctor: '[]'}
 					},
 					{
 						ctor: '::',
-						_0: _user$project$App_View$viewPage(app),
+						_0: _user$project$App_View$sidebar(races),
 						_1: {ctor: '[]'}
 					}),
-				_1: {ctor: '[]'}
-			}
-		});
-};
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('col s9 m8'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A4(_user$project$App_View$viewPage, app, races, riders, results),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
 var _user$project$App_View$loadingPage = function (app) {
-	var _p4 = {ctor: '_Tuple2', _0: app.races, _1: app.riders};
-	if ((_p4._0.ctor === 'Just') && (_p4._1.ctor === 'Just')) {
-		return _user$project$App_View$mainView(app);
+	var _p3 = {ctor: '_Tuple3', _0: app.races, _1: app.riders, _2: app.results};
+	if (((_p3._0.ctor === 'Just') && (_p3._1.ctor === 'Just')) && (_p3._2.ctor === 'Just')) {
+		return A4(_user$project$App_View$mainView, app, _p3._0._0, _p3._1._0, _p3._2._0);
 	} else {
 		return A2(
 			_elm_lang$html$Html$div,
@@ -29295,7 +25443,7 @@ var _user$project$App_View$loadingPage = function (app) {
 			});
 	}
 };
-var _user$project$App_View$render = function (app) {
+var _user$project$App_View$view = function (app) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -29321,76 +25469,30 @@ var _user$project$App_View$render = function (app) {
 		});
 };
 
-var _user$project$Main$init = F2(
-	function (flags, location) {
-		var _p0 = _user$project$App_Model$initial(flags);
-		var initialApp = _p0._0;
-		var initialCmd = _p0._1;
-		var route = _user$project$App_Routing$routeParser(location);
-		var _p1 = A2(_user$project$App_UrlUpdate$urlUpdate, route, initialApp);
-		var app = _p1._0;
-		var cmd = _p1._1;
-		return {
-			ctor: '_Tuple2',
-			_0: app,
-			_1: _elm_lang$core$Platform_Cmd$batch(
-				{
-					ctor: '::',
-					_0: cmd,
-					_1: {
-						ctor: '::',
-						_0: initialCmd,
-						_1: {ctor: '[]'}
-					}
-				})
-		};
-	});
+var _user$project$Main$subscriptions = function (_p0) {
+	return _elm_lang$core$Platform_Sub$batch(
+		{
+			ctor: '::',
+			_0: A2(_user$project$App_OutsideInfo$getInfoFromOutside, _user$project$App_Msg$Outside, _user$project$App_Msg$LogErr),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Main$init = function (location) {
+	var initialApp = _user$project$App_Model$initial;
+	var route = _user$project$App_Routing$routeParser(location);
+	var _p1 = A2(_user$project$App_UrlUpdate$urlUpdate, route, initialApp);
+	var app = _p1._0;
+	var cmd = _p1._1;
+	return {ctor: '_Tuple2', _0: app, _1: cmd};
+};
 var _user$project$Main$parser = function (location) {
 	return _user$project$App_Msg$UrlUpdate(
 		_user$project$App_Routing$routeParser(location));
 };
-var _user$project$Main$login = _elm_lang$core$Native_Platform.incomingPort('login', _elm_lang$core$Json_Decode$string);
-var _user$project$Main$logout = _elm_lang$core$Native_Platform.incomingPort('logout', _elm_lang$core$Json_Decode$string);
-var _user$project$Main$setRiders = _elm_lang$core$Native_Platform.incomingPort('setRiders', _elm_lang$core$Json_Decode$value);
-var _user$project$Main$setRaces = _elm_lang$core$Native_Platform.incomingPort('setRaces', _elm_lang$core$Json_Decode$value);
-var _user$project$Main$setResults = _elm_lang$core$Native_Platform.incomingPort('setResults', _elm_lang$core$Json_Decode$value);
-var _user$project$Main$raceAdded = _elm_lang$core$Native_Platform.incomingPort('raceAdded', _elm_lang$core$Json_Decode$value);
-var _user$project$Main$riderAdded = _elm_lang$core$Native_Platform.incomingPort('riderAdded', _elm_lang$core$Json_Decode$value);
-var _user$project$Main$resultAdded = _elm_lang$core$Native_Platform.incomingPort('resultAdded', _elm_lang$core$Json_Decode$value);
-var _user$project$Main$subscriptions = function (app) {
-	return _elm_lang$core$Platform_Sub$batch(
-		{
-			ctor: '::',
-			_0: _user$project$Main$setRiders(_user$project$App_Msg$RidersJson),
-			_1: {
-				ctor: '::',
-				_0: _user$project$Main$setRaces(_user$project$App_Msg$RacesJson),
-				_1: {
-					ctor: '::',
-					_0: _user$project$Main$setResults(_user$project$App_Msg$ResultsJson),
-					_1: {
-						ctor: '::',
-						_0: _user$project$Main$raceAdded(_user$project$App_Msg$RaceAddedJson),
-						_1: {
-							ctor: '::',
-							_0: _user$project$Main$riderAdded(_user$project$App_Msg$RiderAddedJson),
-							_1: {
-								ctor: '::',
-								_0: _user$project$Main$resultAdded(_user$project$App_Msg$ResultAddedJson),
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}
-			}
-		});
-};
 var _user$project$Main$main = A2(
-	_elm_lang$navigation$Navigation$programWithFlags,
+	_elm_lang$navigation$Navigation$program,
 	_user$project$Main$parser,
-	{init: _user$project$Main$init, update: _user$project$App_Update$update, subscriptions: _user$project$Main$subscriptions, view: _user$project$App_View$render})(
-	_elm_lang$core$Json_Decode$succeed(
-		{}));
+	{init: _user$project$Main$init, update: _user$project$App_Update$update, subscriptions: _user$project$Main$subscriptions, view: _user$project$App_View$view})();
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
