@@ -5,12 +5,9 @@ function setup(firebase, app) {
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      console.log('user changed to logged in', user);
       loadRiders();
       loadRaces();
       loadResults();
-    } else {
-      console.log('no user signed in');
     }
   });
 
@@ -28,12 +25,11 @@ var config = {
 firebase.initializeApp(config);
 
 var Elm = require('./src/Main');
-var app = Elm.Main.embed(document.getElementById('main'), { });
+var app = Elm.Main.embed(document.getElementById('main'));
 
 setup(firebase, app);
 
 function loadRiders() {
-  console.log('load riders');
   firebase.database().ref('/riders/').orderByChild('id').on('value', function(snapshot) {
     const val = snapshot.val();
     const arr = Object.keys(val).
@@ -42,7 +38,6 @@ function loadRiders() {
             key: key
           }, val[key]);
       });
-    console.log('riders loaded');
     app.ports.infoForElm.send({
       tag: 'RidersLoaded',
       data: arr
