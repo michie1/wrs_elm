@@ -4,7 +4,6 @@ import Data.Race exposing (Race)
 import Data.Rider exposing (Rider)
 import Data.RaceResult exposing (RaceResult)
 import App.Page exposing (Page)
-import App.Flags exposing (Flags)
 
 
 type alias App =
@@ -15,6 +14,6 @@ type alias App =
     }
 
 
-initial : Flags -> App
-initial _ =
+initial : App
+initial =
     App App.Page.Races Nothing Nothing Nothing

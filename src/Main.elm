@@ -7,13 +7,12 @@ import App.Msg as Msg exposing (Msg)
 import App.Update
 import App.UrlUpdate
 import App.View
-import App.Flags exposing (Flags)
 import App.OutsideInfo
 
 
-main : Program Flags App Msg
+main : Program Never App Msg
 main =
-    Navigation.programWithFlags
+    Navigation.program
         parser
         { init = init
         , update = App.Update.update
@@ -27,14 +26,14 @@ parser location =
     Msg.UrlUpdate (App.Routing.routeParser location)
 
 
-init : Flags -> Navigation.Location -> ( App, Cmd Msg )
-init flags location =
+init : Navigation.Location -> ( App, Cmd Msg )
+init location =
     let
         route =
             App.Routing.routeParser location
 
         initialApp =
-            App.Model.initial flags
+            App.Model.initial
 
         ( app, cmd ) =
             App.UrlUpdate.urlUpdate route initialApp
@@ -44,6 +43,4 @@ init flags location =
 
 subscriptions : App -> Sub Msg
 subscriptions _ =
-    Sub.batch
-        [ App.OutsideInfo.getInfoFromOutside Msg.Outside Msg.LogErr
-        ]
+    Sub.batch [ App.OutsideInfo.getInfoFromOutside Msg.Outside Msg.LogErr ]
