@@ -1,6 +1,6 @@
 module Page.Race.Details exposing (view)
 
-import Html exposing (Html, button, span, h2, h3, h5, ul, li, a, div, text, table, tbody, thead, tr, td, th)
+import Html exposing (Html, button, span, h2, h3, h5, p, ul, li, a, div, header, text, table, tbody, thead, tr, td, th, dt, dd, dl)
 import Html.Attributes exposing (href, class, style)
 import Html.Events exposing (onClick)
 import Date
@@ -45,11 +45,11 @@ view _ raceKey races riders results =
                 in
                     div []
                         [ div []
-                            [ h2 [] [ text race.name ]
+                            [ h2 [ class "title is-2" ] [ text race.name ]
                             , info race
                             ]
                         , div []
-                            [ h3 [] [ text "Results" ]
+                            [ h3 [ class "title is-3" ] [ text "Results" ]
                             , addResultButton race
                             ]
                         , resultsTable raceResults riders
@@ -66,7 +66,7 @@ addResultButton race =
             { initialAdd | raceKey = race.key }
     in
         button
-            [ class "waves-effect waves-light btn"
+            [ class "button"
             , onClick (App.Msg.Navigate (App.Page.ResultAdd resultAdd))
             , Html.Attributes.name "action"
             ]
@@ -79,17 +79,22 @@ info race =
         dateString =
             dateFormat race.date
     in
-        div [ class "row" ]
-            [ div [ class "col s4 m5" ]
-                [ ul [ class "collection" ]
-                    [ infoLi "Name " race.name
-                    , infoLi "Date " dateString
-                    , infoLi "Category " (toString race.raceType)
-                    , infoLi "Points " (toString <| getPointsByRaceType race.raceType)
+        div [ class "card" ]
+            [ div [ class "card-content" ]
+                [ div [ class "content" ]
+                    [ dl []
+                        [ dt [] [ text "Name" ]
+                        , dd [] [ text race.name ]
+                        , dt [] [ text "Date" ]
+                        , dd [] [ text dateString ]
+                        , dt [] [ text "Category" ]
+                        , dd [] [ text <| toString race.raceType ]
+                        , dt [] [ text "Points" ]
+                        , dd [] [ text <| toString <| getPointsByRaceType race.raceType ]
+                        ]
                     ]
                 ]
             ]
-
 
 infoLi : String -> String -> Html App.Msg.Msg
 infoLi label spanText =
@@ -121,8 +126,8 @@ resultsByCategory category results riders =
 
             _ ->
                 div []
-                    [ h5 [] [ text (toString category) ]
-                    , table []
+                    [ h5 [ class "title is-5" ] [ text (toString category) ]
+                    , table [ class "table" ]
                         [ thead []
                             [ tr []
                                 [ th [] [ text "Rider" ]

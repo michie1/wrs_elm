@@ -1,11 +1,11 @@
 module Page.Race.Add.Msg exposing (Msg, Msg(..))
 
 import Data.RaceType exposing (RaceType)
-import Ui.Calendar
-
+import DatePicker
 
 type Msg
     = Submit
     | Name String
     | RaceType RaceType
-    | Calendar Ui.Calendar.Msg
+    | ToDatePicker DatePicker.Msg
+    --| Calendar Ui.Calendar.Msg

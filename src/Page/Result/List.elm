@@ -17,7 +17,7 @@ view maybeResults =
 
 resultsTable : List RaceResult -> Html msg
 resultsTable results =
-    table []
+    table [ class "table" ]
         [ thead []
             [ tr []
                 [ th [] [ text "key" ]

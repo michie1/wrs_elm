@@ -2,7 +2,6 @@ module Page.Result.Add.Update exposing (update)
 
 import Json.Encode
 import Set
-import Ui.Chooser
 import App.Model exposing (App)
 import App.Page
 import App.OutsideInfo exposing (sendInfoOutside)
@@ -21,7 +20,7 @@ update msg app =
                         payload =
                             Json.Encode.object
                                 [ ( "raceKey", Json.Encode.string page.raceKey )
-                                , ( "riderKey", Json.Encode.string (riderKey page.chooser) )
+                                , ( "riderKey", Json.Encode.string (Maybe.withDefault "" page.riderKey) )
                                 , ( "result", Json.Encode.string page.result )
                                 , ( "category", Json.Encode.string <| categoryToString page.category )
                                 , ( "outfit", Json.Encode.string <| outfitToString page.outfit )
@@ -59,26 +58,19 @@ update msg app =
                         , Cmd.none
                         )
 
-                Msg.Chooser msg_ ->
+                Msg.Rider riderKey ->
                     let
-                        ( chooser, cmd ) =
-                            Ui.Chooser.update msg_ page.chooser
-
                         nextPage =
-                            App.Page.ResultAdd
-                                { page | chooser = chooser }
+                            if String.isEmpty riderKey then
+                                App.Page.ResultAdd
+                                    { page | riderKey = Nothing }
+                            else
+                                App.Page.ResultAdd
+                                    { page | riderKey = Just riderKey }
                     in
                         ( { app | page = nextPage }
-                        , Cmd.map Msg.Chooser cmd
+                        , Cmd.none 
                         )
 
         _ ->
             ( app, Cmd.none )
-
-
-riderKey : Ui.Chooser.Model -> String
-riderKey chooser =
-    chooser.selected
-        |> Set.toList
-        |> List.head
-        |> Maybe.withDefault ""

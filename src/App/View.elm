@@ -1,6 +1,6 @@
 module App.View exposing (view)
 
-import Html exposing (Html, h2, h4, div, text, a, ul, li)
+import Html exposing (Html, h2, div, text, a, ul, li, aside, p, section)
 import Html.Attributes exposing (href, class)
 import App.Msg
 import App.Model exposing (App)
@@ -20,15 +20,15 @@ import Page.Result.Add.View
 view : App -> Html App.Msg.Msg
 view app =
     div [ class "container" ]
-        [ div [ class "row" ] [ loadingPage app ]
+        [ loadingPage app
         ]
 
 
 mainView : App -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
 mainView app races riders results =
-    div []
-        [ div [ class "col s3 m4" ] [ sidebar races ]
-        , div [ class "col s9 m8" ] [ viewPage app races riders results ]
+    div [ class "columns" ]
+        [ section [ class "section", class "column", class "is-one-fifth" ] [ sidebar races ]
+        , section [ class "section", class "column" ] [ viewPage app races riders results ]
         ]
 
 
@@ -77,7 +77,7 @@ loadingPage app =
 
         ( _, _, _ ) ->
             div [ class "col s9 m8 offset-s3 offset-m4" ]
-                [ h2 [] [ text "Loading data" ]
+                [ h2 [ class "title is-2" ] [ text "Loading data" ]
                 , spinner
                 ]
 
@@ -99,23 +99,14 @@ spinner =
 
 sidebar : List Race -> Html App.Msg.Msg
 sidebar races =
-    div []
-        [ h2 [] [ text "WRS" ]
-        , ul [ class "collection" ] <|
-            [ li [ class "collection-header" ] [ h4 [] [ a [ href "#races" ] [ text "Races" ] ] ] ]
-                ++ (List.map raceLi <| lastRaces races)
-                ++ [ li [ class "collection-header" ] [ h4 [] [ a [ href "#riders" ] [ text "Riders" ] ] ]
-                   , headerLi "https://wtos.nl/topic/het-grote-verslagentopic-van-michiel/" "Verslagen"
-                   , headerLi "https://wtos.nl/topic/wedstrijdrennerssysteem-v3/" "Feedback"
-                   ]
+    aside [ class "menu" ]
+        [ p [ class "menu-label" ] [ a [ href "#races" ] [ text "Races" ] ]
+        , ul [ class "menu-list" ] (List.map raceLi <| lastRaces races)
+        , p [ class "menu-label" ] [ a [ href "#riders" ] [ text "Riders" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://wtos.nl/topic/het-grote-verslagentopic-van-michiel" ] [ text "Verslagen" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://wtos.nl/topic/wedstrijdrennerssysteem-v3" ] [ text "Feedback" ] ]
         ]
-
-
-headerLi : String -> String -> Html App.Msg.Msg
-headerLi url label =
-    li [ class "collection-header" ] [ h4 [] [ a [ href url ] [ text label ] ] ]
-
 
 raceLi : Race -> Html App.Msg.Msg
 raceLi race =
-    li [] [ a [ class "collection-item", href ("#races/" ++ race.key) ] [ text race.name ] ]
+    li [] [ a [ href ("#races/" ++ race.key) ] [ text race.name ] ]

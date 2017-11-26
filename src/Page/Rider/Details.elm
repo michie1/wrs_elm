@@ -1,6 +1,6 @@
 module Page.Rider.Details exposing (view)
 
-import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, li, span, h2, p)
+import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, li, span, h2, p, dd, dl, dt)
 import Html.Attributes exposing (class, href)
 import Date
 import Date.Extra.Format
@@ -30,7 +30,7 @@ view _ riderKey races riders results =
         case maybeRider of
             Nothing ->
                 div []
-                    [ h2 [] [ text "Rider" ]
+                    [ h2 [ class "title is-2" ] [ text "Rider" ]
                     , p [] [ text "Rider does not exist." ]
                     ]
 
@@ -45,26 +45,31 @@ view _ riderKey races riders results =
                         getPointsByResults riderResults races
                 in
                     div [ class "col s12" ]
-                        [ h2 [] [ text rider.name ]
+                        [ h2 [ class "title is-2" ] [ text rider.name ]
                         , info rider points
                         , resultsTable riderResults races
                         ]
 
-
 info : Rider -> Int -> Html App.Msg.Msg
 info rider points =
-    div [ class "row" ]
-        [ ul [ class "collection col s4 m5" ]
-            [ li [ class "collection-item" ] [ text "Name ", span [ class "secondary-content" ] [ text rider.name ] ]
-            , li [ class "collection-item" ] [ text "Licence ", span [ class "secondary-content" ] [ text (toString rider.licence) ] ]
-            , li [ class "collection-item" ] [ text "Points ", span [ class "secondary-content" ] [ text <| toString points ] ]
+    div [ class "card" ]
+        [ div [ class "card-content" ]
+            [ div [ class "content" ]
+                [ dl []
+                    [ dt [] [ text "Name" ]
+                    , dd [] [ text rider.name ]
+                    , dt [] [ text "Licence" ]
+                    , dd [] [ text (toString rider.licence) ]
+                    , dd [] [ text <| toString <| points ]
+                    ]
+                ]
             ]
         ]
 
 
 resultsTable : List RaceResult -> List Race -> Html msg
 resultsTable results races =
-    table []
+    table [ class "table" ]
         [ thead []
             [ tr []
                 [ th [] [ text "Race" ]

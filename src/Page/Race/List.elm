@@ -19,7 +19,7 @@ dateFormat date =
 view : List Race -> List RaceResult -> Html App.Msg.Msg
 view races results =
     div []
-        [ h2 [] [ text "Races" ]
+        [ h2 [ class "title is-2" ] [ text "Races" ]
         , addButton
         , raceTable races results
         ]
@@ -27,7 +27,7 @@ view races results =
 
 addButton : Html App.Msg.Msg
 addButton =
-    div [] [ a [ href "#races/add", class "waves-effect waves-light btn" ] [ text "Add race" ] ]
+    a [ href "#races/add", class "button" ] [ text "Add race" ]
 
 
 raceTable : List Race -> List RaceResult -> Html App.Msg.Msg
@@ -36,7 +36,7 @@ raceTable unsortedRaces results =
         races =
             unsortedRaces |> List.sortWith (\ra rb -> Date.Extra.compare ra.date rb.date) |> List.reverse
     in
-        table []
+        table [ class "table" ]
             [ thead []
                 [ tr []
                     [ th [] [ text "Name" ]

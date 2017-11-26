@@ -11,9 +11,9 @@ import Data.RaceResult exposing (RaceResult)
 view : List Rider -> List Race -> List RaceResult -> Html App.Msg.Msg
 view riders races results =
     div []
-        [ h2 [] [ text "Riders" ]
+        [ h2 [ class "title is-2" ] [ text "Riders" ]
         , addButton
-        , table []
+        , table [ class "table" ]
             [ thead []
                 [ tr []
                     [ th [] [ text "Name" ]
@@ -45,4 +45,4 @@ view riders races results =
 
 addButton : Html App.Msg.Msg
 addButton =
-    div [] [ a [ href "#riders/add", class "waves-effect waves-light btn" ] [ text "Add rider" ] ]
+    a [ href "#riders/add", class "button" ] [ text "Add rider" ]

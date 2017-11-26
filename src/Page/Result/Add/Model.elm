@@ -1,6 +1,5 @@
 module Page.Result.Add.Model exposing (Model, initial)
 
-import Ui.Chooser
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.ResultCategory as ResultCategory exposing (ResultCategory)
 
@@ -12,7 +11,6 @@ type alias Model =
     , category : ResultCategory
     , outfit : Outfit
     , strava : String
-    , chooser : Ui.Chooser.Model
     }
 
 
@@ -24,8 +22,4 @@ initial =
     , category = ResultCategory.Amateurs
     , outfit = Outfit.WTOS
     , strava = ""
-    , chooser =
-        Ui.Chooser.init ()
-            |> Ui.Chooser.closeOnSelect True
-            |> Ui.Chooser.searchable True
     }

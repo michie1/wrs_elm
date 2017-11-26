@@ -4,12 +4,17 @@ import Date
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Json.Encode
-import Ui.Calendar
+import DatePicker
 import App.Model exposing (App)
 import App.Page
 import App.OutsideInfo exposing (sendInfoOutside)
 import Page.Race.Add.Msg as Msg exposing (Msg)
 import Data.RaceType exposing (raceTypeToString)
+
+
+settings : DatePicker.Settings
+settings =
+    DatePicker.defaultSettings
 
 
 update : Msg -> App -> ( App, Cmd Msg )
@@ -18,18 +23,20 @@ update msg app =
         App.Page.RaceAdd page ->
             case msg of
                 Msg.Submit ->
-                    let
-                        dateString =
-                            dateFormat page.calendar.value
+                    case page.date of
+                        Just date ->
+                            let
+                                payload =
+                                    Json.Encode.object
+                                        [ ( "name", Json.Encode.string page.name )
+                                        , ( "date", Json.Encode.string <| dateFormat date )
+                                        , ( "category", Json.Encode.string <| raceTypeToString page.raceType )
+                                        ]
+                            in
+                                ( app, sendInfoOutside <| App.OutsideInfo.RaceAdd payload )
 
-                        payload =
-                            Json.Encode.object
-                                [ ( "name", Json.Encode.string page.name )
-                                , ( "date", Json.Encode.string dateString )
-                                , ( "category", Json.Encode.string <| raceTypeToString page.raceType )
-                                ]
-                    in
-                        ( app, sendInfoOutside <| App.OutsideInfo.RaceAdd payload )
+                        Nothing ->
+                            ( app, Cmd.none )
 
                 Msg.Name name ->
                     let
@@ -47,17 +54,25 @@ update msg app =
                     in
                         ( { app | page = nextPage }, Cmd.none )
 
-                Msg.Calendar msg_ ->
+                Msg.ToDatePicker subMsg ->
                     let
-                        ( calendar, cmd ) =
-                            Ui.Calendar.update msg_ page.calendar
+                        ( newDatePicker, datePickerFx, dateEvent ) =
+                            DatePicker.update settings subMsg page.datePicker
+
+                        newDate =
+                            case dateEvent of
+                                DatePicker.Changed newDate ->
+                                    newDate
+
+                                _ ->
+                                    page.date
 
                         nextPage =
                             App.Page.RaceAdd
-                                { page | calendar = calendar }
+                                { page | date = newDate, datePicker = newDatePicker }
                     in
                         ( { app | page = nextPage }
-                        , Cmd.map Msg.Calendar cmd
+                        , Cmd.none
                         )
 
         _ ->

@@ -1,9 +1,8 @@
 module Page.Result.Add.View exposing (view)
 
-import Html exposing (Html, button, div, text, label, h2, input, i, p)
-import Html.Attributes exposing (autofocus, class, id, type_, for, disabled, name, checked)
+import Html exposing (Html, span, button, div, text, label, h2, input, i, p, option, select)
+import Html.Attributes exposing (autofocus, class, id, type_, for, disabled, name, checked, value)
 import Html.Events exposing (onInput, onClick)
-import Ui.Chooser
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race)
 import Data.Rider exposing (Rider)
@@ -19,60 +18,95 @@ view race resultAdd riders results =
         submitDisabled =
             --not (riderNameExists resultAdd.riderName riders)
             -- ||
-            String.isEmpty resultAdd.result
+            String.isEmpty resultAdd.result ||
+            resultAdd.riderKey == Nothing
 
         filteredRiders =
             List.filter
                 (\rider -> not <| resultExists rider race results)
                 riders
 
-        items : List Ui.Chooser.Item
         items =
             List.map
                 (\rider ->
-                    { id = rider.key
-                    , label = rider.name
+                    { text = rider.name
                     , value = rider.key
                     }
                 )
                 filteredRiders
-
-        chooser =
-            resultAdd.chooser
-                |> Ui.Chooser.items items
     in
         div []
-            [ h2 [] [ text ("Add result for " ++ race.name) ]
-            , div [ class "row" ]
-                [ div [ class "input-field col s6" ]
-                    [ input
-                        [ id "result"
-                        , type_ "text"
-                        , onInput Msg.Result
-                        , autofocus True
+            [ h2 [ class "title is-2" ] [ text ("Add result for " ++ race.name) ]
+            , div [ class "field is-horizontal" ]
+                [ div [ class "field-label" ]
+                    [ label [ class "label", for "result" ] [ text "Result" ]
+                    ]
+                , div [ class "field-body" ]
+                    [ div [ class "field" ]
+                        [ p [ class "control has-icons-left" ]
+                            [ input
+                                [ id "result"
+                                , class "input"
+                                , type_ "text"
+                                , onInput Msg.Result
+                                , autofocus True
+                                ]
+                                []
+                            , span [ class "icon is-small is-left" ] [ i [ class "fa fa-trophy" ] [] ]
+                            ]
                         ]
-                        []
-                    , label [ for "result" ] [ text "Result" ]
                     ]
                 ]
-            , div [ class "row" ]
-                [ div [ class "input-field col s6" ]
-                    [ div [] [ Html.map Msg.Chooser (Ui.Chooser.view chooser) ]
-                    , label [ for "rider", class "active" ] [ text "Rider" ]
+            , div [ class "field is-horizontal" ]
+                [ div [ class "field-label" ]
+                    [ label [ class "label", for "result" ] [ text "Rider" ]
+                    ]
+                , div [ class "field-body" ]
+                    [ div [ class "field" ]
+                        [ div [ class "control" ]
+                            [ div [ class "select" ]
+                                [ select [ onInput Msg.Rider ]
+                                    ( [ option [] [] ] ++ List.map (\item -> option [ value item.value ] [ text item.text  ] ) items )
+                                ]
+                            ]
+                        ]
                     ]
                 ]
-            , div [ class "row" ] [ resultCategoryButtons ]
-            , div [ class "row" ] [ outfitButtons ]
-            , div [ class "row" ]
-                [ button
-                    [ class "waves-effect waves-light btn"
-                    , type_ "submit"
-                    , onClick Msg.Submit
-                    , Html.Attributes.name "action"
-                    , disabled submitDisabled
+            , div [ class "field is-horizontal" ]
+                [ div [ class "field-label" ]
+                    [ label [ class "label", for "result" ] [ text "Category" ]
                     ]
-                    [ text "Add result"
-                    , i [ class "material-icons right" ] [ text "send" ]
+                , div [ class "field-body" ]
+                    [ div [ class "field" ]
+                        [ p [ class "control" ] [ resultCategoryButtons ]
+                        ]
+                    ]
+                ]
+            , div [ class "field is-horizontal" ]
+                [ div [ class "field-label" ]
+                    [ label [ class "label", for "result" ] [ text "Outfit" ]
+                    ]
+                , div [ class "field-body" ]
+                    [ div [ class "field" ]
+                        [ p [ class "control" ] [ outfitButtons ]
+                        ]
+                    ]
+                ]
+            , div [ class "field is-horizontal" ]
+                [ div [ class "field-label" ] []
+                , div [ class "field-body" ]
+                    [ div [ class "field" ]
+                        [ p [ class "control" ]
+                            [ button
+                                [ class "button is-primary"
+                                , type_ "submit"
+                                , onClick Msg.Submit
+                                , Html.Attributes.name "action"
+                                , disabled submitDisabled
+                                ]
+                                [ text "Add result" ]
+                            ]
+                        ]
                     ]
                 ]
             ]
@@ -104,8 +138,7 @@ resultCategoryButton resultCategoryName resultCategoryText resultCategory =
 resultCategoryButtons : Html Msg
 resultCategoryButtons =
     div []
-        [ label [ for "result" ] [ text "Category" ]
-        , resultCategoryButtonCheck "amateurs" "Amateurs" ResultCategory.Amateurs True
+        [ resultCategoryButtonCheck "amateurs" "Amateurs" ResultCategory.Amateurs True
         , resultCategoryButton "basislidmaatschap" "Basislidmaatschap" ResultCategory.Basislidmaatschap
         , resultCategoryButton "cata" "Cat A" ResultCategory.CatA
         , resultCategoryButton "catb" "Cat B" ResultCategory.CatB
@@ -123,8 +156,7 @@ outfitButton outfitName outfitLabel outfit isChecked =
 outfitButtons : Html Msg
 outfitButtons =
     div []
-        [ label [ for "result" ] [ text "Outfit" ]
-        , outfitButton "wtos" "WTOS" Outfit.WTOS True
+        [ outfitButton "wtos" "WTOS" Outfit.WTOS True
         , outfitButton "wasp" "WASP" Outfit.WASP False
         , outfitButton "other" "Other" Outfit.Other False
         ]

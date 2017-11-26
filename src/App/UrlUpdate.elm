@@ -2,7 +2,6 @@ module App.UrlUpdate exposing (urlUpdate)
 
 import Task
 import Dom
-import Ui.Calendar
 import App.Msg as Msg exposing (Msg)
 import App.Page
 import App.Model exposing (App)
@@ -10,8 +9,10 @@ import App.Routing
 import App.OutsideInfo exposing (sendInfoOutside)
 import Page.Result.Add.Model as ResultAdd
 import Page.Race.Add.Model as RaceAdd
+import Page.Race.Add.Msg as RaceAdd
 import Page.Rider.Add.Model as RiderAdd
 import Data.RaceType as RaceType
+import DatePicker
 
 
 routeToPage : App.Routing.Route -> Maybe App.Page.Page
@@ -51,11 +52,15 @@ urlUpdate route app =
 
         App.Routing.RaceAdd ->
             let
+                ( datePicker, datePickerFx ) =
+                    DatePicker.init
                 raceAdd =
-                    RaceAdd.Model "" RaceType.Classic (Ui.Calendar.init ())
+                    RaceAdd.Model "" RaceType.Classic Nothing datePicker -- (Ui.Calendar.init ())
             in
                 ( { app | page = App.Page.RaceAdd raceAdd }
-                , Task.attempt (always Msg.Noop) (Dom.focus "name")
+                , Cmd.batch [ Cmd.map RaceAdd.ToDatePicker datePickerFx |> Cmd.map Msg.RaceAdd
+                            , Task.attempt (always Msg.Noop) (Dom.focus "name")
+                            ]
                 )
 
         App.Routing.RiderAdd ->

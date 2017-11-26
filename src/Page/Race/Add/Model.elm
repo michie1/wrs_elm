@@ -1,11 +1,14 @@
 module Page.Race.Add.Model exposing (Model)
 
-import Ui.Calendar
+import Date
 import Data.RaceType exposing (RaceType)
+import DatePicker
 
 
 type alias Model =
     { name : String
     , raceType : RaceType
-    , calendar : Ui.Calendar.Model
+    , date : Maybe Date.Date
+    , datePicker : DatePicker.DatePicker
+    --, calendar : Ui.Calendar.Model
     }
