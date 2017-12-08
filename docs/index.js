@@ -24,7 +24,6 @@ var config = {
 };
 firebase.initializeApp(config);
 
-// var Elm = require('./src/Main');
 var app = Elm.Main.embed(document.getElementById('main'));
 
 setup(firebase, app);

@@ -5837,78 +5837,6 @@ var _NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required = F3(
 			decoder);
 	});
 
-var _elm_lang$core$Native_Bitwise = function() {
-
-return {
-	and: F2(function and(a, b) { return a & b; }),
-	or: F2(function or(a, b) { return a | b; }),
-	xor: F2(function xor(a, b) { return a ^ b; }),
-	complement: function complement(a) { return ~a; },
-	shiftLeftBy: F2(function(offset, a) { return a << offset; }),
-	shiftRightBy: F2(function(offset, a) { return a >> offset; }),
-	shiftRightZfBy: F2(function(offset, a) { return a >>> offset; })
-};
-
-}();
-
-var _elm_lang$core$Bitwise$shiftRightZfBy = _elm_lang$core$Native_Bitwise.shiftRightZfBy;
-var _elm_lang$core$Bitwise$shiftRightBy = _elm_lang$core$Native_Bitwise.shiftRightBy;
-var _elm_lang$core$Bitwise$shiftLeftBy = _elm_lang$core$Native_Bitwise.shiftLeftBy;
-var _elm_lang$core$Bitwise$complement = _elm_lang$core$Native_Bitwise.complement;
-var _elm_lang$core$Bitwise$xor = _elm_lang$core$Native_Bitwise.xor;
-var _elm_lang$core$Bitwise$or = _elm_lang$core$Native_Bitwise.or;
-var _elm_lang$core$Bitwise$and = _elm_lang$core$Native_Bitwise.and;
-
-var _Skinney$murmur3$Murmur3$mur = F2(
-	function (c, h) {
-		return 4294967295 & (((h & 65535) * c) + ((65535 & ((h >>> 16) * c)) << 16));
-	});
-var _Skinney$murmur3$Murmur3$step = function (acc) {
-	var h1 = A2(_Skinney$murmur3$Murmur3$mur, 5, (acc >>> 19) | (acc << 13));
-	return ((h1 & 65535) + 27492) + ((65535 & ((h1 >>> 16) + 58964)) << 16);
-};
-var _Skinney$murmur3$Murmur3$mix = F2(
-	function (h1, h2) {
-		var k1 = A2(_Skinney$murmur3$Murmur3$mur, 3432918353, h2);
-		return h1 ^ A2(_Skinney$murmur3$Murmur3$mur, 461845907, (k1 >>> 17) | (k1 << 15));
-	});
-var _Skinney$murmur3$Murmur3$finalize = F2(
-	function (strLength, _p0) {
-		var _p1 = _p0;
-		var _p3 = _p1._1;
-		var _p2 = _p1._2;
-		var acc = (!_elm_lang$core$Native_Utils.eq(_p2, 0)) ? A2(_Skinney$murmur3$Murmur3$mix, _p3, _p2) : _p3;
-		var h1 = acc ^ strLength;
-		var h2 = A2(_Skinney$murmur3$Murmur3$mur, 2246822507, h1 ^ (h1 >>> 16));
-		var h3 = A2(_Skinney$murmur3$Murmur3$mur, 3266489909, h2 ^ (h2 >>> 13));
-		return (h3 ^ (h3 >>> 16)) >>> 0;
-	});
-var _Skinney$murmur3$Murmur3$hashFold = F2(
-	function (c, _p4) {
-		var _p5 = _p4;
-		var _p7 = _p5._0;
-		var _p6 = _p5._1;
-		var res = _p5._2 | ((255 & _elm_lang$core$Char$toCode(c)) << _p7);
-		if (_elm_lang$core$Native_Utils.cmp(_p7, 24) > -1) {
-			var newHash = _Skinney$murmur3$Murmur3$step(
-				A2(_Skinney$murmur3$Murmur3$mix, _p6, res));
-			return {ctor: '_Tuple3', _0: 0, _1: newHash, _2: 0};
-		} else {
-			return {ctor: '_Tuple3', _0: _p7 + 8, _1: _p6, _2: res};
-		}
-	});
-var _Skinney$murmur3$Murmur3$hashString = F2(
-	function (seed, str) {
-		return A2(
-			_Skinney$murmur3$Murmur3$finalize,
-			_elm_lang$core$String$length(str),
-			A3(
-				_elm_lang$core$String$foldl,
-				_Skinney$murmur3$Murmur3$hashFold,
-				{ctor: '_Tuple3', _0: 0, _1: seed, _2: 0},
-				str));
-	});
-
 //import Result //
 
 var _elm_lang$core$Native_Date = function() {
@@ -6387,1780 +6315,532 @@ var _elm_lang$core$Date$Mar = {ctor: 'Mar'};
 var _elm_lang$core$Date$Feb = {ctor: 'Feb'};
 var _elm_lang$core$Date$Jan = {ctor: 'Jan'};
 
-var _elm_lang$core$Set$foldr = F3(
-	function (f, b, _p0) {
+var _elm_community$elm_datepicker$DatePicker_Date$yearRange = F2(
+	function (_p0, range) {
 		var _p1 = _p0;
-		return A3(
-			_elm_lang$core$Dict$foldr,
-			F3(
-				function (k, _p2, b) {
-					return A2(f, k, b);
-				}),
-			b,
-			_p1._0);
-	});
-var _elm_lang$core$Set$foldl = F3(
-	function (f, b, _p3) {
-		var _p4 = _p3;
-		return A3(
-			_elm_lang$core$Dict$foldl,
-			F3(
-				function (k, _p5, b) {
-					return A2(f, k, b);
-				}),
-			b,
-			_p4._0);
-	});
-var _elm_lang$core$Set$toList = function (_p6) {
-	var _p7 = _p6;
-	return _elm_lang$core$Dict$keys(_p7._0);
-};
-var _elm_lang$core$Set$size = function (_p8) {
-	var _p9 = _p8;
-	return _elm_lang$core$Dict$size(_p9._0);
-};
-var _elm_lang$core$Set$member = F2(
-	function (k, _p10) {
-		var _p11 = _p10;
-		return A2(_elm_lang$core$Dict$member, k, _p11._0);
-	});
-var _elm_lang$core$Set$isEmpty = function (_p12) {
-	var _p13 = _p12;
-	return _elm_lang$core$Dict$isEmpty(_p13._0);
-};
-var _elm_lang$core$Set$Set_elm_builtin = function (a) {
-	return {ctor: 'Set_elm_builtin', _0: a};
-};
-var _elm_lang$core$Set$empty = _elm_lang$core$Set$Set_elm_builtin(_elm_lang$core$Dict$empty);
-var _elm_lang$core$Set$singleton = function (k) {
-	return _elm_lang$core$Set$Set_elm_builtin(
-		A2(
-			_elm_lang$core$Dict$singleton,
-			k,
-			{ctor: '_Tuple0'}));
-};
-var _elm_lang$core$Set$insert = F2(
-	function (k, _p14) {
-		var _p15 = _p14;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A3(
-				_elm_lang$core$Dict$insert,
-				k,
-				{ctor: '_Tuple0'},
-				_p15._0));
-	});
-var _elm_lang$core$Set$fromList = function (xs) {
-	return A3(_elm_lang$core$List$foldl, _elm_lang$core$Set$insert, _elm_lang$core$Set$empty, xs);
-};
-var _elm_lang$core$Set$map = F2(
-	function (f, s) {
-		return _elm_lang$core$Set$fromList(
-			A2(
-				_elm_lang$core$List$map,
-				f,
-				_elm_lang$core$Set$toList(s)));
-	});
-var _elm_lang$core$Set$remove = F2(
-	function (k, _p16) {
-		var _p17 = _p16;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(_elm_lang$core$Dict$remove, k, _p17._0));
-	});
-var _elm_lang$core$Set$union = F2(
-	function (_p19, _p18) {
-		var _p20 = _p19;
-		var _p21 = _p18;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(_elm_lang$core$Dict$union, _p20._0, _p21._0));
-	});
-var _elm_lang$core$Set$intersect = F2(
-	function (_p23, _p22) {
-		var _p24 = _p23;
-		var _p25 = _p22;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(_elm_lang$core$Dict$intersect, _p24._0, _p25._0));
-	});
-var _elm_lang$core$Set$diff = F2(
-	function (_p27, _p26) {
-		var _p28 = _p27;
-		var _p29 = _p26;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(_elm_lang$core$Dict$diff, _p28._0, _p29._0));
-	});
-var _elm_lang$core$Set$filter = F2(
-	function (p, _p30) {
-		var _p31 = _p30;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(
-				_elm_lang$core$Dict$filter,
-				F2(
-					function (k, _p32) {
-						return p(k);
-					}),
-				_p31._0));
-	});
-var _elm_lang$core$Set$partition = F2(
-	function (p, _p33) {
-		var _p34 = _p33;
-		var _p35 = A2(
-			_elm_lang$core$Dict$partition,
-			F2(
-				function (k, _p36) {
-					return p(k);
-				}),
-			_p34._0);
-		var p1 = _p35._0;
-		var p2 = _p35._1;
-		return {
-			ctor: '_Tuple2',
-			_0: _elm_lang$core$Set$Set_elm_builtin(p1),
-			_1: _elm_lang$core$Set$Set_elm_builtin(p2)
-		};
-	});
-
-var _elm_community$json_extra$Json_Decode_Extra$fromResult = function (result) {
-	var _p0 = result;
-	if (_p0.ctor === 'Ok') {
-		return _elm_lang$core$Json_Decode$succeed(_p0._0);
-	} else {
-		return _elm_lang$core$Json_Decode$fail(_p0._0);
-	}
-};
-var _elm_community$json_extra$Json_Decode_Extra$sequenceHelp = F2(
-	function (decoders, jsonValues) {
-		return (!_elm_lang$core$Native_Utils.eq(
-			_elm_lang$core$List$length(jsonValues),
-			_elm_lang$core$List$length(decoders))) ? _elm_lang$core$Json_Decode$fail('Number of decoders does not match number of values') : _elm_community$json_extra$Json_Decode_Extra$fromResult(
-			A3(
-				_elm_lang$core$List$foldr,
-				_elm_lang$core$Result$map2(
-					F2(
-						function (x, y) {
-							return {ctor: '::', _0: x, _1: y};
-						})),
-				_elm_lang$core$Result$Ok(
-					{ctor: '[]'}),
-				A3(_elm_lang$core$List$map2, _elm_lang$core$Json_Decode$decodeValue, decoders, jsonValues)));
-	});
-var _elm_community$json_extra$Json_Decode_Extra$sequence = function (decoders) {
-	return A2(
-		_elm_lang$core$Json_Decode$andThen,
-		_elm_community$json_extra$Json_Decode_Extra$sequenceHelp(decoders),
-		_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$value));
-};
-var _elm_community$json_extra$Json_Decode_Extra$optionalField = F2(
-	function (fieldName, decoder) {
-		var finishDecoding = function (json) {
-			var _p1 = A2(
-				_elm_lang$core$Json_Decode$decodeValue,
-				A2(_elm_lang$core$Json_Decode$field, fieldName, _elm_lang$core$Json_Decode$value),
-				json);
-			if (_p1.ctor === 'Ok') {
-				return A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Maybe$Just, decoder);
-			} else {
-				return _elm_lang$core$Json_Decode$succeed(_elm_lang$core$Maybe$Nothing);
-			}
-		};
-		return A2(_elm_lang$core$Json_Decode$andThen, finishDecoding, _elm_lang$core$Json_Decode$value);
-	});
-var _elm_community$json_extra$Json_Decode_Extra$withDefault = F2(
-	function (fallback, decoder) {
-		return A2(
-			_elm_lang$core$Json_Decode$andThen,
-			function (_p2) {
-				return _elm_lang$core$Json_Decode$succeed(
-					A2(_elm_lang$core$Maybe$withDefault, fallback, _p2));
-			},
-			_elm_lang$core$Json_Decode$maybe(decoder));
-	});
-var _elm_community$json_extra$Json_Decode_Extra$decodeDictFromTuples = F2(
-	function (keyDecoder, tuples) {
-		var _p3 = tuples;
-		if (_p3.ctor === '[]') {
-			return _elm_lang$core$Json_Decode$succeed(_elm_lang$core$Dict$empty);
-		} else {
-			var _p4 = A2(_elm_lang$core$Json_Decode$decodeString, keyDecoder, _p3._0._0);
-			if (_p4.ctor === 'Ok') {
+		var _p5 = _p1.focused;
+		var _p4 = _p1.currentMonth;
+		var _p2 = range;
+		switch (_p2.ctor) {
+			case 'MoreOrLess':
+				var _p3 = _p2._0;
 				return A2(
-					_elm_lang$core$Json_Decode$andThen,
-					function (_p5) {
-						return _elm_lang$core$Json_Decode$succeed(
-							A3(_elm_lang$core$Dict$insert, _p4._0, _p3._0._1, _p5));
-					},
-					A2(_elm_community$json_extra$Json_Decode_Extra$decodeDictFromTuples, keyDecoder, _p3._1));
-			} else {
-				return _elm_lang$core$Json_Decode$fail(_p4._0);
-			}
-		}
-	});
-var _elm_community$json_extra$Json_Decode_Extra$dict2 = F2(
-	function (keyDecoder, valueDecoder) {
-		return A2(
-			_elm_lang$core$Json_Decode$andThen,
-			function (_p6) {
+					_elm_lang$core$List$range,
+					_elm_lang$core$Date$year(_p4) - _p3,
+					_elm_lang$core$Date$year(_p4) + _p3);
+			case 'Between':
+				return A2(_elm_lang$core$List$range, _p2._0, _p2._1);
+			case 'From':
 				return A2(
-					_elm_community$json_extra$Json_Decode_Extra$decodeDictFromTuples,
-					keyDecoder,
-					_elm_lang$core$Dict$toList(_p6));
-			},
-			_elm_lang$core$Json_Decode$dict(valueDecoder));
-	});
-var _elm_community$json_extra$Json_Decode_Extra$set = function (decoder) {
-	return A2(
-		_elm_lang$core$Json_Decode$andThen,
-		function (_p7) {
-			return _elm_lang$core$Json_Decode$succeed(
-				_elm_lang$core$Set$fromList(_p7));
-		},
-		_elm_lang$core$Json_Decode$list(decoder));
-};
-var _elm_community$json_extra$Json_Decode_Extra$date = A2(
-	_elm_lang$core$Json_Decode$andThen,
-	function (_p8) {
-		return _elm_community$json_extra$Json_Decode_Extra$fromResult(
-			_elm_lang$core$Date$fromString(_p8));
-	},
-	_elm_lang$core$Json_Decode$string);
-var _elm_community$json_extra$Json_Decode_Extra$andMap = _elm_lang$core$Json_Decode$map2(
-	F2(
-		function (x, y) {
-			return y(x);
-		}));
-var _elm_community$json_extra$Json_Decode_Extra_ops = _elm_community$json_extra$Json_Decode_Extra_ops || {};
-_elm_community$json_extra$Json_Decode_Extra_ops['|:'] = _elm_lang$core$Basics$flip(_elm_community$json_extra$Json_Decode_Extra$andMap);
-
-var _elm_community$list_extra$List_Extra$greedyGroupsOfWithStep = F3(
-	function (size, step, xs) {
-		var okayXs = _elm_lang$core$Native_Utils.cmp(
-			_elm_lang$core$List$length(xs),
-			0) > 0;
-		var okayArgs = (_elm_lang$core$Native_Utils.cmp(size, 0) > 0) && (_elm_lang$core$Native_Utils.cmp(step, 0) > 0);
-		var xs_ = A2(_elm_lang$core$List$drop, step, xs);
-		var group = A2(_elm_lang$core$List$take, size, xs);
-		return (okayArgs && okayXs) ? {
-			ctor: '::',
-			_0: group,
-			_1: A3(_elm_community$list_extra$List_Extra$greedyGroupsOfWithStep, size, step, xs_)
-		} : {ctor: '[]'};
-	});
-var _elm_community$list_extra$List_Extra$greedyGroupsOf = F2(
-	function (size, xs) {
-		return A3(_elm_community$list_extra$List_Extra$greedyGroupsOfWithStep, size, size, xs);
-	});
-var _elm_community$list_extra$List_Extra$groupsOfWithStep = F3(
-	function (size, step, xs) {
-		var okayArgs = (_elm_lang$core$Native_Utils.cmp(size, 0) > 0) && (_elm_lang$core$Native_Utils.cmp(step, 0) > 0);
-		var xs_ = A2(_elm_lang$core$List$drop, step, xs);
-		var group = A2(_elm_lang$core$List$take, size, xs);
-		var okayLength = _elm_lang$core$Native_Utils.eq(
-			size,
-			_elm_lang$core$List$length(group));
-		return (okayArgs && okayLength) ? {
-			ctor: '::',
-			_0: group,
-			_1: A3(_elm_community$list_extra$List_Extra$groupsOfWithStep, size, step, xs_)
-		} : {ctor: '[]'};
-	});
-var _elm_community$list_extra$List_Extra$groupsOf = F2(
-	function (size, xs) {
-		return A3(_elm_community$list_extra$List_Extra$groupsOfWithStep, size, size, xs);
-	});
-var _elm_community$list_extra$List_Extra$zip5 = _elm_lang$core$List$map5(
-	F5(
-		function (v0, v1, v2, v3, v4) {
-			return {ctor: '_Tuple5', _0: v0, _1: v1, _2: v2, _3: v3, _4: v4};
-		}));
-var _elm_community$list_extra$List_Extra$zip4 = _elm_lang$core$List$map4(
-	F4(
-		function (v0, v1, v2, v3) {
-			return {ctor: '_Tuple4', _0: v0, _1: v1, _2: v2, _3: v3};
-		}));
-var _elm_community$list_extra$List_Extra$zip3 = _elm_lang$core$List$map3(
-	F3(
-		function (v0, v1, v2) {
-			return {ctor: '_Tuple3', _0: v0, _1: v1, _2: v2};
-		}));
-var _elm_community$list_extra$List_Extra$zip = _elm_lang$core$List$map2(
-	F2(
-		function (v0, v1) {
-			return {ctor: '_Tuple2', _0: v0, _1: v1};
-		}));
-var _elm_community$list_extra$List_Extra$isPrefixOf = function (prefix) {
-	return function (_p0) {
-		return A2(
-			_elm_lang$core$List$all,
-			_elm_lang$core$Basics$identity,
-			A3(
-				_elm_lang$core$List$map2,
-				F2(
-					function (x, y) {
-						return _elm_lang$core$Native_Utils.eq(x, y);
-					}),
-				prefix,
-				_p0));
-	};
-};
-var _elm_community$list_extra$List_Extra$isSuffixOf = F2(
-	function (suffix, xs) {
-		return A2(
-			_elm_community$list_extra$List_Extra$isPrefixOf,
-			_elm_lang$core$List$reverse(suffix),
-			_elm_lang$core$List$reverse(xs));
-	});
-var _elm_community$list_extra$List_Extra$selectSplit = function (xs) {
-	var _p1 = xs;
-	if (_p1.ctor === '[]') {
-		return {ctor: '[]'};
-	} else {
-		var _p5 = _p1._1;
-		var _p4 = _p1._0;
-		return {
-			ctor: '::',
-			_0: {
-				ctor: '_Tuple3',
-				_0: {ctor: '[]'},
-				_1: _p4,
-				_2: _p5
-			},
-			_1: A2(
-				_elm_lang$core$List$map,
-				function (_p2) {
-					var _p3 = _p2;
-					return {
-						ctor: '_Tuple3',
-						_0: {ctor: '::', _0: _p4, _1: _p3._0},
-						_1: _p3._1,
-						_2: _p3._2
-					};
-				},
-				_elm_community$list_extra$List_Extra$selectSplit(_p5))
-		};
-	}
-};
-var _elm_community$list_extra$List_Extra$select = function (xs) {
-	var _p6 = xs;
-	if (_p6.ctor === '[]') {
-		return {ctor: '[]'};
-	} else {
-		var _p10 = _p6._1;
-		var _p9 = _p6._0;
-		return {
-			ctor: '::',
-			_0: {ctor: '_Tuple2', _0: _p9, _1: _p10},
-			_1: A2(
-				_elm_lang$core$List$map,
-				function (_p7) {
-					var _p8 = _p7;
-					return {
-						ctor: '_Tuple2',
-						_0: _p8._0,
-						_1: {ctor: '::', _0: _p9, _1: _p8._1}
-					};
-				},
-				_elm_community$list_extra$List_Extra$select(_p10))
-		};
-	}
-};
-var _elm_community$list_extra$List_Extra$tailsHelp = F2(
-	function (e, list) {
-		var _p11 = list;
-		if (_p11.ctor === '::') {
-			var _p12 = _p11._0;
-			return {
-				ctor: '::',
-				_0: {ctor: '::', _0: e, _1: _p12},
-				_1: {ctor: '::', _0: _p12, _1: _p11._1}
-			};
-		} else {
-			return {ctor: '[]'};
-		}
-	});
-var _elm_community$list_extra$List_Extra$tails = A2(
-	_elm_lang$core$List$foldr,
-	_elm_community$list_extra$List_Extra$tailsHelp,
-	{
-		ctor: '::',
-		_0: {ctor: '[]'},
-		_1: {ctor: '[]'}
-	});
-var _elm_community$list_extra$List_Extra$isInfixOf = F2(
-	function (infix, xs) {
-		return A2(
-			_elm_lang$core$List$any,
-			_elm_community$list_extra$List_Extra$isPrefixOf(infix),
-			_elm_community$list_extra$List_Extra$tails(xs));
-	});
-var _elm_community$list_extra$List_Extra$inits = A2(
-	_elm_lang$core$List$foldr,
-	F2(
-		function (e, acc) {
-			return {
-				ctor: '::',
-				_0: {ctor: '[]'},
-				_1: A2(
-					_elm_lang$core$List$map,
-					F2(
-						function (x, y) {
-							return {ctor: '::', _0: x, _1: y};
-						})(e),
-					acc)
-			};
-		}),
-	{
-		ctor: '::',
-		_0: {ctor: '[]'},
-		_1: {ctor: '[]'}
-	});
-var _elm_community$list_extra$List_Extra$groupWhileTransitively = F2(
-	function (cmp, xs_) {
-		var _p13 = xs_;
-		if (_p13.ctor === '[]') {
-			return {ctor: '[]'};
-		} else {
-			if (_p13._1.ctor === '[]') {
-				return {
-					ctor: '::',
-					_0: {
-						ctor: '::',
-						_0: _p13._0,
-						_1: {ctor: '[]'}
-					},
-					_1: {ctor: '[]'}
-				};
-			} else {
-				var _p15 = _p13._0;
-				var _p14 = A2(_elm_community$list_extra$List_Extra$groupWhileTransitively, cmp, _p13._1);
-				if (_p14.ctor === '::') {
-					return A2(cmp, _p15, _p13._1._0) ? {
-						ctor: '::',
-						_0: {ctor: '::', _0: _p15, _1: _p14._0},
-						_1: _p14._1
-					} : {
-						ctor: '::',
-						_0: {
-							ctor: '::',
-							_0: _p15,
-							_1: {ctor: '[]'}
-						},
-						_1: _p14
-					};
-				} else {
-					return {ctor: '[]'};
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$stripPrefix = F2(
-	function (prefix, xs) {
-		var step = F2(
-			function (e, m) {
-				var _p16 = m;
-				if (_p16.ctor === 'Nothing') {
-					return _elm_lang$core$Maybe$Nothing;
-				} else {
-					if (_p16._0.ctor === '[]') {
-						return _elm_lang$core$Maybe$Nothing;
-					} else {
-						return _elm_lang$core$Native_Utils.eq(e, _p16._0._0) ? _elm_lang$core$Maybe$Just(_p16._0._1) : _elm_lang$core$Maybe$Nothing;
-					}
-				}
-			});
-		return A3(
-			_elm_lang$core$List$foldl,
-			step,
-			_elm_lang$core$Maybe$Just(xs),
-			prefix);
-	});
-var _elm_community$list_extra$List_Extra$dropWhileRight = function (p) {
-	return A2(
-		_elm_lang$core$List$foldr,
-		F2(
-			function (x, xs) {
-				return (p(x) && _elm_lang$core$List$isEmpty(xs)) ? {ctor: '[]'} : {ctor: '::', _0: x, _1: xs};
-			}),
-		{ctor: '[]'});
-};
-var _elm_community$list_extra$List_Extra$takeWhileRight = function (p) {
-	var step = F2(
-		function (x, _p17) {
-			var _p18 = _p17;
-			var _p19 = _p18._0;
-			return (p(x) && _p18._1) ? {
-				ctor: '_Tuple2',
-				_0: {ctor: '::', _0: x, _1: _p19},
-				_1: true
-			} : {ctor: '_Tuple2', _0: _p19, _1: false};
-		});
-	return function (_p20) {
-		return _elm_lang$core$Tuple$first(
-			A3(
-				_elm_lang$core$List$foldr,
-				step,
-				{
-					ctor: '_Tuple2',
-					_0: {ctor: '[]'},
-					_1: true
-				},
-				_p20));
-	};
-};
-var _elm_community$list_extra$List_Extra$splitAt = F2(
-	function (n, xs) {
-		return {
-			ctor: '_Tuple2',
-			_0: A2(_elm_lang$core$List$take, n, xs),
-			_1: A2(_elm_lang$core$List$drop, n, xs)
-		};
-	});
-var _elm_community$list_extra$List_Extra$groupsOfVarying_ = F3(
-	function (listOflengths, list, accu) {
-		groupsOfVarying_:
-		while (true) {
-			var _p21 = {ctor: '_Tuple2', _0: listOflengths, _1: list};
-			if (((_p21.ctor === '_Tuple2') && (_p21._0.ctor === '::')) && (_p21._1.ctor === '::')) {
-				var _p22 = A2(_elm_community$list_extra$List_Extra$splitAt, _p21._0._0, list);
-				var head = _p22._0;
-				var tail = _p22._1;
-				var _v10 = _p21._0._1,
-					_v11 = tail,
-					_v12 = {ctor: '::', _0: head, _1: accu};
-				listOflengths = _v10;
-				list = _v11;
-				accu = _v12;
-				continue groupsOfVarying_;
-			} else {
-				return _elm_lang$core$List$reverse(accu);
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$groupsOfVarying = F2(
-	function (listOflengths, list) {
-		return A3(
-			_elm_community$list_extra$List_Extra$groupsOfVarying_,
-			listOflengths,
-			list,
-			{ctor: '[]'});
-	});
-var _elm_community$list_extra$List_Extra$unfoldr = F2(
-	function (f, seed) {
-		var _p23 = f(seed);
-		if (_p23.ctor === 'Nothing') {
-			return {ctor: '[]'};
-		} else {
-			return {
-				ctor: '::',
-				_0: _p23._0._0,
-				_1: A2(_elm_community$list_extra$List_Extra$unfoldr, f, _p23._0._1)
-			};
-		}
-	});
-var _elm_community$list_extra$List_Extra$scanr1 = F2(
-	function (f, xs_) {
-		var _p24 = xs_;
-		if (_p24.ctor === '[]') {
-			return {ctor: '[]'};
-		} else {
-			if (_p24._1.ctor === '[]') {
-				return {
-					ctor: '::',
-					_0: _p24._0,
-					_1: {ctor: '[]'}
-				};
-			} else {
-				var _p25 = A2(_elm_community$list_extra$List_Extra$scanr1, f, _p24._1);
-				if (_p25.ctor === '::') {
-					return {
-						ctor: '::',
-						_0: A2(f, _p24._0, _p25._0),
-						_1: _p25
-					};
-				} else {
-					return {ctor: '[]'};
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$scanr = F3(
-	function (f, acc, xs_) {
-		var _p26 = xs_;
-		if (_p26.ctor === '[]') {
-			return {
-				ctor: '::',
-				_0: acc,
-				_1: {ctor: '[]'}
-			};
-		} else {
-			var _p27 = A3(_elm_community$list_extra$List_Extra$scanr, f, acc, _p26._1);
-			if (_p27.ctor === '::') {
-				return {
-					ctor: '::',
-					_0: A2(f, _p26._0, _p27._0),
-					_1: _p27
-				};
-			} else {
+					_elm_lang$core$List$range,
+					_p2._0,
+					_elm_lang$core$Date$year(_p5));
+			case 'To':
+				return A2(
+					_elm_lang$core$List$range,
+					_elm_lang$core$Date$year(_p5),
+					_p2._0);
+			default:
 				return {ctor: '[]'};
-			}
 		}
 	});
-var _elm_community$list_extra$List_Extra$scanl1 = F2(
-	function (f, xs_) {
-		var _p28 = xs_;
-		if (_p28.ctor === '[]') {
-			return {ctor: '[]'};
-		} else {
-			return A3(_elm_lang$core$List$scanl, f, _p28._0, _p28._1);
+var _elm_community$elm_datepicker$DatePicker_Date$unsafeDate = function (date) {
+	var _p6 = _elm_lang$core$Date$fromString(date);
+	if (_p6.ctor === 'Err') {
+		return _elm_lang$core$Native_Utils.crashCase(
+			'DatePicker.Date',
+			{
+				start: {line: 552, column: 5},
+				end: {line: 557, column: 17}
+			},
+			_p6)(
+			A2(_elm_lang$core$Basics_ops['++'], 'unsafeDate: failed to parse date:', _p6._0));
+	} else {
+		return _p6._0;
+	}
+};
+var _elm_community$elm_datepicker$DatePicker_Date$isLeapYear = function (y) {
+	return _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 400),
+		0) || ((!_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 100),
+		0)) && _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 4),
+		0));
+};
+var _elm_community$elm_datepicker$DatePicker_Date$daysInMonth = F2(
+	function (year, month) {
+		var _p8 = month;
+		switch (_p8.ctor) {
+			case 'Jan':
+				return 31;
+			case 'Feb':
+				return _elm_community$elm_datepicker$DatePicker_Date$isLeapYear(year) ? 29 : 28;
+			case 'Mar':
+				return 31;
+			case 'Apr':
+				return 30;
+			case 'May':
+				return 31;
+			case 'Jun':
+				return 30;
+			case 'Jul':
+				return 31;
+			case 'Aug':
+				return 31;
+			case 'Sep':
+				return 30;
+			case 'Oct':
+				return 31;
+			case 'Nov':
+				return 30;
+			default:
+				return 31;
 		}
 	});
-var _elm_community$list_extra$List_Extra$indexedFoldr = F3(
-	function (func, acc, list) {
-		var step = F2(
-			function (x, _p29) {
-				var _p30 = _p29;
-				var _p31 = _p30._0;
-				return {
-					ctor: '_Tuple2',
-					_0: _p31 - 1,
-					_1: A3(func, _p31, x, _p30._1)
-				};
-			});
-		return _elm_lang$core$Tuple$second(
-			A3(
-				_elm_lang$core$List$foldr,
-				step,
+var _elm_community$elm_datepicker$DatePicker_Date$monthFromInt = function (month) {
+	var _p9 = month;
+	switch (_p9) {
+		case 1:
+			return _elm_lang$core$Date$Jan;
+		case 2:
+			return _elm_lang$core$Date$Feb;
+		case 3:
+			return _elm_lang$core$Date$Mar;
+		case 4:
+			return _elm_lang$core$Date$Apr;
+		case 5:
+			return _elm_lang$core$Date$May;
+		case 6:
+			return _elm_lang$core$Date$Jun;
+		case 7:
+			return _elm_lang$core$Date$Jul;
+		case 8:
+			return _elm_lang$core$Date$Aug;
+		case 9:
+			return _elm_lang$core$Date$Sep;
+		case 10:
+			return _elm_lang$core$Date$Oct;
+		case 11:
+			return _elm_lang$core$Date$Nov;
+		case 12:
+			return _elm_lang$core$Date$Dec;
+		default:
+			return _elm_lang$core$Native_Utils.crashCase(
+				'DatePicker.Date',
 				{
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$List$length(list) - 1,
-					_1: acc
+					start: {line: 451, column: 5},
+					end: {line: 489, column: 72}
 				},
-				list));
-	});
-var _elm_community$list_extra$List_Extra$indexedFoldl = F3(
-	function (func, acc, list) {
-		var step = F2(
-			function (x, _p32) {
-				var _p33 = _p32;
-				var _p34 = _p33._0;
-				return {
-					ctor: '_Tuple2',
-					_0: _p34 + 1,
-					_1: A3(func, _p34, x, _p33._1)
-				};
-			});
-		return _elm_lang$core$Tuple$second(
-			A3(
-				_elm_lang$core$List$foldl,
-				step,
-				{ctor: '_Tuple2', _0: 0, _1: acc},
-				list));
-	});
-var _elm_community$list_extra$List_Extra$foldr1 = F2(
-	function (f, xs) {
-		var mf = F2(
-			function (x, m) {
-				return _elm_lang$core$Maybe$Just(
-					function () {
-						var _p35 = m;
-						if (_p35.ctor === 'Nothing') {
-							return x;
-						} else {
-							return A2(f, x, _p35._0);
-						}
-					}());
-			});
-		return A3(_elm_lang$core$List$foldr, mf, _elm_lang$core$Maybe$Nothing, xs);
-	});
-var _elm_community$list_extra$List_Extra$foldl1 = F2(
-	function (f, xs) {
-		var mf = F2(
-			function (x, m) {
-				return _elm_lang$core$Maybe$Just(
-					function () {
-						var _p36 = m;
-						if (_p36.ctor === 'Nothing') {
-							return x;
-						} else {
-							return A2(f, _p36._0, x);
-						}
-					}());
-			});
-		return A3(_elm_lang$core$List$foldl, mf, _elm_lang$core$Maybe$Nothing, xs);
-	});
-var _elm_community$list_extra$List_Extra$interweaveHelp = F3(
-	function (l1, l2, acc) {
-		interweaveHelp:
-		while (true) {
-			var _p37 = {ctor: '_Tuple2', _0: l1, _1: l2};
-			_v23_1:
-			do {
-				if (_p37._0.ctor === '::') {
-					if (_p37._1.ctor === '::') {
-						var _v24 = _p37._0._1,
-							_v25 = _p37._1._1,
-							_v26 = A2(
-							_elm_lang$core$Basics_ops['++'],
-							acc,
-							{
-								ctor: '::',
-								_0: _p37._0._0,
-								_1: {
-									ctor: '::',
-									_0: _p37._1._0,
-									_1: {ctor: '[]'}
-								}
-							});
-						l1 = _v24;
-						l2 = _v25;
-						acc = _v26;
-						continue interweaveHelp;
-					} else {
-						break _v23_1;
-					}
-				} else {
-					if (_p37._1.ctor === '[]') {
-						break _v23_1;
-					} else {
-						return A2(_elm_lang$core$Basics_ops['++'], acc, _p37._1);
-					}
-				}
-			} while(false);
-			return A2(_elm_lang$core$Basics_ops['++'], acc, _p37._0);
-		}
-	});
-var _elm_community$list_extra$List_Extra$interweave = F2(
-	function (l1, l2) {
-		return A3(
-			_elm_community$list_extra$List_Extra$interweaveHelp,
-			l1,
-			l2,
-			{ctor: '[]'});
-	});
-var _elm_community$list_extra$List_Extra$permutations = function (xs_) {
-	var _p38 = xs_;
-	if (_p38.ctor === '[]') {
-		return {
-			ctor: '::',
-			_0: {ctor: '[]'},
-			_1: {ctor: '[]'}
-		};
-	} else {
-		var f = function (_p39) {
-			var _p40 = _p39;
-			return A2(
-				_elm_lang$core$List$map,
-				F2(
-					function (x, y) {
-						return {ctor: '::', _0: x, _1: y};
-					})(_p40._0),
-				_elm_community$list_extra$List_Extra$permutations(_p40._1));
-		};
-		return A2(
-			_elm_lang$core$List$concatMap,
-			f,
-			_elm_community$list_extra$List_Extra$select(_p38));
-	}
-};
-var _elm_community$list_extra$List_Extra$isPermutationOf = F2(
-	function (permut, xs) {
-		return A2(
-			_elm_lang$core$List$member,
-			permut,
-			_elm_community$list_extra$List_Extra$permutations(xs));
-	});
-var _elm_community$list_extra$List_Extra$subsequencesNonEmpty = function (xs) {
-	var _p41 = xs;
-	if (_p41.ctor === '[]') {
-		return {ctor: '[]'};
-	} else {
-		var _p42 = _p41._0;
-		var f = F2(
-			function (ys, r) {
-				return {
-					ctor: '::',
-					_0: ys,
-					_1: {
-						ctor: '::',
-						_0: {ctor: '::', _0: _p42, _1: ys},
-						_1: r
-					}
-				};
-			});
-		return {
-			ctor: '::',
-			_0: {
-				ctor: '::',
-				_0: _p42,
-				_1: {ctor: '[]'}
-			},
-			_1: A3(
-				_elm_lang$core$List$foldr,
-				f,
-				{ctor: '[]'},
-				_elm_community$list_extra$List_Extra$subsequencesNonEmpty(_p41._1))
-		};
-	}
-};
-var _elm_community$list_extra$List_Extra$subsequences = function (xs) {
-	return {
-		ctor: '::',
-		_0: {ctor: '[]'},
-		_1: _elm_community$list_extra$List_Extra$subsequencesNonEmpty(xs)
-	};
-};
-var _elm_community$list_extra$List_Extra$isSubsequenceOf = F2(
-	function (subseq, xs) {
-		return A2(
-			_elm_lang$core$List$member,
-			subseq,
-			_elm_community$list_extra$List_Extra$subsequences(xs));
-	});
-var _elm_community$list_extra$List_Extra$transpose = function (ll) {
-	transpose:
-	while (true) {
-		var _p43 = ll;
-		if (_p43.ctor === '[]') {
-			return {ctor: '[]'};
-		} else {
-			if (_p43._0.ctor === '[]') {
-				var _v31 = _p43._1;
-				ll = _v31;
-				continue transpose;
-			} else {
-				var _p44 = _p43._1;
-				var tails = A2(_elm_lang$core$List$filterMap, _elm_lang$core$List$tail, _p44);
-				var heads = A2(_elm_lang$core$List$filterMap, _elm_lang$core$List$head, _p44);
-				return {
-					ctor: '::',
-					_0: {ctor: '::', _0: _p43._0._0, _1: heads},
-					_1: _elm_community$list_extra$List_Extra$transpose(
-						{ctor: '::', _0: _p43._0._1, _1: tails})
-				};
-			}
-		}
-	}
-};
-var _elm_community$list_extra$List_Extra$intercalate = function (xs) {
-	return function (_p45) {
-		return _elm_lang$core$List$concat(
-			A2(_elm_lang$core$List$intersperse, xs, _p45));
-	};
-};
-var _elm_community$list_extra$List_Extra$filterNot = F2(
-	function (pred, list) {
-		return A2(
-			_elm_lang$core$List$filter,
-			function (_p46) {
-				return !pred(_p46);
-			},
-			list);
-	});
-var _elm_community$list_extra$List_Extra$removeAt = F2(
-	function (index, l) {
-		if (_elm_lang$core$Native_Utils.cmp(index, 0) < 0) {
-			return l;
-		} else {
-			var tail = _elm_lang$core$List$tail(
-				A2(_elm_lang$core$List$drop, index, l));
-			var head = A2(_elm_lang$core$List$take, index, l);
-			var _p47 = tail;
-			if (_p47.ctor === 'Nothing') {
-				return l;
-			} else {
-				return A2(_elm_lang$core$List$append, head, _p47._0);
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$singleton = function (x) {
-	return {
-		ctor: '::',
-		_0: x,
-		_1: {ctor: '[]'}
-	};
-};
-var _elm_community$list_extra$List_Extra$stableSortWith = F2(
-	function (pred, list) {
-		var predWithIndex = F2(
-			function (_p49, _p48) {
-				var _p50 = _p49;
-				var _p51 = _p48;
-				var result = A2(pred, _p50._0, _p51._0);
-				var _p52 = result;
-				if (_p52.ctor === 'EQ') {
-					return A2(_elm_lang$core$Basics$compare, _p50._1, _p51._1);
-				} else {
-					return result;
-				}
-			});
-		var listWithIndex = A2(
-			_elm_lang$core$List$indexedMap,
-			F2(
-				function (i, a) {
-					return {ctor: '_Tuple2', _0: a, _1: i};
-				}),
-			list);
-		return A2(
-			_elm_lang$core$List$map,
-			_elm_lang$core$Tuple$first,
-			A2(_elm_lang$core$List$sortWith, predWithIndex, listWithIndex));
-	});
-var _elm_community$list_extra$List_Extra$setAt = F3(
-	function (index, value, l) {
-		if (_elm_lang$core$Native_Utils.cmp(index, 0) < 0) {
-			return _elm_lang$core$Maybe$Nothing;
-		} else {
-			var tail = _elm_lang$core$List$tail(
-				A2(_elm_lang$core$List$drop, index, l));
-			var head = A2(_elm_lang$core$List$take, index, l);
-			var _p53 = tail;
-			if (_p53.ctor === 'Nothing') {
-				return _elm_lang$core$Maybe$Nothing;
-			} else {
-				return _elm_lang$core$Maybe$Just(
-					A2(
-						_elm_lang$core$List$append,
-						head,
-						{ctor: '::', _0: value, _1: _p53._0}));
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$remove = F2(
-	function (x, xs) {
-		var _p54 = xs;
-		if (_p54.ctor === '[]') {
-			return {ctor: '[]'};
-		} else {
-			var _p56 = _p54._1;
-			var _p55 = _p54._0;
-			return _elm_lang$core$Native_Utils.eq(x, _p55) ? _p56 : {
-				ctor: '::',
-				_0: _p55,
-				_1: A2(_elm_community$list_extra$List_Extra$remove, x, _p56)
-			};
-		}
-	});
-var _elm_community$list_extra$List_Extra$updateIfIndex = F3(
-	function (predicate, update, list) {
-		return A2(
-			_elm_lang$core$List$indexedMap,
-			F2(
-				function (i, x) {
-					return predicate(i) ? update(x) : x;
-				}),
-			list);
-	});
-var _elm_community$list_extra$List_Extra$updateAt = F3(
-	function (index, update, list) {
-		return ((_elm_lang$core$Native_Utils.cmp(index, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(
-			index,
-			_elm_lang$core$List$length(list)) > -1)) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
-			A3(
-				_elm_community$list_extra$List_Extra$updateIfIndex,
-				F2(
-					function (x, y) {
-						return _elm_lang$core$Native_Utils.eq(x, y);
-					})(index),
-				update,
-				list));
-	});
-var _elm_community$list_extra$List_Extra$updateIf = F3(
-	function (predicate, update, list) {
-		return A2(
-			_elm_lang$core$List$map,
-			function (item) {
-				return predicate(item) ? update(item) : item;
-			},
-			list);
-	});
-var _elm_community$list_extra$List_Extra$replaceIf = F3(
-	function (predicate, replacement, list) {
-		return A3(
-			_elm_community$list_extra$List_Extra$updateIf,
-			predicate,
-			_elm_lang$core$Basics$always(replacement),
-			list);
-	});
-var _elm_community$list_extra$List_Extra$findIndices = function (p) {
-	return function (_p57) {
-		return A2(
-			_elm_lang$core$List$map,
-			_elm_lang$core$Tuple$first,
-			A2(
-				_elm_lang$core$List$filter,
-				function (_p58) {
-					var _p59 = _p58;
-					return p(_p59._1);
-				},
+				_p9)(
 				A2(
-					_elm_lang$core$List$indexedMap,
-					F2(
-						function (v0, v1) {
-							return {ctor: '_Tuple2', _0: v0, _1: v1};
-						}),
-					_p57)));
-	};
+					_elm_lang$core$Basics_ops['++'],
+					'monthFromInt: invalid month: ',
+					_elm_lang$core$Basics$toString(_p9)));
+	}
 };
-var _elm_community$list_extra$List_Extra$findIndex = function (p) {
-	return function (_p60) {
-		return _elm_lang$core$List$head(
-			A2(_elm_community$list_extra$List_Extra$findIndices, p, _p60));
-	};
+var _elm_community$elm_datepicker$DatePicker_Date$monthToInt = function (month) {
+	var _p11 = month;
+	switch (_p11.ctor) {
+		case 'Jan':
+			return 1;
+		case 'Feb':
+			return 2;
+		case 'Mar':
+			return 3;
+		case 'Apr':
+			return 4;
+		case 'May':
+			return 5;
+		case 'Jun':
+			return 6;
+		case 'Jul':
+			return 7;
+		case 'Aug':
+			return 8;
+		case 'Sep':
+			return 9;
+		case 'Oct':
+			return 10;
+		case 'Nov':
+			return 11;
+		default:
+			return 12;
+	}
 };
-var _elm_community$list_extra$List_Extra$elemIndices = function (x) {
-	return _elm_community$list_extra$List_Extra$findIndices(
-		F2(
-			function (x, y) {
-				return _elm_lang$core$Native_Utils.eq(x, y);
-			})(x));
-};
-var _elm_community$list_extra$List_Extra$elemIndex = function (x) {
-	return _elm_community$list_extra$List_Extra$findIndex(
-		F2(
-			function (x, y) {
-				return _elm_lang$core$Native_Utils.eq(x, y);
-			})(x));
-};
-var _elm_community$list_extra$List_Extra$find = F2(
-	function (predicate, list) {
-		find:
-		while (true) {
-			var _p61 = list;
-			if (_p61.ctor === '[]') {
-				return _elm_lang$core$Maybe$Nothing;
-			} else {
-				var _p62 = _p61._0;
-				if (predicate(_p62)) {
-					return _elm_lang$core$Maybe$Just(_p62);
-				} else {
-					var _v40 = predicate,
-						_v41 = _p61._1;
-					predicate = _v40;
-					list = _v41;
-					continue find;
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$notMember = function (x) {
-	return function (_p63) {
-		return !A2(_elm_lang$core$List$member, x, _p63);
-	};
-};
-var _elm_community$list_extra$List_Extra$andThen = _elm_lang$core$List$concatMap;
-var _elm_community$list_extra$List_Extra$lift2 = F3(
-	function (f, la, lb) {
-		return A2(
-			_elm_community$list_extra$List_Extra$andThen,
-			function (a) {
-				return A2(
-					_elm_community$list_extra$List_Extra$andThen,
-					function (b) {
-						return {
-							ctor: '::',
-							_0: A2(f, a, b),
-							_1: {ctor: '[]'}
-						};
-					},
-					lb);
-			},
-			la);
-	});
-var _elm_community$list_extra$List_Extra$lift3 = F4(
-	function (f, la, lb, lc) {
-		return A2(
-			_elm_community$list_extra$List_Extra$andThen,
-			function (a) {
-				return A2(
-					_elm_community$list_extra$List_Extra$andThen,
-					function (b) {
-						return A2(
-							_elm_community$list_extra$List_Extra$andThen,
-							function (c) {
-								return {
-									ctor: '::',
-									_0: A3(f, a, b, c),
-									_1: {ctor: '[]'}
-								};
-							},
-							lc);
-					},
-					lb);
-			},
-			la);
-	});
-var _elm_community$list_extra$List_Extra$lift4 = F5(
-	function (f, la, lb, lc, ld) {
-		return A2(
-			_elm_community$list_extra$List_Extra$andThen,
-			function (a) {
-				return A2(
-					_elm_community$list_extra$List_Extra$andThen,
-					function (b) {
-						return A2(
-							_elm_community$list_extra$List_Extra$andThen,
-							function (c) {
-								return A2(
-									_elm_community$list_extra$List_Extra$andThen,
-									function (d) {
-										return {
-											ctor: '::',
-											_0: A4(f, a, b, c, d),
-											_1: {ctor: '[]'}
-										};
-									},
-									ld);
-							},
-							lc);
-					},
-					lb);
-			},
-			la);
-	});
-var _elm_community$list_extra$List_Extra$andMap = F2(
-	function (fl, l) {
-		return A3(
-			_elm_lang$core$List$map2,
+var _elm_community$elm_datepicker$DatePicker_Date$succMonth = function (month) {
+	return _elm_community$elm_datepicker$DatePicker_Date$monthFromInt(
+		A2(
 			F2(
 				function (x, y) {
-					return x(y);
+					return x + y;
 				}),
-			fl,
-			l);
-	});
-var _elm_community$list_extra$List_Extra$uniqueHelp = F3(
-	function (f, existing, remaining) {
-		uniqueHelp:
-		while (true) {
-			var _p64 = remaining;
-			if (_p64.ctor === '[]') {
-				return {ctor: '[]'};
-			} else {
-				var _p66 = _p64._1;
-				var _p65 = _p64._0;
-				var computedFirst = f(_p65);
-				if (A2(_elm_lang$core$Set$member, computedFirst, existing)) {
-					var _v43 = f,
-						_v44 = existing,
-						_v45 = _p66;
-					f = _v43;
-					existing = _v44;
-					remaining = _v45;
-					continue uniqueHelp;
-				} else {
-					return {
-						ctor: '::',
-						_0: _p65,
-						_1: A3(
-							_elm_community$list_extra$List_Extra$uniqueHelp,
-							f,
-							A2(_elm_lang$core$Set$insert, computedFirst, existing),
-							_p66)
-					};
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$uniqueBy = F2(
-	function (f, list) {
-		return A3(_elm_community$list_extra$List_Extra$uniqueHelp, f, _elm_lang$core$Set$empty, list);
-	});
-var _elm_community$list_extra$List_Extra$allDifferentBy = F2(
-	function (f, list) {
-		return _elm_lang$core$Native_Utils.eq(
-			_elm_lang$core$List$length(list),
-			_elm_lang$core$List$length(
-				A2(_elm_community$list_extra$List_Extra$uniqueBy, f, list)));
-	});
-var _elm_community$list_extra$List_Extra$unique = function (list) {
-	return A3(_elm_community$list_extra$List_Extra$uniqueHelp, _elm_lang$core$Basics$identity, _elm_lang$core$Set$empty, list);
+			1,
+			A3(
+				_elm_lang$core$Basics$flip,
+				_elm_lang$core$Basics$rem,
+				12,
+				_elm_community$elm_datepicker$DatePicker_Date$monthToInt(month))));
 };
-var _elm_community$list_extra$List_Extra$allDifferent = function (list) {
-	return _elm_lang$core$Native_Utils.eq(
-		_elm_lang$core$List$length(list),
-		_elm_lang$core$List$length(
-			_elm_community$list_extra$List_Extra$unique(list)));
+var _elm_community$elm_datepicker$DatePicker_Date$predMonth = function (month) {
+	var prev = A3(
+		_elm_lang$core$Basics$flip,
+		_elm_lang$core$Basics$rem,
+		12,
+		_elm_community$elm_datepicker$DatePicker_Date$monthToInt(month) - 1);
+	return _elm_lang$core$Native_Utils.eq(prev, 0) ? _elm_lang$core$Date$Dec : _elm_community$elm_datepicker$DatePicker_Date$monthFromInt(prev);
 };
-var _elm_community$list_extra$List_Extra$dropWhile = F2(
-	function (predicate, list) {
-		dropWhile:
-		while (true) {
-			var _p67 = list;
-			if (_p67.ctor === '[]') {
-				return {ctor: '[]'};
-			} else {
-				if (predicate(_p67._0)) {
-					var _v47 = predicate,
-						_v48 = _p67._1;
-					predicate = _v47;
-					list = _v48;
-					continue dropWhile;
-				} else {
-					return list;
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$takeWhile = F2(
-	function (predicate, list) {
-		var _p68 = list;
-		if (_p68.ctor === '[]') {
-			return {ctor: '[]'};
-		} else {
-			var _p69 = _p68._0;
-			return predicate(_p69) ? {
-				ctor: '::',
-				_0: _p69,
-				_1: A2(_elm_community$list_extra$List_Extra$takeWhile, predicate, _p68._1)
-			} : {ctor: '[]'};
-		}
-	});
-var _elm_community$list_extra$List_Extra$span = F2(
-	function (p, xs) {
-		return {
-			ctor: '_Tuple2',
-			_0: A2(_elm_community$list_extra$List_Extra$takeWhile, p, xs),
-			_1: A2(_elm_community$list_extra$List_Extra$dropWhile, p, xs)
-		};
-	});
-var _elm_community$list_extra$List_Extra$break = function (p) {
-	return _elm_community$list_extra$List_Extra$span(
-		function (_p70) {
-			return !p(_p70);
-		});
+var _elm_community$elm_datepicker$DatePicker_Date$monthToString = function (month) {
+	var $int = _elm_community$elm_datepicker$DatePicker_Date$monthToInt(month);
+	return (_elm_lang$core$Native_Utils.cmp($int, 10) < 0) ? A2(
+		_elm_lang$core$Basics_ops['++'],
+		'0',
+		_elm_lang$core$Basics$toString($int)) : _elm_lang$core$Basics$toString($int);
 };
-var _elm_community$list_extra$List_Extra$groupWhile = F2(
-	function (eq, xs_) {
-		var _p71 = xs_;
-		if (_p71.ctor === '[]') {
-			return {ctor: '[]'};
-		} else {
-			var _p73 = _p71._0;
-			var _p72 = A2(
-				_elm_community$list_extra$List_Extra$span,
-				eq(_p73),
-				_p71._1);
-			var ys = _p72._0;
-			var zs = _p72._1;
-			return {
-				ctor: '::',
-				_0: {ctor: '::', _0: _p73, _1: ys},
-				_1: A2(_elm_community$list_extra$List_Extra$groupWhile, eq, zs)
-			};
-		}
-	});
-var _elm_community$list_extra$List_Extra$group = _elm_community$list_extra$List_Extra$groupWhile(
-	F2(
-		function (x, y) {
-			return _elm_lang$core$Native_Utils.eq(x, y);
-		}));
-var _elm_community$list_extra$List_Extra$minimumBy = F2(
-	function (f, ls) {
-		var minBy = F2(
-			function (x, _p74) {
-				var _p75 = _p74;
-				var _p76 = _p75._1;
-				var fx = f(x);
-				return (_elm_lang$core$Native_Utils.cmp(fx, _p76) < 0) ? {ctor: '_Tuple2', _0: x, _1: fx} : {ctor: '_Tuple2', _0: _p75._0, _1: _p76};
-			});
-		var _p77 = ls;
-		if (_p77.ctor === '::') {
-			if (_p77._1.ctor === '[]') {
-				return _elm_lang$core$Maybe$Just(_p77._0);
-			} else {
-				var _p78 = _p77._0;
-				return _elm_lang$core$Maybe$Just(
-					_elm_lang$core$Tuple$first(
-						A3(
-							_elm_lang$core$List$foldl,
-							minBy,
-							{
-								ctor: '_Tuple2',
-								_0: _p78,
-								_1: f(_p78)
-							},
-							_p77._1)));
-			}
-		} else {
-			return _elm_lang$core$Maybe$Nothing;
-		}
-	});
-var _elm_community$list_extra$List_Extra$maximumBy = F2(
-	function (f, ls) {
-		var maxBy = F2(
-			function (x, _p79) {
-				var _p80 = _p79;
-				var _p81 = _p80._1;
-				var fx = f(x);
-				return (_elm_lang$core$Native_Utils.cmp(fx, _p81) > 0) ? {ctor: '_Tuple2', _0: x, _1: fx} : {ctor: '_Tuple2', _0: _p80._0, _1: _p81};
-			});
-		var _p82 = ls;
-		if (_p82.ctor === '::') {
-			if (_p82._1.ctor === '[]') {
-				return _elm_lang$core$Maybe$Just(_p82._0);
-			} else {
-				var _p83 = _p82._0;
-				return _elm_lang$core$Maybe$Just(
-					_elm_lang$core$Tuple$first(
-						A3(
-							_elm_lang$core$List$foldl,
-							maxBy,
-							{
-								ctor: '_Tuple2',
-								_0: _p83,
-								_1: f(_p83)
-							},
-							_p82._1)));
-			}
-		} else {
-			return _elm_lang$core$Maybe$Nothing;
-		}
-	});
-var _elm_community$list_extra$List_Extra$uncons = function (xs) {
-	var _p84 = xs;
-	if (_p84.ctor === '[]') {
-		return _elm_lang$core$Maybe$Nothing;
-	} else {
-		return _elm_lang$core$Maybe$Just(
-			{ctor: '_Tuple2', _0: _p84._0, _1: _p84._1});
+var _elm_community$elm_datepicker$DatePicker_Date$dayFromInt = function (day) {
+	var _p12 = day;
+	switch (_p12) {
+		case 1:
+			return _elm_lang$core$Date$Mon;
+		case 2:
+			return _elm_lang$core$Date$Tue;
+		case 3:
+			return _elm_lang$core$Date$Wed;
+		case 4:
+			return _elm_lang$core$Date$Thu;
+		case 5:
+			return _elm_lang$core$Date$Fri;
+		case 6:
+			return _elm_lang$core$Date$Sat;
+		case 7:
+			return _elm_lang$core$Date$Sun;
+		default:
+			return _elm_lang$core$Native_Utils.crashCase(
+				'DatePicker.Date',
+				{
+					start: {line: 350, column: 5},
+					end: {line: 373, column: 70}
+				},
+				_p12)(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'dayFromInt: invalid day: ',
+					_elm_lang$core$Basics$toString(day)));
 	}
 };
-var _elm_community$list_extra$List_Extra$swapAt = F3(
-	function (index1, index2, l) {
-		swapAt:
-		while (true) {
-			if (_elm_lang$core$Native_Utils.eq(index1, index2)) {
-				return _elm_lang$core$Maybe$Just(l);
-			} else {
-				if (_elm_lang$core$Native_Utils.cmp(index1, index2) > 0) {
-					var _v56 = index2,
-						_v57 = index1,
-						_v58 = l;
-					index1 = _v56;
-					index2 = _v57;
-					l = _v58;
-					continue swapAt;
+var _elm_community$elm_datepicker$DatePicker_Date$dayToInt = function (day) {
+	var _p14 = day;
+	switch (_p14.ctor) {
+		case 'Mon':
+			return 1;
+		case 'Tue':
+			return 2;
+		case 'Wed':
+			return 3;
+		case 'Thu':
+			return 4;
+		case 'Fri':
+			return 5;
+		case 'Sat':
+			return 6;
+		default:
+			return 7;
+	}
+};
+var _elm_community$elm_datepicker$DatePicker_Date$dayToString = function (day) {
+	return (_elm_lang$core$Native_Utils.cmp(day, 10) < 0) ? A2(
+		_elm_lang$core$Basics_ops['++'],
+		'0',
+		_elm_lang$core$Basics$toString(day)) : _elm_lang$core$Basics$toString(day);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$mkDate = F3(
+	function (year, month, day) {
+		return _elm_community$elm_datepicker$DatePicker_Date$unsafeDate(
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(year),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'/',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_community$elm_datepicker$DatePicker_Date$monthToString(month),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'/',
+							_elm_community$elm_datepicker$DatePicker_Date$dayToString(day))))));
+	});
+var _elm_community$elm_datepicker$DatePicker_Date$newYear = F2(
+	function (currentMonth, newYear) {
+		var _p15 = _elm_lang$core$String$toInt(newYear);
+		if (_p15.ctor === 'Ok') {
+			return A3(
+				_elm_community$elm_datepicker$DatePicker_Date$mkDate,
+				_p15._0,
+				_elm_lang$core$Date$month(currentMonth),
+				_elm_lang$core$Date$day(currentMonth));
+		} else {
+			return _elm_lang$core$Native_Utils.crashCase(
+				'DatePicker.Date',
+				{
+					start: {line: 562, column: 5},
+					end: {line: 567, column: 70}
+				},
+				_p15)(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'Unknown Month ',
+					_elm_lang$core$Basics$toString(currentMonth)));
+		}
+	});
+var _elm_community$elm_datepicker$DatePicker_Date$predDow = function (day) {
+	var prev = A3(
+		_elm_lang$core$Basics$flip,
+		_elm_lang$core$Basics$rem,
+		7,
+		_elm_community$elm_datepicker$DatePicker_Date$dayToInt(day) - 1);
+	return _elm_lang$core$Native_Utils.eq(prev, 0) ? _elm_lang$core$Date$Sun : _elm_community$elm_datepicker$DatePicker_Date$dayFromInt(prev);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$succDow = function (day) {
+	return _elm_community$elm_datepicker$DatePicker_Date$dayFromInt(
+		A2(
+			F2(
+				function (x, y) {
+					return x + y;
+				}),
+			1,
+			A3(
+				_elm_lang$core$Basics$flip,
+				_elm_lang$core$Basics$rem,
+				7,
+				_elm_community$elm_datepicker$DatePicker_Date$dayToInt(day))));
+};
+var _elm_community$elm_datepicker$DatePicker_Date$subDay = function (date) {
+	var day = _elm_lang$core$Date$day(date) - 1;
+	var year = _elm_lang$core$Date$year(date);
+	var month = _elm_lang$core$Date$month(date);
+	var pred = _elm_community$elm_datepicker$DatePicker_Date$predMonth(month);
+	var predYear = _elm_lang$core$Native_Utils.eq(pred, _elm_lang$core$Date$Dec) ? (year - 1) : year;
+	return (_elm_lang$core$Native_Utils.cmp(day, 1) < 0) ? A3(
+		_elm_community$elm_datepicker$DatePicker_Date$mkDate,
+		predYear,
+		pred,
+		A2(_elm_community$elm_datepicker$DatePicker_Date$daysInMonth, predYear, pred)) : A3(_elm_community$elm_datepicker$DatePicker_Date$mkDate, year, month, day);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$addDay = function (date) {
+	var day = _elm_lang$core$Date$day(date) + 1;
+	var year = _elm_lang$core$Date$year(date);
+	var month = _elm_lang$core$Date$month(date);
+	var dim = A2(_elm_community$elm_datepicker$DatePicker_Date$daysInMonth, year, month);
+	var succ = _elm_community$elm_datepicker$DatePicker_Date$succMonth(month);
+	var succYear = _elm_lang$core$Native_Utils.eq(succ, _elm_lang$core$Date$Jan) ? (year + 1) : year;
+	return (_elm_lang$core$Native_Utils.cmp(day, dim) > 0) ? A3(_elm_community$elm_datepicker$DatePicker_Date$mkDate, succYear, succ, 1) : A3(_elm_community$elm_datepicker$DatePicker_Date$mkDate, year, month, day);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$prevMonth = function (date) {
+	var prevMonth = _elm_community$elm_datepicker$DatePicker_Date$predMonth(
+		_elm_lang$core$Date$month(date));
+	var prevYear = _elm_lang$core$Native_Utils.eq(prevMonth, _elm_lang$core$Date$Dec) ? (_elm_lang$core$Date$year(date) - 1) : _elm_lang$core$Date$year(date);
+	return A3(_elm_community$elm_datepicker$DatePicker_Date$mkDate, prevYear, prevMonth, 1);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$nextMonth = function (date) {
+	var nextMonth = _elm_community$elm_datepicker$DatePicker_Date$succMonth(
+		_elm_lang$core$Date$month(date));
+	var nextYear = _elm_lang$core$Native_Utils.eq(nextMonth, _elm_lang$core$Date$Jan) ? (_elm_lang$core$Date$year(date) + 1) : _elm_lang$core$Date$year(date);
+	return A3(_elm_community$elm_datepicker$DatePicker_Date$mkDate, nextYear, nextMonth, 1);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$firstOfMonth = function (date) {
+	return A3(
+		_elm_community$elm_datepicker$DatePicker_Date$mkDate,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date),
+		1);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$repeat = function (f) {
+	var go = F2(
+		function (n, x) {
+			go:
+			while (true) {
+				if (_elm_lang$core$Native_Utils.eq(n, 0)) {
+					return x;
 				} else {
-					if (_elm_lang$core$Native_Utils.cmp(index1, 0) < 0) {
-						return _elm_lang$core$Maybe$Nothing;
+					var _v9 = n - 1,
+						_v10 = f(x);
+					n = _v9;
+					x = _v10;
+					continue go;
+				}
+			}
+		});
+	return go;
+};
+var _elm_community$elm_datepicker$DatePicker_Date$addDays = _elm_community$elm_datepicker$DatePicker_Date$repeat(_elm_community$elm_datepicker$DatePicker_Date$addDay);
+var _elm_community$elm_datepicker$DatePicker_Date$subDays = _elm_community$elm_datepicker$DatePicker_Date$repeat(_elm_community$elm_datepicker$DatePicker_Date$subDay);
+var _elm_community$elm_datepicker$DatePicker_Date$addDows = _elm_community$elm_datepicker$DatePicker_Date$repeat(_elm_community$elm_datepicker$DatePicker_Date$succDow);
+var _elm_community$elm_datepicker$DatePicker_Date$subDows = _elm_community$elm_datepicker$DatePicker_Date$repeat(_elm_community$elm_datepicker$DatePicker_Date$succDow);
+var _elm_community$elm_datepicker$DatePicker_Date$dateTuple = function (date) {
+	return {
+		ctor: '_Tuple3',
+		_0: _elm_lang$core$Date$year(date),
+		_1: _elm_community$elm_datepicker$DatePicker_Date$monthToInt(
+			_elm_lang$core$Date$month(date)),
+		_2: _elm_lang$core$Date$day(date)
+	};
+};
+var _elm_community$elm_datepicker$DatePicker_Date$trimDates = F2(
+	function (firstDay, dates) {
+		var dl = function (dates) {
+			dl:
+			while (true) {
+				var _p17 = dates;
+				if (_p17.ctor === '[]') {
+					return {ctor: '[]'};
+				} else {
+					if (_elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$dayOfWeek(_p17._0),
+						firstDay)) {
+						return dates;
 					} else {
-						var _p85 = A2(_elm_community$list_extra$List_Extra$splitAt, index1, l);
-						var part1 = _p85._0;
-						var tail1 = _p85._1;
-						var _p86 = A2(_elm_community$list_extra$List_Extra$splitAt, index2 - index1, tail1);
-						var head2 = _p86._0;
-						var tail2 = _p86._1;
-						return A3(
-							_elm_lang$core$Maybe$map2,
-							F2(
-								function (_p88, _p87) {
-									var _p89 = _p88;
-									var _p90 = _p87;
-									return _elm_lang$core$List$concat(
-										{
-											ctor: '::',
-											_0: part1,
-											_1: {
-												ctor: '::',
-												_0: {ctor: '::', _0: _p90._0, _1: _p89._1},
-												_1: {
-													ctor: '::',
-													_0: {ctor: '::', _0: _p89._0, _1: _p90._1},
-													_1: {ctor: '[]'}
-												}
-											}
-										});
-								}),
-							_elm_community$list_extra$List_Extra$uncons(head2),
-							_elm_community$list_extra$List_Extra$uncons(tail2));
+						var _v12 = _p17._1;
+						dates = _v12;
+						continue dl;
 					}
 				}
 			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$iterate = F2(
-	function (f, x) {
-		var _p91 = f(x);
-		if (_p91.ctor === 'Just') {
-			return {
-				ctor: '::',
-				_0: x,
-				_1: A2(_elm_community$list_extra$List_Extra$iterate, f, _p91._0)
-			};
-		} else {
-			return {
-				ctor: '::',
-				_0: x,
-				_1: {ctor: '[]'}
-			};
-		}
-	});
-var _elm_community$list_extra$List_Extra$getAt = F2(
-	function (idx, xs) {
-		return (_elm_lang$core$Native_Utils.cmp(idx, 0) < 0) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$List$head(
-			A2(_elm_lang$core$List$drop, idx, xs));
-	});
-var _elm_community$list_extra$List_Extra_ops = _elm_community$list_extra$List_Extra_ops || {};
-_elm_community$list_extra$List_Extra_ops['!!'] = _elm_lang$core$Basics$flip(_elm_community$list_extra$List_Extra$getAt);
-var _elm_community$list_extra$List_Extra$init = function () {
-	var maybe = F2(
-		function (d, f) {
-			return function (_p92) {
-				return A2(
-					_elm_lang$core$Maybe$withDefault,
-					d,
-					A2(_elm_lang$core$Maybe$map, f, _p92));
-			};
-		});
-	return A2(
-		_elm_lang$core$List$foldr,
-		function (x) {
-			return function (_p93) {
-				return _elm_lang$core$Maybe$Just(
-					A3(
-						maybe,
-						{ctor: '[]'},
-						F2(
-							function (x, y) {
-								return {ctor: '::', _0: x, _1: y};
-							})(x),
-						_p93));
-			};
-		},
-		_elm_lang$core$Maybe$Nothing);
-}();
-var _elm_community$list_extra$List_Extra$last = _elm_community$list_extra$List_Extra$foldl1(
-	_elm_lang$core$Basics$flip(_elm_lang$core$Basics$always));
-
-//import Maybe, Native.List //
-
-var _elm_lang$core$Native_Regex = function() {
-
-function escape(str)
-{
-	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-}
-function caseInsensitive(re)
-{
-	return new RegExp(re.source, 'gi');
-}
-function regex(raw)
-{
-	return new RegExp(raw, 'g');
-}
-
-function contains(re, string)
-{
-	return string.match(re) !== null;
-}
-
-function find(n, re, str)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	var out = [];
-	var number = 0;
-	var string = str;
-	var lastIndex = re.lastIndex;
-	var prevLastIndex = -1;
-	var result;
-	while (number++ < n && (result = re.exec(string)))
-	{
-		if (prevLastIndex === re.lastIndex) break;
-		var i = result.length - 1;
-		var subs = new Array(i);
-		while (i > 0)
-		{
-			var submatch = result[i];
-			subs[--i] = submatch === undefined
-				? _elm_lang$core$Maybe$Nothing
-				: _elm_lang$core$Maybe$Just(submatch);
-		}
-		out.push({
-			match: result[0],
-			submatches: _elm_lang$core$Native_List.fromArray(subs),
-			index: result.index,
-			number: number
-		});
-		prevLastIndex = re.lastIndex;
-	}
-	re.lastIndex = lastIndex;
-	return _elm_lang$core$Native_List.fromArray(out);
-}
-
-function replace(n, re, replacer, string)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	var count = 0;
-	function jsReplacer(match)
-	{
-		if (count++ >= n)
-		{
-			return match;
-		}
-		var i = arguments.length - 3;
-		var submatches = new Array(i);
-		while (i > 0)
-		{
-			var submatch = arguments[i];
-			submatches[--i] = submatch === undefined
-				? _elm_lang$core$Maybe$Nothing
-				: _elm_lang$core$Maybe$Just(submatch);
-		}
-		return replacer({
-			match: match,
-			submatches: _elm_lang$core$Native_List.fromArray(submatches),
-			index: arguments[arguments.length - 2],
-			number: count
-		});
-	}
-	return string.replace(re, jsReplacer);
-}
-
-function split(n, re, str)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	if (n === Infinity)
-	{
-		return _elm_lang$core$Native_List.fromArray(str.split(re));
-	}
-	var string = str;
-	var result;
-	var out = [];
-	var start = re.lastIndex;
-	var restoreLastIndex = re.lastIndex;
-	while (n--)
-	{
-		if (!(result = re.exec(string))) break;
-		out.push(string.slice(start, result.index));
-		start = re.lastIndex;
-	}
-	out.push(string.slice(start));
-	re.lastIndex = restoreLastIndex;
-	return _elm_lang$core$Native_List.fromArray(out);
-}
-
-return {
-	regex: regex,
-	caseInsensitive: caseInsensitive,
-	escape: escape,
-
-	contains: F2(contains),
-	find: F3(find),
-	replace: F4(replace),
-	split: F3(split)
-};
-
-}();
-
-var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
-var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
-var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
-var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
-var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
-var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
-var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
-var _elm_lang$core$Regex$Match = F4(
-	function (a, b, c, d) {
-		return {match: a, submatches: b, index: c, number: d};
-	});
-var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
-var _elm_lang$core$Regex$AtMost = function (a) {
-	return {ctor: 'AtMost', _0: a};
-};
-var _elm_lang$core$Regex$All = {ctor: 'All'};
-
-var _elm_lang$core$Process$kill = _elm_lang$core$Native_Scheduler.kill;
-var _elm_lang$core$Process$sleep = _elm_lang$core$Native_Scheduler.sleep;
-var _elm_lang$core$Process$spawn = _elm_lang$core$Native_Scheduler.spawn;
-
-var _elm_lang$dom$Native_Dom = function() {
-
-var fakeNode = {
-	addEventListener: function() {},
-	removeEventListener: function() {}
-};
-
-var onDocument = on(typeof document !== 'undefined' ? document : fakeNode);
-var onWindow = on(typeof window !== 'undefined' ? window : fakeNode);
-
-function on(node)
-{
-	return function(eventName, decoder, toTask)
-	{
-		return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
-
-			function performTask(event)
-			{
-				var result = A2(_elm_lang$core$Json_Decode$decodeValue, decoder, event);
-				if (result.ctor === 'Ok')
-				{
-					_elm_lang$core$Native_Scheduler.rawSpawn(toTask(result._0));
+		};
+		var lastDay = _elm_community$elm_datepicker$DatePicker_Date$predDow(firstDay);
+		var dr = function (dates) {
+			dr:
+			while (true) {
+				var _p18 = dates;
+				if (_p18.ctor === '[]') {
+					return {ctor: '[]'};
+				} else {
+					if (_elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$dayOfWeek(_p18._0),
+						lastDay)) {
+						return dates;
+					} else {
+						var _v14 = _p18._1;
+						dates = _v14;
+						continue dr;
+					}
 				}
 			}
-
-			node.addEventListener(eventName, performTask);
-
-			return function()
-			{
-				node.removeEventListener(eventName, performTask);
-			};
-		});
-	};
-}
-
-var rAF = typeof requestAnimationFrame !== 'undefined'
-	? requestAnimationFrame
-	: function(callback) { callback(); };
-
-function withNode(id, doStuff)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		rAF(function()
-		{
-			var node = document.getElementById(id);
-			if (node === null)
-			{
-				callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'NotFound', _0: id }));
-				return;
-			}
-			callback(_elm_lang$core$Native_Scheduler.succeed(doStuff(node)));
-		});
+		};
+		return _elm_lang$core$List$reverse(
+			dr(
+				_elm_lang$core$List$reverse(
+					dl(dates))));
 	});
-}
-
-
-// FOCUS
-
-function focus(id)
-{
-	return withNode(id, function(node) {
-		node.focus();
-		return _elm_lang$core$Native_Utils.Tuple0;
+var _elm_community$elm_datepicker$DatePicker_Date$datesInRange = F3(
+	function (firstDay, min, max) {
+		var go = F2(
+			function (x, acc) {
+				go:
+				while (true) {
+					var y = _elm_community$elm_datepicker$DatePicker_Date$subDay(x);
+					if (_elm_lang$core$Native_Utils.eq(
+						_elm_community$elm_datepicker$DatePicker_Date$dateTuple(y),
+						_elm_community$elm_datepicker$DatePicker_Date$dateTuple(min))) {
+						return {ctor: '::', _0: y, _1: acc};
+					} else {
+						var _v15 = y,
+							_v16 = {ctor: '::', _0: y, _1: acc};
+						x = _v15;
+						acc = _v16;
+						continue go;
+					}
+				}
+			});
+		return A2(
+			_elm_community$elm_datepicker$DatePicker_Date$trimDates,
+			firstDay,
+			A2(
+				go,
+				max,
+				{ctor: '[]'}));
 	});
-}
-
-function blur(id)
-{
-	return withNode(id, function(node) {
-		node.blur();
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-
-// SCROLLING
-
-function getScrollTop(id)
-{
-	return withNode(id, function(node) {
-		return node.scrollTop;
-	});
-}
-
-function setScrollTop(id, desiredScrollTop)
-{
-	return withNode(id, function(node) {
-		node.scrollTop = desiredScrollTop;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function toBottom(id)
-{
-	return withNode(id, function(node) {
-		node.scrollTop = node.scrollHeight;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function getScrollLeft(id)
-{
-	return withNode(id, function(node) {
-		return node.scrollLeft;
-	});
-}
-
-function setScrollLeft(id, desiredScrollLeft)
-{
-	return withNode(id, function(node) {
-		node.scrollLeft = desiredScrollLeft;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function toRight(id)
-{
-	return withNode(id, function(node) {
-		node.scrollLeft = node.scrollWidth;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-
-// SIZE
-
-function width(options, id)
-{
-	return withNode(id, function(node) {
-		switch (options.ctor)
-		{
-			case 'Content':
-				return node.scrollWidth;
-			case 'VisibleContent':
-				return node.clientWidth;
-			case 'VisibleContentWithBorders':
-				return node.offsetWidth;
-			case 'VisibleContentWithBordersAndMargins':
-				var rect = node.getBoundingClientRect();
-				return rect.right - rect.left;
-		}
-	});
-}
-
-function height(options, id)
-{
-	return withNode(id, function(node) {
-		switch (options.ctor)
-		{
-			case 'Content':
-				return node.scrollHeight;
-			case 'VisibleContent':
-				return node.clientHeight;
-			case 'VisibleContentWithBorders':
-				return node.offsetHeight;
-			case 'VisibleContentWithBordersAndMargins':
-				var rect = node.getBoundingClientRect();
-				return rect.bottom - rect.top;
-		}
-	});
-}
-
-return {
-	onDocument: F3(onDocument),
-	onWindow: F3(onWindow),
-
-	focus: focus,
-	blur: blur,
-
-	getScrollTop: getScrollTop,
-	setScrollTop: F2(setScrollTop),
-	getScrollLeft: getScrollLeft,
-	setScrollLeft: F2(setScrollLeft),
-	toBottom: toBottom,
-	toRight: toRight,
-
-	height: F2(height),
-	width: F2(width)
+var _elm_community$elm_datepicker$DatePicker_Date$formatMonth = function (month) {
+	var _p19 = month;
+	switch (_p19.ctor) {
+		case 'Jan':
+			return 'January';
+		case 'Feb':
+			return 'February';
+		case 'Mar':
+			return 'March';
+		case 'Apr':
+			return 'April';
+		case 'May':
+			return 'May';
+		case 'Jun':
+			return 'June';
+		case 'Jul':
+			return 'July';
+		case 'Aug':
+			return 'August';
+		case 'Sep':
+			return 'September';
+		case 'Oct':
+			return 'October';
+		case 'Nov':
+			return 'November';
+		default:
+			return 'December';
+	}
 };
-
-}();
-
-var _elm_lang$dom$Dom$blur = _elm_lang$dom$Native_Dom.blur;
-var _elm_lang$dom$Dom$focus = _elm_lang$dom$Native_Dom.focus;
-var _elm_lang$dom$Dom$NotFound = function (a) {
-	return {ctor: 'NotFound', _0: a};
+var _elm_community$elm_datepicker$DatePicker_Date$formatDay = function (day) {
+	var _p20 = day;
+	switch (_p20.ctor) {
+		case 'Mon':
+			return 'Mo';
+		case 'Tue':
+			return 'Tu';
+		case 'Wed':
+			return 'We';
+		case 'Thu':
+			return 'Th';
+		case 'Fri':
+			return 'Fr';
+		case 'Sat':
+			return 'Sa';
+		default:
+			return 'Su';
+	}
 };
-
-var _elm_lang$dom$Dom_LowLevel$onWindow = _elm_lang$dom$Native_Dom.onWindow;
-var _elm_lang$dom$Dom_LowLevel$onDocument = _elm_lang$dom$Native_Dom.onDocument;
+var _elm_community$elm_datepicker$DatePicker_Date$formatDate = function (date) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Basics$toString(
+			_elm_lang$core$Date$year(date)),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'/',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_community$elm_datepicker$DatePicker_Date$monthToString(
+					_elm_lang$core$Date$month(date)),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'/',
+					_elm_community$elm_datepicker$DatePicker_Date$dayToString(
+						_elm_lang$core$Date$day(date))))));
+};
+var _elm_community$elm_datepicker$DatePicker_Date$initDate = A3(_elm_community$elm_datepicker$DatePicker_Date$mkDate, 1992, _elm_lang$core$Date$May, 29);
+var _elm_community$elm_datepicker$DatePicker_Date$To = function (a) {
+	return {ctor: 'To', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker_Date$From = function (a) {
+	return {ctor: 'From', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker_Date$Between = F2(
+	function (a, b) {
+		return {ctor: 'Between', _0: a, _1: b};
+	});
+var _elm_community$elm_datepicker$DatePicker_Date$MoreOrLess = function (a) {
+	return {ctor: 'MoreOrLess', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker_Date$Off = {ctor: 'Off'};
 
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrap;
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrapWithFlags;
@@ -10669,9 +9349,1468 @@ var _elm_lang$html$Html_Keyed$node = _elm_lang$virtual_dom$VirtualDom$keyedNode;
 var _elm_lang$html$Html_Keyed$ol = _elm_lang$html$Html_Keyed$node('ol');
 var _elm_lang$html$Html_Keyed$ul = _elm_lang$html$Html_Keyed$node('ul');
 
-var _elm_lang$html$Html_Lazy$lazy3 = _elm_lang$virtual_dom$VirtualDom$lazy3;
-var _elm_lang$html$Html_Lazy$lazy2 = _elm_lang$virtual_dom$VirtualDom$lazy2;
-var _elm_lang$html$Html_Lazy$lazy = _elm_lang$virtual_dom$VirtualDom$lazy;
+var _elm_community$elm_datepicker$DatePicker_ops = _elm_community$elm_datepicker$DatePicker_ops || {};
+_elm_community$elm_datepicker$DatePicker_ops['??>'] = F2(
+	function (first, $default) {
+		var _p0 = first;
+		if (_p0.ctor === 'Just') {
+			return _elm_lang$core$Maybe$Just(_p0._0);
+		} else {
+			return $default;
+		}
+	});
+var _elm_community$elm_datepicker$DatePicker_ops = _elm_community$elm_datepicker$DatePicker_ops || {};
+_elm_community$elm_datepicker$DatePicker_ops['?>'] = _elm_lang$core$Basics$flip(_elm_lang$core$Maybe$withDefault);
+var _elm_community$elm_datepicker$DatePicker$mkClassList = F2(
+	function (_p1, cs) {
+		var _p2 = _p1;
+		return _elm_lang$html$Html_Attributes$classList(
+			A2(
+				_elm_lang$core$List$map,
+				function (_p3) {
+					var _p4 = _p3;
+					return {
+						ctor: '_Tuple2',
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p2.classNamespace, _p4._0),
+						_1: _p4._1
+					};
+				},
+				cs));
+	});
+var _elm_community$elm_datepicker$DatePicker$mkClass = F2(
+	function (_p5, c) {
+		var _p6 = _p5;
+		return _elm_lang$html$Html_Attributes$class(
+			A2(_elm_lang$core$Basics_ops['++'], _p6.classNamespace, c));
+	});
+var _elm_community$elm_datepicker$DatePicker$groupDates = function (dates) {
+	var go = F4(
+		function (i, xs, racc, acc) {
+			go:
+			while (true) {
+				var _p7 = xs;
+				if (_p7.ctor === '[]') {
+					return _elm_lang$core$List$reverse(acc);
+				} else {
+					var _p9 = _p7._1;
+					var _p8 = _p7._0;
+					if (_elm_lang$core$Native_Utils.eq(i, 6)) {
+						var _v5 = 0,
+							_v6 = _p9,
+							_v7 = {ctor: '[]'},
+							_v8 = {
+							ctor: '::',
+							_0: _elm_lang$core$List$reverse(
+								{ctor: '::', _0: _p8, _1: racc}),
+							_1: acc
+						};
+						i = _v5;
+						xs = _v6;
+						racc = _v7;
+						acc = _v8;
+						continue go;
+					} else {
+						var _v9 = i + 1,
+							_v10 = _p9,
+							_v11 = {ctor: '::', _0: _p8, _1: racc},
+							_v12 = acc;
+						i = _v9;
+						xs = _v10;
+						racc = _v11;
+						acc = _v12;
+						continue go;
+					}
+				}
+			}
+		});
+	return A4(
+		go,
+		0,
+		dates,
+		{ctor: '[]'},
+		{ctor: '[]'});
+};
+var _elm_community$elm_datepicker$DatePicker$focusedDate = function (_p10) {
+	var _p11 = _p10;
+	return _p11._0.focused;
+};
+var _elm_community$elm_datepicker$DatePicker$isOpen = function (_p12) {
+	var _p13 = _p12;
+	return _p13._0.open;
+};
+var _elm_community$elm_datepicker$DatePicker$prepareDates = F2(
+	function (date, firstDayOfWeek) {
+		var end = A2(
+			_elm_community$elm_datepicker$DatePicker_Date$addDays,
+			6,
+			_elm_community$elm_datepicker$DatePicker_Date$nextMonth(date));
+		var start = A2(
+			_elm_community$elm_datepicker$DatePicker_Date$subDays,
+			6,
+			_elm_community$elm_datepicker$DatePicker_Date$firstOfMonth(date));
+		return {
+			currentMonth: date,
+			currentDates: A3(_elm_community$elm_datepicker$DatePicker_Date$datesInRange, firstDayOfWeek, start, end)
+		};
+	});
+var _elm_community$elm_datepicker$DatePicker$formatCell = function (day) {
+	return _elm_lang$html$Html$text(day);
+};
+var _elm_community$elm_datepicker$DatePicker$off = _elm_community$elm_datepicker$DatePicker_Date$Off;
+var _elm_community$elm_datepicker$DatePicker$to = function (year) {
+	return _elm_community$elm_datepicker$DatePicker_Date$To(year);
+};
+var _elm_community$elm_datepicker$DatePicker$from = function (year) {
+	return _elm_community$elm_datepicker$DatePicker_Date$From(year);
+};
+var _elm_community$elm_datepicker$DatePicker$moreOrLess = function (range) {
+	return _elm_community$elm_datepicker$DatePicker_Date$MoreOrLess(range);
+};
+var _elm_community$elm_datepicker$DatePicker$between = F2(
+	function (start, end) {
+		return (_elm_lang$core$Native_Utils.cmp(start, end) > 0) ? A2(_elm_community$elm_datepicker$DatePicker_Date$Between, end, start) : A2(_elm_community$elm_datepicker$DatePicker_Date$Between, start, end);
+	});
+var _elm_community$elm_datepicker$DatePicker$yearRangeActive = function (yearRange) {
+	return !_elm_lang$core$Native_Utils.eq(yearRange, _elm_community$elm_datepicker$DatePicker_Date$Off);
+};
+var _elm_community$elm_datepicker$DatePicker$defaultSettings = {
+	placeholder: 'Please pick a date...',
+	classNamespace: 'elm-datepicker--',
+	inputClassList: {ctor: '[]'},
+	inputName: _elm_lang$core$Maybe$Nothing,
+	inputId: _elm_lang$core$Maybe$Nothing,
+	inputAttributes: {
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$required(false),
+		_1: {ctor: '[]'}
+	},
+	isDisabled: _elm_lang$core$Basics$always(false),
+	parser: _elm_lang$core$Date$fromString,
+	dateFormatter: _elm_community$elm_datepicker$DatePicker_Date$formatDate,
+	dayFormatter: _elm_community$elm_datepicker$DatePicker_Date$formatDay,
+	monthFormatter: _elm_community$elm_datepicker$DatePicker_Date$formatMonth,
+	yearFormatter: _elm_lang$core$Basics$toString,
+	cellFormatter: _elm_community$elm_datepicker$DatePicker$formatCell,
+	firstDayOfWeek: _elm_lang$core$Date$Sun,
+	changeYear: _elm_community$elm_datepicker$DatePicker$off
+};
+var _elm_community$elm_datepicker$DatePicker$Settings = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return function (l) {
+												return function (m) {
+													return function (n) {
+														return function (o) {
+															return {placeholder: a, classNamespace: b, inputClassList: c, inputName: d, inputId: e, inputAttributes: f, isDisabled: g, parser: h, dateFormatter: i, dayFormatter: j, monthFormatter: k, yearFormatter: l, cellFormatter: m, firstDayOfWeek: n, changeYear: o};
+														};
+													};
+												};
+											};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _elm_community$elm_datepicker$DatePicker$Model = F5(
+	function (a, b, c, d, e) {
+		return {open: a, forceOpen: b, focused: c, inputText: d, today: e};
+	});
+var _elm_community$elm_datepicker$DatePicker$MouseUp = {ctor: 'MouseUp'};
+var _elm_community$elm_datepicker$DatePicker$MouseDown = {ctor: 'MouseDown'};
+var _elm_community$elm_datepicker$DatePicker$Blur = {ctor: 'Blur'};
+var _elm_community$elm_datepicker$DatePicker$Focus = {ctor: 'Focus'};
+var _elm_community$elm_datepicker$DatePicker$SubmitText = {ctor: 'SubmitText'};
+var _elm_community$elm_datepicker$DatePicker$Text = function (a) {
+	return {ctor: 'Text', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker$Pick = function (a) {
+	return {ctor: 'Pick', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker$pick = _elm_community$elm_datepicker$DatePicker$Pick;
+var _elm_community$elm_datepicker$DatePicker$ChangeFocus = function (a) {
+	return {ctor: 'ChangeFocus', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker$datePicker = F3(
+	function (pickedDate, settings, _p14) {
+		var _p15 = _p14;
+		var onChange = function (handler) {
+			return A2(
+				_elm_lang$html$Html_Events$on,
+				'change',
+				A2(_elm_lang$core$Json_Decode$map, handler, _elm_lang$html$Html_Events$targetValue));
+		};
+		var onPicker = function (ev) {
+			return function (_p16) {
+				return A3(
+					_elm_lang$html$Html_Events$onWithOptions,
+					ev,
+					{preventDefault: false, stopPropagation: true},
+					_elm_lang$core$Json_Decode$succeed(_p16));
+			};
+		};
+		var picked = function (d) {
+			return A2(
+				_elm_lang$core$Maybe$withDefault,
+				false,
+				A2(
+					_elm_lang$core$Maybe$map,
+					function (_p17) {
+						return A2(
+							F2(
+								function (x, y) {
+									return _elm_lang$core$Native_Utils.eq(x, y);
+								}),
+							_elm_community$elm_datepicker$DatePicker_Date$dateTuple(d),
+							_elm_community$elm_datepicker$DatePicker_Date$dateTuple(_p17));
+					},
+					pickedDate));
+		};
+		var firstDay = settings.firstDayOfWeek;
+		var classList = _elm_community$elm_datepicker$DatePicker$mkClassList(settings);
+		var $class = _elm_community$elm_datepicker$DatePicker$mkClass(settings);
+		var arrow = F2(
+			function (className, message) {
+				return A2(
+					_elm_lang$html$Html$a,
+					{
+						ctor: '::',
+						_0: $class(className),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$href('javascript:;'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(message),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$tabindex(-1),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					},
+					{ctor: '[]'});
+			});
+		var dow = function (d) {
+			return A2(
+				_elm_lang$html$Html$td,
+				{
+					ctor: '::',
+					_0: $class('dow'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						settings.dayFormatter(d)),
+					_1: {ctor: '[]'}
+				});
+		};
+		var currentDate = A2(
+			_elm_community$elm_datepicker$DatePicker_ops['?>'],
+			A2(_elm_community$elm_datepicker$DatePicker_ops['??>'], _p15.focused, pickedDate),
+			_p15.today);
+		var _p18 = A2(_elm_community$elm_datepicker$DatePicker$prepareDates, currentDate, settings.firstDayOfWeek);
+		var currentMonth = _p18.currentMonth;
+		var currentDates = _p18.currentDates;
+		var isCurrentYear = function (selectedYear) {
+			return _elm_lang$core$Native_Utils.eq(
+				_elm_lang$core$Date$year(currentMonth),
+				selectedYear);
+		};
+		var yearOption = F2(
+			function (index, selectedYear) {
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Basics$toString(index),
+					_1: A2(
+						_elm_lang$html$Html$option,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$value(
+								_elm_lang$core$Basics$toString(selectedYear)),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$selected(
+									isCurrentYear(selectedYear)),
+								_1: {ctor: '[]'}
+							}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								_elm_lang$core$Basics$toString(selectedYear)),
+							_1: {ctor: '[]'}
+						})
+				};
+			});
+		var day = function (d) {
+			var disabled = settings.isDisabled(d);
+			var props = (!disabled) ? {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Events$onClick(
+					_elm_community$elm_datepicker$DatePicker$Pick(
+						_elm_lang$core$Maybe$Just(d))),
+				_1: {ctor: '[]'}
+			} : {ctor: '[]'};
+			return A2(
+				_elm_lang$html$Html$td,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					{
+						ctor: '::',
+						_0: classList(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'day', _1: true},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'disabled', _1: disabled},
+									_1: {
+										ctor: '::',
+										_0: {
+											ctor: '_Tuple2',
+											_0: 'picked',
+											_1: picked(d)
+										},
+										_1: {
+											ctor: '::',
+											_0: {
+												ctor: '_Tuple2',
+												_0: 'today',
+												_1: _elm_lang$core$Native_Utils.eq(
+													_elm_community$elm_datepicker$DatePicker_Date$dateTuple(d),
+													_elm_community$elm_datepicker$DatePicker_Date$dateTuple(currentDate))
+											},
+											_1: {
+												ctor: '::',
+												_0: {
+													ctor: '_Tuple2',
+													_0: 'other-month',
+													_1: !_elm_lang$core$Native_Utils.eq(
+														_elm_lang$core$Date$month(currentMonth),
+														_elm_lang$core$Date$month(d))
+												},
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
+					},
+					props),
+				{
+					ctor: '::',
+					_0: settings.cellFormatter(
+						_elm_lang$core$Basics$toString(
+							_elm_lang$core$Date$day(d))),
+					_1: {ctor: '[]'}
+				});
+		};
+		var row = function (days) {
+			return A2(
+				_elm_lang$html$Html$tr,
+				{
+					ctor: '::',
+					_0: $class('row'),
+					_1: {ctor: '[]'}
+				},
+				A2(_elm_lang$core$List$map, day, days));
+		};
+		var days = A2(
+			_elm_lang$core$List$map,
+			row,
+			_elm_community$elm_datepicker$DatePicker$groupDates(currentDates));
+		var dropdownYear = A3(
+			_elm_lang$html$Html_Keyed$node,
+			'select',
+			{
+				ctor: '::',
+				_0: onChange(
+					function (_p19) {
+						return _elm_community$elm_datepicker$DatePicker$ChangeFocus(
+							A2(_elm_community$elm_datepicker$DatePicker_Date$newYear, currentDate, _p19));
+					}),
+				_1: {
+					ctor: '::',
+					_0: $class('year-menu'),
+					_1: {ctor: '[]'}
+				}
+			},
+			A2(
+				_elm_lang$core$List$indexedMap,
+				yearOption,
+				A2(
+					_elm_community$elm_datepicker$DatePicker_Date$yearRange,
+					{focused: currentDate, currentMonth: currentMonth},
+					settings.changeYear)));
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: $class('picker'),
+				_1: {
+					ctor: '::',
+					_0: A2(onPicker, 'mousedown', _elm_community$elm_datepicker$DatePicker$MouseDown),
+					_1: {
+						ctor: '::',
+						_0: A2(onPicker, 'mouseup', _elm_community$elm_datepicker$DatePicker$MouseUp),
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: $class('picker-header'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: $class('prev-container'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									arrow,
+									'prev',
+									_elm_community$elm_datepicker$DatePicker$ChangeFocus(
+										_elm_community$elm_datepicker$DatePicker_Date$prevMonth(currentDate))),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: $class('month-container'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$span,
+										{
+											ctor: '::',
+											_0: $class('month'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(
+												settings.monthFormatter(
+													_elm_lang$core$Date$month(currentMonth))),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$span,
+											{
+												ctor: '::',
+												_0: $class('year'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: (!_elm_community$elm_datepicker$DatePicker$yearRangeActive(settings.changeYear)) ? _elm_lang$html$Html$text(
+													settings.yearFormatter(
+														_elm_lang$core$Date$year(currentMonth))) : A3(
+													_elm_lang$html$Html_Keyed$node,
+													'span',
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: {
+															ctor: '_Tuple2',
+															_0: _elm_lang$core$Basics$toString(
+																_elm_lang$core$Date$year(currentMonth)),
+															_1: dropdownYear
+														},
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: $class('next-container'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											arrow,
+											'next',
+											_elm_community$elm_datepicker$DatePicker$ChangeFocus(
+												_elm_community$elm_datepicker$DatePicker_Date$nextMonth(currentDate))),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$table,
+						{
+							ctor: '::',
+							_0: $class('table'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$thead,
+								{
+									ctor: '::',
+									_0: $class('weekdays'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$tr,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: dow(firstDay),
+											_1: {
+												ctor: '::',
+												_0: dow(
+													A2(_elm_community$elm_datepicker$DatePicker_Date$addDows, 1, firstDay)),
+												_1: {
+													ctor: '::',
+													_0: dow(
+														A2(_elm_community$elm_datepicker$DatePicker_Date$addDows, 2, firstDay)),
+													_1: {
+														ctor: '::',
+														_0: dow(
+															A2(_elm_community$elm_datepicker$DatePicker_Date$addDows, 3, firstDay)),
+														_1: {
+															ctor: '::',
+															_0: dow(
+																A2(_elm_community$elm_datepicker$DatePicker_Date$addDows, 4, firstDay)),
+															_1: {
+																ctor: '::',
+																_0: dow(
+																	A2(_elm_community$elm_datepicker$DatePicker_Date$addDows, 5, firstDay)),
+																_1: {
+																	ctor: '::',
+																	_0: dow(
+																		A2(_elm_community$elm_datepicker$DatePicker_Date$addDows, 6, firstDay)),
+																	_1: {ctor: '[]'}
+																}
+															}
+														}
+													}
+												}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$tbody,
+									{
+										ctor: '::',
+										_0: $class('days'),
+										_1: {ctor: '[]'}
+									},
+									days),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _elm_community$elm_datepicker$DatePicker$view = F3(
+	function (pickedDate, settings, _p20) {
+		var _p21 = _p20;
+		var _p23 = _p21._0;
+		var inputClasses = A2(
+			_elm_lang$core$Basics_ops['++'],
+			{
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: A2(_elm_lang$core$Basics_ops['++'], settings.classNamespace, 'input'),
+					_1: true
+				},
+				_1: {ctor: '[]'}
+			},
+			settings.inputClassList);
+		var potentialInputId = function (_p22) {
+			return A2(
+				_elm_lang$core$List$filterMap,
+				_elm_lang$core$Basics$identity,
+				_elm_lang$core$List$singleton(_p22));
+		}(
+			A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$id, settings.inputId));
+		var inputCommon = function (xs) {
+			return A2(
+				_elm_lang$html$Html$input,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$classList(inputClasses),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$name(
+								A2(_elm_community$elm_datepicker$DatePicker_ops['?>'], settings.inputName, '')),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$type_('text'),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html_Events$on,
+										'change',
+										_elm_lang$core$Json_Decode$succeed(_elm_community$elm_datepicker$DatePicker$SubmitText)),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onInput(_elm_community$elm_datepicker$DatePicker$Text),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Events$onBlur(_elm_community$elm_datepicker$DatePicker$Blur),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onClick(_elm_community$elm_datepicker$DatePicker$Focus),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Events$onFocus(_elm_community$elm_datepicker$DatePicker$Focus),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						settings.inputAttributes,
+						A2(_elm_lang$core$Basics_ops['++'], potentialInputId, xs))),
+				{ctor: '[]'});
+		};
+		var dateInput = inputCommon(
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$placeholder(settings.placeholder),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$value(
+						A2(
+							_elm_lang$core$Maybe$withDefault,
+							A2(
+								_elm_lang$core$Maybe$withDefault,
+								'',
+								A2(_elm_lang$core$Maybe$map, settings.dateFormatter, pickedDate)),
+							_p23.inputText)),
+					_1: {ctor: '[]'}
+				}
+			});
+		var $class = _elm_community$elm_datepicker$DatePicker$mkClass(settings);
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: $class('container'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: dateInput,
+				_1: {
+					ctor: '::',
+					_0: _p21._0.open ? A3(_elm_community$elm_datepicker$DatePicker$datePicker, pickedDate, settings, _p23) : _elm_lang$html$Html$text(''),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _elm_community$elm_datepicker$DatePicker$CurrentDate = function (a) {
+	return {ctor: 'CurrentDate', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker$DatePicker = function (a) {
+	return {ctor: 'DatePicker', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker$init = {
+	ctor: '_Tuple2',
+	_0: _elm_community$elm_datepicker$DatePicker$DatePicker(
+		{
+			open: false,
+			forceOpen: false,
+			focused: _elm_lang$core$Maybe$Just(_elm_community$elm_datepicker$DatePicker_Date$initDate),
+			inputText: _elm_lang$core$Maybe$Nothing,
+			today: _elm_community$elm_datepicker$DatePicker_Date$initDate
+		}),
+	_1: A2(_elm_lang$core$Task$perform, _elm_community$elm_datepicker$DatePicker$CurrentDate, _elm_lang$core$Date$now)
+};
+var _elm_community$elm_datepicker$DatePicker$initFromDate = function (date) {
+	return _elm_community$elm_datepicker$DatePicker$DatePicker(
+		{
+			open: false,
+			forceOpen: false,
+			focused: _elm_lang$core$Maybe$Just(date),
+			inputText: _elm_lang$core$Maybe$Nothing,
+			today: date
+		});
+};
+var _elm_community$elm_datepicker$DatePicker$initFromDates = F2(
+	function (today, date) {
+		return _elm_community$elm_datepicker$DatePicker$DatePicker(
+			{open: false, forceOpen: false, focused: date, inputText: _elm_lang$core$Maybe$Nothing, today: today});
+	});
+var _elm_community$elm_datepicker$DatePicker$Changed = function (a) {
+	return {ctor: 'Changed', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker$NoChange = {ctor: 'NoChange'};
+var _elm_community$elm_datepicker$DatePicker_ops = _elm_community$elm_datepicker$DatePicker_ops || {};
+_elm_community$elm_datepicker$DatePicker_ops['!'] = F2(
+	function (m, cs) {
+		return {
+			ctor: '_Tuple3',
+			_0: _elm_community$elm_datepicker$DatePicker$DatePicker(m),
+			_1: _elm_lang$core$Platform_Cmd$batch(cs),
+			_2: _elm_community$elm_datepicker$DatePicker$NoChange
+		};
+	});
+var _elm_community$elm_datepicker$DatePicker$update = F3(
+	function (settings, msg, _p24) {
+		var _p25 = _p24;
+		var _p33 = _p25._0;
+		var _p26 = msg;
+		switch (_p26.ctor) {
+			case 'CurrentDate':
+				var _p27 = _p26._0;
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p33,
+						{
+							focused: _elm_lang$core$Maybe$Just(_p27),
+							today: _p27
+						}),
+					{ctor: '[]'});
+			case 'ChangeFocus':
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p33,
+						{
+							focused: _elm_lang$core$Maybe$Just(_p26._0)
+						}),
+					{ctor: '[]'});
+			case 'Pick':
+				return {
+					ctor: '_Tuple3',
+					_0: _elm_community$elm_datepicker$DatePicker$DatePicker(
+						_elm_lang$core$Native_Utils.update(
+							_p33,
+							{open: false, inputText: _elm_lang$core$Maybe$Nothing, focused: _elm_lang$core$Maybe$Nothing})),
+					_1: _elm_lang$core$Platform_Cmd$none,
+					_2: _elm_community$elm_datepicker$DatePicker$Changed(_p26._0)
+				};
+			case 'Text':
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p33,
+						{
+							inputText: _elm_lang$core$Maybe$Just(_p26._0)
+						}),
+					{ctor: '[]'});
+			case 'SubmitText':
+				var isWhitespace = function (_p28) {
+					return _elm_lang$core$String$isEmpty(
+						_elm_lang$core$String$trim(_p28));
+				};
+				var dateEvent = function () {
+					var text = A2(_elm_community$elm_datepicker$DatePicker_ops['?>'], _p33.inputText, '');
+					return isWhitespace(text) ? _elm_community$elm_datepicker$DatePicker$Changed(_elm_lang$core$Maybe$Nothing) : A2(
+						_elm_lang$core$Result$withDefault,
+						_elm_community$elm_datepicker$DatePicker$NoChange,
+						A2(
+							_elm_lang$core$Result$map,
+							function (_p29) {
+								return _elm_community$elm_datepicker$DatePicker$Changed(
+									function (date) {
+										return settings.isDisabled(date) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(date);
+									}(_p29));
+							},
+							settings.parser(text)));
+				}();
+				return {
+					ctor: '_Tuple3',
+					_0: _elm_community$elm_datepicker$DatePicker$DatePicker(
+						_elm_lang$core$Native_Utils.update(
+							_p33,
+							{
+								inputText: function () {
+									var _p30 = dateEvent;
+									if (_p30.ctor === 'Changed') {
+										return _elm_lang$core$Maybe$Nothing;
+									} else {
+										return _p33.inputText;
+									}
+								}(),
+								focused: function () {
+									var _p31 = dateEvent;
+									if (_p31.ctor === 'Changed') {
+										var _p32 = _p31._0;
+										if (_p32.ctor === 'Just') {
+											return _elm_lang$core$Maybe$Just(_p32._0);
+										} else {
+											return _elm_lang$core$Maybe$Nothing;
+										}
+									} else {
+										return _p33.focused;
+									}
+								}()
+							})),
+					_1: _elm_lang$core$Platform_Cmd$none,
+					_2: dateEvent
+				};
+			case 'Focus':
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p33,
+						{open: true, forceOpen: false}),
+					{ctor: '[]'});
+			case 'Blur':
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p33,
+						{open: _p25._0.forceOpen}),
+					{ctor: '[]'});
+			case 'MouseDown':
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p33,
+						{forceOpen: true}),
+					{ctor: '[]'});
+			default:
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p33,
+						{forceOpen: false}),
+					{ctor: '[]'});
+		}
+	});
+
+var _elm_lang$core$Set$foldr = F3(
+	function (f, b, _p0) {
+		var _p1 = _p0;
+		return A3(
+			_elm_lang$core$Dict$foldr,
+			F3(
+				function (k, _p2, b) {
+					return A2(f, k, b);
+				}),
+			b,
+			_p1._0);
+	});
+var _elm_lang$core$Set$foldl = F3(
+	function (f, b, _p3) {
+		var _p4 = _p3;
+		return A3(
+			_elm_lang$core$Dict$foldl,
+			F3(
+				function (k, _p5, b) {
+					return A2(f, k, b);
+				}),
+			b,
+			_p4._0);
+	});
+var _elm_lang$core$Set$toList = function (_p6) {
+	var _p7 = _p6;
+	return _elm_lang$core$Dict$keys(_p7._0);
+};
+var _elm_lang$core$Set$size = function (_p8) {
+	var _p9 = _p8;
+	return _elm_lang$core$Dict$size(_p9._0);
+};
+var _elm_lang$core$Set$member = F2(
+	function (k, _p10) {
+		var _p11 = _p10;
+		return A2(_elm_lang$core$Dict$member, k, _p11._0);
+	});
+var _elm_lang$core$Set$isEmpty = function (_p12) {
+	var _p13 = _p12;
+	return _elm_lang$core$Dict$isEmpty(_p13._0);
+};
+var _elm_lang$core$Set$Set_elm_builtin = function (a) {
+	return {ctor: 'Set_elm_builtin', _0: a};
+};
+var _elm_lang$core$Set$empty = _elm_lang$core$Set$Set_elm_builtin(_elm_lang$core$Dict$empty);
+var _elm_lang$core$Set$singleton = function (k) {
+	return _elm_lang$core$Set$Set_elm_builtin(
+		A2(
+			_elm_lang$core$Dict$singleton,
+			k,
+			{ctor: '_Tuple0'}));
+};
+var _elm_lang$core$Set$insert = F2(
+	function (k, _p14) {
+		var _p15 = _p14;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A3(
+				_elm_lang$core$Dict$insert,
+				k,
+				{ctor: '_Tuple0'},
+				_p15._0));
+	});
+var _elm_lang$core$Set$fromList = function (xs) {
+	return A3(_elm_lang$core$List$foldl, _elm_lang$core$Set$insert, _elm_lang$core$Set$empty, xs);
+};
+var _elm_lang$core$Set$map = F2(
+	function (f, s) {
+		return _elm_lang$core$Set$fromList(
+			A2(
+				_elm_lang$core$List$map,
+				f,
+				_elm_lang$core$Set$toList(s)));
+	});
+var _elm_lang$core$Set$remove = F2(
+	function (k, _p16) {
+		var _p17 = _p16;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$remove, k, _p17._0));
+	});
+var _elm_lang$core$Set$union = F2(
+	function (_p19, _p18) {
+		var _p20 = _p19;
+		var _p21 = _p18;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$union, _p20._0, _p21._0));
+	});
+var _elm_lang$core$Set$intersect = F2(
+	function (_p23, _p22) {
+		var _p24 = _p23;
+		var _p25 = _p22;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$intersect, _p24._0, _p25._0));
+	});
+var _elm_lang$core$Set$diff = F2(
+	function (_p27, _p26) {
+		var _p28 = _p27;
+		var _p29 = _p26;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$diff, _p28._0, _p29._0));
+	});
+var _elm_lang$core$Set$filter = F2(
+	function (p, _p30) {
+		var _p31 = _p30;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(
+				_elm_lang$core$Dict$filter,
+				F2(
+					function (k, _p32) {
+						return p(k);
+					}),
+				_p31._0));
+	});
+var _elm_lang$core$Set$partition = F2(
+	function (p, _p33) {
+		var _p34 = _p33;
+		var _p35 = A2(
+			_elm_lang$core$Dict$partition,
+			F2(
+				function (k, _p36) {
+					return p(k);
+				}),
+			_p34._0);
+		var p1 = _p35._0;
+		var p2 = _p35._1;
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Set$Set_elm_builtin(p1),
+			_1: _elm_lang$core$Set$Set_elm_builtin(p2)
+		};
+	});
+
+var _elm_community$json_extra$Json_Decode_Extra$fromResult = function (result) {
+	var _p0 = result;
+	if (_p0.ctor === 'Ok') {
+		return _elm_lang$core$Json_Decode$succeed(_p0._0);
+	} else {
+		return _elm_lang$core$Json_Decode$fail(_p0._0);
+	}
+};
+var _elm_community$json_extra$Json_Decode_Extra$sequenceHelp = F2(
+	function (decoders, jsonValues) {
+		return (!_elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$List$length(jsonValues),
+			_elm_lang$core$List$length(decoders))) ? _elm_lang$core$Json_Decode$fail('Number of decoders does not match number of values') : _elm_community$json_extra$Json_Decode_Extra$fromResult(
+			A3(
+				_elm_lang$core$List$foldr,
+				_elm_lang$core$Result$map2(
+					F2(
+						function (x, y) {
+							return {ctor: '::', _0: x, _1: y};
+						})),
+				_elm_lang$core$Result$Ok(
+					{ctor: '[]'}),
+				A3(_elm_lang$core$List$map2, _elm_lang$core$Json_Decode$decodeValue, decoders, jsonValues)));
+	});
+var _elm_community$json_extra$Json_Decode_Extra$sequence = function (decoders) {
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		_elm_community$json_extra$Json_Decode_Extra$sequenceHelp(decoders),
+		_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$value));
+};
+var _elm_community$json_extra$Json_Decode_Extra$optionalField = F2(
+	function (fieldName, decoder) {
+		var finishDecoding = function (json) {
+			var _p1 = A2(
+				_elm_lang$core$Json_Decode$decodeValue,
+				A2(_elm_lang$core$Json_Decode$field, fieldName, _elm_lang$core$Json_Decode$value),
+				json);
+			if (_p1.ctor === 'Ok') {
+				return A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Maybe$Just, decoder);
+			} else {
+				return _elm_lang$core$Json_Decode$succeed(_elm_lang$core$Maybe$Nothing);
+			}
+		};
+		return A2(_elm_lang$core$Json_Decode$andThen, finishDecoding, _elm_lang$core$Json_Decode$value);
+	});
+var _elm_community$json_extra$Json_Decode_Extra$withDefault = F2(
+	function (fallback, decoder) {
+		return A2(
+			_elm_lang$core$Json_Decode$andThen,
+			function (_p2) {
+				return _elm_lang$core$Json_Decode$succeed(
+					A2(_elm_lang$core$Maybe$withDefault, fallback, _p2));
+			},
+			_elm_lang$core$Json_Decode$maybe(decoder));
+	});
+var _elm_community$json_extra$Json_Decode_Extra$decodeDictFromTuples = F2(
+	function (keyDecoder, tuples) {
+		var _p3 = tuples;
+		if (_p3.ctor === '[]') {
+			return _elm_lang$core$Json_Decode$succeed(_elm_lang$core$Dict$empty);
+		} else {
+			var _p4 = A2(_elm_lang$core$Json_Decode$decodeString, keyDecoder, _p3._0._0);
+			if (_p4.ctor === 'Ok') {
+				return A2(
+					_elm_lang$core$Json_Decode$andThen,
+					function (_p5) {
+						return _elm_lang$core$Json_Decode$succeed(
+							A3(_elm_lang$core$Dict$insert, _p4._0, _p3._0._1, _p5));
+					},
+					A2(_elm_community$json_extra$Json_Decode_Extra$decodeDictFromTuples, keyDecoder, _p3._1));
+			} else {
+				return _elm_lang$core$Json_Decode$fail(_p4._0);
+			}
+		}
+	});
+var _elm_community$json_extra$Json_Decode_Extra$dict2 = F2(
+	function (keyDecoder, valueDecoder) {
+		return A2(
+			_elm_lang$core$Json_Decode$andThen,
+			function (_p6) {
+				return A2(
+					_elm_community$json_extra$Json_Decode_Extra$decodeDictFromTuples,
+					keyDecoder,
+					_elm_lang$core$Dict$toList(_p6));
+			},
+			_elm_lang$core$Json_Decode$dict(valueDecoder));
+	});
+var _elm_community$json_extra$Json_Decode_Extra$set = function (decoder) {
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (_p7) {
+			return _elm_lang$core$Json_Decode$succeed(
+				_elm_lang$core$Set$fromList(_p7));
+		},
+		_elm_lang$core$Json_Decode$list(decoder));
+};
+var _elm_community$json_extra$Json_Decode_Extra$date = A2(
+	_elm_lang$core$Json_Decode$andThen,
+	function (_p8) {
+		return _elm_community$json_extra$Json_Decode_Extra$fromResult(
+			_elm_lang$core$Date$fromString(_p8));
+	},
+	_elm_lang$core$Json_Decode$string);
+var _elm_community$json_extra$Json_Decode_Extra$andMap = _elm_lang$core$Json_Decode$map2(
+	F2(
+		function (x, y) {
+			return y(x);
+		}));
+var _elm_community$json_extra$Json_Decode_Extra_ops = _elm_community$json_extra$Json_Decode_Extra_ops || {};
+_elm_community$json_extra$Json_Decode_Extra_ops['|:'] = _elm_lang$core$Basics$flip(_elm_community$json_extra$Json_Decode_Extra$andMap);
+
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[arguments.length - 2],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	var restoreLastIndex = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	re.lastIndex = restoreLastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
+};
+
+}();
+
+var _elm_lang$core$Process$kill = _elm_lang$core$Native_Scheduler.kill;
+var _elm_lang$core$Process$sleep = _elm_lang$core$Native_Scheduler.sleep;
+var _elm_lang$core$Process$spawn = _elm_lang$core$Native_Scheduler.spawn;
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
+};
+var _elm_lang$core$Regex$All = {ctor: 'All'};
+
+var _elm_lang$dom$Native_Dom = function() {
+
+var fakeNode = {
+	addEventListener: function() {},
+	removeEventListener: function() {}
+};
+
+var onDocument = on(typeof document !== 'undefined' ? document : fakeNode);
+var onWindow = on(typeof window !== 'undefined' ? window : fakeNode);
+
+function on(node)
+{
+	return function(eventName, decoder, toTask)
+	{
+		return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
+
+			function performTask(event)
+			{
+				var result = A2(_elm_lang$core$Json_Decode$decodeValue, decoder, event);
+				if (result.ctor === 'Ok')
+				{
+					_elm_lang$core$Native_Scheduler.rawSpawn(toTask(result._0));
+				}
+			}
+
+			node.addEventListener(eventName, performTask);
+
+			return function()
+			{
+				node.removeEventListener(eventName, performTask);
+			};
+		});
+	};
+}
+
+var rAF = typeof requestAnimationFrame !== 'undefined'
+	? requestAnimationFrame
+	: function(callback) { callback(); };
+
+function withNode(id, doStuff)
+{
+	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	{
+		rAF(function()
+		{
+			var node = document.getElementById(id);
+			if (node === null)
+			{
+				callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'NotFound', _0: id }));
+				return;
+			}
+			callback(_elm_lang$core$Native_Scheduler.succeed(doStuff(node)));
+		});
+	});
+}
+
+
+// FOCUS
+
+function focus(id)
+{
+	return withNode(id, function(node) {
+		node.focus();
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+function blur(id)
+{
+	return withNode(id, function(node) {
+		node.blur();
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+
+// SCROLLING
+
+function getScrollTop(id)
+{
+	return withNode(id, function(node) {
+		return node.scrollTop;
+	});
+}
+
+function setScrollTop(id, desiredScrollTop)
+{
+	return withNode(id, function(node) {
+		node.scrollTop = desiredScrollTop;
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+function toBottom(id)
+{
+	return withNode(id, function(node) {
+		node.scrollTop = node.scrollHeight;
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+function getScrollLeft(id)
+{
+	return withNode(id, function(node) {
+		return node.scrollLeft;
+	});
+}
+
+function setScrollLeft(id, desiredScrollLeft)
+{
+	return withNode(id, function(node) {
+		node.scrollLeft = desiredScrollLeft;
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+function toRight(id)
+{
+	return withNode(id, function(node) {
+		node.scrollLeft = node.scrollWidth;
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+
+// SIZE
+
+function width(options, id)
+{
+	return withNode(id, function(node) {
+		switch (options.ctor)
+		{
+			case 'Content':
+				return node.scrollWidth;
+			case 'VisibleContent':
+				return node.clientWidth;
+			case 'VisibleContentWithBorders':
+				return node.offsetWidth;
+			case 'VisibleContentWithBordersAndMargins':
+				var rect = node.getBoundingClientRect();
+				return rect.right - rect.left;
+		}
+	});
+}
+
+function height(options, id)
+{
+	return withNode(id, function(node) {
+		switch (options.ctor)
+		{
+			case 'Content':
+				return node.scrollHeight;
+			case 'VisibleContent':
+				return node.clientHeight;
+			case 'VisibleContentWithBorders':
+				return node.offsetHeight;
+			case 'VisibleContentWithBordersAndMargins':
+				var rect = node.getBoundingClientRect();
+				return rect.bottom - rect.top;
+		}
+	});
+}
+
+return {
+	onDocument: F3(onDocument),
+	onWindow: F3(onWindow),
+
+	focus: focus,
+	blur: blur,
+
+	getScrollTop: getScrollTop,
+	setScrollTop: F2(setScrollTop),
+	getScrollLeft: getScrollLeft,
+	setScrollLeft: F2(setScrollLeft),
+	toBottom: toBottom,
+	toRight: toRight,
+
+	height: F2(height),
+	width: F2(width)
+};
+
+}();
+
+var _elm_lang$dom$Dom$blur = _elm_lang$dom$Native_Dom.blur;
+var _elm_lang$dom$Dom$focus = _elm_lang$dom$Native_Dom.focus;
+var _elm_lang$dom$Dom$NotFound = function (a) {
+	return {ctor: 'NotFound', _0: a};
+};
+
+var _elm_lang$dom$Dom_LowLevel$onWindow = _elm_lang$dom$Native_Dom.onWindow;
+var _elm_lang$dom$Dom_LowLevel$onDocument = _elm_lang$dom$Native_Dom.onDocument;
 
 var _elm_lang$http$Native_Http = function() {
 
@@ -11033,303 +11172,6 @@ var _elm_lang$http$Http$StringPart = F2(
 		return {ctor: 'StringPart', _0: a, _1: b};
 	});
 var _elm_lang$http$Http$stringPart = _elm_lang$http$Http$StringPart;
-
-var _elm_lang$lazy$Native_Lazy = function() {
-
-function memoize(thunk)
-{
-    var value;
-    var isForced = false;
-    return function(tuple0) {
-        if (!isForced) {
-            value = thunk(tuple0);
-            isForced = true;
-        }
-        return value;
-    };
-}
-
-return {
-    memoize: memoize
-};
-
-}();
-
-var _elm_lang$lazy$Lazy$force = function (_p0) {
-	var _p1 = _p0;
-	return _p1._0(
-		{ctor: '_Tuple0'});
-};
-var _elm_lang$lazy$Lazy$Lazy = function (a) {
-	return {ctor: 'Lazy', _0: a};
-};
-var _elm_lang$lazy$Lazy$lazy = function (thunk) {
-	return _elm_lang$lazy$Lazy$Lazy(
-		_elm_lang$lazy$Native_Lazy.memoize(thunk));
-};
-var _elm_lang$lazy$Lazy$map = F2(
-	function (f, a) {
-		return _elm_lang$lazy$Lazy$lazy(
-			function (_p2) {
-				var _p3 = _p2;
-				return f(
-					_elm_lang$lazy$Lazy$force(a));
-			});
-	});
-var _elm_lang$lazy$Lazy$map2 = F3(
-	function (f, a, b) {
-		return _elm_lang$lazy$Lazy$lazy(
-			function (_p4) {
-				var _p5 = _p4;
-				return A2(
-					f,
-					_elm_lang$lazy$Lazy$force(a),
-					_elm_lang$lazy$Lazy$force(b));
-			});
-	});
-var _elm_lang$lazy$Lazy$map3 = F4(
-	function (f, a, b, c) {
-		return _elm_lang$lazy$Lazy$lazy(
-			function (_p6) {
-				var _p7 = _p6;
-				return A3(
-					f,
-					_elm_lang$lazy$Lazy$force(a),
-					_elm_lang$lazy$Lazy$force(b),
-					_elm_lang$lazy$Lazy$force(c));
-			});
-	});
-var _elm_lang$lazy$Lazy$map4 = F5(
-	function (f, a, b, c, d) {
-		return _elm_lang$lazy$Lazy$lazy(
-			function (_p8) {
-				var _p9 = _p8;
-				return A4(
-					f,
-					_elm_lang$lazy$Lazy$force(a),
-					_elm_lang$lazy$Lazy$force(b),
-					_elm_lang$lazy$Lazy$force(c),
-					_elm_lang$lazy$Lazy$force(d));
-			});
-	});
-var _elm_lang$lazy$Lazy$map5 = F6(
-	function (f, a, b, c, d, e) {
-		return _elm_lang$lazy$Lazy$lazy(
-			function (_p10) {
-				var _p11 = _p10;
-				return A5(
-					f,
-					_elm_lang$lazy$Lazy$force(a),
-					_elm_lang$lazy$Lazy$force(b),
-					_elm_lang$lazy$Lazy$force(c),
-					_elm_lang$lazy$Lazy$force(d),
-					_elm_lang$lazy$Lazy$force(e));
-			});
-	});
-var _elm_lang$lazy$Lazy$apply = F2(
-	function (f, x) {
-		return _elm_lang$lazy$Lazy$lazy(
-			function (_p12) {
-				var _p13 = _p12;
-				return A2(
-					_elm_lang$lazy$Lazy$force,
-					f,
-					_elm_lang$lazy$Lazy$force(x));
-			});
-	});
-var _elm_lang$lazy$Lazy$andThen = F2(
-	function (callback, a) {
-		return _elm_lang$lazy$Lazy$lazy(
-			function (_p14) {
-				var _p15 = _p14;
-				return _elm_lang$lazy$Lazy$force(
-					callback(
-						_elm_lang$lazy$Lazy$force(a)));
-			});
-	});
-
-var _elm_lang$mouse$Mouse_ops = _elm_lang$mouse$Mouse_ops || {};
-_elm_lang$mouse$Mouse_ops['&>'] = F2(
-	function (t1, t2) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (_p0) {
-				return t2;
-			},
-			t1);
-	});
-var _elm_lang$mouse$Mouse$onSelfMsg = F3(
-	function (router, _p1, state) {
-		var _p2 = _p1;
-		var _p3 = A2(_elm_lang$core$Dict$get, _p2.category, state);
-		if (_p3.ctor === 'Nothing') {
-			return _elm_lang$core$Task$succeed(state);
-		} else {
-			var send = function (tagger) {
-				return A2(
-					_elm_lang$core$Platform$sendToApp,
-					router,
-					tagger(_p2.position));
-			};
-			return A2(
-				_elm_lang$mouse$Mouse_ops['&>'],
-				_elm_lang$core$Task$sequence(
-					A2(_elm_lang$core$List$map, send, _p3._0.taggers)),
-				_elm_lang$core$Task$succeed(state));
-		}
-	});
-var _elm_lang$mouse$Mouse$init = _elm_lang$core$Task$succeed(_elm_lang$core$Dict$empty);
-var _elm_lang$mouse$Mouse$categorizeHelpHelp = F2(
-	function (value, maybeValues) {
-		var _p4 = maybeValues;
-		if (_p4.ctor === 'Nothing') {
-			return _elm_lang$core$Maybe$Just(
-				{
-					ctor: '::',
-					_0: value,
-					_1: {ctor: '[]'}
-				});
-		} else {
-			return _elm_lang$core$Maybe$Just(
-				{ctor: '::', _0: value, _1: _p4._0});
-		}
-	});
-var _elm_lang$mouse$Mouse$categorizeHelp = F2(
-	function (subs, subDict) {
-		categorizeHelp:
-		while (true) {
-			var _p5 = subs;
-			if (_p5.ctor === '[]') {
-				return subDict;
-			} else {
-				var _v4 = _p5._1,
-					_v5 = A3(
-					_elm_lang$core$Dict$update,
-					_p5._0._0,
-					_elm_lang$mouse$Mouse$categorizeHelpHelp(_p5._0._1),
-					subDict);
-				subs = _v4;
-				subDict = _v5;
-				continue categorizeHelp;
-			}
-		}
-	});
-var _elm_lang$mouse$Mouse$categorize = function (subs) {
-	return A2(_elm_lang$mouse$Mouse$categorizeHelp, subs, _elm_lang$core$Dict$empty);
-};
-var _elm_lang$mouse$Mouse$subscription = _elm_lang$core$Native_Platform.leaf('Mouse');
-var _elm_lang$mouse$Mouse$Position = F2(
-	function (a, b) {
-		return {x: a, y: b};
-	});
-var _elm_lang$mouse$Mouse$position = A3(
-	_elm_lang$core$Json_Decode$map2,
-	_elm_lang$mouse$Mouse$Position,
-	A2(_elm_lang$core$Json_Decode$field, 'pageX', _elm_lang$core$Json_Decode$int),
-	A2(_elm_lang$core$Json_Decode$field, 'pageY', _elm_lang$core$Json_Decode$int));
-var _elm_lang$mouse$Mouse$Watcher = F2(
-	function (a, b) {
-		return {taggers: a, pid: b};
-	});
-var _elm_lang$mouse$Mouse$Msg = F2(
-	function (a, b) {
-		return {category: a, position: b};
-	});
-var _elm_lang$mouse$Mouse$onEffects = F3(
-	function (router, newSubs, oldState) {
-		var rightStep = F3(
-			function (category, taggers, task) {
-				var tracker = A3(
-					_elm_lang$dom$Dom_LowLevel$onDocument,
-					category,
-					_elm_lang$mouse$Mouse$position,
-					function (_p6) {
-						return A2(
-							_elm_lang$core$Platform$sendToSelf,
-							router,
-							A2(_elm_lang$mouse$Mouse$Msg, category, _p6));
-					});
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (state) {
-						return A2(
-							_elm_lang$core$Task$andThen,
-							function (pid) {
-								return _elm_lang$core$Task$succeed(
-									A3(
-										_elm_lang$core$Dict$insert,
-										category,
-										A2(_elm_lang$mouse$Mouse$Watcher, taggers, pid),
-										state));
-							},
-							_elm_lang$core$Process$spawn(tracker));
-					},
-					task);
-			});
-		var bothStep = F4(
-			function (category, _p7, taggers, task) {
-				var _p8 = _p7;
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (state) {
-						return _elm_lang$core$Task$succeed(
-							A3(
-								_elm_lang$core$Dict$insert,
-								category,
-								A2(_elm_lang$mouse$Mouse$Watcher, taggers, _p8.pid),
-								state));
-					},
-					task);
-			});
-		var leftStep = F3(
-			function (category, _p9, task) {
-				var _p10 = _p9;
-				return A2(
-					_elm_lang$mouse$Mouse_ops['&>'],
-					_elm_lang$core$Process$kill(_p10.pid),
-					task);
-			});
-		return A6(
-			_elm_lang$core$Dict$merge,
-			leftStep,
-			bothStep,
-			rightStep,
-			oldState,
-			_elm_lang$mouse$Mouse$categorize(newSubs),
-			_elm_lang$core$Task$succeed(_elm_lang$core$Dict$empty));
-	});
-var _elm_lang$mouse$Mouse$MySub = F2(
-	function (a, b) {
-		return {ctor: 'MySub', _0: a, _1: b};
-	});
-var _elm_lang$mouse$Mouse$clicks = function (tagger) {
-	return _elm_lang$mouse$Mouse$subscription(
-		A2(_elm_lang$mouse$Mouse$MySub, 'click', tagger));
-};
-var _elm_lang$mouse$Mouse$moves = function (tagger) {
-	return _elm_lang$mouse$Mouse$subscription(
-		A2(_elm_lang$mouse$Mouse$MySub, 'mousemove', tagger));
-};
-var _elm_lang$mouse$Mouse$downs = function (tagger) {
-	return _elm_lang$mouse$Mouse$subscription(
-		A2(_elm_lang$mouse$Mouse$MySub, 'mousedown', tagger));
-};
-var _elm_lang$mouse$Mouse$ups = function (tagger) {
-	return _elm_lang$mouse$Mouse$subscription(
-		A2(_elm_lang$mouse$Mouse$MySub, 'mouseup', tagger));
-};
-var _elm_lang$mouse$Mouse$subMap = F2(
-	function (func, _p11) {
-		var _p12 = _p11;
-		return A2(
-			_elm_lang$mouse$Mouse$MySub,
-			_p12._0,
-			function (_p13) {
-				return func(
-					_p12._1(_p13));
-			});
-	});
-_elm_lang$core$Native_Platform.effectManagers['Mouse'] = {pkg: 'elm-lang/mouse', init: _elm_lang$mouse$Mouse$init, onEffects: _elm_lang$mouse$Mouse$onEffects, onSelfMsg: _elm_lang$mouse$Mouse$onSelfMsg, tag: 'sub', subMap: _elm_lang$mouse$Mouse$subMap};
 
 var _elm_lang$navigation$Native_Navigation = function() {
 
@@ -11733,469 +11575,6 @@ var _elm_lang$navigation$Navigation$onEffects = F4(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Navigation'] = {pkg: 'elm-lang/navigation', init: _elm_lang$navigation$Navigation$init, onEffects: _elm_lang$navigation$Navigation$onEffects, onSelfMsg: _elm_lang$navigation$Navigation$onSelfMsg, tag: 'fx', cmdMap: _elm_lang$navigation$Navigation$cmdMap, subMap: _elm_lang$navigation$Navigation$subMap};
 
-var _elm_lang$svg$Svg$map = _elm_lang$virtual_dom$VirtualDom$map;
-var _elm_lang$svg$Svg$text = _elm_lang$virtual_dom$VirtualDom$text;
-var _elm_lang$svg$Svg$svgNamespace = A2(
-	_elm_lang$virtual_dom$VirtualDom$property,
-	'namespace',
-	_elm_lang$core$Json_Encode$string('http://www.w3.org/2000/svg'));
-var _elm_lang$svg$Svg$node = F3(
-	function (name, attributes, children) {
-		return A3(
-			_elm_lang$virtual_dom$VirtualDom$node,
-			name,
-			{ctor: '::', _0: _elm_lang$svg$Svg$svgNamespace, _1: attributes},
-			children);
-	});
-var _elm_lang$svg$Svg$svg = _elm_lang$svg$Svg$node('svg');
-var _elm_lang$svg$Svg$foreignObject = _elm_lang$svg$Svg$node('foreignObject');
-var _elm_lang$svg$Svg$animate = _elm_lang$svg$Svg$node('animate');
-var _elm_lang$svg$Svg$animateColor = _elm_lang$svg$Svg$node('animateColor');
-var _elm_lang$svg$Svg$animateMotion = _elm_lang$svg$Svg$node('animateMotion');
-var _elm_lang$svg$Svg$animateTransform = _elm_lang$svg$Svg$node('animateTransform');
-var _elm_lang$svg$Svg$mpath = _elm_lang$svg$Svg$node('mpath');
-var _elm_lang$svg$Svg$set = _elm_lang$svg$Svg$node('set');
-var _elm_lang$svg$Svg$a = _elm_lang$svg$Svg$node('a');
-var _elm_lang$svg$Svg$defs = _elm_lang$svg$Svg$node('defs');
-var _elm_lang$svg$Svg$g = _elm_lang$svg$Svg$node('g');
-var _elm_lang$svg$Svg$marker = _elm_lang$svg$Svg$node('marker');
-var _elm_lang$svg$Svg$mask = _elm_lang$svg$Svg$node('mask');
-var _elm_lang$svg$Svg$pattern = _elm_lang$svg$Svg$node('pattern');
-var _elm_lang$svg$Svg$switch = _elm_lang$svg$Svg$node('switch');
-var _elm_lang$svg$Svg$symbol = _elm_lang$svg$Svg$node('symbol');
-var _elm_lang$svg$Svg$desc = _elm_lang$svg$Svg$node('desc');
-var _elm_lang$svg$Svg$metadata = _elm_lang$svg$Svg$node('metadata');
-var _elm_lang$svg$Svg$title = _elm_lang$svg$Svg$node('title');
-var _elm_lang$svg$Svg$feBlend = _elm_lang$svg$Svg$node('feBlend');
-var _elm_lang$svg$Svg$feColorMatrix = _elm_lang$svg$Svg$node('feColorMatrix');
-var _elm_lang$svg$Svg$feComponentTransfer = _elm_lang$svg$Svg$node('feComponentTransfer');
-var _elm_lang$svg$Svg$feComposite = _elm_lang$svg$Svg$node('feComposite');
-var _elm_lang$svg$Svg$feConvolveMatrix = _elm_lang$svg$Svg$node('feConvolveMatrix');
-var _elm_lang$svg$Svg$feDiffuseLighting = _elm_lang$svg$Svg$node('feDiffuseLighting');
-var _elm_lang$svg$Svg$feDisplacementMap = _elm_lang$svg$Svg$node('feDisplacementMap');
-var _elm_lang$svg$Svg$feFlood = _elm_lang$svg$Svg$node('feFlood');
-var _elm_lang$svg$Svg$feFuncA = _elm_lang$svg$Svg$node('feFuncA');
-var _elm_lang$svg$Svg$feFuncB = _elm_lang$svg$Svg$node('feFuncB');
-var _elm_lang$svg$Svg$feFuncG = _elm_lang$svg$Svg$node('feFuncG');
-var _elm_lang$svg$Svg$feFuncR = _elm_lang$svg$Svg$node('feFuncR');
-var _elm_lang$svg$Svg$feGaussianBlur = _elm_lang$svg$Svg$node('feGaussianBlur');
-var _elm_lang$svg$Svg$feImage = _elm_lang$svg$Svg$node('feImage');
-var _elm_lang$svg$Svg$feMerge = _elm_lang$svg$Svg$node('feMerge');
-var _elm_lang$svg$Svg$feMergeNode = _elm_lang$svg$Svg$node('feMergeNode');
-var _elm_lang$svg$Svg$feMorphology = _elm_lang$svg$Svg$node('feMorphology');
-var _elm_lang$svg$Svg$feOffset = _elm_lang$svg$Svg$node('feOffset');
-var _elm_lang$svg$Svg$feSpecularLighting = _elm_lang$svg$Svg$node('feSpecularLighting');
-var _elm_lang$svg$Svg$feTile = _elm_lang$svg$Svg$node('feTile');
-var _elm_lang$svg$Svg$feTurbulence = _elm_lang$svg$Svg$node('feTurbulence');
-var _elm_lang$svg$Svg$font = _elm_lang$svg$Svg$node('font');
-var _elm_lang$svg$Svg$linearGradient = _elm_lang$svg$Svg$node('linearGradient');
-var _elm_lang$svg$Svg$radialGradient = _elm_lang$svg$Svg$node('radialGradient');
-var _elm_lang$svg$Svg$stop = _elm_lang$svg$Svg$node('stop');
-var _elm_lang$svg$Svg$circle = _elm_lang$svg$Svg$node('circle');
-var _elm_lang$svg$Svg$ellipse = _elm_lang$svg$Svg$node('ellipse');
-var _elm_lang$svg$Svg$image = _elm_lang$svg$Svg$node('image');
-var _elm_lang$svg$Svg$line = _elm_lang$svg$Svg$node('line');
-var _elm_lang$svg$Svg$path = _elm_lang$svg$Svg$node('path');
-var _elm_lang$svg$Svg$polygon = _elm_lang$svg$Svg$node('polygon');
-var _elm_lang$svg$Svg$polyline = _elm_lang$svg$Svg$node('polyline');
-var _elm_lang$svg$Svg$rect = _elm_lang$svg$Svg$node('rect');
-var _elm_lang$svg$Svg$use = _elm_lang$svg$Svg$node('use');
-var _elm_lang$svg$Svg$feDistantLight = _elm_lang$svg$Svg$node('feDistantLight');
-var _elm_lang$svg$Svg$fePointLight = _elm_lang$svg$Svg$node('fePointLight');
-var _elm_lang$svg$Svg$feSpotLight = _elm_lang$svg$Svg$node('feSpotLight');
-var _elm_lang$svg$Svg$altGlyph = _elm_lang$svg$Svg$node('altGlyph');
-var _elm_lang$svg$Svg$altGlyphDef = _elm_lang$svg$Svg$node('altGlyphDef');
-var _elm_lang$svg$Svg$altGlyphItem = _elm_lang$svg$Svg$node('altGlyphItem');
-var _elm_lang$svg$Svg$glyph = _elm_lang$svg$Svg$node('glyph');
-var _elm_lang$svg$Svg$glyphRef = _elm_lang$svg$Svg$node('glyphRef');
-var _elm_lang$svg$Svg$textPath = _elm_lang$svg$Svg$node('textPath');
-var _elm_lang$svg$Svg$text_ = _elm_lang$svg$Svg$node('text');
-var _elm_lang$svg$Svg$tref = _elm_lang$svg$Svg$node('tref');
-var _elm_lang$svg$Svg$tspan = _elm_lang$svg$Svg$node('tspan');
-var _elm_lang$svg$Svg$clipPath = _elm_lang$svg$Svg$node('clipPath');
-var _elm_lang$svg$Svg$colorProfile = _elm_lang$svg$Svg$node('colorProfile');
-var _elm_lang$svg$Svg$cursor = _elm_lang$svg$Svg$node('cursor');
-var _elm_lang$svg$Svg$filter = _elm_lang$svg$Svg$node('filter');
-var _elm_lang$svg$Svg$script = _elm_lang$svg$Svg$node('script');
-var _elm_lang$svg$Svg$style = _elm_lang$svg$Svg$node('style');
-var _elm_lang$svg$Svg$view = _elm_lang$svg$Svg$node('view');
-
-var _elm_lang$svg$Svg_Attributes$writingMode = _elm_lang$virtual_dom$VirtualDom$attribute('writing-mode');
-var _elm_lang$svg$Svg_Attributes$wordSpacing = _elm_lang$virtual_dom$VirtualDom$attribute('word-spacing');
-var _elm_lang$svg$Svg_Attributes$visibility = _elm_lang$virtual_dom$VirtualDom$attribute('visibility');
-var _elm_lang$svg$Svg_Attributes$unicodeBidi = _elm_lang$virtual_dom$VirtualDom$attribute('unicode-bidi');
-var _elm_lang$svg$Svg_Attributes$textRendering = _elm_lang$virtual_dom$VirtualDom$attribute('text-rendering');
-var _elm_lang$svg$Svg_Attributes$textDecoration = _elm_lang$virtual_dom$VirtualDom$attribute('text-decoration');
-var _elm_lang$svg$Svg_Attributes$textAnchor = _elm_lang$virtual_dom$VirtualDom$attribute('text-anchor');
-var _elm_lang$svg$Svg_Attributes$stroke = _elm_lang$virtual_dom$VirtualDom$attribute('stroke');
-var _elm_lang$svg$Svg_Attributes$strokeWidth = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-width');
-var _elm_lang$svg$Svg_Attributes$strokeOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-opacity');
-var _elm_lang$svg$Svg_Attributes$strokeMiterlimit = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-miterlimit');
-var _elm_lang$svg$Svg_Attributes$strokeLinejoin = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-linejoin');
-var _elm_lang$svg$Svg_Attributes$strokeLinecap = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-linecap');
-var _elm_lang$svg$Svg_Attributes$strokeDashoffset = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-dashoffset');
-var _elm_lang$svg$Svg_Attributes$strokeDasharray = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-dasharray');
-var _elm_lang$svg$Svg_Attributes$stopOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('stop-opacity');
-var _elm_lang$svg$Svg_Attributes$stopColor = _elm_lang$virtual_dom$VirtualDom$attribute('stop-color');
-var _elm_lang$svg$Svg_Attributes$shapeRendering = _elm_lang$virtual_dom$VirtualDom$attribute('shape-rendering');
-var _elm_lang$svg$Svg_Attributes$pointerEvents = _elm_lang$virtual_dom$VirtualDom$attribute('pointer-events');
-var _elm_lang$svg$Svg_Attributes$overflow = _elm_lang$virtual_dom$VirtualDom$attribute('overflow');
-var _elm_lang$svg$Svg_Attributes$opacity = _elm_lang$virtual_dom$VirtualDom$attribute('opacity');
-var _elm_lang$svg$Svg_Attributes$mask = _elm_lang$virtual_dom$VirtualDom$attribute('mask');
-var _elm_lang$svg$Svg_Attributes$markerStart = _elm_lang$virtual_dom$VirtualDom$attribute('marker-start');
-var _elm_lang$svg$Svg_Attributes$markerMid = _elm_lang$virtual_dom$VirtualDom$attribute('marker-mid');
-var _elm_lang$svg$Svg_Attributes$markerEnd = _elm_lang$virtual_dom$VirtualDom$attribute('marker-end');
-var _elm_lang$svg$Svg_Attributes$lightingColor = _elm_lang$virtual_dom$VirtualDom$attribute('lighting-color');
-var _elm_lang$svg$Svg_Attributes$letterSpacing = _elm_lang$virtual_dom$VirtualDom$attribute('letter-spacing');
-var _elm_lang$svg$Svg_Attributes$kerning = _elm_lang$virtual_dom$VirtualDom$attribute('kerning');
-var _elm_lang$svg$Svg_Attributes$imageRendering = _elm_lang$virtual_dom$VirtualDom$attribute('image-rendering');
-var _elm_lang$svg$Svg_Attributes$glyphOrientationVertical = _elm_lang$virtual_dom$VirtualDom$attribute('glyph-orientation-vertical');
-var _elm_lang$svg$Svg_Attributes$glyphOrientationHorizontal = _elm_lang$virtual_dom$VirtualDom$attribute('glyph-orientation-horizontal');
-var _elm_lang$svg$Svg_Attributes$fontWeight = _elm_lang$virtual_dom$VirtualDom$attribute('font-weight');
-var _elm_lang$svg$Svg_Attributes$fontVariant = _elm_lang$virtual_dom$VirtualDom$attribute('font-variant');
-var _elm_lang$svg$Svg_Attributes$fontStyle = _elm_lang$virtual_dom$VirtualDom$attribute('font-style');
-var _elm_lang$svg$Svg_Attributes$fontStretch = _elm_lang$virtual_dom$VirtualDom$attribute('font-stretch');
-var _elm_lang$svg$Svg_Attributes$fontSize = _elm_lang$virtual_dom$VirtualDom$attribute('font-size');
-var _elm_lang$svg$Svg_Attributes$fontSizeAdjust = _elm_lang$virtual_dom$VirtualDom$attribute('font-size-adjust');
-var _elm_lang$svg$Svg_Attributes$fontFamily = _elm_lang$virtual_dom$VirtualDom$attribute('font-family');
-var _elm_lang$svg$Svg_Attributes$floodOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('flood-opacity');
-var _elm_lang$svg$Svg_Attributes$floodColor = _elm_lang$virtual_dom$VirtualDom$attribute('flood-color');
-var _elm_lang$svg$Svg_Attributes$filter = _elm_lang$virtual_dom$VirtualDom$attribute('filter');
-var _elm_lang$svg$Svg_Attributes$fill = _elm_lang$virtual_dom$VirtualDom$attribute('fill');
-var _elm_lang$svg$Svg_Attributes$fillRule = _elm_lang$virtual_dom$VirtualDom$attribute('fill-rule');
-var _elm_lang$svg$Svg_Attributes$fillOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('fill-opacity');
-var _elm_lang$svg$Svg_Attributes$enableBackground = _elm_lang$virtual_dom$VirtualDom$attribute('enable-background');
-var _elm_lang$svg$Svg_Attributes$dominantBaseline = _elm_lang$virtual_dom$VirtualDom$attribute('dominant-baseline');
-var _elm_lang$svg$Svg_Attributes$display = _elm_lang$virtual_dom$VirtualDom$attribute('display');
-var _elm_lang$svg$Svg_Attributes$direction = _elm_lang$virtual_dom$VirtualDom$attribute('direction');
-var _elm_lang$svg$Svg_Attributes$cursor = _elm_lang$virtual_dom$VirtualDom$attribute('cursor');
-var _elm_lang$svg$Svg_Attributes$color = _elm_lang$virtual_dom$VirtualDom$attribute('color');
-var _elm_lang$svg$Svg_Attributes$colorRendering = _elm_lang$virtual_dom$VirtualDom$attribute('color-rendering');
-var _elm_lang$svg$Svg_Attributes$colorProfile = _elm_lang$virtual_dom$VirtualDom$attribute('color-profile');
-var _elm_lang$svg$Svg_Attributes$colorInterpolation = _elm_lang$virtual_dom$VirtualDom$attribute('color-interpolation');
-var _elm_lang$svg$Svg_Attributes$colorInterpolationFilters = _elm_lang$virtual_dom$VirtualDom$attribute('color-interpolation-filters');
-var _elm_lang$svg$Svg_Attributes$clip = _elm_lang$virtual_dom$VirtualDom$attribute('clip');
-var _elm_lang$svg$Svg_Attributes$clipRule = _elm_lang$virtual_dom$VirtualDom$attribute('clip-rule');
-var _elm_lang$svg$Svg_Attributes$clipPath = _elm_lang$virtual_dom$VirtualDom$attribute('clip-path');
-var _elm_lang$svg$Svg_Attributes$baselineShift = _elm_lang$virtual_dom$VirtualDom$attribute('baseline-shift');
-var _elm_lang$svg$Svg_Attributes$alignmentBaseline = _elm_lang$virtual_dom$VirtualDom$attribute('alignment-baseline');
-var _elm_lang$svg$Svg_Attributes$zoomAndPan = _elm_lang$virtual_dom$VirtualDom$attribute('zoomAndPan');
-var _elm_lang$svg$Svg_Attributes$z = _elm_lang$virtual_dom$VirtualDom$attribute('z');
-var _elm_lang$svg$Svg_Attributes$yChannelSelector = _elm_lang$virtual_dom$VirtualDom$attribute('yChannelSelector');
-var _elm_lang$svg$Svg_Attributes$y2 = _elm_lang$virtual_dom$VirtualDom$attribute('y2');
-var _elm_lang$svg$Svg_Attributes$y1 = _elm_lang$virtual_dom$VirtualDom$attribute('y1');
-var _elm_lang$svg$Svg_Attributes$y = _elm_lang$virtual_dom$VirtualDom$attribute('y');
-var _elm_lang$svg$Svg_Attributes$xmlSpace = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/XML/1998/namespace', 'xml:space');
-var _elm_lang$svg$Svg_Attributes$xmlLang = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/XML/1998/namespace', 'xml:lang');
-var _elm_lang$svg$Svg_Attributes$xmlBase = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/XML/1998/namespace', 'xml:base');
-var _elm_lang$svg$Svg_Attributes$xlinkType = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:type');
-var _elm_lang$svg$Svg_Attributes$xlinkTitle = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:title');
-var _elm_lang$svg$Svg_Attributes$xlinkShow = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:show');
-var _elm_lang$svg$Svg_Attributes$xlinkRole = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:role');
-var _elm_lang$svg$Svg_Attributes$xlinkHref = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:href');
-var _elm_lang$svg$Svg_Attributes$xlinkArcrole = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:arcrole');
-var _elm_lang$svg$Svg_Attributes$xlinkActuate = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:actuate');
-var _elm_lang$svg$Svg_Attributes$xChannelSelector = _elm_lang$virtual_dom$VirtualDom$attribute('xChannelSelector');
-var _elm_lang$svg$Svg_Attributes$x2 = _elm_lang$virtual_dom$VirtualDom$attribute('x2');
-var _elm_lang$svg$Svg_Attributes$x1 = _elm_lang$virtual_dom$VirtualDom$attribute('x1');
-var _elm_lang$svg$Svg_Attributes$xHeight = _elm_lang$virtual_dom$VirtualDom$attribute('x-height');
-var _elm_lang$svg$Svg_Attributes$x = _elm_lang$virtual_dom$VirtualDom$attribute('x');
-var _elm_lang$svg$Svg_Attributes$widths = _elm_lang$virtual_dom$VirtualDom$attribute('widths');
-var _elm_lang$svg$Svg_Attributes$width = _elm_lang$virtual_dom$VirtualDom$attribute('width');
-var _elm_lang$svg$Svg_Attributes$viewTarget = _elm_lang$virtual_dom$VirtualDom$attribute('viewTarget');
-var _elm_lang$svg$Svg_Attributes$viewBox = _elm_lang$virtual_dom$VirtualDom$attribute('viewBox');
-var _elm_lang$svg$Svg_Attributes$vertOriginY = _elm_lang$virtual_dom$VirtualDom$attribute('vert-origin-y');
-var _elm_lang$svg$Svg_Attributes$vertOriginX = _elm_lang$virtual_dom$VirtualDom$attribute('vert-origin-x');
-var _elm_lang$svg$Svg_Attributes$vertAdvY = _elm_lang$virtual_dom$VirtualDom$attribute('vert-adv-y');
-var _elm_lang$svg$Svg_Attributes$version = _elm_lang$virtual_dom$VirtualDom$attribute('version');
-var _elm_lang$svg$Svg_Attributes$values = _elm_lang$virtual_dom$VirtualDom$attribute('values');
-var _elm_lang$svg$Svg_Attributes$vMathematical = _elm_lang$virtual_dom$VirtualDom$attribute('v-mathematical');
-var _elm_lang$svg$Svg_Attributes$vIdeographic = _elm_lang$virtual_dom$VirtualDom$attribute('v-ideographic');
-var _elm_lang$svg$Svg_Attributes$vHanging = _elm_lang$virtual_dom$VirtualDom$attribute('v-hanging');
-var _elm_lang$svg$Svg_Attributes$vAlphabetic = _elm_lang$virtual_dom$VirtualDom$attribute('v-alphabetic');
-var _elm_lang$svg$Svg_Attributes$unitsPerEm = _elm_lang$virtual_dom$VirtualDom$attribute('units-per-em');
-var _elm_lang$svg$Svg_Attributes$unicodeRange = _elm_lang$virtual_dom$VirtualDom$attribute('unicode-range');
-var _elm_lang$svg$Svg_Attributes$unicode = _elm_lang$virtual_dom$VirtualDom$attribute('unicode');
-var _elm_lang$svg$Svg_Attributes$underlineThickness = _elm_lang$virtual_dom$VirtualDom$attribute('underline-thickness');
-var _elm_lang$svg$Svg_Attributes$underlinePosition = _elm_lang$virtual_dom$VirtualDom$attribute('underline-position');
-var _elm_lang$svg$Svg_Attributes$u2 = _elm_lang$virtual_dom$VirtualDom$attribute('u2');
-var _elm_lang$svg$Svg_Attributes$u1 = _elm_lang$virtual_dom$VirtualDom$attribute('u1');
-var _elm_lang$svg$Svg_Attributes$type_ = _elm_lang$virtual_dom$VirtualDom$attribute('type');
-var _elm_lang$svg$Svg_Attributes$transform = _elm_lang$virtual_dom$VirtualDom$attribute('transform');
-var _elm_lang$svg$Svg_Attributes$to = _elm_lang$virtual_dom$VirtualDom$attribute('to');
-var _elm_lang$svg$Svg_Attributes$title = _elm_lang$virtual_dom$VirtualDom$attribute('title');
-var _elm_lang$svg$Svg_Attributes$textLength = _elm_lang$virtual_dom$VirtualDom$attribute('textLength');
-var _elm_lang$svg$Svg_Attributes$targetY = _elm_lang$virtual_dom$VirtualDom$attribute('targetY');
-var _elm_lang$svg$Svg_Attributes$targetX = _elm_lang$virtual_dom$VirtualDom$attribute('targetX');
-var _elm_lang$svg$Svg_Attributes$target = _elm_lang$virtual_dom$VirtualDom$attribute('target');
-var _elm_lang$svg$Svg_Attributes$tableValues = _elm_lang$virtual_dom$VirtualDom$attribute('tableValues');
-var _elm_lang$svg$Svg_Attributes$systemLanguage = _elm_lang$virtual_dom$VirtualDom$attribute('systemLanguage');
-var _elm_lang$svg$Svg_Attributes$surfaceScale = _elm_lang$virtual_dom$VirtualDom$attribute('surfaceScale');
-var _elm_lang$svg$Svg_Attributes$style = _elm_lang$virtual_dom$VirtualDom$attribute('style');
-var _elm_lang$svg$Svg_Attributes$string = _elm_lang$virtual_dom$VirtualDom$attribute('string');
-var _elm_lang$svg$Svg_Attributes$strikethroughThickness = _elm_lang$virtual_dom$VirtualDom$attribute('strikethrough-thickness');
-var _elm_lang$svg$Svg_Attributes$strikethroughPosition = _elm_lang$virtual_dom$VirtualDom$attribute('strikethrough-position');
-var _elm_lang$svg$Svg_Attributes$stitchTiles = _elm_lang$virtual_dom$VirtualDom$attribute('stitchTiles');
-var _elm_lang$svg$Svg_Attributes$stemv = _elm_lang$virtual_dom$VirtualDom$attribute('stemv');
-var _elm_lang$svg$Svg_Attributes$stemh = _elm_lang$virtual_dom$VirtualDom$attribute('stemh');
-var _elm_lang$svg$Svg_Attributes$stdDeviation = _elm_lang$virtual_dom$VirtualDom$attribute('stdDeviation');
-var _elm_lang$svg$Svg_Attributes$startOffset = _elm_lang$virtual_dom$VirtualDom$attribute('startOffset');
-var _elm_lang$svg$Svg_Attributes$spreadMethod = _elm_lang$virtual_dom$VirtualDom$attribute('spreadMethod');
-var _elm_lang$svg$Svg_Attributes$speed = _elm_lang$virtual_dom$VirtualDom$attribute('speed');
-var _elm_lang$svg$Svg_Attributes$specularExponent = _elm_lang$virtual_dom$VirtualDom$attribute('specularExponent');
-var _elm_lang$svg$Svg_Attributes$specularConstant = _elm_lang$virtual_dom$VirtualDom$attribute('specularConstant');
-var _elm_lang$svg$Svg_Attributes$spacing = _elm_lang$virtual_dom$VirtualDom$attribute('spacing');
-var _elm_lang$svg$Svg_Attributes$slope = _elm_lang$virtual_dom$VirtualDom$attribute('slope');
-var _elm_lang$svg$Svg_Attributes$seed = _elm_lang$virtual_dom$VirtualDom$attribute('seed');
-var _elm_lang$svg$Svg_Attributes$scale = _elm_lang$virtual_dom$VirtualDom$attribute('scale');
-var _elm_lang$svg$Svg_Attributes$ry = _elm_lang$virtual_dom$VirtualDom$attribute('ry');
-var _elm_lang$svg$Svg_Attributes$rx = _elm_lang$virtual_dom$VirtualDom$attribute('rx');
-var _elm_lang$svg$Svg_Attributes$rotate = _elm_lang$virtual_dom$VirtualDom$attribute('rotate');
-var _elm_lang$svg$Svg_Attributes$result = _elm_lang$virtual_dom$VirtualDom$attribute('result');
-var _elm_lang$svg$Svg_Attributes$restart = _elm_lang$virtual_dom$VirtualDom$attribute('restart');
-var _elm_lang$svg$Svg_Attributes$requiredFeatures = _elm_lang$virtual_dom$VirtualDom$attribute('requiredFeatures');
-var _elm_lang$svg$Svg_Attributes$requiredExtensions = _elm_lang$virtual_dom$VirtualDom$attribute('requiredExtensions');
-var _elm_lang$svg$Svg_Attributes$repeatDur = _elm_lang$virtual_dom$VirtualDom$attribute('repeatDur');
-var _elm_lang$svg$Svg_Attributes$repeatCount = _elm_lang$virtual_dom$VirtualDom$attribute('repeatCount');
-var _elm_lang$svg$Svg_Attributes$renderingIntent = _elm_lang$virtual_dom$VirtualDom$attribute('rendering-intent');
-var _elm_lang$svg$Svg_Attributes$refY = _elm_lang$virtual_dom$VirtualDom$attribute('refY');
-var _elm_lang$svg$Svg_Attributes$refX = _elm_lang$virtual_dom$VirtualDom$attribute('refX');
-var _elm_lang$svg$Svg_Attributes$radius = _elm_lang$virtual_dom$VirtualDom$attribute('radius');
-var _elm_lang$svg$Svg_Attributes$r = _elm_lang$virtual_dom$VirtualDom$attribute('r');
-var _elm_lang$svg$Svg_Attributes$primitiveUnits = _elm_lang$virtual_dom$VirtualDom$attribute('primitiveUnits');
-var _elm_lang$svg$Svg_Attributes$preserveAspectRatio = _elm_lang$virtual_dom$VirtualDom$attribute('preserveAspectRatio');
-var _elm_lang$svg$Svg_Attributes$preserveAlpha = _elm_lang$virtual_dom$VirtualDom$attribute('preserveAlpha');
-var _elm_lang$svg$Svg_Attributes$pointsAtZ = _elm_lang$virtual_dom$VirtualDom$attribute('pointsAtZ');
-var _elm_lang$svg$Svg_Attributes$pointsAtY = _elm_lang$virtual_dom$VirtualDom$attribute('pointsAtY');
-var _elm_lang$svg$Svg_Attributes$pointsAtX = _elm_lang$virtual_dom$VirtualDom$attribute('pointsAtX');
-var _elm_lang$svg$Svg_Attributes$points = _elm_lang$virtual_dom$VirtualDom$attribute('points');
-var _elm_lang$svg$Svg_Attributes$pointOrder = _elm_lang$virtual_dom$VirtualDom$attribute('point-order');
-var _elm_lang$svg$Svg_Attributes$patternUnits = _elm_lang$virtual_dom$VirtualDom$attribute('patternUnits');
-var _elm_lang$svg$Svg_Attributes$patternTransform = _elm_lang$virtual_dom$VirtualDom$attribute('patternTransform');
-var _elm_lang$svg$Svg_Attributes$patternContentUnits = _elm_lang$virtual_dom$VirtualDom$attribute('patternContentUnits');
-var _elm_lang$svg$Svg_Attributes$pathLength = _elm_lang$virtual_dom$VirtualDom$attribute('pathLength');
-var _elm_lang$svg$Svg_Attributes$path = _elm_lang$virtual_dom$VirtualDom$attribute('path');
-var _elm_lang$svg$Svg_Attributes$panose1 = _elm_lang$virtual_dom$VirtualDom$attribute('panose-1');
-var _elm_lang$svg$Svg_Attributes$overlineThickness = _elm_lang$virtual_dom$VirtualDom$attribute('overline-thickness');
-var _elm_lang$svg$Svg_Attributes$overlinePosition = _elm_lang$virtual_dom$VirtualDom$attribute('overline-position');
-var _elm_lang$svg$Svg_Attributes$origin = _elm_lang$virtual_dom$VirtualDom$attribute('origin');
-var _elm_lang$svg$Svg_Attributes$orientation = _elm_lang$virtual_dom$VirtualDom$attribute('orientation');
-var _elm_lang$svg$Svg_Attributes$orient = _elm_lang$virtual_dom$VirtualDom$attribute('orient');
-var _elm_lang$svg$Svg_Attributes$order = _elm_lang$virtual_dom$VirtualDom$attribute('order');
-var _elm_lang$svg$Svg_Attributes$operator = _elm_lang$virtual_dom$VirtualDom$attribute('operator');
-var _elm_lang$svg$Svg_Attributes$offset = _elm_lang$virtual_dom$VirtualDom$attribute('offset');
-var _elm_lang$svg$Svg_Attributes$numOctaves = _elm_lang$virtual_dom$VirtualDom$attribute('numOctaves');
-var _elm_lang$svg$Svg_Attributes$name = _elm_lang$virtual_dom$VirtualDom$attribute('name');
-var _elm_lang$svg$Svg_Attributes$mode = _elm_lang$virtual_dom$VirtualDom$attribute('mode');
-var _elm_lang$svg$Svg_Attributes$min = _elm_lang$virtual_dom$VirtualDom$attribute('min');
-var _elm_lang$svg$Svg_Attributes$method = _elm_lang$virtual_dom$VirtualDom$attribute('method');
-var _elm_lang$svg$Svg_Attributes$media = _elm_lang$virtual_dom$VirtualDom$attribute('media');
-var _elm_lang$svg$Svg_Attributes$max = _elm_lang$virtual_dom$VirtualDom$attribute('max');
-var _elm_lang$svg$Svg_Attributes$mathematical = _elm_lang$virtual_dom$VirtualDom$attribute('mathematical');
-var _elm_lang$svg$Svg_Attributes$maskUnits = _elm_lang$virtual_dom$VirtualDom$attribute('maskUnits');
-var _elm_lang$svg$Svg_Attributes$maskContentUnits = _elm_lang$virtual_dom$VirtualDom$attribute('maskContentUnits');
-var _elm_lang$svg$Svg_Attributes$markerWidth = _elm_lang$virtual_dom$VirtualDom$attribute('markerWidth');
-var _elm_lang$svg$Svg_Attributes$markerUnits = _elm_lang$virtual_dom$VirtualDom$attribute('markerUnits');
-var _elm_lang$svg$Svg_Attributes$markerHeight = _elm_lang$virtual_dom$VirtualDom$attribute('markerHeight');
-var _elm_lang$svg$Svg_Attributes$local = _elm_lang$virtual_dom$VirtualDom$attribute('local');
-var _elm_lang$svg$Svg_Attributes$limitingConeAngle = _elm_lang$virtual_dom$VirtualDom$attribute('limitingConeAngle');
-var _elm_lang$svg$Svg_Attributes$lengthAdjust = _elm_lang$virtual_dom$VirtualDom$attribute('lengthAdjust');
-var _elm_lang$svg$Svg_Attributes$lang = _elm_lang$virtual_dom$VirtualDom$attribute('lang');
-var _elm_lang$svg$Svg_Attributes$keyTimes = _elm_lang$virtual_dom$VirtualDom$attribute('keyTimes');
-var _elm_lang$svg$Svg_Attributes$keySplines = _elm_lang$virtual_dom$VirtualDom$attribute('keySplines');
-var _elm_lang$svg$Svg_Attributes$keyPoints = _elm_lang$virtual_dom$VirtualDom$attribute('keyPoints');
-var _elm_lang$svg$Svg_Attributes$kernelUnitLength = _elm_lang$virtual_dom$VirtualDom$attribute('kernelUnitLength');
-var _elm_lang$svg$Svg_Attributes$kernelMatrix = _elm_lang$virtual_dom$VirtualDom$attribute('kernelMatrix');
-var _elm_lang$svg$Svg_Attributes$k4 = _elm_lang$virtual_dom$VirtualDom$attribute('k4');
-var _elm_lang$svg$Svg_Attributes$k3 = _elm_lang$virtual_dom$VirtualDom$attribute('k3');
-var _elm_lang$svg$Svg_Attributes$k2 = _elm_lang$virtual_dom$VirtualDom$attribute('k2');
-var _elm_lang$svg$Svg_Attributes$k1 = _elm_lang$virtual_dom$VirtualDom$attribute('k1');
-var _elm_lang$svg$Svg_Attributes$k = _elm_lang$virtual_dom$VirtualDom$attribute('k');
-var _elm_lang$svg$Svg_Attributes$intercept = _elm_lang$virtual_dom$VirtualDom$attribute('intercept');
-var _elm_lang$svg$Svg_Attributes$in2 = _elm_lang$virtual_dom$VirtualDom$attribute('in2');
-var _elm_lang$svg$Svg_Attributes$in_ = _elm_lang$virtual_dom$VirtualDom$attribute('in');
-var _elm_lang$svg$Svg_Attributes$ideographic = _elm_lang$virtual_dom$VirtualDom$attribute('ideographic');
-var _elm_lang$svg$Svg_Attributes$id = _elm_lang$virtual_dom$VirtualDom$attribute('id');
-var _elm_lang$svg$Svg_Attributes$horizOriginY = _elm_lang$virtual_dom$VirtualDom$attribute('horiz-origin-y');
-var _elm_lang$svg$Svg_Attributes$horizOriginX = _elm_lang$virtual_dom$VirtualDom$attribute('horiz-origin-x');
-var _elm_lang$svg$Svg_Attributes$horizAdvX = _elm_lang$virtual_dom$VirtualDom$attribute('horiz-adv-x');
-var _elm_lang$svg$Svg_Attributes$height = _elm_lang$virtual_dom$VirtualDom$attribute('height');
-var _elm_lang$svg$Svg_Attributes$hanging = _elm_lang$virtual_dom$VirtualDom$attribute('hanging');
-var _elm_lang$svg$Svg_Attributes$gradientUnits = _elm_lang$virtual_dom$VirtualDom$attribute('gradientUnits');
-var _elm_lang$svg$Svg_Attributes$gradientTransform = _elm_lang$virtual_dom$VirtualDom$attribute('gradientTransform');
-var _elm_lang$svg$Svg_Attributes$glyphRef = _elm_lang$virtual_dom$VirtualDom$attribute('glyphRef');
-var _elm_lang$svg$Svg_Attributes$glyphName = _elm_lang$virtual_dom$VirtualDom$attribute('glyph-name');
-var _elm_lang$svg$Svg_Attributes$g2 = _elm_lang$virtual_dom$VirtualDom$attribute('g2');
-var _elm_lang$svg$Svg_Attributes$g1 = _elm_lang$virtual_dom$VirtualDom$attribute('g1');
-var _elm_lang$svg$Svg_Attributes$fy = _elm_lang$virtual_dom$VirtualDom$attribute('fy');
-var _elm_lang$svg$Svg_Attributes$fx = _elm_lang$virtual_dom$VirtualDom$attribute('fx');
-var _elm_lang$svg$Svg_Attributes$from = _elm_lang$virtual_dom$VirtualDom$attribute('from');
-var _elm_lang$svg$Svg_Attributes$format = _elm_lang$virtual_dom$VirtualDom$attribute('format');
-var _elm_lang$svg$Svg_Attributes$filterUnits = _elm_lang$virtual_dom$VirtualDom$attribute('filterUnits');
-var _elm_lang$svg$Svg_Attributes$filterRes = _elm_lang$virtual_dom$VirtualDom$attribute('filterRes');
-var _elm_lang$svg$Svg_Attributes$externalResourcesRequired = _elm_lang$virtual_dom$VirtualDom$attribute('externalResourcesRequired');
-var _elm_lang$svg$Svg_Attributes$exponent = _elm_lang$virtual_dom$VirtualDom$attribute('exponent');
-var _elm_lang$svg$Svg_Attributes$end = _elm_lang$virtual_dom$VirtualDom$attribute('end');
-var _elm_lang$svg$Svg_Attributes$elevation = _elm_lang$virtual_dom$VirtualDom$attribute('elevation');
-var _elm_lang$svg$Svg_Attributes$edgeMode = _elm_lang$virtual_dom$VirtualDom$attribute('edgeMode');
-var _elm_lang$svg$Svg_Attributes$dy = _elm_lang$virtual_dom$VirtualDom$attribute('dy');
-var _elm_lang$svg$Svg_Attributes$dx = _elm_lang$virtual_dom$VirtualDom$attribute('dx');
-var _elm_lang$svg$Svg_Attributes$dur = _elm_lang$virtual_dom$VirtualDom$attribute('dur');
-var _elm_lang$svg$Svg_Attributes$divisor = _elm_lang$virtual_dom$VirtualDom$attribute('divisor');
-var _elm_lang$svg$Svg_Attributes$diffuseConstant = _elm_lang$virtual_dom$VirtualDom$attribute('diffuseConstant');
-var _elm_lang$svg$Svg_Attributes$descent = _elm_lang$virtual_dom$VirtualDom$attribute('descent');
-var _elm_lang$svg$Svg_Attributes$decelerate = _elm_lang$virtual_dom$VirtualDom$attribute('decelerate');
-var _elm_lang$svg$Svg_Attributes$d = _elm_lang$virtual_dom$VirtualDom$attribute('d');
-var _elm_lang$svg$Svg_Attributes$cy = _elm_lang$virtual_dom$VirtualDom$attribute('cy');
-var _elm_lang$svg$Svg_Attributes$cx = _elm_lang$virtual_dom$VirtualDom$attribute('cx');
-var _elm_lang$svg$Svg_Attributes$contentStyleType = _elm_lang$virtual_dom$VirtualDom$attribute('contentStyleType');
-var _elm_lang$svg$Svg_Attributes$contentScriptType = _elm_lang$virtual_dom$VirtualDom$attribute('contentScriptType');
-var _elm_lang$svg$Svg_Attributes$clipPathUnits = _elm_lang$virtual_dom$VirtualDom$attribute('clipPathUnits');
-var _elm_lang$svg$Svg_Attributes$class = _elm_lang$virtual_dom$VirtualDom$attribute('class');
-var _elm_lang$svg$Svg_Attributes$capHeight = _elm_lang$virtual_dom$VirtualDom$attribute('cap-height');
-var _elm_lang$svg$Svg_Attributes$calcMode = _elm_lang$virtual_dom$VirtualDom$attribute('calcMode');
-var _elm_lang$svg$Svg_Attributes$by = _elm_lang$virtual_dom$VirtualDom$attribute('by');
-var _elm_lang$svg$Svg_Attributes$bias = _elm_lang$virtual_dom$VirtualDom$attribute('bias');
-var _elm_lang$svg$Svg_Attributes$begin = _elm_lang$virtual_dom$VirtualDom$attribute('begin');
-var _elm_lang$svg$Svg_Attributes$bbox = _elm_lang$virtual_dom$VirtualDom$attribute('bbox');
-var _elm_lang$svg$Svg_Attributes$baseProfile = _elm_lang$virtual_dom$VirtualDom$attribute('baseProfile');
-var _elm_lang$svg$Svg_Attributes$baseFrequency = _elm_lang$virtual_dom$VirtualDom$attribute('baseFrequency');
-var _elm_lang$svg$Svg_Attributes$azimuth = _elm_lang$virtual_dom$VirtualDom$attribute('azimuth');
-var _elm_lang$svg$Svg_Attributes$autoReverse = _elm_lang$virtual_dom$VirtualDom$attribute('autoReverse');
-var _elm_lang$svg$Svg_Attributes$attributeType = _elm_lang$virtual_dom$VirtualDom$attribute('attributeType');
-var _elm_lang$svg$Svg_Attributes$attributeName = _elm_lang$virtual_dom$VirtualDom$attribute('attributeName');
-var _elm_lang$svg$Svg_Attributes$ascent = _elm_lang$virtual_dom$VirtualDom$attribute('ascent');
-var _elm_lang$svg$Svg_Attributes$arabicForm = _elm_lang$virtual_dom$VirtualDom$attribute('arabic-form');
-var _elm_lang$svg$Svg_Attributes$amplitude = _elm_lang$virtual_dom$VirtualDom$attribute('amplitude');
-var _elm_lang$svg$Svg_Attributes$allowReorder = _elm_lang$virtual_dom$VirtualDom$attribute('allowReorder');
-var _elm_lang$svg$Svg_Attributes$alphabetic = _elm_lang$virtual_dom$VirtualDom$attribute('alphabetic');
-var _elm_lang$svg$Svg_Attributes$additive = _elm_lang$virtual_dom$VirtualDom$attribute('additive');
-var _elm_lang$svg$Svg_Attributes$accumulate = _elm_lang$virtual_dom$VirtualDom$attribute('accumulate');
-var _elm_lang$svg$Svg_Attributes$accelerate = _elm_lang$virtual_dom$VirtualDom$attribute('accelerate');
-var _elm_lang$svg$Svg_Attributes$accentHeight = _elm_lang$virtual_dom$VirtualDom$attribute('accent-height');
-
-var _elm_lang$window$Native_Window = function()
-{
-
-var size = _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)	{
-	callback(_elm_lang$core$Native_Scheduler.succeed({
-		width: window.innerWidth,
-		height: window.innerHeight
-	}));
-});
-
-return {
-	size: size
-};
-
-}();
-var _elm_lang$window$Window_ops = _elm_lang$window$Window_ops || {};
-_elm_lang$window$Window_ops['&>'] = F2(
-	function (task1, task2) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (_p0) {
-				return task2;
-			},
-			task1);
-	});
-var _elm_lang$window$Window$onSelfMsg = F3(
-	function (router, dimensions, state) {
-		var _p1 = state;
-		if (_p1.ctor === 'Nothing') {
-			return _elm_lang$core$Task$succeed(state);
-		} else {
-			var send = function (_p2) {
-				var _p3 = _p2;
-				return A2(
-					_elm_lang$core$Platform$sendToApp,
-					router,
-					_p3._0(dimensions));
-			};
-			return A2(
-				_elm_lang$window$Window_ops['&>'],
-				_elm_lang$core$Task$sequence(
-					A2(_elm_lang$core$List$map, send, _p1._0.subs)),
-				_elm_lang$core$Task$succeed(state));
-		}
-	});
-var _elm_lang$window$Window$init = _elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing);
-var _elm_lang$window$Window$size = _elm_lang$window$Native_Window.size;
-var _elm_lang$window$Window$width = A2(
-	_elm_lang$core$Task$map,
-	function (_) {
-		return _.width;
-	},
-	_elm_lang$window$Window$size);
-var _elm_lang$window$Window$height = A2(
-	_elm_lang$core$Task$map,
-	function (_) {
-		return _.height;
-	},
-	_elm_lang$window$Window$size);
-var _elm_lang$window$Window$onEffects = F3(
-	function (router, newSubs, oldState) {
-		var _p4 = {ctor: '_Tuple2', _0: oldState, _1: newSubs};
-		if (_p4._0.ctor === 'Nothing') {
-			if (_p4._1.ctor === '[]') {
-				return _elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing);
-			} else {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (pid) {
-						return _elm_lang$core$Task$succeed(
-							_elm_lang$core$Maybe$Just(
-								{subs: newSubs, pid: pid}));
-					},
-					_elm_lang$core$Process$spawn(
-						A3(
-							_elm_lang$dom$Dom_LowLevel$onWindow,
-							'resize',
-							_elm_lang$core$Json_Decode$succeed(
-								{ctor: '_Tuple0'}),
-							function (_p5) {
-								return A2(
-									_elm_lang$core$Task$andThen,
-									_elm_lang$core$Platform$sendToSelf(router),
-									_elm_lang$window$Window$size);
-							})));
-			}
-		} else {
-			if (_p4._1.ctor === '[]') {
-				return A2(
-					_elm_lang$window$Window_ops['&>'],
-					_elm_lang$core$Process$kill(_p4._0._0.pid),
-					_elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing));
-			} else {
-				return _elm_lang$core$Task$succeed(
-					_elm_lang$core$Maybe$Just(
-						{subs: newSubs, pid: _p4._0._0.pid}));
-			}
-		}
-	});
-var _elm_lang$window$Window$subscription = _elm_lang$core$Native_Platform.leaf('Window');
-var _elm_lang$window$Window$Size = F2(
-	function (a, b) {
-		return {width: a, height: b};
-	});
-var _elm_lang$window$Window$MySub = function (a) {
-	return {ctor: 'MySub', _0: a};
-};
-var _elm_lang$window$Window$resizes = function (tagger) {
-	return _elm_lang$window$Window$subscription(
-		_elm_lang$window$Window$MySub(tagger));
-};
-var _elm_lang$window$Window$subMap = F2(
-	function (func, _p6) {
-		var _p7 = _p6;
-		return _elm_lang$window$Window$MySub(
-			function (_p8) {
-				return func(
-					_p7._0(_p8));
-			});
-	});
-_elm_lang$core$Native_Platform.effectManagers['Window'] = {pkg: 'elm-lang/window', init: _elm_lang$window$Window$init, onEffects: _elm_lang$window$Window$onEffects, onSelfMsg: _elm_lang$window$Window$onSelfMsg, tag: 'sub', subMap: _elm_lang$window$Window$subMap};
-
 var _evancz$url_parser$UrlParser$toKeyValuePair = function (segment) {
 	var _p0 = A2(_elm_lang$core$String$split, '=', segment);
 	if (((_p0.ctor === '::') && (_p0._1.ctor === '::')) && (_p0._1._1.ctor === '[]')) {
@@ -12445,7513 +11824,6 @@ var _evancz$url_parser$UrlParser$stringParam = function (name) {
 };
 var _evancz$url_parser$UrlParser$intParam = function (name) {
 	return A2(_evancz$url_parser$UrlParser$customParam, name, _evancz$url_parser$UrlParser$intParamHelp);
-};
-
-var _gdotdesign$elm_dom$Native_DOM = function() {
-  var task = _elm_lang$core$Native_Scheduler.nativeBinding
-  var succeed = _elm_lang$core$Native_Scheduler.succeed
-  var fail = _elm_lang$core$Native_Scheduler.fail
-  var tuple0 = _elm_lang$core$Native_Utils.Tuple0
-
-  var err = _elm_lang$core$Result$Err
-  var ok = _elm_lang$core$Result$Ok
-
-  var withElement = function(selector, method) {
-    try {
-      var element = document.querySelector(selector)
-    } catch (error) {
-      throw { ctor: "InvalidSelector", _0: selector }
-    }
-    if (!element) { throw { ctor: "ElementNotFound", _0: selector } }
-    return method(element)
-  }
-
-  /* Get the dimensions object for an element using getBoundingClientRect. */
-  var getDimensionsObject = function(selector){
-    return withElement(selector, function(element){
-      var rect = element.getBoundingClientRect()
-
-      return {
-        bottom: rect.bottom,
-        height: rect.height,
-        width: rect.width,
-        right: rect.right,
-        left: rect.left,
-        top: rect.top
-      }
-    })
-  }
-
-  var async = function(method) {
-    return function(){
-      var args = Array.prototype.slice.call(arguments)
-
-      return task(function(callback){
-        try {
-          callback(succeed(method.apply({}, args)))
-        } catch (error) {
-          callback(fail(error))
-        }
-      })
-    }
-  }
-
-  var sync = function(method) {
-    return function() {
-      var args = Array.prototype.slice.call(arguments)
-
-      try {
-        return ok(method.apply({}, args))
-      } catch (error) {
-        return err(error)
-      }
-    }
-  }
-
-  /* ---------------------------------------------------------------------- */
-
-  /* Runs the given message on the next animation frame. */
-  var nextTick = function(){
-    return task(function(callback){
-      requestAnimationFrame(function(){
-        callback(succeed(tuple0))
-      })
-    })
-  }
-
-  /* Tests if the given coordinates are over the given selector */
-  var isOver = function(selector, position){
-    var element = document.elementFromPoint(
-      position.left - window.pageXOffset,
-      position.top - window.pageYOffset
-    )
-    if (!element) { return err({ ctor: "ElementNotFound", _0: selector }) }
-    try {
-      return ok(element.matches(selector + "," + selector + " *"))
-    } catch (error) {
-      return err({ ctor: "InvalidSelector", _0: selector })
-    }
-  }
-
-  var hasFocusedElement = function(){
-    return task(function(callback){
-      callback(!!document.querySelector('*:focus'))
-    })
-  }
-
-  var hasFocusedElementSync = function(){
-    return !!document.querySelector('*:focus')
-  }
-
-  var focus = function(selector){
-    return withElement(selector, function(element){
-      element.focus()
-      return tuple0
-    })
-  }
-
-  var blur = function(selector){
-    return withElement(selector, function(element){
-      element.blur()
-      return tuple0
-    })
-  }
-
-  var select = function(selector) {
-    return withElement(selector, function(element){
-      if(!element.select){
-        throw { ctor: "TextNotSelectable", _0: selector }
-      }
-      element.select()
-      return tuple0
-    })
-  }
-
-  var setScrollLeft = function(position, selector){
-    return withElement(selector, function(element){
-      element.scrollLeft = position
-      return tuple0
-    })
-  }
-
-  var setScrollTop = function(position, selector){
-    return withElement(selector, function(element){
-      element.scrollTop = position
-      return tuple0
-    })
-  }
-
-  var scrollIntoView = function(selector) {
-    return withElement(selector, function(element){
-      element.scrollIntoView()
-      return tuple0
-    })
-  }
-
-  var getScrollLeft = function(selector){
-    return withElement(selector, function(element){
-      return element.scrollLeft
-    })
-  }
-
-  var getScrollTop = function(selector){
-    return withElement(selector, function(element){
-      return element.scrollTop
-    })
-  }
-
-  var setValue = function(value, selector){
-    return withElement(selector, function(element){
-      element.value = value
-      return tuple0
-    })
-  }
-
-  var getValue = function(selector) {
-    return withElement(selector, function(element){
-      return element.value || ""
-    })
-  }
-
-  var windowScrollTop = function(){
-    return window.pageYOffset
-  }
-
-  var windowScrollLeft = function(){
-    return window.pageXOffset
-  }
-
-  var windowWidth = function(){
-    return window.innerWidth
-  }
-
-  var windowHeight = function(){
-    return window.innerHeight
-  }
-
-  var contains = function(selector){
-    try {
-      return !!document.querySelector(selector)
-    } catch (error) {
-      return false
-    }
-  }
-
-  return {
-    hasFocusedElementSync: hasFocusedElementSync,
-    hasFocusedElement: hasFocusedElement,
-
-    getDimensionsSync: sync(getDimensionsObject),
-    getDimensions: async(getDimensionsObject),
-
-    scrollIntoViewSync: sync(scrollIntoView),
-    scrollIntoView: async(scrollIntoView),
-
-    setScrollLeftSync: F2(sync(setScrollLeft)),
-    setScrollLeft: F2(async(setScrollLeft)),
-
-    setScrollTopSync: F2(sync(setScrollTop)),
-    setScrollTop: F2(async(setScrollTop)),
-
-    getScrollLeftSync: sync(getScrollLeft),
-    getScrollLeft: async(getScrollLeft),
-
-    getScrollTopSync: sync(getScrollTop),
-    getScrollTop: async(getScrollTop),
-
-    selectSync: sync(select),
-    select: async(select),
-
-    setValueSync: F2(sync(setValue)),
-    setValue: F2(async(setValue)),
-
-    getValueSync: sync(getValue),
-    getValue: async(getValue),
-
-    focusSync: sync(focus),
-    focus: async(focus),
-
-    blurSync: sync(blur),
-    blur: async(blur),
-
-    isOver: F2(isOver),
-    nextTick: nextTick,
-    contains: contains,
-
-    windowScrollLeft: windowScrollLeft,
-    windowScrollTop: windowScrollTop,
-    windowHeight: windowHeight,
-    windowWidth: windowWidth,
-  }
-}()
-
-var _gdotdesign$elm_dom$DOM$getValueSync = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.getValueSync(selector);
-};
-var _gdotdesign$elm_dom$DOM$getValue = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.getValue(selector);
-};
-var _gdotdesign$elm_dom$DOM$setValueSync = F2(
-	function (value, selector) {
-		return A2(_gdotdesign$elm_dom$Native_DOM.setValueSync, value, selector);
-	});
-var _gdotdesign$elm_dom$DOM$setValue = F2(
-	function (value, selector) {
-		return A2(_gdotdesign$elm_dom$Native_DOM.setValue, value, selector);
-	});
-var _gdotdesign$elm_dom$DOM$getScrollTopSync = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.getScrollTopSync(selector);
-};
-var _gdotdesign$elm_dom$DOM$getScrollTop = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.getScrollTop(selector);
-};
-var _gdotdesign$elm_dom$DOM$getScrollLeftSync = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.getScrollLeftSync(selector);
-};
-var _gdotdesign$elm_dom$DOM$getScrollLeft = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.getScrollLeft(selector);
-};
-var _gdotdesign$elm_dom$DOM$scrollIntoViewSync = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.scrollIntoViewSync(selector);
-};
-var _gdotdesign$elm_dom$DOM$scrollIntoView = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.scrollIntoView(selector);
-};
-var _gdotdesign$elm_dom$DOM$setScrollTopSync = F2(
-	function (to, selector) {
-		return A2(_gdotdesign$elm_dom$Native_DOM.setScrollTopSync, to, selector);
-	});
-var _gdotdesign$elm_dom$DOM$setScrollTop = F2(
-	function (to, selector) {
-		return A2(_gdotdesign$elm_dom$Native_DOM.setScrollTop, to, selector);
-	});
-var _gdotdesign$elm_dom$DOM$setScrollLeftSync = F2(
-	function (to, selector) {
-		return A2(_gdotdesign$elm_dom$Native_DOM.setScrollLeftSync, to, selector);
-	});
-var _gdotdesign$elm_dom$DOM$setScrollLeft = F2(
-	function (to, selector) {
-		return A2(_gdotdesign$elm_dom$Native_DOM.setScrollLeft, to, selector);
-	});
-var _gdotdesign$elm_dom$DOM$getDimensionsSync = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.getDimensionsSync(selector);
-};
-var _gdotdesign$elm_dom$DOM$getDimensions = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.getDimensions(selector);
-};
-var _gdotdesign$elm_dom$DOM$selectSync = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.selectSync(selector);
-};
-var _gdotdesign$elm_dom$DOM$select = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.select(selector);
-};
-var _gdotdesign$elm_dom$DOM$hasFocusedElementSync = function (_p0) {
-	return _gdotdesign$elm_dom$Native_DOM.hasFocusedElementSync(
-		{ctor: '_Tuple0'});
-};
-var _gdotdesign$elm_dom$DOM$hasFocusedElement = _gdotdesign$elm_dom$Native_DOM.hasFocusedElement(
-	{ctor: '_Tuple0'});
-var _gdotdesign$elm_dom$DOM$blurSync = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.blurSync(selector);
-};
-var _gdotdesign$elm_dom$DOM$blur = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.blur(selector);
-};
-var _gdotdesign$elm_dom$DOM$focusSync = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.focusSync(selector);
-};
-var _gdotdesign$elm_dom$DOM$focus = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.focus(selector);
-};
-var _gdotdesign$elm_dom$DOM$isOver = F2(
-	function (selector, position) {
-		return A2(_gdotdesign$elm_dom$Native_DOM.isOver, selector, position);
-	});
-var _gdotdesign$elm_dom$DOM$contains = function (selector) {
-	return _gdotdesign$elm_dom$Native_DOM.contains(selector);
-};
-var _gdotdesign$elm_dom$DOM$idSelector = function (value) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		'[id=\'',
-		A2(_elm_lang$core$Basics_ops['++'], value, '\']'));
-};
-var _gdotdesign$elm_dom$DOM$Position = F2(
-	function (a, b) {
-		return {left: a, top: b};
-	});
-var _gdotdesign$elm_dom$DOM$Dimensions = F6(
-	function (a, b, c, d, e, f) {
-		return {height: a, bottom: b, width: c, right: d, left: e, top: f};
-	});
-var _gdotdesign$elm_dom$DOM$TextNotSelectable = function (a) {
-	return {ctor: 'TextNotSelectable', _0: a};
-};
-var _gdotdesign$elm_dom$DOM$InvalidSelector = function (a) {
-	return {ctor: 'InvalidSelector', _0: a};
-};
-var _gdotdesign$elm_dom$DOM$ElementNotFound = function (a) {
-	return {ctor: 'ElementNotFound', _0: a};
-};
-
-var _gdotdesign$elm_dom$DOM_Window$height = function (_p0) {
-	return _gdotdesign$elm_dom$Native_DOM.windowHeight(
-		{ctor: '_Tuple0'});
-};
-var _gdotdesign$elm_dom$DOM_Window$width = function (_p1) {
-	return _gdotdesign$elm_dom$Native_DOM.windowWidth(
-		{ctor: '_Tuple0'});
-};
-var _gdotdesign$elm_dom$DOM_Window$scrollLeft = function (_p2) {
-	return _gdotdesign$elm_dom$Native_DOM.windowScrollLeft(
-		{ctor: '_Tuple0'});
-};
-var _gdotdesign$elm_dom$DOM_Window$scrollTop = function (_p3) {
-	return _gdotdesign$elm_dom$Native_DOM.windowScrollTop(
-		{ctor: '_Tuple0'});
-};
-
-var _gdotdesign$elm_ui$Native_DateTime = function() {
-  /* Function to return the current day. */
-  function now(){
-    return new Date()
-  }
-
-  /* Create a date from the given arguments. */
-  function create(year, month, day){
-    return new Date(year, month - 1 , day)
-  }
-
-  /* Get the days in the month of the given date. */
-  function daysInMonth(date) {
-    return new Date(date.getYear(),date.getMonth() + 1,0).getDate()
-  }
-
-  /* Get the month of the given date. */
-  function month(date){
-    return date.getMonth() + 1
-  }
-
-  /* Interface. */
-  return {
-    daysInMonth: daysInMonth,
-    create: F3(create),
-    month: month,
-    now: now
-  }
-}()
-
-var _gdotdesign$elm_ui$Ext_Date$ago = F2(
-	function (date, other) {
-		var format = F2(
-			function (number, affix) {
-				var prefix = _elm_lang$core$Native_Utils.eq(affix, 'hour') ? 'an' : 'a';
-				return (_elm_lang$core$Native_Utils.cmp(number, 2) < 0) ? A2(
-					_elm_lang$core$Basics_ops['++'],
-					prefix,
-					A2(_elm_lang$core$Basics_ops['++'], ' ', affix)) : A2(
-					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(number),
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						' ',
-						A2(_elm_lang$core$Basics_ops['++'], affix, 's')));
-			});
-		var seconds = (_elm_lang$core$Date$toTime(other) - _elm_lang$core$Date$toTime(date)) / 1000;
-		var year = _elm_lang$core$Basics$floor(seconds / 31536000);
-		var month = _elm_lang$core$Basics$floor(seconds / 2592000);
-		var day = _elm_lang$core$Basics$floor(seconds / 86400);
-		var hour = _elm_lang$core$Basics$floor(seconds / 3600);
-		var minute = _elm_lang$core$Basics$floor(seconds / 60);
-		var value = (_elm_lang$core$Native_Utils.cmp(year, 1) > -1) ? A2(format, year, 'year') : ((_elm_lang$core$Native_Utils.cmp(month, 1) > -1) ? A2(format, month, 'month') : ((_elm_lang$core$Native_Utils.cmp(day, 1) > -1) ? A2(format, day, 'day') : ((_elm_lang$core$Native_Utils.cmp(hour, 1) > -1) ? A2(format, hour, 'hour') : ((_elm_lang$core$Native_Utils.cmp(minute, 1) > -1) ? A2(format, minute, 'minute') : A2(
-			format,
-			_elm_lang$core$Basics$floor(seconds),
-			'second')))));
-		return (_elm_lang$core$Native_Utils.cmp(minute, 0) > 0) ? ((_elm_lang$core$Native_Utils.cmp(seconds, 0) > 0) ? A2(_elm_lang$core$Basics_ops['++'], value, ' ago') : A2(_elm_lang$core$Basics_ops['++'], 'in ', value)) : 'just now';
-	});
-var _gdotdesign$elm_ui$Ext_Date$daysInMonth = function (date) {
-	return _gdotdesign$elm_ui$Native_DateTime.daysInMonth(date);
-};
-var _gdotdesign$elm_ui$Ext_Date$month = function (date) {
-	return _gdotdesign$elm_ui$Native_DateTime.month(date);
-};
-var _gdotdesign$elm_ui$Ext_Date$isSameMonth = F2(
-	function (date, other) {
-		return _elm_lang$core$Native_Utils.eq(
-			_elm_lang$core$Date$year(date),
-			_elm_lang$core$Date$year(other)) && _elm_lang$core$Native_Utils.eq(
-			_gdotdesign$elm_ui$Ext_Date$month(date),
-			_gdotdesign$elm_ui$Ext_Date$month(other));
-	});
-var _gdotdesign$elm_ui$Ext_Date$isSameDate = F2(
-	function (date, other) {
-		return _elm_lang$core$Native_Utils.eq(
-			_elm_lang$core$Date$year(date),
-			_elm_lang$core$Date$year(other)) && (_elm_lang$core$Native_Utils.eq(
-			_elm_lang$core$Date$day(date),
-			_elm_lang$core$Date$day(other)) && _elm_lang$core$Native_Utils.eq(
-			_gdotdesign$elm_ui$Ext_Date$month(date),
-			_gdotdesign$elm_ui$Ext_Date$month(other)));
-	});
-var _gdotdesign$elm_ui$Ext_Date$createDate = F3(
-	function (year, month, day) {
-		return A3(_gdotdesign$elm_ui$Native_DateTime.create, year, month, day);
-	});
-var _gdotdesign$elm_ui$Ext_Date$datesInMonth = function (date) {
-	var create = function (day) {
-		return A3(
-			_gdotdesign$elm_ui$Ext_Date$createDate,
-			_elm_lang$core$Date$year(date),
-			_gdotdesign$elm_ui$Ext_Date$month(date),
-			day + 1);
-	};
-	return _elm_lang$core$Array$toList(
-		A2(
-			_elm_lang$core$Array$initialize,
-			_gdotdesign$elm_ui$Ext_Date$daysInMonth(date),
-			create));
-};
-var _gdotdesign$elm_ui$Ext_Date$previousDay = function (date) {
-	return A3(
-		_gdotdesign$elm_ui$Ext_Date$createDate,
-		_elm_lang$core$Date$year(date),
-		_gdotdesign$elm_ui$Ext_Date$month(date),
-		_elm_lang$core$Date$day(date) - 1);
-};
-var _gdotdesign$elm_ui$Ext_Date$nextDay = function (date) {
-	return A3(
-		_gdotdesign$elm_ui$Ext_Date$createDate,
-		_elm_lang$core$Date$year(date),
-		_gdotdesign$elm_ui$Ext_Date$month(date),
-		_elm_lang$core$Date$day(date) + 1);
-};
-var _gdotdesign$elm_ui$Ext_Date$begginingOfMonth = function (date) {
-	return A3(
-		_gdotdesign$elm_ui$Ext_Date$createDate,
-		_elm_lang$core$Date$year(date),
-		_gdotdesign$elm_ui$Ext_Date$month(date),
-		1);
-};
-var _gdotdesign$elm_ui$Ext_Date$nextMonth = function (date) {
-	return _gdotdesign$elm_ui$Ext_Date$begginingOfMonth(
-		A3(
-			_gdotdesign$elm_ui$Ext_Date$createDate,
-			_elm_lang$core$Date$year(date),
-			_gdotdesign$elm_ui$Ext_Date$month(date) + 1,
-			_elm_lang$core$Date$day(date)));
-};
-var _gdotdesign$elm_ui$Ext_Date$previousMonth = function (date) {
-	return _gdotdesign$elm_ui$Ext_Date$begginingOfMonth(
-		A3(
-			_gdotdesign$elm_ui$Ext_Date$createDate,
-			_elm_lang$core$Date$year(date),
-			_gdotdesign$elm_ui$Ext_Date$month(date),
-			0));
-};
-var _gdotdesign$elm_ui$Ext_Date$endOfMonth = function (date) {
-	return A3(
-		_gdotdesign$elm_ui$Ext_Date$createDate,
-		_elm_lang$core$Date$year(date),
-		_gdotdesign$elm_ui$Ext_Date$month(date) + 1,
-		0);
-};
-var _gdotdesign$elm_ui$Ext_Date$now = function (_p0) {
-	return _gdotdesign$elm_ui$Native_DateTime.now(_elm_lang$core$Maybe$Nothing);
-};
-var _gdotdesign$elm_ui$Ext_Date$nowTime = function (_p1) {
-	return _elm_lang$core$Date$toTime(
-		_gdotdesign$elm_ui$Ext_Date$now(
-			{ctor: '_Tuple0'}));
-};
-
-var _gdotdesign$elm_ui$Html_Events_Options$stopOptions = {stopPropagation: true, preventDefault: true};
-var _gdotdesign$elm_ui$Html_Events_Options$stopPropagationOptions = {stopPropagation: true, preventDefault: false};
-var _gdotdesign$elm_ui$Html_Events_Options$preventDefaultOptions = {stopPropagation: false, preventDefault: true};
-
-var _gdotdesign$elm_ui$Html_Events_Extra$keysDecoder = function (mappings) {
-	var dict = _elm_lang$core$Dict$fromList(mappings);
-	var decode = function (value) {
-		return A2(
-			_elm_lang$core$Maybe$withDefault,
-			_elm_lang$core$Json_Decode$fail('Key pressed not was no in mappings!'),
-			A2(
-				_elm_lang$core$Maybe$map,
-				_elm_lang$core$Json_Decode$succeed,
-				A2(_elm_lang$core$Dict$get, value, dict)));
-	};
-	return A2(_elm_lang$core$Json_Decode$andThen, decode, _elm_lang$html$Html_Events$keyCode);
-};
-var _gdotdesign$elm_ui$Html_Events_Extra$onError = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'error',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _gdotdesign$elm_ui$Html_Events_Extra$onLoad = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'load',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _gdotdesign$elm_ui$Html_Events_Extra$onKeys = F2(
-	function (shouldPreventDefault, mappings) {
-		var options = shouldPreventDefault ? _gdotdesign$elm_ui$Html_Events_Options$preventDefaultOptions : _elm_lang$html$Html_Events$defaultOptions;
-		return A3(
-			_elm_lang$html$Html_Events$onWithOptions,
-			'keydown',
-			options,
-			_gdotdesign$elm_ui$Html_Events_Extra$keysDecoder(mappings));
-	});
-var _gdotdesign$elm_ui$Html_Events_Extra$onTransitionEnd = function (decoder) {
-	return A2(_elm_lang$html$Html_Events$on, 'transitionend', decoder);
-};
-var _gdotdesign$elm_ui$Html_Events_Extra$onScroll = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'scroll',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _gdotdesign$elm_ui$Html_Events_Extra$onPreventDefault = F2(
-	function (event, msg) {
-		return A3(
-			_elm_lang$html$Html_Events$onWithOptions,
-			event,
-			_gdotdesign$elm_ui$Html_Events_Options$preventDefaultOptions,
-			_elm_lang$core$Json_Decode$succeed(msg));
-	});
-var _gdotdesign$elm_ui$Html_Events_Extra$onEnterPreventDefault = function (action) {
-	var mappings = {
-		ctor: '::',
-		_0: {ctor: '_Tuple2', _0: 13, _1: action},
-		_1: {ctor: '[]'}
-	};
-	return A3(
-		_elm_lang$html$Html_Events$onWithOptions,
-		'keydown',
-		_gdotdesign$elm_ui$Html_Events_Options$preventDefaultOptions,
-		_gdotdesign$elm_ui$Html_Events_Extra$keysDecoder(mappings));
-};
-var _gdotdesign$elm_ui$Html_Events_Extra$onEnter = F2(
-	function (control, msg) {
-		var decoder2 = function (pressed) {
-			return pressed ? _gdotdesign$elm_ui$Html_Events_Extra$keysDecoder(
-				{
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 13, _1: msg},
-					_1: {ctor: '[]'}
-				}) : _elm_lang$core$Json_Decode$fail('Control wasn\'t pressed!');
-		};
-		var decoder = control ? A2(
-			_elm_lang$core$Json_Decode$andThen,
-			decoder2,
-			A2(_elm_lang$core$Json_Decode$field, 'ctrlKey', _elm_lang$core$Json_Decode$bool)) : decoder2(true);
-		return A3(_elm_lang$html$Html_Events$onWithOptions, 'keyup', _gdotdesign$elm_ui$Html_Events_Options$stopOptions, decoder);
-	});
-var _gdotdesign$elm_ui$Html_Events_Extra$onFocusOut = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'focusout',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _gdotdesign$elm_ui$Html_Events_Extra$onWheel = F2(
-	function (decoder, action) {
-		return A2(
-			_elm_lang$html$Html_Events$on,
-			'wheel',
-			A2(_elm_lang$core$Json_Decode$map, action, decoder));
-	});
-var _gdotdesign$elm_ui$Html_Events_Extra$decodeDelta = A2(
-	_elm_lang$core$Json_Decode$at,
-	{
-		ctor: '::',
-		_0: 'deltaY',
-		_1: {ctor: '[]'}
-	},
-	_elm_lang$core$Json_Decode$float);
-var _gdotdesign$elm_ui$Html_Events_Extra$unobtrusiveClick = function (msg) {
-	var result = function (_p0) {
-		var _p1 = _p0;
-		return (_p1._0 || _elm_lang$core$Native_Utils.eq(_p1._1, 1)) ? _elm_lang$core$Json_Decode$fail('Control key or middle mouse button is pressed!') : _elm_lang$core$Json_Decode$succeed(msg);
-	};
-	var decoder = A2(
-		_elm_lang$core$Json_Decode$andThen,
-		result,
-		A3(
-			_elm_lang$core$Json_Decode$map2,
-			F2(
-				function (v0, v1) {
-					return {ctor: '_Tuple2', _0: v0, _1: v1};
-				}),
-			A2(_elm_lang$core$Json_Decode$field, 'ctrlKey', _elm_lang$core$Json_Decode$bool),
-			A2(_elm_lang$core$Json_Decode$field, 'button', _elm_lang$core$Json_Decode$int)));
-	return A3(_elm_lang$html$Html_Events$onWithOptions, 'click', _gdotdesign$elm_ui$Html_Events_Options$stopOptions, decoder);
-};
-
-//download.js v4.1, by dandavis; 2008-2015. [CCBY2] see http://danml.com/download.html for tests/usage
-window.download = function(data, strFileName, strMimeType) {
-  var self = window, // this script is only for browsers anyway...
-    defaultMime = "application/octet-stream", // this default mime also triggers iframe downloads
-    mimeType = strMimeType || defaultMime,
-    payload = data,
-    url = !strFileName && !strMimeType && payload,
-    anchor = document.createElement("a"),
-    toString = function(a){return String(a);},
-    myBlob = (self.Blob || self.MozBlob || self.WebKitBlob || toString),
-    fileName = strFileName || "download",
-    blob,
-    reader;
-    myBlob= myBlob.call ? myBlob.bind(self) : Blob ;
-
-  if(String(this)==="true"){ //reverse arguments, allowing download.bind(true, "text/xml", "export.xml") to act as a callback
-    payload=[payload, mimeType];
-    mimeType=payload[0];
-    payload=payload[1];
-  }
-
-
-  if(url && url.length< 2048){ // if no filename and no mime, assume a url was passed as the only argument
-    fileName = url.split("/").pop().split("?")[0];
-    anchor.href = url; // assign href prop to temp anchor
-      if(anchor.href.indexOf(url) !== -1){ // if the browser determines that it's a potentially valid url path:
-          var ajax=new XMLHttpRequest();
-          ajax.open( "GET", url, true);
-          ajax.responseType = 'blob';
-          ajax.onload= function(e){
-        download(e.target.response, fileName, defaultMime);
-      };
-          setTimeout(function(){ ajax.send();}, 0); // allows setting custom ajax headers using the return:
-        return ajax;
-    } // end if valid url?
-  } // end if url?
-
-
-  //go ahead and download dataURLs right away
-  if(/^data\:[\w+\-]+\/[\w+\-]+[,;]/.test(payload)){
-
-    if(payload.length > (1024*1024*1.999) && myBlob !== toString ){
-      payload=dataUrlToBlob(payload);
-      mimeType=payload.type || defaultMime;
-    }else{
-      return navigator.msSaveBlob ?  // IE10 can't do a[download], only Blobs:
-        navigator.msSaveBlob(dataUrlToBlob(payload), fileName) :
-        saver(payload) ; // everyone else can save dataURLs un-processed
-    }
-
-  }//end if dataURL passed?
-
-  blob = payload instanceof myBlob ?
-    payload :
-    new myBlob([payload], {type: mimeType}) ;
-
-
-  function dataUrlToBlob(strUrl) {
-    var parts= strUrl.split(/[:;,]/),
-    type= parts[1],
-    decoder= parts[2] == "base64" ? atob : decodeURIComponent,
-    binData= decoder( parts.pop() ),
-    mx= binData.length,
-    i= 0,
-    uiArr= new Uint8Array(mx);
-
-    for(i;i<mx;++i) uiArr[i]= binData.charCodeAt(i);
-
-    return new myBlob([uiArr], {type: type});
-   }
-
-  function saver(url, winMode){
-
-    if ('download' in anchor) { //html5 A[download]
-      anchor.href = url;
-      anchor.setAttribute("download", fileName);
-      anchor.className = "download-js-link";
-      anchor.innerHTML = "downloading...";
-      anchor.style.display = "none";
-      document.body.appendChild(anchor);
-      setTimeout(function() {
-        anchor.click();
-        document.body.removeChild(anchor);
-        if(winMode===true){setTimeout(function(){ self.URL.revokeObjectURL(anchor.href);}, 250 );}
-      }, 66);
-      return true;
-    }
-
-    // handle non-a[download] safari as best we can:
-    if(/(Version)\/(\d+)\.(\d+)(?:\.(\d+))?.*Safari\//.test(navigator.userAgent)) {
-      url=url.replace(/^data:([\w\/\-\+]+)/, defaultMime);
-      if(!window.open(url)){ // popup blocked, offer direct download:
-        if(confirm("Displaying New Document\n\nUse Save As... to download, then click back to return to this page.")){ location.href=url; }
-      }
-      return true;
-    }
-
-    //do iframe dataURL download (old ch+FF):
-    var f = document.createElement("iframe");
-    document.body.appendChild(f);
-
-    if(!winMode){ // force a mime that will download:
-      url="data:"+url.replace(/^data:([\w\/\-\+]+)/, defaultMime);
-    }
-    f.src=url;
-    setTimeout(function(){ document.body.removeChild(f); }, 333);
-
-  }//end saver
-
-
-
-
-  if (navigator.msSaveBlob) { // IE10+ : (has Blob, but not a[download] or URL)
-    return navigator.msSaveBlob(blob, fileName);
-  }
-
-  if(self.URL){ // simple fast and modern way using Blob and URL:
-    saver(self.URL.createObjectURL(blob), true);
-  }else{
-    // handle non-Blob()+non-URL browsers:
-    if(typeof blob === "string" || blob.constructor===toString ){
-      try{
-        return saver( "data:" +  mimeType   + ";base64,"  +  self.btoa(blob)  );
-      }catch(y){
-        return saver( "data:" +  mimeType   + "," + encodeURIComponent(blob)  );
-      }
-    }
-
-    // Blob but not URL support:
-    reader=new FileReader();
-    reader.onload=function(e){
-      saver(this.result);
-    };
-    reader.readAsDataURL(blob);
-  }
-  return true;
-}
-
-var _gdotdesign$elm_ui$Native_FileManager = function() {
-  var isChromeApp = window.chrome && window.chrome.fileSystem
-
-
-  function createInput(){
-    var input = document.createElement('input')
-
-    input.style.width = '1px'
-    input.style.height = '1px'
-    input.style.position = 'absolute'
-    input.style.left = '-1px'
-    input.style.top = '-1px'
-    input.type = 'file'
-    input.callback = null
-
-    document.body.appendChild(input)
-
-    return input;
-  }
-
-
-  function createFile(file) {
-    return {
-      name: file.name,
-      size: file.size,
-      mimeType: file.type,
-      data: file
-    }
-  }
-
-  function reader(callback) {
-    var reader = new FileReader();
-    reader.addEventListener('load', function(event){
-      callback(_elm_lang$core$Native_Scheduler.succeed(event.target.result))
-    })
-    return reader
-  }
-
-  function readAsString(file) {
-    return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback){
-      reader(callback).readAsText(file.data)
-    })
-  }
-
-  function readAsDataURL(file) {
-    return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback){
-      reader(callback).readAsDataURL(file.data)
-    })
-  }
-
-  function toFormData(file) {
-    return file.data
-  }
-
-  function downloadFunc(name,mimeType,data){
-    if(isChromeApp){
-      return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback){
-        chrome.fileSystem.chooseEntry({type: 'saveFile',
-                                       suggestedName: name}, function(fileEntry){
-          blob = new Blob([data], {type: "text/plain"})
-          fileEntry.createWriter(function(writer) {
-            writer.onwriteend = function() {
-              if (writer.length === 0) {
-                writer.write(blob)
-              } else {
-                callback(_elm_lang$core$Native_Scheduler.succeed(""))
-              }
-            }
-            writer.truncate(0)
-          })
-        })
-      })
-    } else {
-      download(data,name,mimeType)
-      return _elm_lang$core$Native_Scheduler.succeed("")
-    }
-  }
-
-  var Json = _elm_lang$core$Native_Json
-  var valueDecoder = Json.decodePrimitive("value")
-
-  function openMultipleDecoder(accept){
-    return Json.andThen(function(_){
-      var input = createInput()
-      input.accept = accept
-      input.multiple = false
-      input.click()
-      var task = _elm_lang$core$Native_Scheduler.nativeBinding(function(callback){
-        input.addEventListener('change', function(){
-          var filesArray = Array.prototype.slice.call(input.files)
-          var filesObjects = filesArray.map(function(file) { return createFile(file) })
-          var files = _elm_lang$core$Native_List.fromArray(filesObjects)
-          callback(_elm_lang$core$Native_Scheduler.succeed(files))
-        })
-      })
-      return Json.succeed(task)
-    })(valueDecoder)
-  }
-
-  function openSingleDecoder(accept){
-    return Json.andThen(function(_){
-      var input = createInput()
-      input.accept = accept
-      input.click()
-      var task = _elm_lang$core$Native_Scheduler.nativeBinding(function(callback){
-        input.addEventListener('change', function(){
-          callback(_elm_lang$core$Native_Scheduler.succeed(createFile(input.files[0])))
-        })
-      })
-      return Json.succeed(task)
-    })(valueDecoder)
-  }
-
-  return {
-    readAsDataURL: readAsDataURL,
-    readAsString: readAsString,
-    download: F3(downloadFunc),
-    openMultipleDecoder: openMultipleDecoder,
-    openSingleDecoder: openSingleDecoder,
-    identity: function(value){ return value },
-    identitiyTag: F2(function(tagger, value){ return tagger(value) }),
-    toFormData: toFormData,
-  }
-}()
-
-var _gdotdesign$elm_ui$Native_Styles = function() {
-  var currentStyles = {}
-
-  var setupObserver = function () {
-    if(window.MutationObserver) {
-      new MutationObserver(function (mutations) {
-        patchStyles()
-      }).observe(document.body, { childList: true, subtree: true });
-    } else {
-      var patch = function(){
-        patchStyles()
-        if(document.querySelector('[class^=container-]')) { return }
-        requestAnimationFrame(patch)
-      }
-      requestAnimationFrame(patch)
-    }
-  }
-
-  if (document.body) {
-    setupObserver()
-  } else {
-    document.addEventListener('DOMContentLoaded', setupObserver)
-  }
-
-  function patchStyles(){
-    var currentNode
-    var tags = {}
-    var iterator =
-      document
-        .createNodeIterator(document.documentElement, NodeFilter.SHOW_ELEMENT)
-
-    var nextStyles = {}
-
-    while(currentNode = iterator.nextNode()) {
-      if (!currentNode.__styles) { continue }
-      if (nextStyles[currentNode.__styles.id]) { continue }
-      nextStyles[currentNode.__styles.id] = currentNode.__styles.value
-    }
-
-    for(var id in nextStyles) {
-      if(currentStyles[id]) {
-        nextStyles[id] = currentStyles[id]
-        delete currentStyles[id]
-      } else {
-        var style = document.createElement('style')
-        style.innerHTML = nextStyles[id]
-        style.setAttribute('id', id)
-        document.head.appendChild(style)
-        nextStyles[id] = style
-      }
-    }
-
-    for(var id in currentStyles) {
-      currentStyles[id].remove()
-    }
-
-    currentStyles = nextStyles
-  }
-
-  /* Interface */
-  return {
-    patchStyles: patchStyles
-  }
-}()
-
-var _gdotdesign$elm_ui$Native_Uid = function() {
-  function s(n) {
-    return h((Math.random() * (1<<(n<<2)))^Date.now()).slice(-n)
-  }
-
-  function h(n) {
-    return (n|0).toString(16)
-  }
-
-  function uid(){
-    return [
-      s(4) + s(4), s(4), '4' + s(3),
-      h(8|(Math.random()*4)) + s(3),
-      Date.now().toString(16).slice(-10) + s(2)
-    ].join('-')
-  }
-
-  /* Interface */
-  return {
-    uid: uid
-  }
-}()
-
-var _gdotdesign$elm_ui$Ui$attributeList = function (items) {
-	var attr = function (_p0) {
-		var _p1 = _p0;
-		return _p1._1 ? {
-			ctor: '::',
-			_0: A2(_elm_lang$html$Html_Attributes$attribute, _p1._0, ''),
-			_1: {ctor: '[]'}
-		} : {ctor: '[]'};
-	};
-	return _elm_lang$core$List$concat(
-		A2(_elm_lang$core$List$map, attr, items));
-};
-var _gdotdesign$elm_ui$Ui$enabledActions = F2(
-	function (model, attributes) {
-		return (model.disabled || model.readonly) ? {ctor: '[]'} : attributes;
-	});
-var _gdotdesign$elm_ui$Ui$tabIndex = function (model) {
-	return model.disabled ? {ctor: '[]'} : {
-		ctor: '::',
-		_0: A2(_elm_lang$html$Html_Attributes$attribute, 'tabindex', '0'),
-		_1: {ctor: '[]'}
-	};
-};
-var _gdotdesign$elm_ui$Ui$stylesheetLink = F2(
-	function (path, msg) {
-		return A3(
-			_elm_lang$html$Html$node,
-			'link',
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$rel('stylesheet'),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$href(path),
-					_1: {
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Html_Events_Extra$onLoad(msg),
-						_1: {ctor: '[]'}
-					}
-				}
-			},
-			{ctor: '[]'});
-	});
-
-var _gdotdesign$elm_ui$Ui_Css$renderProperties = function (properties) {
-	return A2(
-		_elm_lang$core$String$join,
-		'\n',
-		A2(
-			_elm_lang$core$List$map,
-			function (_p0) {
-				var _p1 = _p0;
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					'  ',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_p1._0,
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							': ',
-							A2(_elm_lang$core$Basics_ops['++'], _p1._1, ';'))));
-			},
-			A2(_elm_community$list_extra$List_Extra$uniqueBy, _elm_lang$core$Tuple$first, properties)));
-};
-var _gdotdesign$elm_ui$Ui_Css$group = function (list) {
-	var fn = F2(
-		function (item, dict) {
-			var properties = A2(
-				_elm_lang$core$Maybe$withDefault,
-				{ctor: '[]'},
-				A2(_elm_lang$core$Dict$get, item.name, dict));
-			return A3(
-				_elm_lang$core$Dict$insert,
-				item.name,
-				A2(_elm_lang$core$Basics_ops['++'], properties, item.properties),
-				dict);
-		});
-	return A2(
-		_elm_lang$core$List$map,
-		function (_p2) {
-			var _p3 = _p2;
-			return {name: _p3._0, properties: _p3._1};
-		},
-		_elm_lang$core$Dict$toList(
-			A3(_elm_lang$core$List$foldr, fn, _elm_lang$core$Dict$empty, list)));
-};
-var _gdotdesign$elm_ui$Ui_Css$render = function (selectors) {
-	var renderSelector = function (selector) {
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			selector.name,
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				' {\n',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					_gdotdesign$elm_ui$Ui_Css$renderProperties(selector.properties),
-					'\n}')));
-	};
-	return A2(
-		_elm_lang$core$String$join,
-		'\n',
-		A2(
-			_elm_lang$core$List$map,
-			renderSelector,
-			A2(
-				_elm_lang$core$List$filter,
-				function (_p4) {
-					return !_elm_lang$core$List$isEmpty(
-						function (_) {
-							return _.properties;
-						}(_p4));
-				},
-				_gdotdesign$elm_ui$Ui_Css$group(selectors))));
-};
-var _gdotdesign$elm_ui$Ui_Css$getKeyFrames = function (nodes) {
-	var renderBody = function (_p5) {
-		var _p6 = _p5;
-		var prop = function (nd) {
-			var _p7 = nd;
-			if (_p7.ctor === 'PropertyNode') {
-				return {
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: _p7._0, _1: _p7._1},
-					_1: {ctor: '[]'}
-				};
-			} else {
-				return {ctor: '[]'};
-			}
-		};
-		var props = A3(
-			_elm_lang$core$List$foldr,
-			F2(
-				function (x, y) {
-					return A2(_elm_lang$core$Basics_ops['++'], x, y);
-				}),
-			{ctor: '[]'},
-			A2(_elm_lang$core$List$map, prop, _p6._1));
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			_p6._0,
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				'{\n',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					_gdotdesign$elm_ui$Ui_Css$renderProperties(props),
-					'\n}')));
-	};
-	var renderKeyframe = function (_p8) {
-		var _p9 = _p8;
-		var renderedBody = A2(
-			_elm_lang$core$String$join,
-			'\n',
-			A2(_elm_lang$core$List$map, renderBody, _p9._1));
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			'@keyframes ',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				_p9._0,
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					' {\n',
-					A2(_elm_lang$core$Basics_ops['++'], renderedBody, '\n}'))));
-	};
-	var getFrame = function (node) {
-		var _p10 = node;
-		switch (_p10.ctor) {
-			case 'KeyFrames':
-				return {
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: _p10._0, _1: _p10._1},
-					_1: {ctor: '[]'}
-				};
-			case 'SelectorNode':
-				return frames(_p10._0.nodes);
-			case 'SelectorsNode':
-				return A3(
-					_elm_lang$core$List$foldr,
-					F2(
-						function (x, y) {
-							return A2(_elm_lang$core$Basics_ops['++'], x, y);
-						}),
-					{ctor: '[]'},
-					A2(
-						_elm_lang$core$List$map,
-						function (_p11) {
-							return frames(
-								function (_) {
-									return _.nodes;
-								}(_p11));
-						},
-						_p10._0));
-			case 'Mixin':
-				return frames(_p10._0);
-			default:
-				return {ctor: '[]'};
-		}
-	};
-	var frames = function (nds) {
-		return A3(
-			_elm_lang$core$List$foldr,
-			F2(
-				function (x, y) {
-					return A2(_elm_lang$core$Basics_ops['++'], x, y);
-				}),
-			{ctor: '[]'},
-			A2(_elm_lang$core$List$map, getFrame, nds));
-	};
-	var allKeyframes = frames(nodes);
-	return A2(
-		_elm_lang$core$String$join,
-		'\n',
-		A2(_elm_lang$core$List$map, renderKeyframe, allKeyframes));
-};
-var _gdotdesign$elm_ui$Ui_Css$properties = function (node) {
-	var getProperty = function (item) {
-		var _p12 = item;
-		if (_p12.ctor === 'PropertyNode') {
-			return {
-				ctor: '::',
-				_0: {ctor: '_Tuple2', _0: _p12._0, _1: _p12._1},
-				_1: {ctor: '[]'}
-			};
-		} else {
-			return {ctor: '[]'};
-		}
-	};
-	var _p13 = node;
-	switch (_p13.ctor) {
-		case 'Mixin':
-			return A3(
-				_elm_lang$core$List$foldr,
-				F2(
-					function (x, y) {
-						return A2(_elm_lang$core$Basics_ops['++'], x, y);
-					}),
-				{ctor: '[]'},
-				A2(_elm_lang$core$List$map, getProperty, _p13._0));
-		case 'SelectorNode':
-			return A3(
-				_elm_lang$core$List$foldr,
-				F2(
-					function (x, y) {
-						return A2(_elm_lang$core$Basics_ops['++'], x, y);
-					}),
-				{ctor: '[]'},
-				A2(_elm_lang$core$List$map, getProperty, _p13._0.nodes));
-		case 'PropertyNode':
-			return {
-				ctor: '::',
-				_0: {ctor: '_Tuple2', _0: _p13._0, _1: _p13._1},
-				_1: {ctor: '[]'}
-			};
-		default:
-			return {ctor: '[]'};
-	}
-};
-var _gdotdesign$elm_ui$Ui_Css$Mixin = function (a) {
-	return {ctor: 'Mixin', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Css$mixin = function (nodes) {
-	return _gdotdesign$elm_ui$Ui_Css$Mixin(nodes);
-};
-var _gdotdesign$elm_ui$Ui_Css$KeyFrames = F2(
-	function (a, b) {
-		return {ctor: 'KeyFrames', _0: a, _1: b};
-	});
-var _gdotdesign$elm_ui$Ui_Css$keyframes = _gdotdesign$elm_ui$Ui_Css$KeyFrames;
-var _gdotdesign$elm_ui$Ui_Css$SelectorsNode = function (a) {
-	return {ctor: 'SelectorsNode', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Css$selectors = F2(
-	function (bases, nodes) {
-		return _gdotdesign$elm_ui$Ui_Css$SelectorsNode(
-			A2(
-				_elm_lang$core$List$map,
-				function (base) {
-					return {name: base, nodes: nodes};
-				},
-				bases));
-	});
-var _gdotdesign$elm_ui$Ui_Css$PropertyNode = F2(
-	function (a, b) {
-		return {ctor: 'PropertyNode', _0: a, _1: b};
-	});
-var _gdotdesign$elm_ui$Ui_Css$property = _gdotdesign$elm_ui$Ui_Css$PropertyNode;
-var _gdotdesign$elm_ui$Ui_Css$SelectorNode = function (a) {
-	return {ctor: 'SelectorNode', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Css$selector = F2(
-	function (base, nodes) {
-		return _gdotdesign$elm_ui$Ui_Css$SelectorNode(
-			{name: base, nodes: nodes});
-	});
-var _gdotdesign$elm_ui$Ui_Css$substituteSelector = F2(
-	function (selectors, item) {
-		return A2(_elm_lang$core$String$contains, '&', item.name) ? A2(
-			_elm_lang$core$List$map,
-			function (selector) {
-				return _gdotdesign$elm_ui$Ui_Css$SelectorNode(
-					_elm_lang$core$Native_Utils.update(
-						item,
-						{
-							name: A4(
-								_elm_lang$core$Regex$replace,
-								_elm_lang$core$Regex$All,
-								_elm_lang$core$Regex$regex('\\&'),
-								function (_p14) {
-									return selector;
-								},
-								item.name)
-						}));
-			},
-			selectors) : A2(
-			_elm_lang$core$List$map,
-			function (selector) {
-				return _gdotdesign$elm_ui$Ui_Css$SelectorNode(
-					_elm_lang$core$Native_Utils.update(
-						item,
-						{
-							name: A2(
-								_elm_lang$core$Basics_ops['++'],
-								selector,
-								A2(_elm_lang$core$Basics_ops['++'], ' ', item.name))
-						}));
-			},
-			selectors);
-	});
-var _gdotdesign$elm_ui$Ui_Css$flatten = F2(
-	function (selectors, node) {
-		var _p15 = node;
-		switch (_p15.ctor) {
-			case 'KeyFrames':
-				return selectors;
-			case 'Mixin':
-				return selectors;
-			case 'PropertyNode':
-				return selectors;
-			case 'SelectorsNode':
-				return A3(
-					_elm_lang$core$List$foldr,
-					F2(
-						function (x, y) {
-							return A2(_elm_lang$core$Basics_ops['++'], x, y);
-						}),
-					selectors,
-					A2(
-						_elm_lang$core$List$map,
-						_gdotdesign$elm_ui$Ui_Css$flatten(
-							{ctor: '[]'}),
-						A2(_elm_lang$core$List$map, _gdotdesign$elm_ui$Ui_Css$SelectorNode, _p15._0)));
-			default:
-				var _p19 = _p15._0;
-				var subSelectors = A2(_elm_lang$core$String$split, ',', _p19.name);
-				var subsSelector = function (item_) {
-					var _p16 = item_;
-					switch (_p16.ctor) {
-						case 'SelectorsNode':
-							return A3(
-								_elm_lang$core$List$foldr,
-								F2(
-									function (x, y) {
-										return A2(_elm_lang$core$Basics_ops['++'], x, y);
-									}),
-								{ctor: '[]'},
-								A2(
-									_elm_lang$core$List$map,
-									_gdotdesign$elm_ui$Ui_Css$substituteSelector(subSelectors),
-									_p16._0));
-						case 'SelectorNode':
-							return A2(_gdotdesign$elm_ui$Ui_Css$substituteSelector, subSelectors, _p16._0);
-						default:
-							return {
-								ctor: '::',
-								_0: item_,
-								_1: {ctor: '[]'}
-							};
-					}
-				};
-				var mixinNodes = function (nodes) {
-					return A3(
-						_elm_lang$core$List$foldr,
-						F2(
-							function (x, y) {
-								return A2(_elm_lang$core$Basics_ops['++'], x, y);
-							}),
-						{ctor: '[]'},
-						A2(
-							_elm_lang$core$List$map,
-							function (item) {
-								var _p17 = item;
-								if (_p17.ctor === 'Mixin') {
-									var _p18 = _p17._0;
-									return A2(
-										_elm_lang$core$Basics_ops['++'],
-										_p18,
-										mixinNodes(_p18));
-								} else {
-									return {
-										ctor: '::',
-										_0: item,
-										_1: {ctor: '[]'}
-									};
-								}
-							},
-							nodes));
-				};
-				var mxNodes = mixinNodes(_p19.nodes);
-				var otherSelectors = A3(
-					_elm_lang$core$List$foldr,
-					F2(
-						function (x, y) {
-							return A2(_elm_lang$core$Basics_ops['++'], x, y);
-						}),
-					{ctor: '[]'},
-					A2(
-						_elm_lang$core$List$map,
-						_gdotdesign$elm_ui$Ui_Css$flatten(
-							{ctor: '[]'}),
-						A3(
-							_elm_lang$core$List$foldr,
-							F2(
-								function (x, y) {
-									return A2(_elm_lang$core$Basics_ops['++'], x, y);
-								}),
-							{ctor: '[]'},
-							A2(_elm_lang$core$List$map, subsSelector, mxNodes))));
-				return _elm_lang$core$List$concat(
-					{
-						ctor: '::',
-						_0: {
-							ctor: '::',
-							_0: {
-								name: _p19.name,
-								properties: _gdotdesign$elm_ui$Ui_Css$properties(
-									_gdotdesign$elm_ui$Ui_Css$SelectorNode(
-										{name: _p19.name, nodes: mxNodes}))
-							},
-							_1: {ctor: '[]'}
-						},
-						_1: {
-							ctor: '::',
-							_0: otherSelectors,
-							_1: {
-								ctor: '::',
-								_0: selectors,
-								_1: {ctor: '[]'}
-							}
-						}
-					});
-		}
-	});
-var _gdotdesign$elm_ui$Ui_Css$resolve = function (nodes) {
-	var flattened = A3(
-		_elm_lang$core$List$foldr,
-		F2(
-			function (x, y) {
-				return A2(_elm_lang$core$Basics_ops['++'], x, y);
-			}),
-		{ctor: '[]'},
-		A2(
-			_elm_lang$core$List$map,
-			_gdotdesign$elm_ui$Ui_Css$flatten(
-				{ctor: '[]'}),
-			nodes));
-	var keyframes = _gdotdesign$elm_ui$Ui_Css$getKeyFrames(nodes);
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		keyframes,
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			'\n\n',
-			_gdotdesign$elm_ui$Ui_Css$render(flattened)));
-};
-var _gdotdesign$elm_ui$Ui_Css$embed = function (nodes) {
-	return A3(
-		_elm_lang$html$Html$node,
-		'style',
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text(
-				_gdotdesign$elm_ui$Ui_Css$resolve(nodes)),
-			_1: {ctor: '[]'}
-		});
-};
-
-var _gdotdesign$elm_ui$Ui_Css_Properties$transition = function (transitions) {
-	var render = function (item) {
-		return A2(
-			_elm_lang$core$String$join,
-			' ',
-			{
-				ctor: '::',
-				_0: item.property,
-				_1: {
-					ctor: '::',
-					_0: item.duration,
-					_1: {
-						ctor: '::',
-						_0: item.delay,
-						_1: {
-							ctor: '::',
-							_0: item.easing,
-							_1: {ctor: '[]'}
-						}
-					}
-				}
-			});
-	};
-	var value = A2(
-		_elm_lang$core$String$join,
-		', ',
-		A2(_elm_lang$core$List$map, render, transitions));
-	return A2(_gdotdesign$elm_ui$Ui_Css$property, 'transition', value);
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$animation = function (animations) {
-	var render = function (item) {
-		return A2(
-			_elm_lang$core$String$join,
-			' ',
-			{
-				ctor: '::',
-				_0: item.name,
-				_1: {
-					ctor: '::',
-					_0: item.duration,
-					_1: {
-						ctor: '::',
-						_0: item.easing,
-						_1: {
-							ctor: '::',
-							_0: item.delay,
-							_1: {
-								ctor: '::',
-								_0: item.iterationCount,
-								_1: {
-									ctor: '::',
-									_0: item.direction,
-									_1: {
-										ctor: '::',
-										_0: item.fillMode,
-										_1: {
-											ctor: '::',
-											_0: item.playState,
-											_1: {ctor: '[]'}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			});
-	};
-	var value = A2(
-		_elm_lang$core$String$join,
-		', ',
-		A2(_elm_lang$core$List$map, render, animations));
-	return A2(_gdotdesign$elm_ui$Ui_Css$property, 'animation', value);
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$boxShadow = function (shadows) {
-	var render = function (item) {
-		return A2(
-			_elm_lang$core$String$join,
-			' ',
-			{
-				ctor: '::',
-				_0: item.x,
-				_1: {
-					ctor: '::',
-					_0: item.y,
-					_1: {
-						ctor: '::',
-						_0: item.blur,
-						_1: {
-							ctor: '::',
-							_0: item.spread,
-							_1: {
-								ctor: '::',
-								_0: item.color,
-								_1: {
-									ctor: '::',
-									_0: item.inset ? 'inset' : '',
-									_1: {ctor: '[]'}
-								}
-							}
-						}
-					}
-				}
-			});
-	};
-	var value = A2(
-		_elm_lang$core$String$join,
-		', ',
-		A2(_elm_lang$core$List$map, render, shadows));
-	return A2(_gdotdesign$elm_ui$Ui_Css$property, 'box-shadow', value);
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$opacity = function (value) {
-	return A2(
-		_gdotdesign$elm_ui$Ui_Css$property,
-		'opacity',
-		_elm_lang$core$Basics$toString(value));
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$transform = function (transforms) {
-	var render = function (item) {
-		var _p0 = item;
-		switch (_p0.ctor) {
-			case 'Scale':
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					'scale(',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(_p0._0),
-						')'));
-			case 'Rotate':
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					'rotate(',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(_p0._0),
-						'deg)'));
-			case 'Translate':
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					'translate(',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_p0._0,
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							',',
-							A2(_elm_lang$core$Basics_ops['++'], _p0._1, ')'))));
-			case 'TranslateX':
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					'translateX(',
-					A2(_elm_lang$core$Basics_ops['++'], _p0._0, ')'));
-			case 'TranslateY':
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					'translateY(',
-					A2(_elm_lang$core$Basics_ops['++'], _p0._0, ')'));
-			default:
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					'translate3d(',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_p0._0,
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							',',
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								_p0._1,
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									',',
-									A2(_elm_lang$core$Basics_ops['++'], _p0._2, ')'))))));
-		}
-	};
-	var value = A2(
-		_elm_lang$core$String$join,
-		' ',
-		A2(_elm_lang$core$List$map, render, transforms));
-	return A2(_gdotdesign$elm_ui$Ui_Css$property, 'transform', value);
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$transformOrigin = F2(
-	function (top, left) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Css$property,
-			'transform-origin',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				top,
-				A2(_elm_lang$core$Basics_ops['++'], ' ', left)));
-	});
-var _gdotdesign$elm_ui$Ui_Css_Properties$userSelect = function (value) {
-	return _gdotdesign$elm_ui$Ui_Css$mixin(
-		{
-			ctor: '::',
-			_0: A2(_gdotdesign$elm_ui$Ui_Css$property, '-webkit-user-select', value),
-			_1: {
-				ctor: '::',
-				_0: A2(_gdotdesign$elm_ui$Ui_Css$property, '-moz-user-select', value),
-				_1: {
-					ctor: '::',
-					_0: A2(_gdotdesign$elm_ui$Ui_Css$property, '-ms-user-select', value),
-					_1: {
-						ctor: '::',
-						_0: A2(_gdotdesign$elm_ui$Ui_Css$property, 'user-select', value),
-						_1: {ctor: '[]'}
-					}
-				}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$maxWidth = _gdotdesign$elm_ui$Ui_Css$property('max-width');
-var _gdotdesign$elm_ui$Ui_Css_Properties$maxHeight = _gdotdesign$elm_ui$Ui_Css$property('max-height');
-var _gdotdesign$elm_ui$Ui_Css_Properties$minHeight = _gdotdesign$elm_ui$Ui_Css$property('min-height');
-var _gdotdesign$elm_ui$Ui_Css_Properties$minWidth = _gdotdesign$elm_ui$Ui_Css$property('min-width');
-var _gdotdesign$elm_ui$Ui_Css_Properties$width = _gdotdesign$elm_ui$Ui_Css$property('width');
-var _gdotdesign$elm_ui$Ui_Css_Properties$height = _gdotdesign$elm_ui$Ui_Css$property('height');
-var _gdotdesign$elm_ui$Ui_Css_Properties$right = _gdotdesign$elm_ui$Ui_Css$property('right');
-var _gdotdesign$elm_ui$Ui_Css_Properties$bottom = _gdotdesign$elm_ui$Ui_Css$property('bottom');
-var _gdotdesign$elm_ui$Ui_Css_Properties$top = _gdotdesign$elm_ui$Ui_Css$property('top');
-var _gdotdesign$elm_ui$Ui_Css_Properties$left = _gdotdesign$elm_ui$Ui_Css$property('left');
-var _gdotdesign$elm_ui$Ui_Css_Properties$whiteSpace = _gdotdesign$elm_ui$Ui_Css$property('white-space');
-var _gdotdesign$elm_ui$Ui_Css_Properties$textOverflow = _gdotdesign$elm_ui$Ui_Css$property('text-overflow');
-var _gdotdesign$elm_ui$Ui_Css_Properties$pointerEvents = _gdotdesign$elm_ui$Ui_Css$property('pointer-events');
-var _gdotdesign$elm_ui$Ui_Css_Properties$textAlign = _gdotdesign$elm_ui$Ui_Css$property('text-align');
-var _gdotdesign$elm_ui$Ui_Css_Properties$justifyContent = _gdotdesign$elm_ui$Ui_Css$property('justify-content');
-var _gdotdesign$elm_ui$Ui_Css_Properties$alignItems = _gdotdesign$elm_ui$Ui_Css$property('align-items');
-var _gdotdesign$elm_ui$Ui_Css_Properties$display = _gdotdesign$elm_ui$Ui_Css$property('display');
-var _gdotdesign$elm_ui$Ui_Css_Properties$position = _gdotdesign$elm_ui$Ui_Css$property('position');
-var _gdotdesign$elm_ui$Ui_Css_Properties$overflowY = _gdotdesign$elm_ui$Ui_Css$property('overflow-y');
-var _gdotdesign$elm_ui$Ui_Css_Properties$overflow = _gdotdesign$elm_ui$Ui_Css$property('overflow');
-var _gdotdesign$elm_ui$Ui_Css_Properties$color = _gdotdesign$elm_ui$Ui_Css$property('color');
-var _gdotdesign$elm_ui$Ui_Css_Properties$zIndex = function (value) {
-	return A2(
-		_gdotdesign$elm_ui$Ui_Css$property,
-		'z-index',
-		_elm_lang$core$Basics$toString(value));
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$fontFamily = _gdotdesign$elm_ui$Ui_Css$property('font-family');
-var _gdotdesign$elm_ui$Ui_Css_Properties$marginRight = _gdotdesign$elm_ui$Ui_Css$property('margin-right');
-var _gdotdesign$elm_ui$Ui_Css_Properties$marginLeft = _gdotdesign$elm_ui$Ui_Css$property('margin-left');
-var _gdotdesign$elm_ui$Ui_Css_Properties$marginBottom = _gdotdesign$elm_ui$Ui_Css$property('margin-bottom');
-var _gdotdesign$elm_ui$Ui_Css_Properties$marginTop = _gdotdesign$elm_ui$Ui_Css$property('margin-top');
-var _gdotdesign$elm_ui$Ui_Css_Properties$margin = _gdotdesign$elm_ui$Ui_Css$property('margin');
-var _gdotdesign$elm_ui$Ui_Css_Properties$paddingRight = _gdotdesign$elm_ui$Ui_Css$property('padding-right');
-var _gdotdesign$elm_ui$Ui_Css_Properties$paddingTop = _gdotdesign$elm_ui$Ui_Css$property('padding-top');
-var _gdotdesign$elm_ui$Ui_Css_Properties$paddingLeft = _gdotdesign$elm_ui$Ui_Css$property('padding-left');
-var _gdotdesign$elm_ui$Ui_Css_Properties$padding = _gdotdesign$elm_ui$Ui_Css$property('padding');
-var _gdotdesign$elm_ui$Ui_Css_Properties$contentString = function (value) {
-	return A2(
-		_gdotdesign$elm_ui$Ui_Css$property,
-		'content',
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			'\"',
-			A2(_elm_lang$core$Basics_ops['++'], value, '\"')));
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$content = function (value) {
-	return A2(_gdotdesign$elm_ui$Ui_Css$property, 'content', value);
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$resize = _gdotdesign$elm_ui$Ui_Css$property('resize');
-var _gdotdesign$elm_ui$Ui_Css_Properties$visibility = _gdotdesign$elm_ui$Ui_Css$property('visibility');
-var _gdotdesign$elm_ui$Ui_Css_Properties$cursor = _gdotdesign$elm_ui$Ui_Css$property('cursor');
-var _gdotdesign$elm_ui$Ui_Css_Properties$fontStyle = _gdotdesign$elm_ui$Ui_Css$property('font-style');
-var _gdotdesign$elm_ui$Ui_Css_Properties$fontSize = _gdotdesign$elm_ui$Ui_Css$property('font-size');
-var _gdotdesign$elm_ui$Ui_Css_Properties$fontWeight = _gdotdesign$elm_ui$Ui_Css$property('font-weight');
-var _gdotdesign$elm_ui$Ui_Css_Properties$borderRadius = _gdotdesign$elm_ui$Ui_Css$property('border-radius');
-var _gdotdesign$elm_ui$Ui_Css_Properties$borderColor = _gdotdesign$elm_ui$Ui_Css$property('border-color');
-var _gdotdesign$elm_ui$Ui_Css_Properties$borderTopColor = _gdotdesign$elm_ui$Ui_Css$property('border-top-color');
-var _gdotdesign$elm_ui$Ui_Css_Properties$borderRightColor = _gdotdesign$elm_ui$Ui_Css$property('border-right-color');
-var _gdotdesign$elm_ui$Ui_Css_Properties$borderRight = _gdotdesign$elm_ui$Ui_Css$property('border-right');
-var _gdotdesign$elm_ui$Ui_Css_Properties$borderTop = _gdotdesign$elm_ui$Ui_Css$property('border-top');
-var _gdotdesign$elm_ui$Ui_Css_Properties$borderBottom = _gdotdesign$elm_ui$Ui_Css$property('border-bottom');
-var _gdotdesign$elm_ui$Ui_Css_Properties$borderLeft = _gdotdesign$elm_ui$Ui_Css$property('border-left');
-var _gdotdesign$elm_ui$Ui_Css_Properties$borderStyle = _gdotdesign$elm_ui$Ui_Css$property('border-style');
-var _gdotdesign$elm_ui$Ui_Css_Properties$borderWidth = _gdotdesign$elm_ui$Ui_Css$property('border-width');
-var _gdotdesign$elm_ui$Ui_Css_Properties$border = _gdotdesign$elm_ui$Ui_Css$property('border');
-var _gdotdesign$elm_ui$Ui_Css_Properties$important = '!important';
-var _gdotdesign$elm_ui$Ui_Css_Properties$outline = _gdotdesign$elm_ui$Ui_Css$property('outline');
-var _gdotdesign$elm_ui$Ui_Css_Properties$boxSizing = _gdotdesign$elm_ui$Ui_Css$property('box-sizing');
-var _gdotdesign$elm_ui$Ui_Css_Properties$backgroundPositionX = _gdotdesign$elm_ui$Ui_Css$property('background-position-x');
-var _gdotdesign$elm_ui$Ui_Css_Properties$backgroundClip = _gdotdesign$elm_ui$Ui_Css$property('background-clip');
-var _gdotdesign$elm_ui$Ui_Css_Properties$background = _gdotdesign$elm_ui$Ui_Css$property('background');
-var _gdotdesign$elm_ui$Ui_Css_Properties$backgroundSize = _gdotdesign$elm_ui$Ui_Css$property('background-size');
-var _gdotdesign$elm_ui$Ui_Css_Properties$backgroundColor = _gdotdesign$elm_ui$Ui_Css$property('background-color');
-var _gdotdesign$elm_ui$Ui_Css_Properties$flexDirection = _gdotdesign$elm_ui$Ui_Css$property('flex-direction');
-var _gdotdesign$elm_ui$Ui_Css_Properties$lineHeight = _gdotdesign$elm_ui$Ui_Css$property('line-height');
-var _gdotdesign$elm_ui$Ui_Css_Properties$alignSelf = _gdotdesign$elm_ui$Ui_Css$property('align-self');
-var _gdotdesign$elm_ui$Ui_Css_Properties$flexWrap = _gdotdesign$elm_ui$Ui_Css$property('flex-wrap');
-var _gdotdesign$elm_ui$Ui_Css_Properties$flex_ = _gdotdesign$elm_ui$Ui_Css$property('flex');
-var _gdotdesign$elm_ui$Ui_Css_Properties$fill = _gdotdesign$elm_ui$Ui_Css$property('fill');
-var _gdotdesign$elm_ui$Ui_Css_Properties$wordBreak = _gdotdesign$elm_ui$Ui_Css$property('word-break');
-var _gdotdesign$elm_ui$Ui_Css_Properties$wordWrap = _gdotdesign$elm_ui$Ui_Css$property('word-wrap');
-var _gdotdesign$elm_ui$Ui_Css_Properties$textDecoration = _gdotdesign$elm_ui$Ui_Css$property('text-decoration');
-var _gdotdesign$elm_ui$Ui_Css_Properties$textTransform = _gdotdesign$elm_ui$Ui_Css$property('text-transform');
-var _gdotdesign$elm_ui$Ui_Css_Properties$scroll = 'scroll';
-var _gdotdesign$elm_ui$Ui_Css_Properties$italic = 'italic';
-var _gdotdesign$elm_ui$Ui_Css_Properties$auto = 'auto';
-var _gdotdesign$elm_ui$Ui_Css_Properties$colResize = 'col-resize';
-var _gdotdesign$elm_ui$Ui_Css_Properties$rowResize = 'row-resize';
-var _gdotdesign$elm_ui$Ui_Css_Properties$bold = 'bold';
-var _gdotdesign$elm_ui$Ui_Css_Properties$breakWord = 'break-word';
-var _gdotdesign$elm_ui$Ui_Css_Properties$normal = 'normal';
-var _gdotdesign$elm_ui$Ui_Css_Properties$uppercase = 'uppercase';
-var _gdotdesign$elm_ui$Ui_Css_Properties$preWrap = 'pre-wrap';
-var _gdotdesign$elm_ui$Ui_Css_Properties$wrap = 'wrap';
-var _gdotdesign$elm_ui$Ui_Css_Properties$transparent = 'transparent';
-var _gdotdesign$elm_ui$Ui_Css_Properties$currentColor = 'currentColor';
-var _gdotdesign$elm_ui$Ui_Css_Properties$spaceAround = 'space-around';
-var _gdotdesign$elm_ui$Ui_Css_Properties$spaceBetween = 'space-between';
-var _gdotdesign$elm_ui$Ui_Css_Properties$flexEnd = 'flex-end';
-var _gdotdesign$elm_ui$Ui_Css_Properties$flexStart = 'flex-start';
-var _gdotdesign$elm_ui$Ui_Css_Properties$row = 'row';
-var _gdotdesign$elm_ui$Ui_Css_Properties$column = 'column';
-var _gdotdesign$elm_ui$Ui_Css_Properties$contentBox = 'content-box';
-var _gdotdesign$elm_ui$Ui_Css_Properties$borderBox = 'border-box';
-var _gdotdesign$elm_ui$Ui_Css_Properties$pointer = 'pointer';
-var _gdotdesign$elm_ui$Ui_Css_Properties$block = 'block';
-var _gdotdesign$elm_ui$Ui_Css_Properties$stretch = 'stretch';
-var _gdotdesign$elm_ui$Ui_Css_Properties$flex = 'flex';
-var _gdotdesign$elm_ui$Ui_Css_Properties$inlineBlock = 'inline-block';
-var _gdotdesign$elm_ui$Ui_Css_Properties$inlineFlex = 'inline-flex';
-var _gdotdesign$elm_ui$Ui_Css_Properties$dashed = 'dashed';
-var _gdotdesign$elm_ui$Ui_Css_Properties$solid = 'solid';
-var _gdotdesign$elm_ui$Ui_Css_Properties$center = 'center';
-var _gdotdesign$elm_ui$Ui_Css_Properties$nowrap = 'nowrap';
-var _gdotdesign$elm_ui$Ui_Css_Properties$ellipsis = 'ellipsis';
-var _gdotdesign$elm_ui$Ui_Css_Properties$visible = 'visible';
-var _gdotdesign$elm_ui$Ui_Css_Properties$none = 'none';
-var _gdotdesign$elm_ui$Ui_Css_Properties$hidden = 'hidden';
-var _gdotdesign$elm_ui$Ui_Css_Properties$fixed = 'fixed';
-var _gdotdesign$elm_ui$Ui_Css_Properties$relative = 'relative';
-var _gdotdesign$elm_ui$Ui_Css_Properties$absolute = 'absolute';
-var _gdotdesign$elm_ui$Ui_Css_Properties$inherit = 'inherit';
-var _gdotdesign$elm_ui$Ui_Css_Properties$em = function (value) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$core$Basics$toString(value),
-		'em');
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$vw = function (value) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$core$Basics$toString(value),
-		'vw');
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$vh = function (value) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$core$Basics$toString(value),
-		'vh');
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$px = function (value) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$core$Basics$toString(value),
-		'px');
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$pct = function (value) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$core$Basics$toString(value),
-		'%');
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$ms = function (value) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$core$Basics$toString(value),
-		'ms');
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties_ops = _gdotdesign$elm_ui$Ui_Css_Properties_ops || {};
-_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'] = F2(
-	function (a, b) {
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			a,
-			A2(_elm_lang$core$Basics_ops['++'], ' ', b));
-	});
-var _gdotdesign$elm_ui$Ui_Css_Properties$zero = '0';
-var _gdotdesign$elm_ui$Ui_Css_Properties$Transition = F4(
-	function (a, b, c, d) {
-		return {easing: a, duration: b, property: c, delay: d};
-	});
-var _gdotdesign$elm_ui$Ui_Css_Properties$BoxShadow = F6(
-	function (a, b, c, d, e, f) {
-		return {x: a, y: b, blur: c, spread: d, color: e, inset: f};
-	});
-var _gdotdesign$elm_ui$Ui_Css_Properties$Animation = F8(
-	function (a, b, c, d, e, f, g, h) {
-		return {name: a, duration: b, easing: c, delay: d, iterationCount: e, direction: f, fillMode: g, playState: h};
-	});
-var _gdotdesign$elm_ui$Ui_Css_Properties$Translate3D = F3(
-	function (a, b, c) {
-		return {ctor: 'Translate3D', _0: a, _1: b, _2: c};
-	});
-var _gdotdesign$elm_ui$Ui_Css_Properties$translate3d = _gdotdesign$elm_ui$Ui_Css_Properties$Translate3D;
-var _gdotdesign$elm_ui$Ui_Css_Properties$Translate = F2(
-	function (a, b) {
-		return {ctor: 'Translate', _0: a, _1: b};
-	});
-var _gdotdesign$elm_ui$Ui_Css_Properties$translate = _gdotdesign$elm_ui$Ui_Css_Properties$Translate;
-var _gdotdesign$elm_ui$Ui_Css_Properties$TranslateY = function (a) {
-	return {ctor: 'TranslateY', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$translateY = _gdotdesign$elm_ui$Ui_Css_Properties$TranslateY;
-var _gdotdesign$elm_ui$Ui_Css_Properties$TranslateX = function (a) {
-	return {ctor: 'TranslateX', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$translateX = _gdotdesign$elm_ui$Ui_Css_Properties$TranslateX;
-var _gdotdesign$elm_ui$Ui_Css_Properties$Rotate = function (a) {
-	return {ctor: 'Rotate', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$rotate = _gdotdesign$elm_ui$Ui_Css_Properties$Rotate;
-var _gdotdesign$elm_ui$Ui_Css_Properties$Scale = function (a) {
-	return {ctor: 'Scale', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Css_Properties$scale = _gdotdesign$elm_ui$Ui_Css_Properties$Scale;
-
-var _gdotdesign$elm_ui$Ui_Styles_Theme$default = {
-	fontFamily: '-apple-system, system-ui, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif',
-	borderRadius: _gdotdesign$elm_ui$Ui_Css_Properties$px(2),
-	focusShadowsIdle: {
-		ctor: '::',
-		_0: {
-			x: '0',
-			y: '0',
-			blur: '0',
-			spread: _gdotdesign$elm_ui$Ui_Css_Properties$px(1),
-			color: 'transparent',
-			inset: true
-		},
-		_1: {
-			ctor: '::',
-			_0: {
-				x: '0',
-				y: '0',
-				blur: _gdotdesign$elm_ui$Ui_Css_Properties$px(4),
-				spread: '0',
-				color: 'transparent',
-				inset: false
-			},
-			_1: {
-				ctor: '::',
-				_0: {
-					x: '0',
-					y: '0',
-					blur: _gdotdesign$elm_ui$Ui_Css_Properties$px(4),
-					spread: '0',
-					color: 'transparent',
-					inset: true
-				},
-				_1: {ctor: '[]'}
-			}
-		}
-	},
-	focusShadows: {
-		ctor: '::',
-		_0: {
-			x: '0',
-			y: '0',
-			blur: '0',
-			spread: _gdotdesign$elm_ui$Ui_Css_Properties$px(1),
-			color: '#00C0FF',
-			inset: true
-		},
-		_1: {
-			ctor: '::',
-			_0: {
-				x: '0',
-				y: '0',
-				blur: _gdotdesign$elm_ui$Ui_Css_Properties$px(4),
-				spread: '0',
-				color: 'rgba(0,192,255,.5)',
-				inset: false
-			},
-			_1: {
-				ctor: '::',
-				_0: {
-					x: '0',
-					y: '0',
-					blur: _gdotdesign$elm_ui$Ui_Css_Properties$px(4),
-					spread: '0',
-					color: 'rgba(0,192,255,.5)',
-					inset: true
-				},
-				_1: {ctor: '[]'}
-			}
-		}
-	},
-	colors: {
-		background: {color: '#F5F5F5', bw: '#707070'},
-		disabled: {color: '#d7d7d7', bw: '#9a9a9a'},
-		disabledSecondary: {color: '#a9a9a9', bw: '#cecece'},
-		secondary: {color: '#5D7889', bw: '#FFF'},
-		warning: {color: '#FF9730 ', bw: '#FFF'},
-		primary: {color: '#158DD8', bw: '#FFF'},
-		success: {color: '#4DC151', bw: '#FFF'},
-		gray: {color: '#E9E9E9', bw: '#616161'},
-		inputSecondary: {color: '#f3f3f3', bw: '#616161'},
-		input: {color: '#FDFDFD', bw: '#707070'},
-		danger: {color: '#E04141', bw: '#FFF'},
-		focus: {color: '#00C0FF', bw: '#FFF'},
-		borderDisabled: '#C7C7C7',
-		border: '#DDD'
-	},
-	zIndexes: {notifications: 2000, dropdown: 1000, modal: 100, header: 50, fab: 90},
-	chooser: {
-		hoverColors: {background: '#f0f0f0', text: '#707070'},
-		selectedColors: {background: '#158DD8', text: '#FFF'},
-		selectedHoverColors: {background: '#1f97e2', text: '#FFF'},
-		intendedColors: {background: '#EEE', text: '#707070'},
-		intendedHoverColors: {background: '#DDD', text: '#707070'},
-		selectedIntendedColors: {background: '#1070ac', text: '#FFF'},
-		selectedIntendedHoverColors: {background: '#0c5989', text: '#FFF'}
-	},
-	breadcrumbs: {background: '#f1f1f1', borderColor: '#d2d2d2', text: '#4a4a4a'},
-	scrollbar: {thumbColor: '#d0d0d0', thumbHoverColor: '#b8b8b8', trackColor: '#e9e9e9'},
-	header: {
-		colors: {backgroundBottom: '#158DD8', backgroundTop: '#1692df', border: '#137fc2', text: '#FFF'}
-	}
-};
-var _gdotdesign$elm_ui$Ui_Styles_Theme$Theme = function (a) {
-	return function (b) {
-		return function (c) {
-			return function (d) {
-				return function (e) {
-					return function (f) {
-						return function (g) {
-							return function (h) {
-								return function (i) {
-									return function (j) {
-										return {borderRadius: a, header: b, colors: c, fontFamily: d, focusShadows: e, focusShadowsIdle: f, zIndexes: g, breadcrumbs: h, chooser: i, scrollbar: j};
-									};
-								};
-							};
-						};
-					};
-				};
-			};
-		};
-	};
-};
-
-var _gdotdesign$elm_ui$Ui_Styles_Mixins$readonlyCursor = A4(
-	_elm_lang$core$Regex$replace,
-	_elm_lang$core$Regex$All,
-	_elm_lang$core$Regex$regex('\\n\\s*'),
-	function (_p0) {
-		return '';
-	},
-	'\n  <svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1\' viewBox=\'0 0 52.548828 24.244142\' width=\'52.549\' height=\'24.244\'>\n    <path d=\'M26.402 0c-.61-.007-1.22.045-1.83.154-1.108.198-2.177.61-3.177 1.122-1.566.8-2.996 1.903-4.242 3.14-.23.228-.46.462-.67.71-.278.33-.278.723 0 1.054.64.756 1.398 1.428 2.17 2.043 1.662 1.325 3.563 2.433 5.66 2.88 1.214.256 2.435.267 3.654.05 1.108-.2 2.177-.612 3.178-1.123 1.566-.8 2.995-1.903 4.24-3.14.232-.228.46-.462.67-.71.113-.112.185-.257.21-.41v-.004l.003-.02.002-.02c0-.003 0-.007.002-.01V5.69c.002-.012.002-.024.002-.037v-.037c0-.01-.002-.017-.003-.025v-.01c0-.007 0-.013-.002-.02l-.003-.02v-.002c-.025-.155-.098-.3-.21-.412-.637-.756-1.396-1.43-2.168-2.043C32.225 1.758 30.324.65 28.225.203 27.62.076 27.01.01 26.402.002zm-.128 1.805c2.126 0 3.848 1.723 3.848 3.848S28.4 9.5 26.274 9.5c-2.125 0-3.848-1.722-3.848-3.847s1.723-3.848 3.848-3.848zm0 2.574A1.274 1.274 0 0 0 25 5.652a1.274 1.274 0 0 0 1.274 1.274 1.274 1.274 0 0 0 1.274-1.274 1.274 1.274 0 0 0-1.274-1.274z\'/>\n    <g style=\'line-height:125%\' font-size=\'10\' font-family=\'sans-serif\' letter-spacing=\'0\' word-spacing=\'0\'>\n      <path d=\'M3.457 20.685q.317.107.615.46.303.35.606.965l1 1.993H4.62l-.93-1.87q-.363-.733-.705-.972-.337-.24-.922-.24H.987v3.083H0v-7.29h2.227q1.25 0 1.865.522t.615 1.577q0 .69-.322 1.143-.318.454-.928.63zm-2.47-3.062v2.588h1.24q.712 0 1.074-.326.367-.332.367-.972 0-.64-.366-.962-.36-.327-1.073-.327H.987zM6.953 16.813h4.61v.83H7.938V19.8h3.47v.83H7.94v2.642h3.71v.83H6.953v-7.29zM15.718 17.784l-1.338 3.628h2.68l-1.342-3.628zm-.557-.97h1.12l2.778 7.29h-1.026l-.664-1.872h-3.286l-.664 1.87h-1.04l2.783-7.29zM21.104 17.623v5.67h1.19q1.51 0 2.208-.685.703-.683.703-2.158 0-1.465-.703-2.143-.698-.684-2.207-.684h-1.19zm-.987-.81h2.027q2.12 0 3.11.883.99.88.99 2.754 0 1.885-.995 2.77-.997.883-3.106.883h-2.027v-7.29zM30.77 17.48q-1.073 0-1.707.802-.63.8-.63 2.183 0 1.377.63 2.178.634.8 1.708.8 1.076 0 1.7-.8.63-.8.63-2.178 0-1.382-.63-2.183-.624-.8-1.7-.8zm0-.8q1.535 0 2.453 1.03.918 1.026.918 2.755 0 1.723-.917 2.754-.918 1.024-2.452 1.024-1.537 0-2.46-1.025-.917-1.027-.917-2.755 0-1.73.918-2.754.923-1.03 2.46-1.03zM35.684 16.813h1.328l3.232 6.098v-6.097h.957v7.29h-1.327l-3.232-6.1v6.1h-.956v-7.29zM43.164 16.813h.986v6.46h3.55v.83h-4.536v-7.29zM46.4 16.813h1.06l2.022 2.998 2.007-2.997h1.06l-2.58 3.818v3.473h-.99V20.63l-2.58-3.817z\'/>\n    </g>\n  </svg>\n  ');
-var _gdotdesign$elm_ui$Ui_Styles_Mixins$readonly = _gdotdesign$elm_ui$Ui_Css$mixin(
-	{
-		ctor: '::',
-		_0: _gdotdesign$elm_ui$Ui_Css_Properties$cursor(
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				'url(\"data:image/svg+xml;utf8,',
-				A2(_elm_lang$core$Basics_ops['++'], _gdotdesign$elm_ui$Ui_Styles_Mixins$readonlyCursor, '\") 26 12, auto'))),
-		_1: {ctor: '[]'}
-	});
-var _gdotdesign$elm_ui$Ui_Styles_Mixins$disabledCursor = A4(
-	_elm_lang$core$Regex$replace,
-	_elm_lang$core$Regex$All,
-	_elm_lang$core$Regex$regex('\\n\\s*'),
-	function (_p1) {
-		return '';
-	},
-	'\n  <svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 48.901367 31.675499\' width=\'48.901\' height=\'31.675\'>\n    <path d=\'M26.05.127C25.53.043 24.996 0 24.45 0c-5.52 0-10 4.478-10 10s4.48 10 10 10c.546 0 1.08-.044 1.6-.128 4.763-.766 8.4-4.895 8.4-9.872 0-4.978-3.637-9.107-8.4-9.873zM16.778 10c0-4.237 3.436-7.672 7.673-7.672.587 0 1.158.066 1.707.19.926.21 1.788.59 2.555 1.1l-2.555 2.556-8.09 8.085c-.812-1.22-1.29-2.685-1.29-4.26zm9.38 7.48c-.55.126-1.12.19-1.708.19-1.576 0-3.04-.474-4.26-1.29l5.966-5.966L30.83 5.74c.817 1.218 1.29 2.683 1.29 4.26.002 3.65-2.548 6.704-5.963 7.48z\' clip-rule=\'evenodd\' fill-rule=\'evenodd\'/>\n    <g style=\'line-height:125%\' font-size=\'10\' font-family=\'sans-serif\' letter-spacing=\'0\' word-spacing=\'0\'>\n      <path d=\'M.986 25.054v5.67h1.192q1.51 0 2.207-.684.703-.684.703-2.158 0-1.465-.703-2.144-.698-.684-2.207-.684H.986zM0 24.244h2.026q2.12 0 3.11.884.992.88.992 2.754 0 1.884-.996 2.768-.996.884-3.106.884H0v-7.29zM7.695 24.244h.987v7.29h-.987v-7.29zM15.015 24.483v.962q-.562-.27-1.06-.4-.498-.132-.962-.132-.806 0-1.245.312-.435.313-.435.89 0 .482.29.73.292.246 1.102.397l.596.122q1.104.21 1.627.742.527.528.527 1.416 0 1.06-.713 1.607-.707.545-2.08.545-.516 0-1.102-.117-.58-.117-1.206-.346v-1.016q.6.337 1.176.508.576.17 1.133.17.846 0 1.305-.33.46-.333.46-.95 0-.536-.333-.838-.327-.303-1.08-.455l-.6-.116q-1.103-.22-1.597-.688-.493-.47-.493-1.304 0-.967.68-1.523.683-.558 1.88-.558.512 0 1.044.093t1.09.278zM19.624 25.216l-1.338 3.627h2.68l-1.342-3.627zm-.557-.972h1.12l2.777 7.29h-1.026l-.664-1.87h-3.286l-.664 1.87h-1.04l2.783-7.29zM25.01 28.052v2.67h1.582q.796 0 1.177-.326.384-.332.384-1.01 0-.684-.385-1.006-.382-.328-1.178-.328H25.01zm0-2.998v2.198h1.46q.722 0 1.074-.27.356-.272.356-.83 0-.55-.356-.824-.352-.274-1.074-.274h-1.46zm-.987-.81h2.52q1.128 0 1.738.47.612.467.612 1.332 0 .67-.313 1.064-.313.396-.92.493.73.156 1.13.655.404.493.404 1.235 0 .976-.664 1.51-.664.53-1.89.53h-2.617v-7.29zM30.88 24.244h.985v6.46h3.55v.83H30.88v-7.29zM36.445 24.244h4.61v.83h-3.623v2.158h3.47v.83h-3.47v2.642h3.71v.83h-4.697v-7.29zM43.76 25.054v5.67h1.19q1.51 0 2.208-.684.703-.684.703-2.158 0-1.465-.702-2.144-.698-.684-2.207-.684h-1.19zm-.987-.81H44.8q2.12 0 3.11.884.99.88.99 2.754 0 1.884-.995 2.768-.996.884-3.105.884h-2.027v-7.29z\'/>\n    </g>\n  </svg>\n  ');
-var _gdotdesign$elm_ui$Ui_Styles_Mixins$disabled = _gdotdesign$elm_ui$Ui_Css$mixin(
-	{
-		ctor: '::',
-		_0: _gdotdesign$elm_ui$Ui_Css_Properties$cursor(
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				'url(\"data:image/svg+xml;utf8,',
-				A2(_elm_lang$core$Basics_ops['++'], _gdotdesign$elm_ui$Ui_Styles_Mixins$disabledCursor, '\") 24 15, auto !important'))),
-		_1: {
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui_Css_Properties$userSelect(_gdotdesign$elm_ui$Ui_Css_Properties$none),
-			_1: {ctor: '[]'}
-		}
-	});
-var _gdotdesign$elm_ui$Ui_Styles_Mixins$disabledColors = function (theme) {
-	return _gdotdesign$elm_ui$Ui_Css$mixin(
-		{
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui_Css_Properties$backgroundColor(theme.colors.disabled.color),
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.colors.disabled.bw),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Styles_Mixins$ellipsis = _gdotdesign$elm_ui$Ui_Css$mixin(
-	{
-		ctor: '::',
-		_0: _gdotdesign$elm_ui$Ui_Css_Properties$textOverflow(_gdotdesign$elm_ui$Ui_Css_Properties$ellipsis),
-		_1: {
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui_Css_Properties$whiteSpace(_gdotdesign$elm_ui$Ui_Css_Properties$nowrap),
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Css_Properties$overflow(_gdotdesign$elm_ui$Ui_Css_Properties$hidden),
-				_1: {ctor: '[]'}
-			}
-		}
-	});
-var _gdotdesign$elm_ui$Ui_Styles_Mixins$focused = function (theme) {
-	return _gdotdesign$elm_ui$Ui_Css$mixin(
-		{
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui_Css_Properties$transition(
-				{
-					ctor: '::',
-					_0: {
-						property: 'box-shadow',
-						duration: _gdotdesign$elm_ui$Ui_Css_Properties$ms(200),
-						easing: 'linear',
-						delay: _gdotdesign$elm_ui$Ui_Css_Properties$ms(0)
-					},
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Css_Properties$boxShadow(theme.focusShadows),
-				_1: {
-					ctor: '::',
-					_0: _gdotdesign$elm_ui$Ui_Css_Properties$outline(_gdotdesign$elm_ui$Ui_Css_Properties$none),
-					_1: {ctor: '[]'}
-				}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Styles_Mixins$focusedIdle = function (theme) {
-	return _gdotdesign$elm_ui$Ui_Css$mixin(
-		{
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui_Css_Properties$transition(
-				{
-					ctor: '::',
-					_0: {
-						property: 'box-shadow',
-						duration: _gdotdesign$elm_ui$Ui_Css_Properties$ms(400),
-						easing: 'linear',
-						delay: _gdotdesign$elm_ui$Ui_Css_Properties$ms(0)
-					},
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Css_Properties$boxShadow(theme.focusShadowsIdle),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Styles_Mixins$defaults = _gdotdesign$elm_ui$Ui_Css$mixin(
-	{
-		ctor: '::',
-		_0: A2(_gdotdesign$elm_ui$Ui_Css$property, '-webkit-tap-highlight-color', 'rgba(0,0,0,0)'),
-		_1: {
-			ctor: '::',
-			_0: A2(_gdotdesign$elm_ui$Ui_Css$property, '-webkit-touch-callout', _gdotdesign$elm_ui$Ui_Css_Properties$none),
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Css_Properties$boxSizing(_gdotdesign$elm_ui$Ui_Css_Properties$borderBox),
-				_1: {ctor: '[]'}
-			}
-		}
-	});
-var _gdotdesign$elm_ui$Ui_Styles_Mixins$placeholder = function (nodes) {
-	return _gdotdesign$elm_ui$Ui_Css$mixin(
-		{
-			ctor: '::',
-			_0: A2(
-				_gdotdesign$elm_ui$Ui_Css$selectors,
-				{
-					ctor: '::',
-					_0: '&::-webkit-input-placeholder',
-					_1: {
-						ctor: '::',
-						_0: '&::-moz-placeholder',
-						_1: {
-							ctor: '::',
-							_0: '&:-ms-input-placeholder',
-							_1: {
-								ctor: '::',
-								_0: '&:-moz-placeholder',
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				},
-				nodes),
-			_1: {ctor: '[]'}
-		});
-};
-
-var _gdotdesign$elm_ui$Ui_Styles$attributes = function (node) {
-	return _elm_lang$lazy$Lazy$lazy(
-		function (_p0) {
-			var _p1 = _p0;
-			var id = A2(
-				_Skinney$murmur3$Murmur3$hashString,
-				0,
-				_elm_lang$core$Basics$toString(node));
-			return {
-				value: _gdotdesign$elm_ui$Ui_Css$resolve(
-					{
-						ctor: '::',
-						_0: A2(
-							_gdotdesign$elm_ui$Ui_Css$selector,
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								'[style-id=\'',
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									_elm_lang$core$Basics$toString(id),
-									'\']')),
-							{
-								ctor: '::',
-								_0: node,
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					}),
-				id: id
-			};
-		});
-};
-var _gdotdesign$elm_ui$Ui_Styles$apply = function (style) {
-	return _elm_lang$lazy$Lazy$force(
-		A2(
-			_elm_lang$lazy$Lazy$map,
-			function (_p2) {
-				var _p3 = _p2;
-				var _p4 = _p3.id;
-				var styles = _elm_lang$core$Json_Encode$object(
-					{
-						ctor: '::',
-						_0: {
-							ctor: '_Tuple2',
-							_0: 'id',
-							_1: _elm_lang$core$Json_Encode$int(_p4)
-						},
-						_1: {
-							ctor: '::',
-							_0: {
-								ctor: '_Tuple2',
-								_0: 'value',
-								_1: _elm_lang$core$Json_Encode$string(_p3.value)
-							},
-							_1: {ctor: '[]'}
-						}
-					});
-				return {
-					ctor: '::',
-					_0: A2(_elm_lang$html$Html_Attributes$property, '__styles', styles),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html_Attributes$attribute,
-							'style-id',
-							_elm_lang$core$Basics$toString(_p4)),
-						_1: {ctor: '[]'}
-					}
-				};
-			},
-			style));
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Config$Config = F2(
-	function (a, b) {
-		return {i18n: a, format: b};
-	});
-
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayOfMonthWithSuffix = F2(
-	function (pad, day) {
-		var value = function () {
-			var _p0 = day;
-			switch (_p0) {
-				case 1:
-					return '1st';
-				case 21:
-					return '21st';
-				case 2:
-					return '2nd';
-				case 22:
-					return '22nd';
-				case 3:
-					return '3rd';
-				case 23:
-					return '23rd';
-				case 31:
-					return '31st';
-				default:
-					return A2(
-						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(day),
-						'th');
-			}
-		}();
-		return pad ? A3(
-			_elm_lang$core$String$padLeft,
-			4,
-			_elm_lang$core$Native_Utils.chr(' '),
-			value) : value;
-	});
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthName = function (month) {
-	var _p1 = month;
-	switch (_p1.ctor) {
-		case 'Jan':
-			return 'January';
-		case 'Feb':
-			return 'February';
-		case 'Mar':
-			return 'March';
-		case 'Apr':
-			return 'April';
-		case 'May':
-			return 'May';
-		case 'Jun':
-			return 'June';
-		case 'Jul':
-			return 'July';
-		case 'Aug':
-			return 'August';
-		case 'Sep':
-			return 'September';
-		case 'Oct':
-			return 'October';
-		case 'Nov':
-			return 'November';
-		default:
-			return 'December';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthShort = function (month) {
-	var _p2 = month;
-	switch (_p2.ctor) {
-		case 'Jan':
-			return 'Jan';
-		case 'Feb':
-			return 'Feb';
-		case 'Mar':
-			return 'Mar';
-		case 'Apr':
-			return 'Apr';
-		case 'May':
-			return 'May';
-		case 'Jun':
-			return 'Jun';
-		case 'Jul':
-			return 'Jul';
-		case 'Aug':
-			return 'Aug';
-		case 'Sep':
-			return 'Sep';
-		case 'Oct':
-			return 'Oct';
-		case 'Nov':
-			return 'Nov';
-		default:
-			return 'Dec';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayName = function (day) {
-	var _p3 = day;
-	switch (_p3.ctor) {
-		case 'Mon':
-			return 'Monday';
-		case 'Tue':
-			return 'Tuesday';
-		case 'Wed':
-			return 'Wednesday';
-		case 'Thu':
-			return 'Thursday';
-		case 'Fri':
-			return 'Friday';
-		case 'Sat':
-			return 'Saturday';
-		default:
-			return 'Sunday';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayShort = function (day) {
-	var _p4 = day;
-	switch (_p4.ctor) {
-		case 'Mon':
-			return 'Mon';
-		case 'Tue':
-			return 'Tue';
-		case 'Wed':
-			return 'Wed';
-		case 'Thu':
-			return 'Thu';
-		case 'Fri':
-			return 'Fri';
-		case 'Sat':
-			return 'Sat';
-		default:
-			return 'Sun';
-	}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Config_Config_en_au$config = {
-	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayOfMonthWithSuffix},
-	format: {date: '%-d/%m/%Y', longDate: '%A, %-d %B %Y', time: '%-I:%M %p', longTime: '%-I:%M:%S %p', dateTime: '%-d/%m/%Y %-I:%M %p', firstDayOfWeek: _elm_lang$core$Date$Mon}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config = {
-	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayOfMonthWithSuffix},
-	format: {date: '%-m/%-d/%Y', longDate: '%A, %B %d, %Y', time: '%-H:%M %p', longTime: '%-H:%M:%S %p', dateTime: '%-m/%-d/%Y %-I:%M %p', firstDayOfWeek: _elm_lang$core$Date$Sun}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Config_Config_en_gb$config = {
-	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayOfMonthWithSuffix},
-	format: {date: '%-d/%m/%Y', longDate: '%A, %-d %B %Y', time: '%-I:%M %p', longTime: '%-I:%M:%S %p', dateTime: '%-d/%m/%Y %-I:%M %p', firstDayOfWeek: _elm_lang$core$Date$Mon}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_fr_fr$dayOfMonthWithSuffix = F2(
-	function (pad, day) {
-		var value = function () {
-			var _p0 = day;
-			if (_p0 === 1) {
-				return '1er';
-			} else {
-				return _elm_lang$core$Basics$toString(day);
-			}
-		}();
-		return pad ? A3(
-			_elm_lang$core$String$padLeft,
-			3,
-			_elm_lang$core$Native_Utils.chr(' '),
-			value) : value;
-	});
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_fr_fr$monthName = function (month) {
-	var _p1 = month;
-	switch (_p1.ctor) {
-		case 'Jan':
-			return 'Janvier';
-		case 'Feb':
-			return 'Février';
-		case 'Mar':
-			return 'Mars';
-		case 'Apr':
-			return 'Avril';
-		case 'May':
-			return 'Mai';
-		case 'Jun':
-			return 'Juin';
-		case 'Jul':
-			return 'Juillet';
-		case 'Aug':
-			return 'Août';
-		case 'Sep':
-			return 'Septembre';
-		case 'Oct':
-			return 'Octobre';
-		case 'Nov':
-			return 'Novembre';
-		default:
-			return 'Décembre';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_fr_fr$monthShort = function (month) {
-	var _p2 = month;
-	switch (_p2.ctor) {
-		case 'Jan':
-			return 'Jan';
-		case 'Feb':
-			return 'Fév';
-		case 'Mar':
-			return 'Mar';
-		case 'Apr':
-			return 'Avr';
-		case 'May':
-			return 'Mai';
-		case 'Jun':
-			return 'Jun';
-		case 'Jul':
-			return 'Jul';
-		case 'Aug':
-			return 'Aou';
-		case 'Sep':
-			return 'Sep';
-		case 'Oct':
-			return 'Oct';
-		case 'Nov':
-			return 'Nov';
-		default:
-			return 'Déc';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_fr_fr$dayName = function (day) {
-	var _p3 = day;
-	switch (_p3.ctor) {
-		case 'Mon':
-			return 'Lundi';
-		case 'Tue':
-			return 'Mardi';
-		case 'Wed':
-			return 'Mercredi';
-		case 'Thu':
-			return 'Jeudi';
-		case 'Fri':
-			return 'Vendredi';
-		case 'Sat':
-			return 'Samedi';
-		default:
-			return 'Dimanche';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_fr_fr$dayShort = function (day) {
-	var _p4 = day;
-	switch (_p4.ctor) {
-		case 'Mon':
-			return 'Lun';
-		case 'Tue':
-			return 'Mar';
-		case 'Wed':
-			return 'Mer';
-		case 'Thu':
-			return 'Jeu';
-		case 'Fri':
-			return 'Ven';
-		case 'Sat':
-			return 'Sam';
-		default:
-			return 'Dim';
-	}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Config_Config_fr_fr$config = {
-	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_fr_fr$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_fr_fr$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_fr_fr$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_fr_fr$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_fr_fr$dayOfMonthWithSuffix},
-	format: {date: '%-d/%m/%Y', longDate: '%A, %-d %B %Y', time: '%-I:%M %p', longTime: '%-I:%M:%S %p', dateTime: '%-d/%m/%Y %-I:%M %p', firstDayOfWeek: _elm_lang$core$Date$Mon}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_fi_fi$dayOfMonthWithSuffix = F2(
-	function (pad, day) {
-		var _p0 = day;
-		return _elm_lang$core$Basics$toString(day);
-	});
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_fi_fi$monthName = function (month) {
-	var _p1 = month;
-	switch (_p1.ctor) {
-		case 'Jan':
-			return 'tammikuuta';
-		case 'Feb':
-			return 'helmikuuta';
-		case 'Mar':
-			return 'maaliskuuta';
-		case 'Apr':
-			return 'huhtikuuta';
-		case 'May':
-			return 'toukokuuta';
-		case 'Jun':
-			return 'kesäkuuta';
-		case 'Jul':
-			return 'heinäkuuta';
-		case 'Aug':
-			return 'elokuuta';
-		case 'Sep':
-			return 'syyskuuta';
-		case 'Oct':
-			return 'lokakuuta';
-		case 'Nov':
-			return 'marraskuuta';
-		default:
-			return 'joulukuuta';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_fi_fi$monthShort = function (month) {
-	var _p2 = month;
-	switch (_p2.ctor) {
-		case 'Jan':
-			return 'tammi';
-		case 'Feb':
-			return 'helmi';
-		case 'Mar':
-			return 'maalis';
-		case 'Apr':
-			return 'huhti';
-		case 'May':
-			return 'touko';
-		case 'Jun':
-			return 'kesä';
-		case 'Jul':
-			return 'heinä';
-		case 'Aug':
-			return 'elo';
-		case 'Sep':
-			return 'syys';
-		case 'Oct':
-			return 'loka';
-		case 'Nov':
-			return 'marras';
-		default:
-			return 'joulu';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_fi_fi$dayName = function (day) {
-	var _p3 = day;
-	switch (_p3.ctor) {
-		case 'Mon':
-			return 'maanantai';
-		case 'Tue':
-			return 'tiistai';
-		case 'Wed':
-			return 'keskiviikko';
-		case 'Thu':
-			return 'torstai';
-		case 'Fri':
-			return 'perjantai';
-		case 'Sat':
-			return 'lauantai';
-		default:
-			return 'sunnuntai';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_fi_fi$dayShort = function (day) {
-	var _p4 = day;
-	switch (_p4.ctor) {
-		case 'Mon':
-			return 'ma';
-		case 'Tue':
-			return 'ti';
-		case 'Wed':
-			return 'ke';
-		case 'Thu':
-			return 'to';
-		case 'Fri':
-			return 'pe';
-		case 'Sat':
-			return 'la';
-		default:
-			return 'su';
-	}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Config_Config_fi_fi$config = {
-	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_fi_fi$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_fi_fi$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_fi_fi$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_fi_fi$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_fi_fi$dayOfMonthWithSuffix},
-	format: {date: '%-d.%-m.%Y', longDate: '%A, %-d %B %Y', time: '%-H:%M', longTime: '%-H:%M:%S', dateTime: '%-d.%-m.%Y %-H:%M', firstDayOfWeek: _elm_lang$core$Date$Mon}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_pl_pl$dayOfMonthWithSuffix = F2(
-	function (pad, day) {
-		var _p0 = day;
-		return _elm_lang$core$Basics$toString(day);
-	});
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_pl_pl$monthName = function (month) {
-	var _p1 = month;
-	switch (_p1.ctor) {
-		case 'Jan':
-			return 'styczeń';
-		case 'Feb':
-			return 'luty';
-		case 'Mar':
-			return 'marzec';
-		case 'Apr':
-			return 'kwiecień';
-		case 'May':
-			return 'maj';
-		case 'Jun':
-			return 'czerwiec';
-		case 'Jul':
-			return 'lipiec';
-		case 'Aug':
-			return 'sierpień';
-		case 'Sep':
-			return 'wrzesień';
-		case 'Oct':
-			return 'październik';
-		case 'Nov':
-			return 'listopad';
-		default:
-			return 'grudzień';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_pl_pl$monthShort = function (month) {
-	var _p2 = month;
-	switch (_p2.ctor) {
-		case 'Jan':
-			return 'sty';
-		case 'Feb':
-			return 'lut';
-		case 'Mar':
-			return 'mar';
-		case 'Apr':
-			return 'kwi';
-		case 'May':
-			return 'maj';
-		case 'Jun':
-			return 'cze';
-		case 'Jul':
-			return 'lip';
-		case 'Aug':
-			return 'sie';
-		case 'Sep':
-			return 'wrz';
-		case 'Oct':
-			return 'paź';
-		case 'Nov':
-			return 'lis';
-		default:
-			return 'gru';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_pl_pl$dayName = function (day) {
-	var _p3 = day;
-	switch (_p3.ctor) {
-		case 'Mon':
-			return 'poniedziałek';
-		case 'Tue':
-			return 'wtorek';
-		case 'Wed':
-			return 'środa';
-		case 'Thu':
-			return 'czwartek';
-		case 'Fri':
-			return 'piątek';
-		case 'Sat':
-			return 'sobota';
-		default:
-			return 'niedziela';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_pl_pl$dayShort = function (day) {
-	var _p4 = day;
-	switch (_p4.ctor) {
-		case 'Mon':
-			return 'pon';
-		case 'Tue':
-			return 'wto';
-		case 'Wed':
-			return 'śro';
-		case 'Thu':
-			return 'czw';
-		case 'Fri':
-			return 'pią';
-		case 'Sat':
-			return 'sob';
-		default:
-			return 'nie';
-	}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Config_Config_pl_pl$config = {
-	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_pl_pl$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_pl_pl$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_pl_pl$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_pl_pl$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_pl_pl$dayOfMonthWithSuffix},
-	format: {date: '%d.%m.%Y', longDate: '%A, %-d %B %Y', time: '%-H:%M', longTime: '%-H:%M:%S', dateTime: '%-d.%m.%Y %-H:%M', firstDayOfWeek: _elm_lang$core$Date$Mon}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_ro_ro$dayOfMonthWithSuffix = F2(
-	function (pad, day) {
-		var _p0 = day;
-		return _elm_lang$core$Basics$toString(day);
-	});
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_ro_ro$monthName = function (month) {
-	var _p1 = month;
-	switch (_p1.ctor) {
-		case 'Jan':
-			return 'Ianuarie';
-		case 'Feb':
-			return 'Februarie';
-		case 'Mar':
-			return 'Martie';
-		case 'Apr':
-			return 'Aprilie';
-		case 'May':
-			return 'Mai';
-		case 'Jun':
-			return 'Iunie';
-		case 'Jul':
-			return 'Iulie';
-		case 'Aug':
-			return 'August';
-		case 'Sep':
-			return 'Septembrie';
-		case 'Oct':
-			return 'Octombrie';
-		case 'Nov':
-			return 'Noiembrie';
-		default:
-			return 'Decembrie';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_ro_ro$monthShort = function (month) {
-	var _p2 = month;
-	switch (_p2.ctor) {
-		case 'Jan':
-			return 'Ian';
-		case 'Feb':
-			return 'Feb';
-		case 'Mar':
-			return 'Mar';
-		case 'Apr':
-			return 'Apr';
-		case 'May':
-			return 'Mai';
-		case 'Jun':
-			return 'Iun';
-		case 'Jul':
-			return 'Iul';
-		case 'Aug':
-			return 'Aug';
-		case 'Sep':
-			return 'Sep';
-		case 'Oct':
-			return 'Oct';
-		case 'Nov':
-			return 'Noi';
-		default:
-			return 'Dec';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_ro_ro$dayName = function (day) {
-	var _p3 = day;
-	switch (_p3.ctor) {
-		case 'Mon':
-			return 'Luni';
-		case 'Tue':
-			return 'Marți';
-		case 'Wed':
-			return 'Miercuri';
-		case 'Thu':
-			return 'Joi';
-		case 'Fri':
-			return 'Vineri';
-		case 'Sat':
-			return 'Sâmbătă';
-		default:
-			return 'Duminică';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_ro_ro$dayShort = function (day) {
-	var _p4 = day;
-	switch (_p4.ctor) {
-		case 'Mon':
-			return 'Lun';
-		case 'Tue':
-			return 'Mar';
-		case 'Wed':
-			return 'Mie';
-		case 'Thu':
-			return 'Joi';
-		case 'Fri':
-			return 'Vin';
-		case 'Sat':
-			return 'Sâm';
-		default:
-			return 'Dum';
-	}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Config_Config_ro_ro$config = {
-	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_ro_ro$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_ro_ro$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_ro_ro$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_ro_ro$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_ro_ro$dayOfMonthWithSuffix},
-	format: {date: '%d.%m.%Y', longDate: '%A, %-d %B %Y', time: '%-H:%M', longTime: '%-H:%M:%S', dateTime: '%-d.%m.%Y %-H:%M', firstDayOfWeek: _elm_lang$core$Date$Mon}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayOfMonthWithSuffix = function (_p0) {
-	return _elm_lang$core$Basics$toString;
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$monthName = function (month) {
-	var _p1 = month;
-	switch (_p1.ctor) {
-		case 'Jan':
-			return 'januari';
-		case 'Feb':
-			return 'februari';
-		case 'Mar':
-			return 'maart';
-		case 'Apr':
-			return 'april';
-		case 'May':
-			return 'mei';
-		case 'Jun':
-			return 'juni';
-		case 'Jul':
-			return 'juli';
-		case 'Aug':
-			return 'augustus';
-		case 'Sep':
-			return 'september';
-		case 'Oct':
-			return 'oktober';
-		case 'Nov':
-			return 'november';
-		default:
-			return 'december';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$monthShort = function (month) {
-	var _p2 = month;
-	switch (_p2.ctor) {
-		case 'Jan':
-			return 'jan';
-		case 'Feb':
-			return 'feb';
-		case 'Mar':
-			return 'mrt';
-		case 'Apr':
-			return 'apr';
-		case 'May':
-			return 'mei';
-		case 'Jun':
-			return 'jun';
-		case 'Jul':
-			return 'jul';
-		case 'Aug':
-			return 'aug';
-		case 'Sep':
-			return 'sep';
-		case 'Oct':
-			return 'okt';
-		case 'Nov':
-			return 'nov';
-		default:
-			return 'dec';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayName = function (day) {
-	var _p3 = day;
-	switch (_p3.ctor) {
-		case 'Mon':
-			return 'maandag';
-		case 'Tue':
-			return 'dinsdag';
-		case 'Wed':
-			return 'woensdag';
-		case 'Thu':
-			return 'donderdag';
-		case 'Fri':
-			return 'vrijdag';
-		case 'Sat':
-			return 'zaterdag';
-		default:
-			return 'zondag';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayShort = function (day) {
-	var _p4 = day;
-	switch (_p4.ctor) {
-		case 'Mon':
-			return 'ma';
-		case 'Tue':
-			return 'di';
-		case 'Wed':
-			return 'wo';
-		case 'Thu':
-			return 'do';
-		case 'Fri':
-			return 'vr';
-		case 'Sat':
-			return 'za';
-		default:
-			return 'zo';
-	}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config = {
-	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayOfMonthWithSuffix},
-	format: {date: '%-m/%-d/%Y', longDate: '%A, %B %d, %Y', time: '%H:%M', longTime: '%-H:%M:%S %p', dateTime: '%-m/%-d/%Y %-I:%M %p', firstDayOfWeek: _elm_lang$core$Date$Mon}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_pt_br$dayOfMonthWithSuffix = F2(
-	function (pad, day) {
-		var value = function () {
-			var _p0 = day;
-			if (_p0 === 1) {
-				return '1º';
-			} else {
-				return _elm_lang$core$Basics$toString(day);
-			}
-		}();
-		return pad ? A3(
-			_elm_lang$core$String$padLeft,
-			2,
-			_elm_lang$core$Native_Utils.chr(' '),
-			value) : value;
-	});
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_pt_br$monthName = function (month) {
-	var _p1 = month;
-	switch (_p1.ctor) {
-		case 'Jan':
-			return 'Janeiro';
-		case 'Feb':
-			return 'Fevereiro';
-		case 'Mar':
-			return 'Março';
-		case 'Apr':
-			return 'Abril';
-		case 'May':
-			return 'Maio';
-		case 'Jun':
-			return 'Junho';
-		case 'Jul':
-			return 'Julho';
-		case 'Aug':
-			return 'Agosto';
-		case 'Sep':
-			return 'Setembro';
-		case 'Oct':
-			return 'Outubro';
-		case 'Nov':
-			return 'Novembro';
-		default:
-			return 'Dezembro';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_pt_br$monthShort = function (month) {
-	var _p2 = month;
-	switch (_p2.ctor) {
-		case 'Jan':
-			return 'Jan';
-		case 'Feb':
-			return 'Fev';
-		case 'Mar':
-			return 'Mar';
-		case 'Apr':
-			return 'Abr';
-		case 'May':
-			return 'Mai';
-		case 'Jun':
-			return 'Jun';
-		case 'Jul':
-			return 'Jul';
-		case 'Aug':
-			return 'Ago';
-		case 'Sep':
-			return 'Set';
-		case 'Oct':
-			return 'Out';
-		case 'Nov':
-			return 'Nov';
-		default:
-			return 'Dez';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_pt_br$dayName = function (day) {
-	var _p3 = day;
-	switch (_p3.ctor) {
-		case 'Mon':
-			return 'Segunda-feira';
-		case 'Tue':
-			return 'Terça-feira';
-		case 'Wed':
-			return 'Quarta-feira';
-		case 'Thu':
-			return 'Quinta-feira';
-		case 'Fri':
-			return 'Sexta-feira';
-		case 'Sat':
-			return 'Sábado';
-		default:
-			return 'Domingo';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_pt_br$dayShort = function (day) {
-	var _p4 = day;
-	switch (_p4.ctor) {
-		case 'Mon':
-			return 'Seg';
-		case 'Tue':
-			return 'Ter';
-		case 'Wed':
-			return 'Qua';
-		case 'Thu':
-			return 'Qui';
-		case 'Fri':
-			return 'Sex';
-		case 'Sat':
-			return 'Sáb';
-		default:
-			return 'Dom';
-	}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Config_Config_pt_br$config = {
-	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_pt_br$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_pt_br$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_pt_br$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_pt_br$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_pt_br$dayOfMonthWithSuffix},
-	format: {date: '%d/%m/%Y', longDate: '%A, %-d de %B de %Y', time: '%H:%M', longTime: '%H:%M:%S', dateTime: '%d/%m/%Y %H:%M', firstDayOfWeek: _elm_lang$core$Date$Sun}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_et_ee$dayOfMonthWithSuffix = F2(
-	function (pad, day) {
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(day),
-			'.');
-	});
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_et_ee$monthName = function (month) {
-	var _p0 = month;
-	switch (_p0.ctor) {
-		case 'Jan':
-			return 'jaanuar';
-		case 'Feb':
-			return 'veebruar';
-		case 'Mar':
-			return 'märts';
-		case 'Apr':
-			return 'aprill';
-		case 'May':
-			return 'mai';
-		case 'Jun':
-			return 'juuni';
-		case 'Jul':
-			return 'juuli';
-		case 'Aug':
-			return 'august';
-		case 'Sep':
-			return 'september';
-		case 'Oct':
-			return 'oktoober';
-		case 'Nov':
-			return 'november';
-		default:
-			return 'detsember';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_et_ee$monthShort = function (month) {
-	var _p1 = month;
-	switch (_p1.ctor) {
-		case 'Jan':
-			return 'jaan';
-		case 'Feb':
-			return 'veebr';
-		case 'Mar':
-			return 'märts';
-		case 'Apr':
-			return 'apr';
-		case 'May':
-			return 'mai';
-		case 'Jun':
-			return 'juuni';
-		case 'Jul':
-			return 'juuli';
-		case 'Aug':
-			return 'aug';
-		case 'Sep':
-			return 'sept';
-		case 'Oct':
-			return 'okt';
-		case 'Nov':
-			return 'nov';
-		default:
-			return 'dets';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_et_ee$dayName = function (day) {
-	var _p2 = day;
-	switch (_p2.ctor) {
-		case 'Mon':
-			return 'esmaspäev';
-		case 'Tue':
-			return 'teisipäev';
-		case 'Wed':
-			return 'kolmapäev';
-		case 'Thu':
-			return 'neljapäev';
-		case 'Fri':
-			return 'reede';
-		case 'Sat':
-			return 'laupäev';
-		default:
-			return 'pühapäev';
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_I18n_I_et_ee$dayShort = function (day) {
-	var _p3 = day;
-	switch (_p3.ctor) {
-		case 'Mon':
-			return 'E';
-		case 'Tue':
-			return 'T';
-		case 'Wed':
-			return 'K';
-		case 'Thu':
-			return 'N';
-		case 'Fri':
-			return 'R';
-		case 'Sat':
-			return 'L';
-		default:
-			return 'P';
-	}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Config_Config_et_ee$config = {
-	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_et_ee$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_et_ee$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_et_ee$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_et_ee$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_et_ee$dayOfMonthWithSuffix},
-	format: {date: '%-d. %b %Y. a', longDate: '%A, %-d. %B %Y', time: '%-H:%M', longTime: '%-H:%M:%S', dateTime: '%a, %-d. %b %Y. %-H:%M:%S', firstDayOfWeek: _elm_lang$core$Date$Mon}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Config_Configs$configs = _elm_lang$core$Dict$fromList(
-	{
-		ctor: '::',
-		_0: {ctor: '_Tuple2', _0: 'en_au', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_en_au$config},
-		_1: {
-			ctor: '::',
-			_0: {ctor: '_Tuple2', _0: 'en_us', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config},
-			_1: {
-				ctor: '::',
-				_0: {ctor: '_Tuple2', _0: 'en_gb', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_en_gb$config},
-				_1: {
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 'fr_fr', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_fr_fr$config},
-					_1: {
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'fi_fi', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_fi_fi$config},
-						_1: {
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'pl_pl', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_pl_pl$config},
-							_1: {
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'ro_ro', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_ro_ro$config},
-								_1: {
-									ctor: '::',
-									_0: {ctor: '_Tuple2', _0: 'nl_nl', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config},
-									_1: {
-										ctor: '::',
-										_0: {ctor: '_Tuple2', _0: 'pt_br', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_pt_br$config},
-										_1: {
-											ctor: '::',
-											_0: {ctor: '_Tuple2', _0: 'et_ee', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_et_ee$config},
-											_1: {ctor: '[]'}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	});
-var _rluiten$elm_date_extra$Date_Extra_Config_Configs$getConfig = function (id) {
-	var lowerId = _elm_lang$core$String$toLower(id);
-	var fixedId = A4(
-		_elm_lang$core$Regex$replace,
-		_elm_lang$core$Regex$All,
-		_elm_lang$core$Regex$regex('-'),
-		function (_p0) {
-			return '_';
-		},
-		lowerId);
-	return A2(
-		_elm_lang$core$Maybe$withDefault,
-		_rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config,
-		A2(_elm_lang$core$Dict$get, fixedId, _rluiten$elm_date_extra$Date_Extra_Config_Configs$configs));
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Core$prevMonth = function (month) {
-	var _p0 = month;
-	switch (_p0.ctor) {
-		case 'Jan':
-			return _elm_lang$core$Date$Dec;
-		case 'Feb':
-			return _elm_lang$core$Date$Jan;
-		case 'Mar':
-			return _elm_lang$core$Date$Feb;
-		case 'Apr':
-			return _elm_lang$core$Date$Mar;
-		case 'May':
-			return _elm_lang$core$Date$Apr;
-		case 'Jun':
-			return _elm_lang$core$Date$May;
-		case 'Jul':
-			return _elm_lang$core$Date$Jun;
-		case 'Aug':
-			return _elm_lang$core$Date$Jul;
-		case 'Sep':
-			return _elm_lang$core$Date$Aug;
-		case 'Oct':
-			return _elm_lang$core$Date$Sep;
-		case 'Nov':
-			return _elm_lang$core$Date$Oct;
-		default:
-			return _elm_lang$core$Date$Nov;
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$nextMonth = function (month) {
-	var _p1 = month;
-	switch (_p1.ctor) {
-		case 'Jan':
-			return _elm_lang$core$Date$Feb;
-		case 'Feb':
-			return _elm_lang$core$Date$Mar;
-		case 'Mar':
-			return _elm_lang$core$Date$Apr;
-		case 'Apr':
-			return _elm_lang$core$Date$May;
-		case 'May':
-			return _elm_lang$core$Date$Jun;
-		case 'Jun':
-			return _elm_lang$core$Date$Jul;
-		case 'Jul':
-			return _elm_lang$core$Date$Aug;
-		case 'Aug':
-			return _elm_lang$core$Date$Sep;
-		case 'Sep':
-			return _elm_lang$core$Date$Oct;
-		case 'Oct':
-			return _elm_lang$core$Date$Nov;
-		case 'Nov':
-			return _elm_lang$core$Date$Dec;
-		default:
-			return _elm_lang$core$Date$Jan;
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$intToMonth = function (month) {
-	return (_elm_lang$core$Native_Utils.cmp(month, 1) < 1) ? _elm_lang$core$Date$Jan : (_elm_lang$core$Native_Utils.eq(month, 2) ? _elm_lang$core$Date$Feb : (_elm_lang$core$Native_Utils.eq(month, 3) ? _elm_lang$core$Date$Mar : (_elm_lang$core$Native_Utils.eq(month, 4) ? _elm_lang$core$Date$Apr : (_elm_lang$core$Native_Utils.eq(month, 5) ? _elm_lang$core$Date$May : (_elm_lang$core$Native_Utils.eq(month, 6) ? _elm_lang$core$Date$Jun : (_elm_lang$core$Native_Utils.eq(month, 7) ? _elm_lang$core$Date$Jul : (_elm_lang$core$Native_Utils.eq(month, 8) ? _elm_lang$core$Date$Aug : (_elm_lang$core$Native_Utils.eq(month, 9) ? _elm_lang$core$Date$Sep : (_elm_lang$core$Native_Utils.eq(month, 10) ? _elm_lang$core$Date$Oct : (_elm_lang$core$Native_Utils.eq(month, 11) ? _elm_lang$core$Date$Nov : _elm_lang$core$Date$Dec))))))))));
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$monthToInt = function (month) {
-	var _p2 = month;
-	switch (_p2.ctor) {
-		case 'Jan':
-			return 1;
-		case 'Feb':
-			return 2;
-		case 'Mar':
-			return 3;
-		case 'Apr':
-			return 4;
-		case 'May':
-			return 5;
-		case 'Jun':
-			return 6;
-		case 'Jul':
-			return 7;
-		case 'Aug':
-			return 8;
-		case 'Sep':
-			return 9;
-		case 'Oct':
-			return 10;
-		case 'Nov':
-			return 11;
-		default:
-			return 12;
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear = function (year) {
-	return (_elm_lang$core$Native_Utils.eq(
-		A2(_elm_lang$core$Basics_ops['%'], year, 4),
-		0) && (!_elm_lang$core$Native_Utils.eq(
-		A2(_elm_lang$core$Basics_ops['%'], year, 100),
-		0))) || _elm_lang$core$Native_Utils.eq(
-		A2(_elm_lang$core$Basics_ops['%'], year, 400),
-		0);
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$isLeapYearDate = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear(
-		_elm_lang$core$Date$year(date));
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$yearToDayLength = function (year) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear(year) ? 366 : 365;
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$daysInMonth = F2(
-	function (year, month) {
-		var _p3 = month;
-		switch (_p3.ctor) {
-			case 'Jan':
-				return 31;
-			case 'Feb':
-				return _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear(year) ? 29 : 28;
-			case 'Mar':
-				return 31;
-			case 'Apr':
-				return 30;
-			case 'May':
-				return 31;
-			case 'Jun':
-				return 30;
-			case 'Jul':
-				return 31;
-			case 'Aug':
-				return 31;
-			case 'Sep':
-				return 30;
-			case 'Oct':
-				return 31;
-			case 'Nov':
-				return 30;
-			default:
-				return 31;
-		}
-	});
-var _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate = function (date) {
-	return A2(
-		_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth,
-		_elm_lang$core$Date$year(date),
-		_elm_lang$core$Date$month(date));
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$monthList = {
-	ctor: '::',
-	_0: _elm_lang$core$Date$Jan,
-	_1: {
-		ctor: '::',
-		_0: _elm_lang$core$Date$Feb,
-		_1: {
-			ctor: '::',
-			_0: _elm_lang$core$Date$Mar,
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$core$Date$Apr,
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$core$Date$May,
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$core$Date$Jun,
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$core$Date$Jul,
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$core$Date$Aug,
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$core$Date$Sep,
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$core$Date$Oct,
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$core$Date$Nov,
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$core$Date$Dec,
-												_1: {ctor: '[]'}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$toTime = function (_p4) {
-	return _elm_lang$core$Basics$floor(
-		_elm_lang$core$Date$toTime(_p4));
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$fromTime = function (_p5) {
-	return _elm_lang$core$Date$fromTime(
-		_elm_lang$core$Basics$toFloat(_p5));
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$prevDay = function (day) {
-	var _p6 = day;
-	switch (_p6.ctor) {
-		case 'Mon':
-			return _elm_lang$core$Date$Sun;
-		case 'Tue':
-			return _elm_lang$core$Date$Mon;
-		case 'Wed':
-			return _elm_lang$core$Date$Tue;
-		case 'Thu':
-			return _elm_lang$core$Date$Wed;
-		case 'Fri':
-			return _elm_lang$core$Date$Thu;
-		case 'Sat':
-			return _elm_lang$core$Date$Fri;
-		default:
-			return _elm_lang$core$Date$Sat;
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$nextDay = function (day) {
-	var _p7 = day;
-	switch (_p7.ctor) {
-		case 'Mon':
-			return _elm_lang$core$Date$Tue;
-		case 'Tue':
-			return _elm_lang$core$Date$Wed;
-		case 'Wed':
-			return _elm_lang$core$Date$Thu;
-		case 'Thu':
-			return _elm_lang$core$Date$Fri;
-		case 'Fri':
-			return _elm_lang$core$Date$Sat;
-		case 'Sat':
-			return _elm_lang$core$Date$Sun;
-		default:
-			return _elm_lang$core$Date$Mon;
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek = function (day) {
-	var _p8 = day;
-	switch (_p8.ctor) {
-		case 'Mon':
-			return 1;
-		case 'Tue':
-			return 2;
-		case 'Wed':
-			return 3;
-		case 'Thu':
-			return 4;
-		case 'Fri':
-			return 5;
-		case 'Sat':
-			return 6;
-		default:
-			return 7;
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$daysBackToStartOfWeek = F2(
-	function (dateDay, startOfWeekDay) {
-		var startOfWeekDayIndex = _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek(startOfWeekDay);
-		var dateDayIndex = _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek(dateDay);
-		return (_elm_lang$core$Native_Utils.cmp(dateDayIndex, startOfWeekDayIndex) < 0) ? ((7 + dateDayIndex) - startOfWeekDayIndex) : (dateDayIndex - startOfWeekDayIndex);
-	});
-var _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond = _elm_lang$core$Basics$floor(_elm_lang$core$Time$millisecond);
-var _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond = _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond * 1000;
-var _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute = _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond * 60;
-var _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour = _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute * 60;
-var _rluiten$elm_date_extra$Date_Extra_Core$ticksADay = _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour * 24;
-var _rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek = _rluiten$elm_date_extra$Date_Extra_Core$ticksADay * 7;
-var _rluiten$elm_date_extra$Date_Extra_Core$firstOfMonthTicks = function (date) {
-	var dateTicks = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date);
-	var day = _elm_lang$core$Date$day(date);
-	return dateTicks + ((1 - day) * _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$lastOfPrevMonthDate = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
-		_rluiten$elm_date_extra$Date_Extra_Core$firstOfMonthTicks(date) - _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$daysInPrevMonth = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate(
-		_rluiten$elm_date_extra$Date_Extra_Core$lastOfPrevMonthDate(date));
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$toFirstOfMonth = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
-		_rluiten$elm_date_extra$Date_Extra_Core$firstOfMonthTicks(date));
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthTicks = function (date) {
-	var dateTicks = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date);
-	var day = _elm_lang$core$Date$day(date);
-	var month = _elm_lang$core$Date$month(date);
-	var year = _elm_lang$core$Date$year(date);
-	var daysInMonthVal = A2(_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth, year, month);
-	var addDays = daysInMonthVal - day;
-	return dateTicks + (addDays * _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$firstOfNextMonthDate = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
-		_rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthTicks(date) + _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$daysInNextMonth = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate(
-		_rluiten$elm_date_extra$Date_Extra_Core$firstOfNextMonthDate(date));
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthDate = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
-		_rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthTicks(date));
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$epochDateStr = '1970-01-01T00:00:00Z';
-
-var _rluiten$elm_date_extra$Date_Extra_Period$diff = F2(
-	function (date1, date2) {
-		var millisecondDiff = _elm_lang$core$Date$millisecond(date1) - _elm_lang$core$Date$millisecond(date2);
-		var secondDiff = _elm_lang$core$Date$second(date1) - _elm_lang$core$Date$second(date2);
-		var minuteDiff = _elm_lang$core$Date$minute(date1) - _elm_lang$core$Date$minute(date2);
-		var hourDiff = _elm_lang$core$Date$hour(date1) - _elm_lang$core$Date$hour(date2);
-		var ticksDiff = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date1) - _rluiten$elm_date_extra$Date_Extra_Core$toTime(date2);
-		var ticksDayDiff = (((ticksDiff - (hourDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour)) - (minuteDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute)) - (secondDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond)) - (millisecondDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond);
-		var onlyDaysDiff = (ticksDayDiff / _rluiten$elm_date_extra$Date_Extra_Core$ticksADay) | 0;
-		var _p0 = function () {
-			if (_elm_lang$core$Native_Utils.cmp(onlyDaysDiff, 0) < 0) {
-				var absDayDiff = _elm_lang$core$Basics$abs(onlyDaysDiff);
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Basics$negate((absDayDiff / 7) | 0),
-					_1: _elm_lang$core$Basics$negate(
-						A2(_elm_lang$core$Basics_ops['%'], absDayDiff, 7))
-				};
-			} else {
-				return {
-					ctor: '_Tuple2',
-					_0: (onlyDaysDiff / 7) | 0,
-					_1: A2(_elm_lang$core$Basics_ops['%'], onlyDaysDiff, 7)
-				};
-			}
-		}();
-		var weekDiff = _p0._0;
-		var dayDiff = _p0._1;
-		return {week: weekDiff, day: dayDiff, hour: hourDiff, minute: minuteDiff, second: secondDiff, millisecond: millisecondDiff};
-	});
-var _rluiten$elm_date_extra$Date_Extra_Period$addTimeUnit = F3(
-	function (unit, addend, date) {
-		return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
-			A2(
-				F2(
-					function (x, y) {
-						return x + y;
-					}),
-				addend * unit,
-				_rluiten$elm_date_extra$Date_Extra_Core$toTime(date)));
-	});
-var _rluiten$elm_date_extra$Date_Extra_Period$toTicks = function (period) {
-	var _p1 = period;
-	switch (_p1.ctor) {
-		case 'Millisecond':
-			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond;
-		case 'Second':
-			return _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond;
-		case 'Minute':
-			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute;
-		case 'Hour':
-			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour;
-		case 'Day':
-			return _rluiten$elm_date_extra$Date_Extra_Core$ticksADay;
-		case 'Week':
-			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek;
-		default:
-			var _p2 = _p1._0;
-			return (((((_rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond * _p2.millisecond) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksASecond * _p2.second)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute * _p2.minute)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour * _p2.hour)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksADay * _p2.day)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek * _p2.week);
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_Period$add = function (period) {
-	return _rluiten$elm_date_extra$Date_Extra_Period$addTimeUnit(
-		_rluiten$elm_date_extra$Date_Extra_Period$toTicks(period));
-};
-var _rluiten$elm_date_extra$Date_Extra_Period$zeroDelta = {week: 0, day: 0, hour: 0, minute: 0, second: 0, millisecond: 0};
-var _rluiten$elm_date_extra$Date_Extra_Period$DeltaRecord = F6(
-	function (a, b, c, d, e, f) {
-		return {week: a, day: b, hour: c, minute: d, second: e, millisecond: f};
-	});
-var _rluiten$elm_date_extra$Date_Extra_Period$Delta = function (a) {
-	return {ctor: 'Delta', _0: a};
-};
-var _rluiten$elm_date_extra$Date_Extra_Period$Week = {ctor: 'Week'};
-var _rluiten$elm_date_extra$Date_Extra_Period$Day = {ctor: 'Day'};
-var _rluiten$elm_date_extra$Date_Extra_Period$Hour = {ctor: 'Hour'};
-var _rluiten$elm_date_extra$Date_Extra_Period$Minute = {ctor: 'Minute'};
-var _rluiten$elm_date_extra$Date_Extra_Period$Second = {ctor: 'Second'};
-var _rluiten$elm_date_extra$Date_Extra_Period$Millisecond = {ctor: 'Millisecond'};
-
-var _rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil = F3(
-	function (year, month, day) {
-		var doy = (((((153 * (month + ((_elm_lang$core$Native_Utils.cmp(month, 2) > 0) ? -3 : 9))) + 2) / 5) | 0) + day) - 1;
-		var y = year - ((_elm_lang$core$Native_Utils.cmp(month, 2) < 1) ? 1 : 0);
-		var era = (((_elm_lang$core$Native_Utils.cmp(y, 0) > -1) ? y : (y - 399)) / 400) | 0;
-		var yoe = y - (era * 400);
-		var doe = (((yoe * 365) + ((yoe / 4) | 0)) - ((yoe / 100) | 0)) + doy;
-		return ((era * 146097) + doe) - 719468;
-	});
-var _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields = F7(
-	function (year, month, day, hour, minute, second, millisecond) {
-		var monthInt = _rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month);
-		var c_year = (_elm_lang$core$Native_Utils.cmp(year, 0) < 0) ? 0 : year;
-		var c_day = A3(
-			_elm_lang$core$Basics$clamp,
-			1,
-			A2(_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth, c_year, month),
-			day);
-		var dayCount = A3(_rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil, c_year, monthInt, c_day);
-		return _rluiten$elm_date_extra$Date_Extra_Period$toTicks(
-			_rluiten$elm_date_extra$Date_Extra_Period$Delta(
-				{
-					millisecond: A3(_elm_lang$core$Basics$clamp, 0, 999, millisecond),
-					second: A3(_elm_lang$core$Basics$clamp, 0, 59, second),
-					minute: A3(_elm_lang$core$Basics$clamp, 0, 59, minute),
-					hour: A3(_elm_lang$core$Basics$clamp, 0, 23, hour),
-					day: dayCount,
-					week: 0
-				}));
-	});
-var _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromDateFields = function (date) {
-	return A7(
-		_rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields,
-		_elm_lang$core$Date$year(date),
-		_elm_lang$core$Date$month(date),
-		_elm_lang$core$Date$day(date),
-		_elm_lang$core$Date$hour(date),
-		_elm_lang$core$Date$minute(date),
-		_elm_lang$core$Date$second(date),
-		_elm_lang$core$Date$millisecond(date));
-};
-var _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset = function (date) {
-	var v1Ticks = _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromDateFields(date);
-	var dateTicks = _elm_lang$core$Basics$floor(
-		_elm_lang$core$Date$toTime(date));
-	return ((dateTicks - v1Ticks) / _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute) | 0;
-};
-var _rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset = F2(
-	function (offsetMinutes, date) {
-		return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
-			A2(
-				F2(
-					function (x, y) {
-						return x + y;
-					}),
-				offsetMinutes * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute,
-				_rluiten$elm_date_extra$Date_Extra_Core$toTime(date)));
-	});
-var _rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsUtc = function (date) {
-	var offset = _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset(date);
-	var oHours = (offset / _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour) | 0;
-	var oMinutes = ((offset - (oHours * _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour)) / _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute) | 0;
-	return A2(_rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset, offset, date);
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Create$epochDate = _elm_lang$core$Date$fromTime(0);
-var _rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset = function () {
-	var inMinutes = (_elm_lang$core$Date$hour(_rluiten$elm_date_extra$Date_Extra_Create$epochDate) * 60) + _elm_lang$core$Date$minute(_rluiten$elm_date_extra$Date_Extra_Create$epochDate);
-	return _elm_lang$core$Native_Utils.eq(
-		_elm_lang$core$Date$year(_rluiten$elm_date_extra$Date_Extra_Create$epochDate),
-		1969) ? (0 - (inMinutes - (24 * 60))) : (0 - inMinutes);
-}();
-var _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset = _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset;
-var _rluiten$elm_date_extra$Date_Extra_Create$adjustedTicksToDate = function (ticks) {
-	var date = A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Millisecond, ticks + (_rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute), _rluiten$elm_date_extra$Date_Extra_Create$epochDate);
-	var dateOffset = _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(date);
-	return _elm_lang$core$Native_Utils.eq(dateOffset, _rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset) ? date : A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Minute, dateOffset - _rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset, date);
-};
-var _rluiten$elm_date_extra$Date_Extra_Create$dateFromFields = F7(
-	function (year, month, day, hour, minute, second, millisecond) {
-		return _rluiten$elm_date_extra$Date_Extra_Create$adjustedTicksToDate(
-			A7(_rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields, year, month, day, hour, minute, second, millisecond));
-	});
-var _rluiten$elm_date_extra$Date_Extra_Create$timeFromFields = A3(_rluiten$elm_date_extra$Date_Extra_Create$dateFromFields, 1970, _elm_lang$core$Date$Jan, 1);
-
-var _rluiten$elm_date_extra$Date_Extra_Format$toHourMin = function (offsetMinutes) {
-	return {
-		ctor: '_Tuple2',
-		_0: (offsetMinutes / 60) | 0,
-		_1: A2(_elm_lang$core$Basics_ops['%'], offsetMinutes, 60)
-	};
-};
-var _rluiten$elm_date_extra$Date_Extra_Format$padWithN = F2(
-	function (n, c) {
-		return function (_p0) {
-			return A3(
-				_elm_lang$core$String$padLeft,
-				n,
-				c,
-				_elm_lang$core$Basics$toString(_p0));
-		};
-	});
-var _rluiten$elm_date_extra$Date_Extra_Format$padWith = function (c) {
-	return function (_p1) {
-		return A3(
-			_elm_lang$core$String$padLeft,
-			2,
-			c,
-			_elm_lang$core$Basics$toString(_p1));
-	};
-};
-var _rluiten$elm_date_extra$Date_Extra_Format$hourMod12 = function (h) {
-	return _elm_lang$core$Native_Utils.eq(
-		A2(_elm_lang$core$Basics_ops['%'], h, 12),
-		0) ? 12 : A2(_elm_lang$core$Basics_ops['%'], h, 12);
-};
-var _rluiten$elm_date_extra$Date_Extra_Format$formatOffsetStr = F2(
-	function (betweenHoursMinutes, offset) {
-		var _p2 = _rluiten$elm_date_extra$Date_Extra_Format$toHourMin(
-			_elm_lang$core$Basics$abs(offset));
-		var hour = _p2._0;
-		var minute = _p2._1;
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			(_elm_lang$core$Native_Utils.cmp(offset, 0) < 1) ? '+' : '-',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				A2(
-					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
-					_elm_lang$core$Native_Utils.chr('0'),
-					hour),
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					betweenHoursMinutes,
-					A2(
-						_rluiten$elm_date_extra$Date_Extra_Format$padWith,
-						_elm_lang$core$Native_Utils.chr('0'),
-						minute))));
-	});
-var _rluiten$elm_date_extra$Date_Extra_Format$collapse = function (m) {
-	return A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Basics$identity, m);
-};
-var _rluiten$elm_date_extra$Date_Extra_Format$formatToken = F4(
-	function (config, offset, d, m) {
-		var symbol = A2(
-			_elm_lang$core$Maybe$withDefault,
-			' ',
-			_rluiten$elm_date_extra$Date_Extra_Format$collapse(
-				_elm_lang$core$List$head(m.submatches)));
-		var _p3 = symbol;
-		switch (_p3) {
-			case 'Y':
-				return A3(
-					_rluiten$elm_date_extra$Date_Extra_Format$padWithN,
-					4,
-					_elm_lang$core$Native_Utils.chr('0'),
-					_elm_lang$core$Date$year(d));
-			case 'y':
-				return A2(
-					_elm_lang$core$String$right,
-					2,
-					A3(
-						_rluiten$elm_date_extra$Date_Extra_Format$padWithN,
-						2,
-						_elm_lang$core$Native_Utils.chr('0'),
-						_elm_lang$core$Date$year(d)));
-			case 'm':
-				return A2(
-					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
-					_elm_lang$core$Native_Utils.chr('0'),
-					_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
-						_elm_lang$core$Date$month(d)));
-			case '_m':
-				return A2(
-					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
-					_elm_lang$core$Native_Utils.chr(' '),
-					_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
-						_elm_lang$core$Date$month(d)));
-			case '-m':
-				return _elm_lang$core$Basics$toString(
-					_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
-						_elm_lang$core$Date$month(d)));
-			case 'B':
-				return config.i18n.monthName(
-					_elm_lang$core$Date$month(d));
-			case '^B':
-				return _elm_lang$core$String$toUpper(
-					config.i18n.monthName(
-						_elm_lang$core$Date$month(d)));
-			case 'b':
-				return config.i18n.monthShort(
-					_elm_lang$core$Date$month(d));
-			case '^b':
-				return _elm_lang$core$String$toUpper(
-					config.i18n.monthShort(
-						_elm_lang$core$Date$month(d)));
-			case 'd':
-				return A2(
-					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
-					_elm_lang$core$Native_Utils.chr('0'),
-					_elm_lang$core$Date$day(d));
-			case '-d':
-				return _elm_lang$core$Basics$toString(
-					_elm_lang$core$Date$day(d));
-			case '-@d':
-				return A2(
-					config.i18n.dayOfMonthWithSuffix,
-					false,
-					_elm_lang$core$Date$day(d));
-			case 'e':
-				return A2(
-					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
-					_elm_lang$core$Native_Utils.chr(' '),
-					_elm_lang$core$Date$day(d));
-			case '@e':
-				return A2(
-					config.i18n.dayOfMonthWithSuffix,
-					true,
-					_elm_lang$core$Date$day(d));
-			case 'A':
-				return config.i18n.dayName(
-					_elm_lang$core$Date$dayOfWeek(d));
-			case '^A':
-				return _elm_lang$core$String$toUpper(
-					config.i18n.dayName(
-						_elm_lang$core$Date$dayOfWeek(d)));
-			case 'a':
-				return config.i18n.dayShort(
-					_elm_lang$core$Date$dayOfWeek(d));
-			case '^a':
-				return _elm_lang$core$String$toUpper(
-					config.i18n.dayShort(
-						_elm_lang$core$Date$dayOfWeek(d)));
-			case 'H':
-				return A2(
-					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
-					_elm_lang$core$Native_Utils.chr('0'),
-					_elm_lang$core$Date$hour(d));
-			case '-H':
-				return _elm_lang$core$Basics$toString(
-					_elm_lang$core$Date$hour(d));
-			case 'k':
-				return A2(
-					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
-					_elm_lang$core$Native_Utils.chr(' '),
-					_elm_lang$core$Date$hour(d));
-			case 'I':
-				return A2(
-					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
-					_elm_lang$core$Native_Utils.chr('0'),
-					_rluiten$elm_date_extra$Date_Extra_Format$hourMod12(
-						_elm_lang$core$Date$hour(d)));
-			case '-I':
-				return _elm_lang$core$Basics$toString(
-					_rluiten$elm_date_extra$Date_Extra_Format$hourMod12(
-						_elm_lang$core$Date$hour(d)));
-			case 'l':
-				return A2(
-					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
-					_elm_lang$core$Native_Utils.chr(' '),
-					_rluiten$elm_date_extra$Date_Extra_Format$hourMod12(
-						_elm_lang$core$Date$hour(d)));
-			case 'p':
-				return (_elm_lang$core$Native_Utils.cmp(
-					_elm_lang$core$Date$hour(d),
-					12) < 0) ? 'AM' : 'PM';
-			case 'P':
-				return (_elm_lang$core$Native_Utils.cmp(
-					_elm_lang$core$Date$hour(d),
-					12) < 0) ? 'am' : 'pm';
-			case 'M':
-				return A2(
-					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
-					_elm_lang$core$Native_Utils.chr('0'),
-					_elm_lang$core$Date$minute(d));
-			case 'S':
-				return A2(
-					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
-					_elm_lang$core$Native_Utils.chr('0'),
-					_elm_lang$core$Date$second(d));
-			case 'L':
-				return A3(
-					_rluiten$elm_date_extra$Date_Extra_Format$padWithN,
-					3,
-					_elm_lang$core$Native_Utils.chr('0'),
-					_elm_lang$core$Date$millisecond(d));
-			case '%':
-				return symbol;
-			case 'z':
-				return A2(_rluiten$elm_date_extra$Date_Extra_Format$formatOffsetStr, '', offset);
-			case ':z':
-				return A2(_rluiten$elm_date_extra$Date_Extra_Format$formatOffsetStr, ':', offset);
-			default:
-				return '';
-		}
-	});
-var _rluiten$elm_date_extra$Date_Extra_Format$formatRegex = _elm_lang$core$Regex$regex('%(y|Y|m|_m|-m|B|^B|b|^b|d|-d|-@d|e|@e|A|^A|a|^a|H|-H|k|I|-I|l|p|P|M|S|%|L|z|:z)');
-var _rluiten$elm_date_extra$Date_Extra_Format$formatOffset = F4(
-	function (config, targetOffset, formatStr, date) {
-		var dateOffset = _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(date);
-		var hackOffset = dateOffset - targetOffset;
-		return A4(
-			_elm_lang$core$Regex$replace,
-			_elm_lang$core$Regex$All,
-			_rluiten$elm_date_extra$Date_Extra_Format$formatRegex,
-			A3(
-				_rluiten$elm_date_extra$Date_Extra_Format$formatToken,
-				config,
-				targetOffset,
-				A2(_rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset, hackOffset, date)),
-			formatStr);
-	});
-var _rluiten$elm_date_extra$Date_Extra_Format$format = F3(
-	function (config, formatStr, date) {
-		return A4(
-			_rluiten$elm_date_extra$Date_Extra_Format$formatOffset,
-			config,
-			_rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(date),
-			formatStr,
-			date);
-	});
-var _rluiten$elm_date_extra$Date_Extra_Format$formatUtc = F3(
-	function (config, formatStr, date) {
-		return A4(_rluiten$elm_date_extra$Date_Extra_Format$formatOffset, config, 0, formatStr, date);
-	});
-var _rluiten$elm_date_extra$Date_Extra_Format$isoDateString = function (date) {
-	var day = _elm_lang$core$Date$day(date);
-	var month = _elm_lang$core$Date$month(date);
-	var year = _elm_lang$core$Date$year(date);
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		A3(
-			_elm_lang$core$String$padLeft,
-			4,
-			_elm_lang$core$Native_Utils.chr('0'),
-			_elm_lang$core$Basics$toString(year)),
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			'-',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				A3(
-					_elm_lang$core$String$padLeft,
-					2,
-					_elm_lang$core$Native_Utils.chr('0'),
-					_elm_lang$core$Basics$toString(
-						_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month))),
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'-',
-					A3(
-						_elm_lang$core$String$padLeft,
-						2,
-						_elm_lang$core$Native_Utils.chr('0'),
-						_elm_lang$core$Basics$toString(day))))));
-};
-var _rluiten$elm_date_extra$Date_Extra_Format$utcIsoDateString = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Format$isoDateString(
-		_rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsUtc(date));
-};
-var _rluiten$elm_date_extra$Date_Extra_Format$yearInt = function (year) {
-	return A3(
-		_elm_lang$core$String$padLeft,
-		4,
-		_elm_lang$core$Native_Utils.chr('0'),
-		_elm_lang$core$Basics$toString(year));
-};
-var _rluiten$elm_date_extra$Date_Extra_Format$year = function (date) {
-	return A3(
-		_elm_lang$core$String$padLeft,
-		4,
-		_elm_lang$core$Native_Utils.chr('0'),
-		_elm_lang$core$Basics$toString(
-			_elm_lang$core$Date$year(date)));
-};
-var _rluiten$elm_date_extra$Date_Extra_Format$monthMonth = function (month) {
-	return A3(
-		_elm_lang$core$String$padLeft,
-		2,
-		_elm_lang$core$Native_Utils.chr('0'),
-		_elm_lang$core$Basics$toString(
-			_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month)));
-};
-var _rluiten$elm_date_extra$Date_Extra_Format$month = function (date) {
-	return A3(
-		_elm_lang$core$String$padLeft,
-		2,
-		_elm_lang$core$Native_Utils.chr('0'),
-		_elm_lang$core$Basics$toString(
-			_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
-				_elm_lang$core$Date$month(date))));
-};
-var _rluiten$elm_date_extra$Date_Extra_Format$isoTimeFormat = '%H:%M:%S';
-var _rluiten$elm_date_extra$Date_Extra_Format$isoDateFormat = '%Y-%m-%d';
-var _rluiten$elm_date_extra$Date_Extra_Format$isoMsecOffsetFormat = '%Y-%m-%dT%H:%M:%S.%L%:z';
-var _rluiten$elm_date_extra$Date_Extra_Format$isoString = A2(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config, _rluiten$elm_date_extra$Date_Extra_Format$isoMsecOffsetFormat);
-var _rluiten$elm_date_extra$Date_Extra_Format$isoOffsetFormat = '%Y-%m-%dT%H:%M:%S%z';
-var _rluiten$elm_date_extra$Date_Extra_Format$isoMsecFormat = '%Y-%m-%dT%H:%M:%S.%L';
-var _rluiten$elm_date_extra$Date_Extra_Format$isoStringNoOffset = A2(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config, _rluiten$elm_date_extra$Date_Extra_Format$isoMsecFormat);
-var _rluiten$elm_date_extra$Date_Extra_Format$utcIsoString = function (date) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		A3(_rluiten$elm_date_extra$Date_Extra_Format$formatUtc, _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config, _rluiten$elm_date_extra$Date_Extra_Format$isoMsecFormat, date),
-		'Z');
-};
-var _rluiten$elm_date_extra$Date_Extra_Format$isoFormat = '%Y-%m-%dT%H:%M:%S';
-
-var _gdotdesign$elm_ui$Ui_Native_FileManager$download = F3(
-	function (filename, mimeType, data) {
-		return A3(_gdotdesign$elm_ui$Native_FileManager.download, filename, mimeType, data);
-	});
-var _gdotdesign$elm_ui$Ui_Native_FileManager$openMultipleDecoder = F2(
-	function (accept, msg) {
-		return A2(
-			_elm_lang$core$Json_Decode$map,
-			msg,
-			_gdotdesign$elm_ui$Native_FileManager.openMultipleDecoder(accept));
-	});
-var _gdotdesign$elm_ui$Ui_Native_FileManager$openSingleDecoder = F2(
-	function (accept, msg) {
-		return A2(
-			_elm_lang$core$Json_Decode$map,
-			msg,
-			_gdotdesign$elm_ui$Native_FileManager.openSingleDecoder(accept));
-	});
-var _gdotdesign$elm_ui$Ui_Native_FileManager$toFormData = F2(
-	function (key, file) {
-		return A2(
-			_elm_lang$http$Http$stringPart,
-			key,
-			_gdotdesign$elm_ui$Native_FileManager.toFormData(file));
-	});
-var _gdotdesign$elm_ui$Ui_Native_FileManager$readAsDataURL = function (file) {
-	return _gdotdesign$elm_ui$Native_FileManager.readAsDataURL(file);
-};
-var _gdotdesign$elm_ui$Ui_Native_FileManager$readAsString = function (file) {
-	return _gdotdesign$elm_ui$Native_FileManager.readAsString(file);
-};
-var _gdotdesign$elm_ui$Ui_Native_FileManager$File = F4(
-	function (a, b, c, d) {
-		return {mimeType: a, name: b, size: c, data: d};
-	});
-var _gdotdesign$elm_ui$Ui_Native_FileManager$Data = {ctor: 'Data'};
-
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$onSelfMsg = F3(
-	function (router, message, model) {
-		return _elm_lang$core$Task$succeed(model);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$onEffects = F4(
-	function (router, commands, subscriptions, model) {
-		var send = F3(
-			function (targetId, value, _p0) {
-				var _p1 = _p0;
-				return A2(
-					_elm_lang$core$Platform$sendToApp,
-					router,
-					_p1._1(value));
-			});
-		var sendCommandMessages = function (_p2) {
-			var _p3 = _p2;
-			var _p6 = _p3._0;
-			return A2(
-				_elm_lang$core$List$map,
-				A2(send, _p6, _p3._1),
-				A2(
-					_elm_lang$core$List$filter,
-					function (_p4) {
-						var _p5 = _p4;
-						return _elm_lang$core$Native_Utils.eq(_p5._0, _p6);
-					},
-					subscriptions));
-		};
-		var tasks = A3(
-			_elm_lang$core$List$foldr,
-			F2(
-				function (x, y) {
-					return A2(_elm_lang$core$Basics_ops['++'], x, y);
-				}),
-			{ctor: '[]'},
-			A2(_elm_lang$core$List$map, sendCommandMessages, commands));
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (_p7) {
-				return _elm_lang$core$Task$succeed(model);
-			},
-			_elm_lang$core$Task$sequence(tasks));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$init = _elm_lang$core$Task$succeed(
-	{});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$decode = F4(
-	function (decoder, $default, msg, value) {
-		return msg(
-			A2(
-				_elm_lang$core$Result$withDefault,
-				$default,
-				A2(_elm_lang$core$Json_Decode$decodeValue, decoder, value)));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$decodeString = F2(
-	function ($default, msg) {
-		return A3(_gdotdesign$elm_ui$Ui_Helpers_Emitter$decode, _elm_lang$core$Json_Decode$string, $default, msg);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$decodeFloat = F2(
-	function ($default, msg) {
-		return A3(_gdotdesign$elm_ui$Ui_Helpers_Emitter$decode, _elm_lang$core$Json_Decode$float, $default, msg);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$decodeInt = F2(
-	function ($default, msg) {
-		return A3(_gdotdesign$elm_ui$Ui_Helpers_Emitter$decode, _elm_lang$core$Json_Decode$int, $default, msg);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$decodeBool = F2(
-	function ($default, msg) {
-		return A3(_gdotdesign$elm_ui$Ui_Helpers_Emitter$decode, _elm_lang$core$Json_Decode$bool, $default, msg);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$subscription = _elm_lang$core$Native_Platform.leaf('Ui.Helpers.Emitter');
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$command = _elm_lang$core$Native_Platform.leaf('Ui.Helpers.Emitter');
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$State = {};
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$Send = F2(
-	function (a, b) {
-		return {ctor: 'Send', _0: a, _1: b};
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$send = F2(
-	function (id, value) {
-		return _gdotdesign$elm_ui$Ui_Helpers_Emitter$command(
-			A2(_gdotdesign$elm_ui$Ui_Helpers_Emitter$Send, id, value));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$sendString = F2(
-	function (id, value) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Emitter$send,
-			id,
-			_elm_lang$core$Json_Encode$string(value));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$sendFloat = F2(
-	function (id, value) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Emitter$send,
-			id,
-			_elm_lang$core$Json_Encode$float(value));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$sendInt = F2(
-	function (id, value) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Emitter$send,
-			id,
-			_elm_lang$core$Json_Encode$int(value));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$sendBool = F2(
-	function (id, value) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Emitter$send,
-			id,
-			_elm_lang$core$Json_Encode$bool(value));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$sendFile = F2(
-	function (id, value) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Emitter$send,
-			id,
-			_gdotdesign$elm_ui$Native_FileManager.identity(value));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$sendNaked = function (id) {
-	return _gdotdesign$elm_ui$Ui_Helpers_Emitter$command(
-		A2(_gdotdesign$elm_ui$Ui_Helpers_Emitter$Send, id, _elm_lang$core$Json_Encode$null));
-};
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$cmdMap = F2(
-	function (_p9, _p8) {
-		var _p10 = _p8;
-		return A2(_gdotdesign$elm_ui$Ui_Helpers_Emitter$Send, _p10._0, _p10._1);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$Listen = F2(
-	function (a, b) {
-		return {ctor: 'Listen', _0: a, _1: b};
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$listen = F2(
-	function (id, tagger) {
-		return _gdotdesign$elm_ui$Ui_Helpers_Emitter$subscription(
-			A2(_gdotdesign$elm_ui$Ui_Helpers_Emitter$Listen, id, tagger));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$listenNaked = F2(
-	function (id, msg) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Emitter$listen,
-			id,
-			function (_p11) {
-				return msg;
-			});
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$listenString = F2(
-	function (id, tagger) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Emitter$listen,
-			id,
-			A2(_gdotdesign$elm_ui$Ui_Helpers_Emitter$decodeString, '', tagger));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$listenFloat = F2(
-	function (id, tagger) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Emitter$listen,
-			id,
-			A2(_gdotdesign$elm_ui$Ui_Helpers_Emitter$decodeFloat, 0, tagger));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$listenInt = F2(
-	function (id, tagger) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Emitter$listen,
-			id,
-			A2(_gdotdesign$elm_ui$Ui_Helpers_Emitter$decodeInt, 0, tagger));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$listenBool = F2(
-	function (id, tagger) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Emitter$listen,
-			id,
-			A2(_gdotdesign$elm_ui$Ui_Helpers_Emitter$decodeBool, false, tagger));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$listenFile = F2(
-	function (id, tagger) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Emitter$listen,
-			id,
-			_gdotdesign$elm_ui$Native_FileManager.identitiyTag(tagger));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$subMap = F2(
-	function (func, sub) {
-		var _p12 = sub;
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Emitter$Listen,
-			_p12._0,
-			function (_p13) {
-				return func(
-					_p12._1(_p13));
-			});
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Emitter$Msg = {ctor: 'Msg'};
-_elm_lang$core$Native_Platform.effectManagers['Ui.Helpers.Emitter'] = {pkg: 'gdotdesign/elm-ui', init: _gdotdesign$elm_ui$Ui_Helpers_Emitter$init, onEffects: _gdotdesign$elm_ui$Ui_Helpers_Emitter$onEffects, onSelfMsg: _gdotdesign$elm_ui$Ui_Helpers_Emitter$onSelfMsg, tag: 'fx', cmdMap: _gdotdesign$elm_ui$Ui_Helpers_Emitter$cmdMap, subMap: _gdotdesign$elm_ui$Ui_Helpers_Emitter$subMap};
-
-var _gdotdesign$elm_ui$Ui_Native_Uid$uid = _gdotdesign$elm_ui$Native_Uid.uid;
-
-var _gdotdesign$elm_ui$Ui_Styles_Container$style = function (theme) {
-	return _gdotdesign$elm_ui$Ui_Css$mixin(
-		{
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$flex),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_gdotdesign$elm_ui$Ui_Css$selector,
-					'&[direction=row]',
-					{
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Ui_Css_Properties$flexDirection(_gdotdesign$elm_ui$Ui_Css_Properties$row),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_gdotdesign$elm_ui$Ui_Css$selector,
-								'&:not([compact]) > * + *',
-								{
-									ctor: '::',
-									_0: _gdotdesign$elm_ui$Ui_Css_Properties$marginLeft(
-										_gdotdesign$elm_ui$Ui_Css_Properties$px(10)),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_gdotdesign$elm_ui$Ui_Css$selector,
-						'&[direction=column]',
-						{
-							ctor: '::',
-							_0: _gdotdesign$elm_ui$Ui_Css_Properties$flexDirection(_gdotdesign$elm_ui$Ui_Css_Properties$column),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_gdotdesign$elm_ui$Ui_Css$selector,
-									'&:not([compact]) > * + *',
-									{
-										ctor: '::',
-										_0: _gdotdesign$elm_ui$Ui_Css_Properties$marginTop(
-											_gdotdesign$elm_ui$Ui_Css_Properties$px(10)),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_gdotdesign$elm_ui$Ui_Css$selector,
-							'&[align=start]',
-							{
-								ctor: '::',
-								_0: _gdotdesign$elm_ui$Ui_Css_Properties$justifyContent(_gdotdesign$elm_ui$Ui_Css_Properties$flexStart),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_gdotdesign$elm_ui$Ui_Css$selector,
-								'&[align=center]',
-								{
-									ctor: '::',
-									_0: _gdotdesign$elm_ui$Ui_Css_Properties$justifyContent(_gdotdesign$elm_ui$Ui_Css_Properties$center),
-									_1: {ctor: '[]'}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_gdotdesign$elm_ui$Ui_Css$selector,
-									'&[align=space-between]',
-									{
-										ctor: '::',
-										_0: _gdotdesign$elm_ui$Ui_Css_Properties$justifyContent(_gdotdesign$elm_ui$Ui_Css_Properties$spaceBetween),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_gdotdesign$elm_ui$Ui_Css$selector,
-										'&[align=space-around]',
-										{
-											ctor: '::',
-											_0: _gdotdesign$elm_ui$Ui_Css_Properties$justifyContent(_gdotdesign$elm_ui$Ui_Css_Properties$spaceAround),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_gdotdesign$elm_ui$Ui_Css$selector,
-											'&[align=end]',
-											{
-												ctor: '::',
-												_0: _gdotdesign$elm_ui$Ui_Css_Properties$justifyContent(_gdotdesign$elm_ui$Ui_Css_Properties$flexEnd),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Styles_Container$defaultStyle = _gdotdesign$elm_ui$Ui_Styles$attributes(
-	_gdotdesign$elm_ui$Ui_Styles_Container$style(_gdotdesign$elm_ui$Ui_Styles_Theme$default));
-
-var _gdotdesign$elm_ui$Ui_Container$basAttributes = function (model) {
-	return _elm_lang$core$List$concat(
-		{
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui$attributeList(
-				{
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 'compact', _1: model.compact},
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Styles$apply(_gdotdesign$elm_ui$Ui_Styles_Container$defaultStyle),
-				_1: {
-					ctor: '::',
-					_0: {
-						ctor: '::',
-						_0: A2(_elm_lang$html$Html_Attributes$attribute, 'direction', model.direction),
-						_1: {
-							ctor: '::',
-							_0: A2(_elm_lang$html$Html_Attributes$attribute, 'align', model.align),
-							_1: {ctor: '[]'}
-						}
-					},
-					_1: {ctor: '[]'}
-				}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Container$columnOptions = {direction: 'column', compact: false, align: 'start'};
-var _gdotdesign$elm_ui$Ui_Container$rowOptions = {direction: 'row', compact: false, align: 'start'};
-var _gdotdesign$elm_ui$Ui_Container$render = F3(
-	function (model, attributes, children) {
-		return A3(
-			_elm_lang$html$Html$node,
-			'ui-container',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				_gdotdesign$elm_ui$Ui_Container$basAttributes(model),
-				attributes),
-			children);
-	});
-var _gdotdesign$elm_ui$Ui_Container$row = F2(
-	function (attributes, children) {
-		return A4(_elm_lang$html$Html_Lazy$lazy3, _gdotdesign$elm_ui$Ui_Container$render, _gdotdesign$elm_ui$Ui_Container$rowOptions, attributes, children);
-	});
-var _gdotdesign$elm_ui$Ui_Container$rowCenter = F2(
-	function (attributes, children) {
-		return A4(
-			_elm_lang$html$Html_Lazy$lazy3,
-			_gdotdesign$elm_ui$Ui_Container$render,
-			_elm_lang$core$Native_Utils.update(
-				_gdotdesign$elm_ui$Ui_Container$rowOptions,
-				{align: 'center'}),
-			attributes,
-			children);
-	});
-var _gdotdesign$elm_ui$Ui_Container$rowEnd = F2(
-	function (attributes, children) {
-		return A4(
-			_elm_lang$html$Html_Lazy$lazy3,
-			_gdotdesign$elm_ui$Ui_Container$render,
-			_elm_lang$core$Native_Utils.update(
-				_gdotdesign$elm_ui$Ui_Container$rowOptions,
-				{align: 'end'}),
-			attributes,
-			children);
-	});
-var _gdotdesign$elm_ui$Ui_Container$column = F2(
-	function (attributes, children) {
-		return A4(_elm_lang$html$Html_Lazy$lazy3, _gdotdesign$elm_ui$Ui_Container$render, _gdotdesign$elm_ui$Ui_Container$columnOptions, attributes, children);
-	});
-var _gdotdesign$elm_ui$Ui_Container$columnCenter = F2(
-	function (attributes, children) {
-		return A4(
-			_elm_lang$html$Html_Lazy$lazy3,
-			_gdotdesign$elm_ui$Ui_Container$render,
-			_elm_lang$core$Native_Utils.update(
-				_gdotdesign$elm_ui$Ui_Container$columnOptions,
-				{align: 'center'}),
-			attributes,
-			children);
-	});
-var _gdotdesign$elm_ui$Ui_Container$columnEnd = F2(
-	function (attributes, children) {
-		return A4(
-			_elm_lang$html$Html_Lazy$lazy3,
-			_gdotdesign$elm_ui$Ui_Container$render,
-			_elm_lang$core$Native_Utils.update(
-				_gdotdesign$elm_ui$Ui_Container$columnOptions,
-				{align: 'end'}),
-			attributes,
-			children);
-	});
-var _gdotdesign$elm_ui$Ui_Container$view = F3(
-	function (model, attributes, children) {
-		return A4(_elm_lang$html$Html_Lazy$lazy3, _gdotdesign$elm_ui$Ui_Container$render, model, attributes, children);
-	});
-var _gdotdesign$elm_ui$Ui_Container$Model = F3(
-	function (a, b, c) {
-		return {direction: a, align: b, compact: c};
-	});
-
-var _gdotdesign$elm_ui$Ui_Icons$icon = F2(
-	function (iconPath, attributes) {
-		return A2(
-			_elm_lang$svg$Svg$svg,
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				{
-					ctor: '::',
-					_0: _elm_lang$svg$Svg_Attributes$width('36'),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$svg$Svg_Attributes$height('36'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$svg$Svg_Attributes$viewBox('0 0 36 36'),
-							_1: {ctor: '[]'}
-						}
-					}
-				},
-				attributes),
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$svg$Svg$path,
-					{
-						ctor: '::',
-						_0: _elm_lang$svg$Svg_Attributes$d(iconPath),
-						_1: {ctor: '[]'}
-					},
-					{ctor: '[]'}),
-				_1: {ctor: '[]'}
-			});
-	});
-var _gdotdesign$elm_ui$Ui_Icons$backspace = _gdotdesign$elm_ui$Ui_Icons$icon('\n    M35.082 6.578c-.626-.626-1.424-.953-2.325-.953H11.813c-1.71\n    0-3.074.66-4.058 2L0 17.995 7.763 28.3l.012.017.013.016c.486.624 1.014\n    1.105 1.617 1.437.712.392 1.522.608 2.407.608h20.954c1.84 0 3.234-1.565\n    3.234-3.445v-18c0-.902-.292-1.726-.918-2.352zM29.07\n    23.365c.108.107.167.25.167.402 0 .15-.06.295-.167.4l-1.534\n    1.54c-.11.113-.255.168-.4.168-.146 0-.29-.055-.4-.167l-5.36-5.376-5.36\n    5.376c-.11.112-.256.167-.4.167-.146\n    0-.29-.055-.4-.167l-1.536-1.54c-.107-.106-.167-.25-.167-.4\n    0-.152.06-.296.167-.403L19.062 18l-5.396-5.365c-.22-.22-.22-.58\n    0-.803l1.533-1.54c.106-.108.25-.167.4-.167.15 0 .294.06.4.166l5.375 5.312\n    5.375-5.31c.106-.108.25-.167.4-.167.15 0 .294.06.4.166l1.534\n    1.542c.222.222.222.582 0 .803L23.69 18l5.38 5.365z\n    ');
-var _gdotdesign$elm_ui$Ui_Icons$checkmark = _gdotdesign$elm_ui$Ui_Icons$icon('\n    M35.792 5.332L31.04 1.584c-.147-.12-.33-.208-.537-.208-.207\n    0-.398.087-.545.217l-17.286 22.21S5.877 17.27 5.687\n    17.08c-.19-.19-.442-.51-.822-.51-.38 0-.554.268-.753.467-.148.156-2.57\n    2.7-3.766 3.964-.07.077-.112.12-.173.18-.104.148-.173.313-.173.494 0\n    .19.07.347.173.494l.242.225s12.058 11.582 12.257 11.78c.2.2.442.45.797.45.345\n    0 .63-.37.795-.536l21.562-27.7c.104-.146.173-.31.173-.5 0-.217-.087-.4-.208-.555z\n    ');
-var _gdotdesign$elm_ui$Ui_Icons$chevronLeft = _gdotdesign$elm_ui$Ui_Icons$icon('\n    M14.597 17.996L28.037\n    4c.34-.345.33-.916-.015-1.27L25.618.27c-.345-.353-.908-.36-1.246-.016L7.957\n    17.344c-.177.178-.257.42-.24.652-.01.24.07.474.24.65l16.415\n    17.1c.338.345.9.337 1.246-.016l2.404-2.46c.346-.354.354-.925.016-1.27l-13.44-14.004z\n    ');
-var _gdotdesign$elm_ui$Ui_Icons$chevronRight = _gdotdesign$elm_ui$Ui_Icons$icon('\n    M21.403 17.996L7.963 4c-.34-.345-.33-.916.015-1.27L10.382.27c.345-.353.908-.36\n    1.246-.016l16.415 17.1c.177.176.257.417.24.65.01.24-.07.474-.24.65L11.628\n    35.747c-.338.345-.9.337-1.246-.016l-2.404-2.46c-.346-.354-.354-.925-.016-1.27l13.44-14.004z\n    ');
-var _gdotdesign$elm_ui$Ui_Icons$close = _gdotdesign$elm_ui$Ui_Icons$icon('\n    M35.592 30.256l-12.3-12.34L35.62 5.736c.507-.507.507-1.332\n    0-1.838L32.114.375C31.87.13 31.542 0 31.194 0c-.346\n    0-.674.14-.917.375L18.005 12.518 5.715.384C5.47.14 5.14.01\n    4.794.01c-.347 0-.675.14-.918.374L.38 3.907c-.507.506-.507\n    1.33 0 1.837l12.328 12.18L.418 30.257c-.245.244-.385.572-.385.918\n    0 .347.13.675.384.92l3.506 3.522c.254.253.582.384.92.384.327 0\n    .665-.122.918-.384l12.245-12.294 12.253\n    12.284c.253.253.58.385.92.385.327 0\n    .664-.12.917-.384l3.507-3.523c.243-.243.384-.57.384-.918-.01-.337-.15-.665-.394-.91z\n    ');
-var _gdotdesign$elm_ui$Ui_Icons$plus = _gdotdesign$elm_ui$Ui_Icons$icon('M0 21h15v15h6V21h15v-6H21V0h-6v15H0');
-var _gdotdesign$elm_ui$Ui_Icons$search = _gdotdesign$elm_ui$Ui_Icons$icon('\n    M35.72 30.245l-7.95-8.05c1.293-2.26 1.968-4.77 1.968-7.302C29.738\n    6.683 23.063 0 14.868 0 6.676 0 0 6.683 0 14.893s6.675 14.893 14.87\n    14.893c2.614 0 5.202-.722 7.508-2.1l7.913\n    8.023c.18.178.432.29.685.29.253 0\n    .506-.103.684-.29l4.06-4.106c.374-.384.374-.984 0-1.36zM14.87\n    5.802c5.005 0 9.074 4.077 9.074 9.09 0 5.015-4.07 9.092-9.075\n    9.092-5.008 0-9.076-4.077-9.076-9.09 0-5.015 4.068-9.092 9.075-9.092z\n    ');
-var _gdotdesign$elm_ui$Ui_Icons$starFull = _gdotdesign$elm_ui$Ui_Icons$icon('\n    M23.055 12.826L18 .89l-5.056 11.936L0 13.936l9.82 8.514-2.944 12.66L18\n    28.397l11.123 6.71L26.18 22.45 36 13.937\n    ');
-var _gdotdesign$elm_ui$Ui_Icons$starEmpty = _gdotdesign$elm_ui$Ui_Icons$icon('\n    M36 13.937l-12.945-1.11L18 .89l-5.056 11.936L0 13.936l9.82 8.513-2.944\n    12.66L18 28.397l11.123 6.71L26.18 22.45 36 13.937zm-16.527 12.02L18\n    25.066l-1.473.89-5.345 3.224 1.415-6.085.39-1.674-1.3-1.125L6.965\n    16.2l6.223-.533 1.71-.147.67-1.582L18 8.2l2.43 5.738.67 1.582 1.712.147\n    6.223.534-4.722 4.095-1.3 1.126.39 1.675 1.415 6.086-5.345-3.224z\n    ');
-var _gdotdesign$elm_ui$Ui_Icons$calendar = _gdotdesign$elm_ui$Ui_Icons$icon('\n    M9 0C7.578 0 6.428 1.15 6.428 2.572v2.57c0 1.423 1.15 2.573 2.572 2.573\n    1.422 0 2.572-1.15 2.572-2.572v-2.57C11.572 1.15 10.422 0 9 0zm18 0c-1.422\n    0-2.572 1.15-2.572 2.572v2.57c0 1.423 1.15 2.573 2.572 2.573 1.422 0\n    2.572-1.15 2.572-2.572v-2.57C29.572 1.15 28.422 0 27 0zM.643 2.572c-.354\n    0-.643.29-.643.643v32.142c0 .354.29.643.643.643h34.714c.354 0\n    .643-.29.643-.643V3.215c0-.354-.29-.643-.643-.643h-4.5v3.27C30.857 7.65\n    28.993 9 27.064 9c-1.928 0-3.92-1.35-3.92-3.158v-3.27H12.856v3.27C12.857\n    7.65 10.93 9 9 9 7.07 9 5.143 7.65 5.143 5.842v-3.27h-4.5zm3.214\n    9h28.286v20.57H3.857v-20.57z\n    ');
-
-var _gdotdesign$elm_ui$Ui_Styles_Calendar$style = function (theme) {
-	return _gdotdesign$elm_ui$Ui_Css$mixin(
-		{
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$defaults,
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Css_Properties$border(
-					A2(
-						_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-						A2(
-							_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-							_gdotdesign$elm_ui$Ui_Css_Properties$px(1),
-							_gdotdesign$elm_ui$Ui_Css_Properties$solid),
-						theme.colors.border)),
-				_1: {
-					ctor: '::',
-					_0: _gdotdesign$elm_ui$Ui_Css_Properties$backgroundColor(theme.colors.input.color),
-					_1: {
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Ui_Css_Properties$transform(
-							{
-								ctor: '::',
-								_0: A3(_gdotdesign$elm_ui$Ui_Css_Properties$translate3d, _gdotdesign$elm_ui$Ui_Css_Properties$zero, _gdotdesign$elm_ui$Ui_Css_Properties$zero, _gdotdesign$elm_ui$Ui_Css_Properties$zero),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderRadius(theme.borderRadius),
-							_1: {
-								ctor: '::',
-								_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.colors.input.bw),
-								_1: {
-									ctor: '::',
-									_0: _gdotdesign$elm_ui$Ui_Css_Properties$fontFamily(theme.fontFamily),
-									_1: {
-										ctor: '::',
-										_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$inlineBlock),
-										_1: {
-											ctor: '::',
-											_0: _gdotdesign$elm_ui$Ui_Css_Properties$userSelect(_gdotdesign$elm_ui$Ui_Css_Properties$none),
-											_1: {
-												ctor: '::',
-												_0: _gdotdesign$elm_ui$Ui_Css_Properties$padding(
-													_gdotdesign$elm_ui$Ui_Css_Properties$px(15)),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_gdotdesign$elm_ui$Ui_Css$selector,
-														'> ui-container',
-														{
-															ctor: '::',
-															_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderBottom(
-																A2(
-																	_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																	A2(
-																		_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																		_gdotdesign$elm_ui$Ui_Css_Properties$px(1),
-																		_gdotdesign$elm_ui$Ui_Css_Properties$dashed),
-																	theme.colors.border)),
-															_1: {
-																ctor: '::',
-																_0: _gdotdesign$elm_ui$Ui_Css_Properties$padding(
-																	A2(
-																		_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																		A2(
-																			_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																			A2(
-																				_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																				_gdotdesign$elm_ui$Ui_Css_Properties$zero,
-																				_gdotdesign$elm_ui$Ui_Css_Properties$px(5)),
-																			_gdotdesign$elm_ui$Ui_Css_Properties$px(10)),
-																		_gdotdesign$elm_ui$Ui_Css_Properties$px(5))),
-																_1: {
-																	ctor: '::',
-																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$alignItems(_gdotdesign$elm_ui$Ui_Css_Properties$center),
-																	_1: {
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$height(
-																			_gdotdesign$elm_ui$Ui_Css_Properties$px(35)),
-																		_1: {
-																			ctor: '::',
-																			_0: A2(
-																				_gdotdesign$elm_ui$Ui_Css$selector,
-																				'div',
-																				{
-																					ctor: '::',
-																					_0: _gdotdesign$elm_ui$Ui_Css_Properties$justifyContent(_gdotdesign$elm_ui$Ui_Css_Properties$center),
-																					_1: {
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$position(_gdotdesign$elm_ui$Ui_Css_Properties$relative),
-																						_1: {
-																							ctor: '::',
-																							_0: _gdotdesign$elm_ui$Ui_Css_Properties$alignItems(_gdotdesign$elm_ui$Ui_Css_Properties$center),
-																							_1: {
-																								ctor: '::',
-																								_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$flex),
-																								_1: {
-																									ctor: '::',
-																									_0: _gdotdesign$elm_ui$Ui_Css_Properties$top(
-																										_gdotdesign$elm_ui$Ui_Css_Properties$px(2)),
-																									_1: {
-																										ctor: '::',
-																										_0: _gdotdesign$elm_ui$Ui_Css_Properties$flex_('1'),
-																										_1: {ctor: '[]'}
-																									}
-																								}
-																							}
-																						}
-																					}
-																				}),
-																			_1: {
-																				ctor: '::',
-																				_0: A2(
-																					_gdotdesign$elm_ui$Ui_Css$selector,
-																					'svg',
-																					{
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$fill(_gdotdesign$elm_ui$Ui_Css_Properties$currentColor),
-																						_1: {
-																							ctor: '::',
-																							_0: _gdotdesign$elm_ui$Ui_Css_Properties$cursor(_gdotdesign$elm_ui$Ui_Css_Properties$pointer),
-																							_1: {
-																								ctor: '::',
-																								_0: _gdotdesign$elm_ui$Ui_Css_Properties$height(
-																									_gdotdesign$elm_ui$Ui_Css_Properties$px(16)),
-																								_1: {
-																									ctor: '::',
-																									_0: _gdotdesign$elm_ui$Ui_Css_Properties$width(
-																										_gdotdesign$elm_ui$Ui_Css_Properties$px(16)),
-																									_1: {
-																										ctor: '::',
-																										_0: A2(
-																											_gdotdesign$elm_ui$Ui_Css$selector,
-																											'&:hover',
-																											{
-																												ctor: '::',
-																												_0: _gdotdesign$elm_ui$Ui_Css_Properties$fill(theme.colors.focus.color),
-																												_1: {ctor: '[]'}
-																											}),
-																										_1: {ctor: '[]'}
-																									}
-																								}
-																							}
-																						}
-																					}),
-																				_1: {ctor: '[]'}
-																			}
-																		}
-																	}
-																}
-															}
-														}),
-													_1: {
-														ctor: '::',
-														_0: A2(
-															_gdotdesign$elm_ui$Ui_Css$selector,
-															'ui-calendar-table',
-															{
-																ctor: '::',
-																_0: _gdotdesign$elm_ui$Ui_Css_Properties$justifyContent(_gdotdesign$elm_ui$Ui_Css_Properties$spaceAround),
-																_1: {
-																	ctor: '::',
-																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$width(
-																		_gdotdesign$elm_ui$Ui_Css_Properties$px(300)),
-																	_1: {
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$flexWrap(_gdotdesign$elm_ui$Ui_Css_Properties$wrap),
-																		_1: {
-																			ctor: '::',
-																			_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$flex),
-																			_1: {ctor: '[]'}
-																		}
-																	}
-																}
-															}),
-														_1: {
-															ctor: '::',
-															_0: A2(
-																_gdotdesign$elm_ui$Ui_Css$selector,
-																'ui-calendar-header',
-																{
-																	ctor: '::',
-																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderBottom(
-																		A2(
-																			_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																			A2(
-																				_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																				_gdotdesign$elm_ui$Ui_Css_Properties$px(1),
-																				_gdotdesign$elm_ui$Ui_Css_Properties$dashed),
-																			theme.colors.border)),
-																	_1: {
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$justifyContent(_gdotdesign$elm_ui$Ui_Css_Properties$spaceAround),
-																		_1: {
-																			ctor: '::',
-																			_0: _gdotdesign$elm_ui$Ui_Css_Properties$marginBottom(
-																				_gdotdesign$elm_ui$Ui_Css_Properties$px(5)),
-																			_1: {
-																				ctor: '::',
-																				_0: _gdotdesign$elm_ui$Ui_Css_Properties$width(
-																					_gdotdesign$elm_ui$Ui_Css_Properties$px(300)),
-																				_1: {
-																					ctor: '::',
-																					_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$flex),
-																					_1: {
-																						ctor: '::',
-																						_0: A2(
-																							_gdotdesign$elm_ui$Ui_Css$selector,
-																							'span',
-																							{
-																								ctor: '::',
-																								_0: _gdotdesign$elm_ui$Ui_Css_Properties$textTransform(_gdotdesign$elm_ui$Ui_Css_Properties$uppercase),
-																								_1: {
-																									ctor: '::',
-																									_0: _gdotdesign$elm_ui$Ui_Css_Properties$margin(
-																										A2(
-																											_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																											_gdotdesign$elm_ui$Ui_Css_Properties$px(7),
-																											_gdotdesign$elm_ui$Ui_Css_Properties$zero)),
-																									_1: {
-																										ctor: '::',
-																										_0: _gdotdesign$elm_ui$Ui_Css_Properties$textAlign(_gdotdesign$elm_ui$Ui_Css_Properties$center),
-																										_1: {
-																											ctor: '::',
-																											_0: _gdotdesign$elm_ui$Ui_Css_Properties$fontSize(
-																												_gdotdesign$elm_ui$Ui_Css_Properties$px(12)),
-																											_1: {
-																												ctor: '::',
-																												_0: _gdotdesign$elm_ui$Ui_Css_Properties$fontWeight(_gdotdesign$elm_ui$Ui_Css_Properties$bold),
-																												_1: {
-																													ctor: '::',
-																													_0: _gdotdesign$elm_ui$Ui_Css_Properties$width(
-																														_gdotdesign$elm_ui$Ui_Css_Properties$px(34)),
-																													_1: {
-																														ctor: '::',
-																														_0: _gdotdesign$elm_ui$Ui_Css_Properties$opacity(0.7),
-																														_1: {ctor: '[]'}
-																													}
-																												}
-																											}
-																										}
-																									}
-																								}
-																							}),
-																						_1: {ctor: '[]'}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}),
-															_1: {
-																ctor: '::',
-																_0: A2(
-																	_gdotdesign$elm_ui$Ui_Css$selector,
-																	'ui-calendar-cell',
-																	{
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderRadius(theme.borderRadius),
-																		_1: {
-																			ctor: '::',
-																			_0: _gdotdesign$elm_ui$Ui_Css_Properties$justifyContent(_gdotdesign$elm_ui$Ui_Css_Properties$center),
-																			_1: {
-																				ctor: '::',
-																				_0: _gdotdesign$elm_ui$Ui_Css_Properties$lineHeight(
-																					_gdotdesign$elm_ui$Ui_Css_Properties$px(36)),
-																				_1: {
-																					ctor: '::',
-																					_0: _gdotdesign$elm_ui$Ui_Css_Properties$height(
-																						_gdotdesign$elm_ui$Ui_Css_Properties$px(34)),
-																					_1: {
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$width(
-																							_gdotdesign$elm_ui$Ui_Css_Properties$px(34)),
-																						_1: {
-																							ctor: '::',
-																							_0: _gdotdesign$elm_ui$Ui_Css_Properties$margin(
-																								_gdotdesign$elm_ui$Ui_Css_Properties$px(4)),
-																							_1: {
-																								ctor: '::',
-																								_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$flex),
-																								_1: {
-																									ctor: '::',
-																									_0: A2(
-																										_gdotdesign$elm_ui$Ui_Css$selector,
-																										'&[inactive]',
-																										{
-																											ctor: '::',
-																											_0: _gdotdesign$elm_ui$Ui_Css_Properties$opacity(0.25),
-																											_1: {ctor: '[]'}
-																										}),
-																									_1: {
-																										ctor: '::',
-																										_0: A2(
-																											_gdotdesign$elm_ui$Ui_Css$selector,
-																											'&:not(:empty)',
-																											{
-																												ctor: '::',
-																												_0: _gdotdesign$elm_ui$Ui_Css_Properties$backgroundColor(theme.colors.inputSecondary.color),
-																												_1: {
-																													ctor: '::',
-																													_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.colors.inputSecondary.bw),
-																													_1: {ctor: '[]'}
-																												}
-																											}),
-																										_1: {ctor: '[]'}
-																									}
-																								}
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}),
-																_1: {
-																	ctor: '::',
-																	_0: A2(
-																		_gdotdesign$elm_ui$Ui_Css$selector,
-																		'&:not([disabled])[selectable] ui-calendar-cell',
-																		{
-																			ctor: '::',
-																			_0: A2(
-																				_gdotdesign$elm_ui$Ui_Css$selectors,
-																				{
-																					ctor: '::',
-																					_0: '&:not([inactive]):hover',
-																					_1: {
-																						ctor: '::',
-																						_0: '&[selected]',
-																						_1: {ctor: '[]'}
-																					}
-																				},
-																				{
-																					ctor: '::',
-																					_0: _gdotdesign$elm_ui$Ui_Css_Properties$backgroundColor(theme.colors.primary.color),
-																					_1: {
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.colors.primary.bw),
-																						_1: {
-																							ctor: '::',
-																							_0: _gdotdesign$elm_ui$Ui_Css_Properties$fontWeight(_gdotdesign$elm_ui$Ui_Css_Properties$bold),
-																							_1: {
-																								ctor: '::',
-																								_0: _gdotdesign$elm_ui$Ui_Css_Properties$cursor(_gdotdesign$elm_ui$Ui_Css_Properties$pointer),
-																								_1: {ctor: '[]'}
-																							}
-																						}
-																					}
-																				}),
-																			_1: {ctor: '[]'}
-																		}),
-																	_1: {
-																		ctor: '::',
-																		_0: A2(
-																			_gdotdesign$elm_ui$Ui_Css$selector,
-																			'&[readonly]',
-																			{
-																				ctor: '::',
-																				_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$readonly,
-																				_1: {
-																					ctor: '::',
-																					_0: A2(
-																						_gdotdesign$elm_ui$Ui_Css$selector,
-																						'> *',
-																						{
-																							ctor: '::',
-																							_0: _gdotdesign$elm_ui$Ui_Css_Properties$pointerEvents(_gdotdesign$elm_ui$Ui_Css_Properties$none),
-																							_1: {ctor: '[]'}
-																						}),
-																					_1: {
-																						ctor: '::',
-																						_0: A2(
-																							_gdotdesign$elm_ui$Ui_Css$selector,
-																							'svg',
-																							{
-																								ctor: '::',
-																								_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$none),
-																								_1: {ctor: '[]'}
-																							}),
-																						_1: {ctor: '[]'}
-																					}
-																				}
-																			}),
-																		_1: {
-																			ctor: '::',
-																			_0: A2(
-																				_gdotdesign$elm_ui$Ui_Css$selector,
-																				'&[disabled]',
-																				{
-																					ctor: '::',
-																					_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$disabled,
-																					_1: {
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$backgroundColor(theme.colors.disabled.color),
-																						_1: {
-																							ctor: '::',
-																							_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.colors.disabled.bw),
-																							_1: {
-																								ctor: '::',
-																								_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderColor(_gdotdesign$elm_ui$Ui_Css_Properties$transparent),
-																								_1: {
-																									ctor: '::',
-																									_0: A2(
-																										_gdotdesign$elm_ui$Ui_Css$selectors,
-																										{
-																											ctor: '::',
-																											_0: '> ui-container',
-																											_1: {
-																												ctor: '::',
-																												_0: 'ui-calendar-header',
-																												_1: {ctor: '[]'}
-																											}
-																										},
-																										{
-																											ctor: '::',
-																											_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderBottom(
-																												A2(
-																													_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																													A2(
-																														_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																														_gdotdesign$elm_ui$Ui_Css_Properties$px(1),
-																														_gdotdesign$elm_ui$Ui_Css_Properties$dashed),
-																													theme.colors.borderDisabled)),
-																											_1: {ctor: '[]'}
-																										}),
-																									_1: {
-																										ctor: '::',
-																										_0: A2(
-																											_gdotdesign$elm_ui$Ui_Css$selector,
-																											'> *',
-																											{
-																												ctor: '::',
-																												_0: _gdotdesign$elm_ui$Ui_Css_Properties$pointerEvents(_gdotdesign$elm_ui$Ui_Css_Properties$none),
-																												_1: {ctor: '[]'}
-																											}),
-																										_1: {
-																											ctor: '::',
-																											_0: A2(
-																												_gdotdesign$elm_ui$Ui_Css$selector,
-																												'ui-calendar-cell',
-																												{
-																													ctor: '::',
-																													_0: A2(
-																														_gdotdesign$elm_ui$Ui_Css$selector,
-																														'&:not(:empty)',
-																														{
-																															ctor: '::',
-																															_0: _gdotdesign$elm_ui$Ui_Css_Properties$backgroundColor(theme.colors.disabledSecondary.color),
-																															_1: {
-																																ctor: '::',
-																																_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.colors.disabledSecondary.bw),
-																																_1: {
-																																	ctor: '::',
-																																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$opacity(0.5),
-																																	_1: {ctor: '[]'}
-																																}
-																															}
-																														}),
-																													_1: {
-																														ctor: '::',
-																														_0: A2(
-																															_gdotdesign$elm_ui$Ui_Css$selector,
-																															'&[selected]',
-																															{
-																																ctor: '::',
-																																_0: _gdotdesign$elm_ui$Ui_Css_Properties$opacity(1),
-																																_1: {ctor: '[]'}
-																															}),
-																														_1: {ctor: '[]'}
-																													}
-																												}),
-																											_1: {ctor: '[]'}
-																										}
-																									}
-																								}
-																							}
-																						}
-																					}
-																				}),
-																			_1: {ctor: '[]'}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Styles_Calendar$defaultStyle = _gdotdesign$elm_ui$Ui_Styles$attributes(
-	_gdotdesign$elm_ui$Ui_Styles_Calendar$style(_gdotdesign$elm_ui$Ui_Styles_Theme$default));
-
-var _gdotdesign$elm_ui$Ui_Calendar$dayNames = function (locale) {
-	var config = function (_) {
-		return _.i18n;
-	}(
-		_rluiten$elm_date_extra$Date_Extra_Config_Configs$getConfig(locale));
-	return A2(
-		_elm_lang$core$List$map,
-		config.dayShort,
-		{
-			ctor: '::',
-			_0: _elm_lang$core$Date$Mon,
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$core$Date$Tue,
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$core$Date$Wed,
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$core$Date$Thu,
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$core$Date$Fri,
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$core$Date$Sat,
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$core$Date$Sun,
-									_1: {ctor: '[]'}
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Calendar$paddingLeft = function (date) {
-	var _p0 = _elm_lang$core$Date$dayOfWeek(date);
-	switch (_p0.ctor) {
-		case 'Mon':
-			return 0;
-		case 'Tue':
-			return 1;
-		case 'Wed':
-			return 2;
-		case 'Thu':
-			return 3;
-		case 'Fri':
-			return 4;
-		case 'Sat':
-			return 5;
-		default:
-			return 6;
-	}
-};
-var _gdotdesign$elm_ui$Ui_Calendar$fixDate = function (model) {
-	return A2(_gdotdesign$elm_ui$Ext_Date$isSameMonth, model.date, model.value) ? model : _elm_lang$core$Native_Utils.update(
-		model,
-		{date: model.value});
-};
-var _gdotdesign$elm_ui$Ui_Calendar$previousDay = function (model) {
-	return _gdotdesign$elm_ui$Ui_Calendar$fixDate(
-		_elm_lang$core$Native_Utils.update(
-			model,
-			{
-				value: _gdotdesign$elm_ui$Ext_Date$previousDay(model.value)
-			}));
-};
-var _gdotdesign$elm_ui$Ui_Calendar$nextDay = function (model) {
-	return _gdotdesign$elm_ui$Ui_Calendar$fixDate(
-		_elm_lang$core$Native_Utils.update(
-			model,
-			{
-				value: _gdotdesign$elm_ui$Ext_Date$nextDay(model.value)
-			}));
-};
-var _gdotdesign$elm_ui$Ui_Calendar$setValue = F2(
-	function (date, model) {
-		return _gdotdesign$elm_ui$Ui_Calendar$fixDate(
-			_elm_lang$core$Native_Utils.update(
-				model,
-				{value: date}));
-	});
-var _gdotdesign$elm_ui$Ui_Calendar$update = F2(
-	function (msg, model) {
-		var _p1 = msg;
-		switch (_p1.ctor) {
-			case 'PreviousMonth':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							date: _gdotdesign$elm_ui$Ext_Date$previousMonth(model.date)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'NextMonth':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							date: _gdotdesign$elm_ui$Ext_Date$nextMonth(model.date)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			default:
-				var _p2 = _p1._0;
-				return A2(_gdotdesign$elm_ui$Ext_Date$isSameDate, model.value, _p2) ? {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none} : {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{value: _p2}),
-					_1: A2(
-						_gdotdesign$elm_ui$Ui_Helpers_Emitter$sendFloat,
-						model.uid,
-						_elm_lang$core$Date$toTime(_p2))
-				};
-		}
-	});
-var _gdotdesign$elm_ui$Ui_Calendar$onChange = F2(
-	function (msg, model) {
-		return A2(_gdotdesign$elm_ui$Ui_Helpers_Emitter$listenFloat, model.uid, msg);
-	});
-var _gdotdesign$elm_ui$Ui_Calendar$selectable = F2(
-	function (value, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{selectable: value});
-	});
-var _gdotdesign$elm_ui$Ui_Calendar$init = function (_p3) {
-	return {
-		value: _gdotdesign$elm_ui$Ext_Date$now(
-			{ctor: '_Tuple0'}),
-		date: _gdotdesign$elm_ui$Ext_Date$now(
-			{ctor: '_Tuple0'}),
-		selectable: true,
-		disabled: false,
-		readonly: false,
-		uid: _gdotdesign$elm_ui$Ui_Native_Uid$uid(
-			{ctor: '_Tuple0'})
-	};
-};
-var _gdotdesign$elm_ui$Ui_Calendar$Model = F6(
-	function (a, b, c, d, e, f) {
-		return {selectable: a, value: b, date: c, disabled: d, readonly: e, uid: f};
-	});
-var _gdotdesign$elm_ui$Ui_Calendar$NextMonth = {ctor: 'NextMonth'};
-var _gdotdesign$elm_ui$Ui_Calendar$PreviousMonth = {ctor: 'PreviousMonth'};
-var _gdotdesign$elm_ui$Ui_Calendar$Select = function (a) {
-	return {ctor: 'Select', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Calendar$renderCell = F2(
-	function (model, date) {
-		var value = model.selectable && A2(_gdotdesign$elm_ui$Ext_Date$isSameDate, date, model.value);
-		var sameMonth = A2(_gdotdesign$elm_ui$Ext_Date$isSameMonth, date, model.date);
-		var click = ((!model.disabled) && ((!model.readonly) && (model.selectable && sameMonth))) ? {
-			ctor: '::',
-			_0: _elm_lang$html$Html_Events$onClick(
-				_gdotdesign$elm_ui$Ui_Calendar$Select(date)),
-			_1: {ctor: '[]'}
-		} : {ctor: '[]'};
-		var attributes = _gdotdesign$elm_ui$Ui$attributeList(
-			{
-				ctor: '::',
-				_0: {ctor: '_Tuple2', _0: 'inactive', _1: !sameMonth},
-				_1: {
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 'selected', _1: value},
-					_1: {ctor: '[]'}
-				}
-			});
-		return A3(
-			_elm_lang$html$Html$node,
-			'ui-calendar-cell',
-			A2(_elm_lang$core$Basics_ops['++'], attributes, click),
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text(
-					_elm_lang$core$Basics$toString(
-						_elm_lang$core$Date$day(date))),
-				_1: {ctor: '[]'}
-			});
-	});
-var _gdotdesign$elm_ui$Ui_Calendar$render = F2(
-	function (locale, model) {
-		var previousAction = A2(
-			_gdotdesign$elm_ui$Ui$enabledActions,
-			model,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onClick(_gdotdesign$elm_ui$Ui_Calendar$PreviousMonth),
-				_1: {ctor: '[]'}
-			});
-		var nextAction = A2(
-			_gdotdesign$elm_ui$Ui$enabledActions,
-			model,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onClick(_gdotdesign$elm_ui$Ui_Calendar$NextMonth),
-				_1: {ctor: '[]'}
-			});
-		var month = _gdotdesign$elm_ui$Ext_Date$begginingOfMonth(model.date);
-		var dates = _gdotdesign$elm_ui$Ext_Date$datesInMonth(month);
-		var leftPadding = _gdotdesign$elm_ui$Ui_Calendar$paddingLeft(month);
-		var paddingLeftItems = _elm_lang$core$List$reverse(
-			A2(
-				_elm_lang$core$List$take,
-				_gdotdesign$elm_ui$Ui_Calendar$paddingLeft(month),
-				_elm_lang$core$List$reverse(
-					_gdotdesign$elm_ui$Ext_Date$datesInMonth(
-						_gdotdesign$elm_ui$Ext_Date$previousMonth(month)))));
-		var paddingRightItems = A2(
-			_elm_lang$core$List$take,
-			(42 - leftPadding) - _elm_lang$core$List$length(dates),
-			_gdotdesign$elm_ui$Ext_Date$datesInMonth(
-				_gdotdesign$elm_ui$Ext_Date$nextMonth(month)));
-		var cells = A2(
-			_elm_lang$core$List$map,
-			_gdotdesign$elm_ui$Ui_Calendar$renderCell(model),
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				paddingLeftItems,
-				A2(_elm_lang$core$Basics_ops['++'], dates, paddingRightItems)));
-		var container = A3(
-			_gdotdesign$elm_ui$Ui_Container$view,
-			{compact: true, align: 'stretch', direction: 'row'},
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Icons$chevronLeft(previousAction),
-				_1: {
-					ctor: '::',
-					_0: A3(
-						_elm_lang$html$Html$node,
-						'div',
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(
-								A3(
-									_rluiten$elm_date_extra$Date_Extra_Format$format,
-									_rluiten$elm_date_extra$Date_Extra_Config_Configs$getConfig(locale),
-									'%Y - %B',
-									month)),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Ui_Icons$chevronRight(nextAction),
-						_1: {ctor: '[]'}
-					}
-				}
-			});
-		return A3(
-			_elm_lang$html$Html$node,
-			'ui-calendar',
-			_elm_lang$core$List$concat(
-				{
-					ctor: '::',
-					_0: _gdotdesign$elm_ui$Ui$attributeList(
-						{
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'selectable', _1: model.selectable},
-							_1: {
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'disabled', _1: model.disabled},
-								_1: {
-									ctor: '::',
-									_0: {ctor: '_Tuple2', _0: 'readonly', _1: model.readonly},
-									_1: {ctor: '[]'}
-								}
-							}
-						}),
-					_1: {
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Ui_Styles$apply(_gdotdesign$elm_ui$Ui_Styles_Calendar$defaultStyle),
-						_1: {ctor: '[]'}
-					}
-				}),
-			{
-				ctor: '::',
-				_0: container,
-				_1: {
-					ctor: '::',
-					_0: A3(
-						_elm_lang$html$Html$node,
-						'ui-calendar-header',
-						{ctor: '[]'},
-						A2(
-							_elm_lang$core$List$map,
-							function (item) {
-								return A2(
-									_elm_lang$html$Html$span,
-									{ctor: '[]'},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text(item),
-										_1: {ctor: '[]'}
-									});
-							},
-							_gdotdesign$elm_ui$Ui_Calendar$dayNames(locale))),
-					_1: {
-						ctor: '::',
-						_0: A3(
-							_elm_lang$html$Html$node,
-							'ui-calendar-table',
-							{ctor: '[]'},
-							cells),
-						_1: {ctor: '[]'}
-					}
-				}
-			});
-	});
-var _gdotdesign$elm_ui$Ui_Calendar$view = F2(
-	function (locale, model) {
-		return A3(_elm_lang$html$Html_Lazy$lazy2, _gdotdesign$elm_ui$Ui_Calendar$render, locale, model);
-	});
-
-var _gdotdesign$elm_ui$Ui_Helpers_Intendable$select = F2(
-	function (item, fallback) {
-		return A2(
-			_elm_lang$core$Maybe$withDefault,
-			A2(_elm_lang$core$Maybe$withDefault, '', fallback),
-			item);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Intendable$previousItem = F2(
-	function (_p0, fallback) {
-		var _p1 = _p0;
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Intendable$select,
-			_elm_community$list_extra$List_Extra$last(_p1._0),
-			fallback);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Intendable$index = F2(
-	function (value, list) {
-		return A2(
-			_elm_lang$core$Maybe$withDefault,
-			-1,
-			A2(
-				_elm_community$list_extra$List_Extra$findIndex,
-				function (item) {
-					return _elm_lang$core$Native_Utils.eq(item, value);
-				},
-				list));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Intendable$previous = F2(
-	function (value, list) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Intendable$previousItem,
-			A2(
-				_elm_community$list_extra$List_Extra$splitAt,
-				A2(_gdotdesign$elm_ui$Ui_Helpers_Intendable$index, value, list),
-				list),
-			_elm_community$list_extra$List_Extra$last(list));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Intendable$first = function (list) {
-	return A2(
-		_elm_community$list_extra$List_Extra$find,
-		function (_p2) {
-			return true;
-		},
-		list);
-};
-var _gdotdesign$elm_ui$Ui_Helpers_Intendable$nextItem = F2(
-	function (_p3, fallback) {
-		var _p4 = _p3;
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Intendable$select,
-			_gdotdesign$elm_ui$Ui_Helpers_Intendable$first(_p4._1),
-			fallback);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Intendable$next = F2(
-	function (value, list) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Intendable$nextItem,
-			A2(
-				_elm_community$list_extra$List_Extra$splitAt,
-				A2(_gdotdesign$elm_ui$Ui_Helpers_Intendable$index, value, list) + 1,
-				list),
-			_gdotdesign$elm_ui$Ui_Helpers_Intendable$first(list));
-	});
-
-var _gdotdesign$elm_ui$Ui_Styles_Dropdown$style = function (theme) {
-	return _gdotdesign$elm_ui$Ui_Css$mixin(
-		{
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui_Css_Properties$border(
-				A2(
-					_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-					A2(
-						_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-						_gdotdesign$elm_ui$Ui_Css_Properties$px(1),
-						_gdotdesign$elm_ui$Ui_Css_Properties$solid),
-					theme.colors.border)),
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Css_Properties$backgroundColor(theme.colors.input.color),
-				_1: {
-					ctor: '::',
-					_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderRadius(theme.borderRadius),
-					_1: {
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Ui_Css_Properties$fontFamily(theme.fontFamily),
-						_1: {
-							ctor: '::',
-							_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.colors.input.bw),
-							_1: {
-								ctor: '::',
-								_0: _gdotdesign$elm_ui$Ui_Css_Properties$zIndex(theme.zIndexes.dropdown),
-								_1: {
-									ctor: '::',
-									_0: _gdotdesign$elm_ui$Ui_Css_Properties$pointerEvents(_gdotdesign$elm_ui$Ui_Css_Properties$none),
-									_1: {
-										ctor: '::',
-										_0: _gdotdesign$elm_ui$Ui_Css_Properties$visibility(_gdotdesign$elm_ui$Ui_Css_Properties$hidden),
-										_1: {
-											ctor: '::',
-											_0: _gdotdesign$elm_ui$Ui_Css_Properties$position(_gdotdesign$elm_ui$Ui_Css_Properties$fixed),
-											_1: {
-												ctor: '::',
-												_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$block),
-												_1: {
-													ctor: '::',
-													_0: _gdotdesign$elm_ui$Ui_Css_Properties$opacity(0),
-													_1: {
-														ctor: '::',
-														_0: _gdotdesign$elm_ui$Ui_Css_Properties$boxShadow(
-															{
-																ctor: '::',
-																_0: {
-																	color: 'rgba(0,0,0,0.1)',
-																	blur: _gdotdesign$elm_ui$Ui_Css_Properties$px(20),
-																	inset: false,
-																	spread: _gdotdesign$elm_ui$Ui_Css_Properties$zero,
-																	y: _gdotdesign$elm_ui$Ui_Css_Properties$px(5),
-																	x: _gdotdesign$elm_ui$Ui_Css_Properties$zero
-																},
-																_1: {ctor: '[]'}
-															}),
-														_1: {
-															ctor: '::',
-															_0: _gdotdesign$elm_ui$Ui_Css_Properties$transform(
-																{
-																	ctor: '::',
-																	_0: A3(_gdotdesign$elm_ui$Ui_Css_Properties$translate3d, _gdotdesign$elm_ui$Ui_Css_Properties$zero, _gdotdesign$elm_ui$Ui_Css_Properties$zero, _gdotdesign$elm_ui$Ui_Css_Properties$zero),
-																	_1: {
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$translateY(
-																			_gdotdesign$elm_ui$Ui_Css_Properties$px(10)),
-																		_1: {ctor: '[]'}
-																	}
-																}),
-															_1: {
-																ctor: '::',
-																_0: _gdotdesign$elm_ui$Ui_Css_Properties$transition(
-																	{
-																		ctor: '::',
-																		_0: {
-																			property: 'opacity',
-																			duration: _gdotdesign$elm_ui$Ui_Css_Properties$ms(150),
-																			easing: 'ease',
-																			delay: _gdotdesign$elm_ui$Ui_Css_Properties$ms(0)
-																		},
-																		_1: {
-																			ctor: '::',
-																			_0: {
-																				property: 'transform',
-																				duration: _gdotdesign$elm_ui$Ui_Css_Properties$ms(150),
-																				easing: 'ease',
-																				delay: _gdotdesign$elm_ui$Ui_Css_Properties$ms(0)
-																			},
-																			_1: {
-																				ctor: '::',
-																				_0: {
-																					property: 'visibility',
-																					duration: _gdotdesign$elm_ui$Ui_Css_Properties$ms(1),
-																					delay: _gdotdesign$elm_ui$Ui_Css_Properties$ms(150),
-																					easing: 'ease'
-																				},
-																				_1: {ctor: '[]'}
-																			}
-																		}
-																	}),
-																_1: {
-																	ctor: '::',
-																	_0: A2(
-																		_gdotdesign$elm_ui$Ui_Css$selector,
-																		'&[open]',
-																		{
-																			ctor: '::',
-																			_0: _gdotdesign$elm_ui$Ui_Css_Properties$pointerEvents(_gdotdesign$elm_ui$Ui_Css_Properties$auto),
-																			_1: {
-																				ctor: '::',
-																				_0: _gdotdesign$elm_ui$Ui_Css_Properties$visibility(_gdotdesign$elm_ui$Ui_Css_Properties$visible),
-																				_1: {
-																					ctor: '::',
-																					_0: _gdotdesign$elm_ui$Ui_Css_Properties$opacity(1),
-																					_1: {
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$transform(
-																							{
-																								ctor: '::',
-																								_0: A3(_gdotdesign$elm_ui$Ui_Css_Properties$translate3d, _gdotdesign$elm_ui$Ui_Css_Properties$zero, _gdotdesign$elm_ui$Ui_Css_Properties$zero, _gdotdesign$elm_ui$Ui_Css_Properties$zero),
-																								_1: {
-																									ctor: '::',
-																									_0: _gdotdesign$elm_ui$Ui_Css_Properties$translateY(_gdotdesign$elm_ui$Ui_Css_Properties$zero),
-																									_1: {ctor: '[]'}
-																								}
-																							}),
-																						_1: {
-																							ctor: '::',
-																							_0: _gdotdesign$elm_ui$Ui_Css_Properties$transition(
-																								{
-																									ctor: '::',
-																									_0: {
-																										property: 'opacity',
-																										duration: _gdotdesign$elm_ui$Ui_Css_Properties$ms(150),
-																										easing: 'ease',
-																										delay: _gdotdesign$elm_ui$Ui_Css_Properties$ms(0)
-																									},
-																									_1: {
-																										ctor: '::',
-																										_0: {
-																											property: 'transform',
-																											duration: _gdotdesign$elm_ui$Ui_Css_Properties$ms(150),
-																											easing: 'ease',
-																											delay: _gdotdesign$elm_ui$Ui_Css_Properties$ms(0)
-																										},
-																										_1: {
-																											ctor: '::',
-																											_0: {
-																												property: 'visibility',
-																												duration: _gdotdesign$elm_ui$Ui_Css_Properties$ms(1),
-																												easing: 'ease',
-																												delay: _gdotdesign$elm_ui$Ui_Css_Properties$ms(0)
-																											},
-																											_1: {ctor: '[]'}
-																										}
-																									}
-																								}),
-																							_1: {ctor: '[]'}
-																						}
-																					}
-																				}
-																			}
-																		}),
-																	_1: {ctor: '[]'}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Styles_Dropdown$defaultStyle = _gdotdesign$elm_ui$Ui_Styles$attributes(
-	_gdotdesign$elm_ui$Ui_Styles_Dropdown$style(_gdotdesign$elm_ui$Ui_Styles_Theme$default));
-
-var _gdotdesign$elm_ui$Ui_Native_Scrolls$onSelfMsg = F3(
-	function (router, msg, state) {
-		var send = function (msg) {
-			var _p0 = msg;
-			return A2(_elm_lang$core$Platform$sendToApp, router, _p0._0);
-		};
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (_p1) {
-				return _elm_lang$core$Task$succeed(state);
-			},
-			_elm_lang$core$Task$sequence(
-				A2(_elm_lang$core$List$map, send, state.subs)));
-	});
-var _gdotdesign$elm_ui$Ui_Native_Scrolls$init = _elm_lang$core$Task$succeed(
-	{
-		subs: {ctor: '[]'},
-		pid: _elm_lang$core$Maybe$Nothing
-	});
-var _gdotdesign$elm_ui$Ui_Native_Scrolls$subscription = _elm_lang$core$Native_Platform.leaf('Ui.Native.Scrolls');
-var _gdotdesign$elm_ui$Ui_Native_Scrolls$State = F2(
-	function (a, b) {
-		return {subs: a, pid: b};
-	});
-var _gdotdesign$elm_ui$Ui_Native_Scrolls$MySub = function (a) {
-	return {ctor: 'MySub', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Native_Scrolls$scrolls = function (msg) {
-	return _gdotdesign$elm_ui$Ui_Native_Scrolls$subscription(
-		_gdotdesign$elm_ui$Ui_Native_Scrolls$MySub(msg));
-};
-var _gdotdesign$elm_ui$Ui_Native_Scrolls$subMap = F2(
-	function (func, _p2) {
-		var _p3 = _p2;
-		return _gdotdesign$elm_ui$Ui_Native_Scrolls$MySub(
-			func(_p3._0));
-	});
-var _gdotdesign$elm_ui$Ui_Native_Scrolls$Msg = {ctor: 'Msg'};
-var _gdotdesign$elm_ui$Ui_Native_Scrolls$onEffects = F3(
-	function (router, newSubs, oldState) {
-		var state = {
-			ctor: '_Tuple2',
-			_0: oldState.pid,
-			_1: !_elm_lang$core$List$isEmpty(newSubs)
-		};
-		var _p4 = state;
-		if (_p4._0.ctor === 'Just') {
-			if (_p4._1 === true) {
-				return _elm_lang$core$Task$succeed(
-					_elm_lang$core$Native_Utils.update(
-						oldState,
-						{subs: newSubs}));
-			} else {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (_p5) {
-						return _elm_lang$core$Task$succeed(
-							_elm_lang$core$Native_Utils.update(
-								oldState,
-								{
-									subs: {ctor: '[]'},
-									pid: _elm_lang$core$Maybe$Nothing
-								}));
-					},
-					_elm_lang$core$Process$kill(_p4._0._0));
-			}
-		} else {
-			if (_p4._1 === true) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (pid) {
-						return _elm_lang$core$Task$succeed(
-							{
-								pid: _elm_lang$core$Maybe$Just(pid),
-								subs: newSubs
-							});
-					},
-					_elm_lang$core$Process$spawn(
-						A3(
-							_elm_lang$dom$Dom_LowLevel$onWindow,
-							'scroll',
-							_elm_lang$core$Json_Decode$succeed(''),
-							function (_p6) {
-								return A2(_elm_lang$core$Platform$sendToSelf, router, _gdotdesign$elm_ui$Ui_Native_Scrolls$Msg);
-							})));
-			} else {
-				return _elm_lang$core$Task$succeed(oldState);
-			}
-		}
-	});
-_elm_lang$core$Native_Platform.effectManagers['Ui.Native.Scrolls'] = {pkg: 'gdotdesign/elm-ui', init: _gdotdesign$elm_ui$Ui_Native_Scrolls$init, onEffects: _gdotdesign$elm_ui$Ui_Native_Scrolls$onEffects, onSelfMsg: _gdotdesign$elm_ui$Ui_Native_Scrolls$onSelfMsg, tag: 'sub', subMap: _gdotdesign$elm_ui$Ui_Native_Scrolls$subMap};
-
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$decideSide = F5(
-	function (side, positiveOptimal, negativeOptimal, bound, size) {
-		var _p0 = side;
-		if (_p0.ctor === 'Positive') {
-			return (_elm_lang$core$Native_Utils.cmp(positiveOptimal + size, bound) > 0) ? negativeOptimal : positiveOptimal;
-		} else {
-			return (_elm_lang$core$Native_Utils.cmp(negativeOptimal, 0) < 0) ? positiveOptimal : negativeOptimal;
-		}
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$favored = F5(
-	function (model, high, low, bound, size) {
-		var negativeOptimal = (high - size) - model.offset;
-		var positiveOptimal = low + model.offset;
-		return A5(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$decideSide, model.favoring, positiveOptimal, negativeOptimal, bound, size);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$align = F5(
-	function (model, high, low, bound, size) {
-		var negativeOptimal = low - size;
-		var positiveOptimal = high;
-		return A5(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$decideSide, model.alignTo, positiveOptimal, negativeOptimal, bound, size);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$calculateLeft = F4(
-	function (window, parent, dropdown, model) {
-		var optimal = function () {
-			var _p1 = model.direction;
-			if (_p1.ctor === 'Horizontal') {
-				return A5(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$favored, model, parent.left, parent.right, window.width, dropdown.width);
-			} else {
-				return A5(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$align, model, parent.left, parent.right, window.width, dropdown.width);
-			}
-		}();
-		var maxiumum = window.width - dropdown.width;
-		return A2(_elm_lang$core$Basics$min, maxiumum, optimal);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$calculateTop = F4(
-	function (window, parent, dropdown, model) {
-		var optimal = function () {
-			var _p2 = model.direction;
-			if (_p2.ctor === 'Horizontal') {
-				return A5(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$align, model, parent.top, parent.bottom, window.height, dropdown.height);
-			} else {
-				return A5(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$favored, model, parent.top, parent.bottom, window.height, dropdown.height);
-			}
-		}();
-		var maxiumum = window.height - dropdown.height;
-		return A2(_elm_lang$core$Basics$min, maxiumum, optimal);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$defaultRect = {top: 0, left: 0, right: 0, bottom: 0, width: 0, height: 0};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$openDropdown = F2(
-	function (uid, model) {
-		var dropdown = A2(
-			_elm_lang$core$Result$withDefault,
-			_gdotdesign$elm_ui$Ui_Helpers_Dropdown$defaultRect,
-			_gdotdesign$elm_dom$DOM$getDimensionsSync(
-				_gdotdesign$elm_dom$DOM$idSelector(
-					A2(_elm_lang$core$Basics_ops['++'], uid, '-dropdown'))));
-		var parent = A2(
-			_elm_lang$core$Result$withDefault,
-			_gdotdesign$elm_ui$Ui_Helpers_Dropdown$defaultRect,
-			_gdotdesign$elm_dom$DOM$getDimensionsSync(
-				_gdotdesign$elm_dom$DOM$idSelector(uid)));
-		var window = {
-			height: _gdotdesign$elm_dom$DOM_Window$height(
-				{ctor: '_Tuple0'}),
-			width: _gdotdesign$elm_dom$DOM_Window$width(
-				{ctor: '_Tuple0'})
-		};
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{
-				left: A4(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$calculateLeft, window, parent, dropdown, model),
-				top: A4(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$calculateTop, window, parent, dropdown, model),
-				open: true
-			});
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$updateDropdown = F2(
-	function ($function, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{
-				dropdown: $function(model.dropdown)
-			});
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$isOver = F2(
-	function (id, position) {
-		return A2(
-			_elm_lang$core$Result$withDefault,
-			false,
-			A2(
-				_gdotdesign$elm_dom$DOM$isOver,
-				_gdotdesign$elm_dom$DOM$idSelector(id),
-				{
-					top: _elm_lang$core$Basics$toFloat(position.y),
-					left: _elm_lang$core$Basics$toFloat(position.x)
-				}));
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$render = F2(
-	function (viewModel, model) {
-		var dropdown = A3(
-			_elm_lang$html$Html$node,
-			'ui-dropdown-panel',
-			_elm_lang$core$List$concat(
-				{
-					ctor: '::',
-					_0: _gdotdesign$elm_ui$Ui$attributeList(
-						{
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'open', _1: model.dropdown.open},
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$id(
-								A2(_elm_lang$core$Basics_ops['++'], model.uid, '-dropdown')),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$style(
-									{
-										ctor: '::',
-										_0: {
-											ctor: '_Tuple2',
-											_0: 'left',
-											_1: A2(
-												_elm_lang$core$Basics_ops['++'],
-												_elm_lang$core$Basics$toString(model.dropdown.left),
-												'px')
-										},
-										_1: {
-											ctor: '::',
-											_0: {
-												ctor: '_Tuple2',
-												_0: 'top',
-												_1: A2(
-													_elm_lang$core$Basics_ops['++'],
-													_elm_lang$core$Basics$toString(model.dropdown.top),
-													'px')
-											},
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}
-						},
-						_1: {
-							ctor: '::',
-							_0: _gdotdesign$elm_ui$Ui_Styles$apply(_gdotdesign$elm_ui$Ui_Styles_Dropdown$defaultStyle),
-							_1: {ctor: '[]'}
-						}
-					}
-				}),
-			viewModel.contents);
-		var children = A2(
-			_elm_lang$core$Basics_ops['++'],
-			viewModel.children,
-			{
-				ctor: '::',
-				_0: dropdown,
-				_1: {ctor: '[]'}
-			});
-		var attributes = A2(
-			F2(
-				function (x, y) {
-					return A2(_elm_lang$core$Basics_ops['++'], x, y);
-				}),
-			viewModel.attributes,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$id(model.uid),
-				_1: {ctor: '[]'}
-			});
-		return A3(_elm_lang$html$Html$node, viewModel.tag, attributes, children);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$view = F2(
-	function (viewModel, model) {
-		return A3(_elm_lang$html$Html_Lazy$lazy2, _gdotdesign$elm_ui$Ui_Helpers_Dropdown$render, viewModel, model);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$close = function (model) {
-	return A2(
-		_gdotdesign$elm_ui$Ui_Helpers_Dropdown$updateDropdown,
-		function (dropdown) {
-			return _elm_lang$core$Native_Utils.update(
-				dropdown,
-				{open: false});
-		},
-		model);
-};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$update = F2(
-	function (msg, model) {
-		var _p3 = msg;
-		if (_p3.ctor === 'Click') {
-			return A2(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$isOver, model.uid, _p3._0) ? model : _gdotdesign$elm_ui$Ui_Helpers_Dropdown$close(model);
-		} else {
-			return _gdotdesign$elm_ui$Ui_Helpers_Dropdown$close(model);
-		}
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$open = function (model) {
-	return A2(
-		_gdotdesign$elm_ui$Ui_Helpers_Dropdown$updateDropdown,
-		function (dropdown) {
-			return A2(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$openDropdown, model.uid, dropdown);
-		},
-		model);
-};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$toggle = function (model) {
-	return model.dropdown.open ? _gdotdesign$elm_ui$Ui_Helpers_Dropdown$close(model) : _gdotdesign$elm_ui$Ui_Helpers_Dropdown$open(model);
-};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$offset = F2(
-	function (offset, model) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Dropdown$updateDropdown,
-			function (dropdown) {
-				return _elm_lang$core$Native_Utils.update(
-					dropdown,
-					{offset: offset});
-			},
-			model);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$direction = F2(
-	function (value, model) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Dropdown$updateDropdown,
-			function (dropdown) {
-				return _elm_lang$core$Native_Utils.update(
-					dropdown,
-					{direction: value});
-			},
-			model);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$ViewModel = F5(
-	function (a, b, c, d, e) {
-		return {attributes: a, children: b, contents: c, address: d, tag: e};
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Dropdown = F7(
-	function (a, b, c, d, e, f, g) {
-		return {direction: a, favoring: b, alignTo: c, offset: d, left: e, top: f, open: g};
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Vertical = {ctor: 'Vertical'};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Horizontal = {ctor: 'Horizontal'};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Top = {ctor: 'Top'};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Left = {ctor: 'Left'};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Right = {ctor: 'Right'};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Bottom = {ctor: 'Bottom'};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Negative = {ctor: 'Negative'};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Positive = {ctor: 'Positive'};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$init = {direction: _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Vertical, favoring: _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Positive, alignTo: _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Positive, open: false, offset: 0, left: 0, top: 0};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$getSpaceFromSide = function (side) {
-	var _p4 = side;
-	switch (_p4.ctor) {
-		case 'Bottom':
-			return _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Positive;
-		case 'Right':
-			return _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Positive;
-		case 'Left':
-			return _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Negative;
-		default:
-			return _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Negative;
-	}
-};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$favoring = F2(
-	function (side, model) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Dropdown$updateDropdown,
-			function (dropdown) {
-				return _elm_lang$core$Native_Utils.update(
-					dropdown,
-					{
-						favoring: _gdotdesign$elm_ui$Ui_Helpers_Dropdown$getSpaceFromSide(side)
-					});
-			},
-			model);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$stwitchSpace = function (space) {
-	var _p5 = space;
-	if (_p5.ctor === 'Positive') {
-		return _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Negative;
-	} else {
-		return _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Positive;
-	}
-};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$alignTo = F2(
-	function (side, model) {
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Dropdown$updateDropdown,
-			function (dropdown) {
-				return _elm_lang$core$Native_Utils.update(
-					dropdown,
-					{
-						alignTo: _gdotdesign$elm_ui$Ui_Helpers_Dropdown$stwitchSpace(
-							_gdotdesign$elm_ui$Ui_Helpers_Dropdown$getSpaceFromSide(side))
-					});
-			},
-			model);
-	});
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Close = {ctor: 'Close'};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$Click = function (a) {
-	return {ctor: 'Click', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Helpers_Dropdown$subscriptions = function (model) {
-	return model.dropdown.open ? _elm_lang$core$Platform_Sub$batch(
-		{
-			ctor: '::',
-			_0: _elm_lang$window$Window$resizes(
-				_elm_lang$core$Basics$always(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$Close)),
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Native_Scrolls$scrolls(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$Close),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$mouse$Mouse$downs(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$Click),
-					_1: {ctor: '[]'}
-				}
-			}
-		}) : _elm_lang$core$Platform_Sub$none;
-};
-
-var _gdotdesign$elm_ui$Ui_Styles_ScrolledPanel$style = function (theme) {
-	return _gdotdesign$elm_ui$Ui_Css$mixin(
-		{
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui_Css_Properties$maxHeight(_gdotdesign$elm_ui$Ui_Css_Properties$inherit),
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Css_Properties$position(_gdotdesign$elm_ui$Ui_Css_Properties$relative),
-				_1: {
-					ctor: '::',
-					_0: _gdotdesign$elm_ui$Ui_Css_Properties$height(_gdotdesign$elm_ui$Ui_Css_Properties$inherit),
-					_1: {
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$flex),
-						_1: {
-							ctor: '::',
-							_0: _gdotdesign$elm_ui$Ui_Css_Properties$flex_('1'),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_gdotdesign$elm_ui$Ui_Css$selector,
-									'ui-scrolled-panel-wrapper',
-									{
-										ctor: '::',
-										_0: _gdotdesign$elm_ui$Ui_Css_Properties$paddingRight(
-											_gdotdesign$elm_ui$Ui_Css_Properties$px(5)),
-										_1: {
-											ctor: '::',
-											_0: _gdotdesign$elm_ui$Ui_Css_Properties$maxHeight(_gdotdesign$elm_ui$Ui_Css_Properties$inherit),
-											_1: {
-												ctor: '::',
-												_0: _gdotdesign$elm_ui$Ui_Css_Properties$overflowY(_gdotdesign$elm_ui$Ui_Css_Properties$scroll),
-												_1: {
-													ctor: '::',
-													_0: _gdotdesign$elm_ui$Ui_Css_Properties$height(_gdotdesign$elm_ui$Ui_Css_Properties$inherit),
-													_1: {
-														ctor: '::',
-														_0: _gdotdesign$elm_ui$Ui_Css_Properties$flex_('1'),
-														_1: {
-															ctor: '::',
-															_0: A2(
-																_gdotdesign$elm_ui$Ui_Css$selector,
-																'&::-webkit-scrollbar',
-																{
-																	ctor: '::',
-																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$height(
-																		_gdotdesign$elm_ui$Ui_Css_Properties$px(10)),
-																	_1: {
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$width(
-																			_gdotdesign$elm_ui$Ui_Css_Properties$px(10)),
-																		_1: {ctor: '[]'}
-																	}
-																}),
-															_1: {
-																ctor: '::',
-																_0: A2(
-																	_gdotdesign$elm_ui$Ui_Css$selector,
-																	'&::-webkit-scrollbar-button',
-																	{
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$height(_gdotdesign$elm_ui$Ui_Css_Properties$zero),
-																		_1: {
-																			ctor: '::',
-																			_0: _gdotdesign$elm_ui$Ui_Css_Properties$width(_gdotdesign$elm_ui$Ui_Css_Properties$zero),
-																			_1: {ctor: '[]'}
-																		}
-																	}),
-																_1: {
-																	ctor: '::',
-																	_0: A2(
-																		_gdotdesign$elm_ui$Ui_Css$selector,
-																		'&::-webkit-scrollbar-thumb',
-																		{
-																			ctor: '::',
-																			_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(theme.scrollbar.thumbColor),
-																			_1: {
-																				ctor: '::',
-																				_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderRadius(theme.borderRadius),
-																				_1: {
-																					ctor: '::',
-																					_0: _gdotdesign$elm_ui$Ui_Css_Properties$border(_gdotdesign$elm_ui$Ui_Css_Properties$zero),
-																					_1: {ctor: '[]'}
-																				}
-																			}
-																		}),
-																	_1: {
-																		ctor: '::',
-																		_0: A2(
-																			_gdotdesign$elm_ui$Ui_Css$selector,
-																			'&::-webkit-scrollbar-thumb:hover',
-																			{
-																				ctor: '::',
-																				_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(theme.scrollbar.thumbHoverColor),
-																				_1: {ctor: '[]'}
-																			}),
-																		_1: {
-																			ctor: '::',
-																			_0: A2(
-																				_gdotdesign$elm_ui$Ui_Css$selector,
-																				'&::-webkit-scrollbar-track',
-																				{
-																					ctor: '::',
-																					_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(theme.scrollbar.trackColor),
-																					_1: {
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderRadius(theme.borderRadius),
-																						_1: {
-																							ctor: '::',
-																							_0: _gdotdesign$elm_ui$Ui_Css_Properties$border(_gdotdesign$elm_ui$Ui_Css_Properties$zero),
-																							_1: {ctor: '[]'}
-																						}
-																					}
-																				}),
-																			_1: {
-																				ctor: '::',
-																				_0: A2(
-																					_gdotdesign$elm_ui$Ui_Css$selector,
-																					'&::-webkit-scrollbar-corner',
-																					{
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(_gdotdesign$elm_ui$Ui_Css_Properties$transparent),
-																						_1: {ctor: '[]'}
-																					}),
-																				_1: {ctor: '[]'}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Styles_ScrolledPanel$defaultStyle = _gdotdesign$elm_ui$Ui_Styles$attributes(
-	_gdotdesign$elm_ui$Ui_Styles_ScrolledPanel$style(_gdotdesign$elm_ui$Ui_Styles_Theme$default));
-
-var _gdotdesign$elm_ui$Ui_ScrolledPanel$view = F2(
-	function (attributes, contents) {
-		return A3(
-			_elm_lang$html$Html$node,
-			'ui-scrolled-panel',
-			_elm_lang$core$List$concat(
-				{
-					ctor: '::',
-					_0: _gdotdesign$elm_ui$Ui_Styles$apply(_gdotdesign$elm_ui$Ui_Styles_ScrolledPanel$defaultStyle),
-					_1: {
-						ctor: '::',
-						_0: attributes,
-						_1: {ctor: '[]'}
-					}
-				}),
-			{
-				ctor: '::',
-				_0: A3(
-					_elm_lang$html$Html$node,
-					'ui-scrolled-panel-wrapper',
-					{ctor: '[]'},
-					contents),
-				_1: {ctor: '[]'}
-			});
-	});
-
-var _gdotdesign$elm_ui$Ui_Styles_Input$inputStyle = function (theme) {
-	return A2(
-		_gdotdesign$elm_ui$Ui_Css$selector,
-		'input',
-		{
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$focusedIdle(theme),
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$defaults,
-				_1: {
-					ctor: '::',
-					_0: _gdotdesign$elm_ui$Ui_Css_Properties$border(
-						A2(
-							_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-							A2(
-								_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-								_gdotdesign$elm_ui$Ui_Css_Properties$px(1),
-								_gdotdesign$elm_ui$Ui_Css_Properties$solid),
-							theme.colors.border)),
-					_1: {
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Ui_Css_Properties$backgroundColor(theme.colors.input.color),
-						_1: {
-							ctor: '::',
-							_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderRadius(theme.borderRadius),
-							_1: {
-								ctor: '::',
-								_0: _gdotdesign$elm_ui$Ui_Css_Properties$fontFamily(theme.fontFamily),
-								_1: {
-									ctor: '::',
-									_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.colors.input.bw),
-									_1: {
-										ctor: '::',
-										_0: _gdotdesign$elm_ui$Ui_Css_Properties$padding(
-											A2(
-												_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-												_gdotdesign$elm_ui$Ui_Css_Properties$px(6),
-												_gdotdesign$elm_ui$Ui_Css_Properties$px(9))),
-										_1: {
-											ctor: '::',
-											_0: _gdotdesign$elm_ui$Ui_Css_Properties$lineHeight(
-												_gdotdesign$elm_ui$Ui_Css_Properties$px(16)),
-											_1: {
-												ctor: '::',
-												_0: _gdotdesign$elm_ui$Ui_Css_Properties$fontSize(
-													_gdotdesign$elm_ui$Ui_Css_Properties$px(16)),
-												_1: {
-													ctor: '::',
-													_0: _gdotdesign$elm_ui$Ui_Css_Properties$width(
-														_gdotdesign$elm_ui$Ui_Css_Properties$pct(100)),
-													_1: {
-														ctor: '::',
-														_0: _gdotdesign$elm_ui$Ui_Css_Properties$height(
-															_gdotdesign$elm_ui$Ui_Css_Properties$px(36)),
-														_1: {
-															ctor: '::',
-															_0: A2(
-																_gdotdesign$elm_ui$Ui_Css$selector,
-																'&::-webkit-input-placeholder',
-																{
-																	ctor: '::',
-																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$lineHeight(
-																		_gdotdesign$elm_ui$Ui_Css_Properties$px(22)),
-																	_1: {ctor: '[]'}
-																}),
-															_1: {
-																ctor: '::',
-																_0: A2(
-																	_gdotdesign$elm_ui$Ui_Css$selector,
-																	'&[disabled]',
-																	{
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$disabledColors(theme),
-																		_1: {
-																			ctor: '::',
-																			_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$disabled,
-																			_1: {
-																				ctor: '::',
-																				_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderColor(_gdotdesign$elm_ui$Ui_Css_Properties$transparent),
-																				_1: {ctor: '[]'}
-																			}
-																		}
-																	}),
-																_1: {
-																	ctor: '::',
-																	_0: A2(
-																		_gdotdesign$elm_ui$Ui_Css$selector,
-																		'&[readonly]',
-																		{
-																			ctor: '::',
-																			_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$readonly,
-																			_1: {
-																				ctor: '::',
-																				_0: A2(
-																					_gdotdesign$elm_ui$Ui_Css$selectors,
-																					{
-																						ctor: '::',
-																						_0: '&::-moz-selection',
-																						_1: {
-																							ctor: '::',
-																							_0: '&::selection',
-																							_1: {ctor: '[]'}
-																						}
-																					},
-																					{
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(_gdotdesign$elm_ui$Ui_Css_Properties$transparent),
-																						_1: {ctor: '[]'}
-																					}),
-																				_1: {ctor: '[]'}
-																			}
-																		}),
-																	_1: {
-																		ctor: '::',
-																		_0: A2(
-																			_gdotdesign$elm_ui$Ui_Css$selector,
-																			'&:focus',
-																			{
-																				ctor: '::',
-																				_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$focused(theme),
-																				_1: {ctor: '[]'}
-																			}),
-																		_1: {ctor: '[]'}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Styles_Input$style = function (theme) {
-	return _gdotdesign$elm_ui$Ui_Css$mixin(
-		{
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$defaults,
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.colors.input.bw),
-				_1: {
-					ctor: '::',
-					_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$inlineBlock),
-					_1: {
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Ui_Css_Properties$position(_gdotdesign$elm_ui$Ui_Css_Properties$relative),
-						_1: {
-							ctor: '::',
-							_0: _gdotdesign$elm_ui$Ui_Styles_Input$inputStyle(theme),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_gdotdesign$elm_ui$Ui_Css$selector,
-									'&[clearable]',
-									{
-										ctor: '::',
-										_0: A2(
-											_gdotdesign$elm_ui$Ui_Css$selector,
-											'input',
-											{
-												ctor: '::',
-												_0: _gdotdesign$elm_ui$Ui_Css_Properties$paddingRight(
-													_gdotdesign$elm_ui$Ui_Css_Properties$px(30)),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_gdotdesign$elm_ui$Ui_Css$selector,
-												'svg',
-												{
-													ctor: '::',
-													_0: _gdotdesign$elm_ui$Ui_Css_Properties$fill(_gdotdesign$elm_ui$Ui_Css_Properties$currentColor),
-													_1: {
-														ctor: '::',
-														_0: _gdotdesign$elm_ui$Ui_Css_Properties$position(_gdotdesign$elm_ui$Ui_Css_Properties$absolute),
-														_1: {
-															ctor: '::',
-															_0: _gdotdesign$elm_ui$Ui_Css_Properties$height(
-																_gdotdesign$elm_ui$Ui_Css_Properties$px(12)),
-															_1: {
-																ctor: '::',
-																_0: _gdotdesign$elm_ui$Ui_Css_Properties$width(
-																	_gdotdesign$elm_ui$Ui_Css_Properties$px(12)),
-																_1: {
-																	ctor: '::',
-																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$right(
-																		_gdotdesign$elm_ui$Ui_Css_Properties$px(12)),
-																	_1: {
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$top(
-																			_gdotdesign$elm_ui$Ui_Css_Properties$px(12)),
-																		_1: {
-																			ctor: '::',
-																			_0: A2(
-																				_gdotdesign$elm_ui$Ui_Css$selector,
-																				'&:hover',
-																				{
-																					ctor: '::',
-																					_0: _gdotdesign$elm_ui$Ui_Css_Properties$fill(theme.colors.focus.color),
-																					_1: {
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$cursor(_gdotdesign$elm_ui$Ui_Css_Properties$pointer),
-																						_1: {ctor: '[]'}
-																					}
-																				}),
-																			_1: {ctor: '[]'}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}),
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Styles_Input$defaultStyle = _gdotdesign$elm_ui$Ui_Styles$attributes(
-	_gdotdesign$elm_ui$Ui_Styles_Input$style(_gdotdesign$elm_ui$Ui_Styles_Theme$default));
-
-var _gdotdesign$elm_ui$Ui_Styles_Chooser$chevronRight = function (color) {
-	return A4(
-		_elm_lang$core$Regex$replace,
-		_elm_lang$core$Regex$All,
-		_elm_lang$core$Regex$regex('\\n\\s*'),
-		function (_p0) {
-			return '';
-		},
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			'\n  <svg xmlns=\'http://www.w3.org/2000/svg\' width=\'8\' height=\'14\' viewBox=\'0 0 8 13.999605\' fill=\'',
-			A2(_elm_lang$core$Basics_ops['++'], color, '\'>\n    <path d=\'M2.676 6.998l5.227-5.442c.132-.135.128-.357-.006-.494L6.963.105C6.828-.032 6.61-.035 6.478.1L.095 6.744c-.07.07-.1.163-.094.253-.002.094.03.185.095.254l6.383 6.65c.13.133.35.13.485-.007l.934-.957c.135-.137.138-.36.006-.494L2.676 7z\'/>\n    </svg>\n  ')));
-};
-var _gdotdesign$elm_ui$Ui_Styles_Chooser$style = function (theme) {
-	return _gdotdesign$elm_ui$Ui_Css$mixin(
-		{
-			ctor: '::',
-			_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$defaults,
-			_1: {
-				ctor: '::',
-				_0: _gdotdesign$elm_ui$Ui_Styles_Input$inputStyle(theme),
-				_1: {
-					ctor: '::',
-					_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.colors.input.bw),
-					_1: {
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$inlineBlock),
-						_1: {
-							ctor: '::',
-							_0: _gdotdesign$elm_ui$Ui_Css_Properties$position(_gdotdesign$elm_ui$Ui_Css_Properties$relative),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_gdotdesign$elm_ui$Ui_Css$selector,
-									'&:not([readonly]) input',
-									{
-										ctor: '::',
-										_0: _gdotdesign$elm_ui$Ui_Css_Properties$cursor(_gdotdesign$elm_ui$Ui_Css_Properties$pointer),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_gdotdesign$elm_ui$Ui_Css$selector,
-										'input',
-										{
-											ctor: '::',
-											_0: _gdotdesign$elm_ui$Ui_Css_Properties$zIndex(2),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_gdotdesign$elm_ui$Ui_Css$selector,
-											'&:before',
-											{
-												ctor: '::',
-												_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderColor(
-													A2(
-														_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-														A2(_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'], _gdotdesign$elm_ui$Ui_Css_Properties$currentColor, _gdotdesign$elm_ui$Ui_Css_Properties$transparent),
-														_gdotdesign$elm_ui$Ui_Css_Properties$transparent)),
-												_1: {
-													ctor: '::',
-													_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderWidth(
-														A2(
-															_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-															A2(
-																_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																_gdotdesign$elm_ui$Ui_Css_Properties$px(6),
-																_gdotdesign$elm_ui$Ui_Css_Properties$px(5)),
-															_gdotdesign$elm_ui$Ui_Css_Properties$zero)),
-													_1: {
-														ctor: '::',
-														_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderStyle(_gdotdesign$elm_ui$Ui_Css_Properties$solid),
-														_1: {
-															ctor: '::',
-															_0: _gdotdesign$elm_ui$Ui_Css_Properties$pointerEvents(_gdotdesign$elm_ui$Ui_Css_Properties$none),
-															_1: {
-																ctor: '::',
-																_0: _gdotdesign$elm_ui$Ui_Css_Properties$transform(
-																	{
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$scale(0.6),
-																		_1: {ctor: '[]'}
-																	}),
-																_1: {
-																	ctor: '::',
-																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$opacity(0),
-																	_1: {
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$transition(
-																			{
-																				ctor: '::',
-																				_0: {
-																					easing: 'ease',
-																					property: 'all',
-																					duration: _gdotdesign$elm_ui$Ui_Css_Properties$ms(320),
-																					delay: _gdotdesign$elm_ui$Ui_Css_Properties$ms(0)
-																				},
-																				_1: {ctor: '[]'}
-																			}),
-																		_1: {
-																			ctor: '::',
-																			_0: _gdotdesign$elm_ui$Ui_Css_Properties$top('calc(50% - 3px)'),
-																			_1: {
-																				ctor: '::',
-																				_0: _gdotdesign$elm_ui$Ui_Css_Properties$position(_gdotdesign$elm_ui$Ui_Css_Properties$absolute),
-																				_1: {
-																					ctor: '::',
-																					_0: _gdotdesign$elm_ui$Ui_Css_Properties$contentString(''),
-																					_1: {
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$right(
-																							_gdotdesign$elm_ui$Ui_Css_Properties$px(15)),
-																						_1: {
-																							ctor: '::',
-																							_0: _gdotdesign$elm_ui$Ui_Css_Properties$height(_gdotdesign$elm_ui$Ui_Css_Properties$zero),
-																							_1: {
-																								ctor: '::',
-																								_0: _gdotdesign$elm_ui$Ui_Css_Properties$width(_gdotdesign$elm_ui$Ui_Css_Properties$zero),
-																								_1: {
-																									ctor: '::',
-																									_0: _gdotdesign$elm_ui$Ui_Css_Properties$zIndex(4),
-																									_1: {ctor: '[]'}
-																								}
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_gdotdesign$elm_ui$Ui_Css$selectors,
-												{
-													ctor: '::',
-													_0: '&:not([searchable])',
-													_1: {
-														ctor: '::',
-														_0: '&[searchable]:not([open])',
-														_1: {ctor: '[]'}
-													}
-												},
-												{
-													ctor: '::',
-													_0: A2(
-														_gdotdesign$elm_ui$Ui_Css$selector,
-														'&::after',
-														{
-															ctor: '::',
-															_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(
-																A2(
-																	_elm_lang$core$Basics_ops['++'],
-																	'linear-gradient(90deg, transparent, ',
-																	A2(_elm_lang$core$Basics_ops['++'], theme.colors.input.color, ' 70%)'))),
-															_1: {
-																ctor: '::',
-																_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderRadius(
-																	A2(
-																		_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																		A2(
-																			_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																			A2(_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'], _gdotdesign$elm_ui$Ui_Css_Properties$zero, theme.borderRadius),
-																			theme.borderRadius),
-																		_gdotdesign$elm_ui$Ui_Css_Properties$zero)),
-																_1: {
-																	ctor: '::',
-																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$pointerEvents(_gdotdesign$elm_ui$Ui_Css_Properties$none),
-																	_1: {
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$position(_gdotdesign$elm_ui$Ui_Css_Properties$absolute),
-																		_1: {
-																			ctor: '::',
-																			_0: _gdotdesign$elm_ui$Ui_Css_Properties$width(
-																				_gdotdesign$elm_ui$Ui_Css_Properties$pct(33.33)),
-																			_1: {
-																				ctor: '::',
-																				_0: _gdotdesign$elm_ui$Ui_Css_Properties$contentString(''),
-																				_1: {
-																					ctor: '::',
-																					_0: _gdotdesign$elm_ui$Ui_Css_Properties$bottom(
-																						_gdotdesign$elm_ui$Ui_Css_Properties$px(4)),
-																					_1: {
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$right(
-																							_gdotdesign$elm_ui$Ui_Css_Properties$px(4)),
-																						_1: {
-																							ctor: '::',
-																							_0: _gdotdesign$elm_ui$Ui_Css_Properties$top(
-																								_gdotdesign$elm_ui$Ui_Css_Properties$px(4)),
-																							_1: {
-																								ctor: '::',
-																								_0: _gdotdesign$elm_ui$Ui_Css_Properties$zIndex(3),
-																								_1: {ctor: '[]'}
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}),
-													_1: {
-														ctor: '::',
-														_0: A2(
-															_gdotdesign$elm_ui$Ui_Css$selector,
-															'&::before',
-															{
-																ctor: '::',
-																_0: _gdotdesign$elm_ui$Ui_Css_Properties$transform(
-																	{
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$scale(1),
-																		_1: {ctor: '[]'}
-																	}),
-																_1: {
-																	ctor: '::',
-																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$opacity(0.6),
-																	_1: {ctor: '[]'}
-																}
-															}),
-														_1: {ctor: '[]'}
-													}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_gdotdesign$elm_ui$Ui_Css$selector,
-													'&[disabled]',
-													{
-														ctor: '::',
-														_0: A2(
-															_gdotdesign$elm_ui$Ui_Css$selectors,
-															{
-																ctor: '::',
-																_0: '&:not([searchable])',
-																_1: {
-																	ctor: '::',
-																	_0: '&[searchable]:not([open])',
-																	_1: {ctor: '[]'}
-																}
-															},
-															{
-																ctor: '::',
-																_0: A2(
-																	_gdotdesign$elm_ui$Ui_Css$selector,
-																	'&::after',
-																	{
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(
-																			A2(
-																				_elm_lang$core$Basics_ops['++'],
-																				'linear-gradient(90deg, transparent, ',
-																				A2(_elm_lang$core$Basics_ops['++'], theme.colors.disabled.color, ' 70%)'))),
-																		_1: {ctor: '[]'}
-																	}),
-																_1: {ctor: '[]'}
-															}),
-														_1: {ctor: '[]'}
-													}),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_gdotdesign$elm_ui$Ui_Css$selector,
-														'ui-dropdown-panel[style-id]',
-														{
-															ctor: '::',
-															_0: _gdotdesign$elm_ui$Ui_Css_Properties$maxHeight(
-																_gdotdesign$elm_ui$Ui_Css_Properties$px(250)),
-															_1: {
-																ctor: '::',
-																_0: _gdotdesign$elm_ui$Ui_Css_Properties$padding(
-																	_gdotdesign$elm_ui$Ui_Css_Properties$px(5)),
-																_1: {
-																	ctor: '::',
-																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$flex),
-																	_1: {
-																		ctor: '::',
-																		_0: A2(
-																			_gdotdesign$elm_ui$Ui_Css$selector,
-																			'ui-scrolled-panel-wrapper:empty:before',
-																			{
-																				ctor: '::',
-																				_0: _gdotdesign$elm_ui$Ui_Css_Properties$contentString('No items to display!'),
-																				_1: {
-																					ctor: '::',
-																					_0: _gdotdesign$elm_ui$Ui_Css_Properties$fontStyle(_gdotdesign$elm_ui$Ui_Css_Properties$italic),
-																					_1: {
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$padding(
-																							_gdotdesign$elm_ui$Ui_Css_Properties$px(12)),
-																						_1: {
-																							ctor: '::',
-																							_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$block),
-																							_1: {
-																								ctor: '::',
-																								_0: _gdotdesign$elm_ui$Ui_Css_Properties$opacity(0.5),
-																								_1: {ctor: '[]'}
-																							}
-																						}
-																					}
-																				}
-																			}),
-																		_1: {ctor: '[]'}
-																	}
-																}
-															}
-														}),
-													_1: {
-														ctor: '::',
-														_0: A2(
-															_gdotdesign$elm_ui$Ui_Css$selector,
-															'ui-chooser-item',
-															{
-																ctor: '::',
-																_0: _gdotdesign$elm_ui$Ui_Styles_Mixins$ellipsis,
-																_1: {
-																	ctor: '::',
-																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$borderRadius(theme.borderRadius),
-																	_1: {
-																		ctor: '::',
-																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$padding(
-																			A2(
-																				_gdotdesign$elm_ui$Ui_Css_Properties_ops['.'],
-																				_gdotdesign$elm_ui$Ui_Css_Properties$px(8),
-																				_gdotdesign$elm_ui$Ui_Css_Properties$px(10))),
-																		_1: {
-																			ctor: '::',
-																			_0: _gdotdesign$elm_ui$Ui_Css_Properties$paddingRight(
-																				_gdotdesign$elm_ui$Ui_Css_Properties$px(30)),
-																			_1: {
-																				ctor: '::',
-																				_0: _gdotdesign$elm_ui$Ui_Css_Properties$position(_gdotdesign$elm_ui$Ui_Css_Properties$relative),
-																				_1: {
-																					ctor: '::',
-																					_0: _gdotdesign$elm_ui$Ui_Css_Properties$cursor(_gdotdesign$elm_ui$Ui_Css_Properties$pointer),
-																					_1: {
-																						ctor: '::',
-																						_0: _gdotdesign$elm_ui$Ui_Css_Properties$display(_gdotdesign$elm_ui$Ui_Css_Properties$block),
-																						_1: {
-																							ctor: '::',
-																							_0: A2(
-																								_gdotdesign$elm_ui$Ui_Css$selector,
-																								'&[intended]',
-																								{
-																									ctor: '::',
-																									_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(theme.chooser.intendedColors.background),
-																									_1: {
-																										ctor: '::',
-																										_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.chooser.intendedColors.text),
-																										_1: {
-																											ctor: '::',
-																											_0: A2(
-																												_gdotdesign$elm_ui$Ui_Css$selector,
-																												'&:hover',
-																												{
-																													ctor: '::',
-																													_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(theme.chooser.intendedHoverColors.background),
-																													_1: {
-																														ctor: '::',
-																														_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.chooser.intendedHoverColors.text),
-																														_1: {ctor: '[]'}
-																													}
-																												}),
-																											_1: {
-																												ctor: '::',
-																												_0: A2(
-																													_gdotdesign$elm_ui$Ui_Css$selector,
-																													'&:before',
-																													{
-																														ctor: '::',
-																														_0: _gdotdesign$elm_ui$Ui_Css_Properties$content(
-																															A2(
-																																_elm_lang$core$Basics_ops['++'],
-																																'url(\"data:image/svg+xml;utf8,',
-																																A2(
-																																	_elm_lang$core$Basics_ops['++'],
-																																	_gdotdesign$elm_ui$Ui_Styles_Chooser$chevronRight(theme.chooser.intendedColors.text),
-																																	'\")'))),
-																														_1: {
-																															ctor: '::',
-																															_0: _gdotdesign$elm_ui$Ui_Css_Properties$top('calc(50% - 7px)'),
-																															_1: {
-																																ctor: '::',
-																																_0: _gdotdesign$elm_ui$Ui_Css_Properties$position(_gdotdesign$elm_ui$Ui_Css_Properties$absolute),
-																																_1: {
-																																	ctor: '::',
-																																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$fill(_gdotdesign$elm_ui$Ui_Css_Properties$currentColor),
-																																	_1: {
-																																		ctor: '::',
-																																		_0: _gdotdesign$elm_ui$Ui_Css_Properties$right(
-																																			_gdotdesign$elm_ui$Ui_Css_Properties$px(10)),
-																																		_1: {ctor: '[]'}
-																																	}
-																																}
-																															}
-																														}
-																													}),
-																												_1: {ctor: '[]'}
-																											}
-																										}
-																									}
-																								}),
-																							_1: {
-																								ctor: '::',
-																								_0: A2(
-																									_gdotdesign$elm_ui$Ui_Css$selector,
-																									'&:hover',
-																									{
-																										ctor: '::',
-																										_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(theme.chooser.hoverColors.background),
-																										_1: {
-																											ctor: '::',
-																											_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.chooser.hoverColors.text),
-																											_1: {ctor: '[]'}
-																										}
-																									}),
-																								_1: {
-																									ctor: '::',
-																									_0: A2(
-																										_gdotdesign$elm_ui$Ui_Css$selector,
-																										'&[selected]',
-																										{
-																											ctor: '::',
-																											_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(theme.chooser.selectedColors.background),
-																											_1: {
-																												ctor: '::',
-																												_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.chooser.selectedColors.text),
-																												_1: {
-																													ctor: '::',
-																													_0: A2(
-																														_gdotdesign$elm_ui$Ui_Css$selector,
-																														'&:hover',
-																														{
-																															ctor: '::',
-																															_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(theme.chooser.selectedHoverColors.background),
-																															_1: {
-																																ctor: '::',
-																																_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.chooser.selectedHoverColors.text),
-																																_1: {ctor: '[]'}
-																															}
-																														}),
-																													_1: {ctor: '[]'}
-																												}
-																											}
-																										}),
-																									_1: {
-																										ctor: '::',
-																										_0: A2(
-																											_gdotdesign$elm_ui$Ui_Css$selector,
-																											'&[selected][intended]',
-																											{
-																												ctor: '::',
-																												_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(theme.chooser.selectedIntendedColors.background),
-																												_1: {
-																													ctor: '::',
-																													_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.chooser.selectedIntendedColors.text),
-																													_1: {
-																														ctor: '::',
-																														_0: A2(
-																															_gdotdesign$elm_ui$Ui_Css$selector,
-																															'&:hover',
-																															{
-																																ctor: '::',
-																																_0: _gdotdesign$elm_ui$Ui_Css_Properties$background(theme.chooser.selectedIntendedHoverColors.background),
-																																_1: {
-																																	ctor: '::',
-																																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$color(theme.chooser.selectedIntendedHoverColors.text),
-																																	_1: {ctor: '[]'}
-																																}
-																															}),
-																														_1: {
-																															ctor: '::',
-																															_0: A2(
-																																_gdotdesign$elm_ui$Ui_Css$selector,
-																																'&:before',
-																																{
-																																	ctor: '::',
-																																	_0: _gdotdesign$elm_ui$Ui_Css_Properties$content(
-																																		A2(
-																																			_elm_lang$core$Basics_ops['++'],
-																																			'url(\"data:image/svg+xml;utf8,',
-																																			A2(
-																																				_elm_lang$core$Basics_ops['++'],
-																																				_gdotdesign$elm_ui$Ui_Styles_Chooser$chevronRight(theme.chooser.selectedIntendedHoverColors.text),
-																																				'\")'))),
-																																	_1: {ctor: '[]'}
-																																}),
-																															_1: {ctor: '[]'}
-																														}
-																													}
-																												}
-																											}),
-																										_1: {
-																											ctor: '::',
-																											_0: A2(
-																												_gdotdesign$elm_ui$Ui_Css$selector,
-																												'+ ui-chooser-item',
-																												{
-																													ctor: '::',
-																													_0: _gdotdesign$elm_ui$Ui_Css_Properties$marginTop(
-																														_gdotdesign$elm_ui$Ui_Css_Properties$px(3)),
-																													_1: {ctor: '[]'}
-																												}),
-																											_1: {ctor: '[]'}
-																										}
-																									}
-																								}
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}),
-														_1: {ctor: '[]'}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Styles_Chooser$defaultStyle = _gdotdesign$elm_ui$Ui_Styles$attributes(
-	_gdotdesign$elm_ui$Ui_Styles_Chooser$style(_gdotdesign$elm_ui$Ui_Styles_Theme$default));
-
-var _gdotdesign$elm_ui$Ui_Chooser$createRegex = function (value) {
-	return _elm_lang$core$Regex$caseInsensitive(
-		_elm_lang$core$Regex$regex(
-			_elm_lang$core$Regex$escape(value)));
-};
-var _gdotdesign$elm_ui$Ui_Chooser$items_ = function (model) {
-	var test = function (item) {
-		return A2(
-			_elm_lang$core$Regex$contains,
-			_gdotdesign$elm_ui$Ui_Chooser$createRegex(model.value),
-			item.label);
-	};
-	return _elm_lang$core$String$isEmpty(
-		_elm_lang$core$String$trim(model.value)) ? model.data : A2(_elm_lang$core$List$filter, test, model.data);
-};
-var _gdotdesign$elm_ui$Ui_Chooser$availableItems = function (model) {
-	return A2(
-		_elm_lang$core$List$map,
-		function (_) {
-			return _.value;
-		},
-		_gdotdesign$elm_ui$Ui_Chooser$items_(model));
-};
-var _gdotdesign$elm_ui$Ui_Chooser$label = function (model) {
-	return A2(
-		_elm_lang$core$String$join,
-		', ',
-		A2(
-			_elm_lang$core$List$map,
-			function (_) {
-				return _.label;
-			},
-			A2(
-				_elm_lang$core$List$filter,
-				function (item) {
-					return A2(_elm_lang$core$Set$member, item.value, model.selected);
-				},
-				model.data)));
-};
-var _gdotdesign$elm_ui$Ui_Chooser$setInputValue = F2(
-	function (value, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{value: value});
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$intendFirst = function (model) {
-	var available = _gdotdesign$elm_ui$Ui_Chooser$availableItems(model);
-	var index = A2(_gdotdesign$elm_ui$Ui_Helpers_Intendable$index, model.intended, available);
-	return _elm_lang$core$Native_Utils.eq(index, -1) ? _elm_lang$core$Native_Utils.update(
-		model,
-		{
-			intended: A2(_gdotdesign$elm_ui$Ui_Helpers_Intendable$next, '', available)
-		}) : model;
-};
-var _gdotdesign$elm_ui$Ui_Chooser$sendValue = function (model) {
-	var value = _elm_lang$core$Json_Encode$list(
-		A2(
-			_elm_lang$core$List$map,
-			_elm_lang$core$Json_Encode$string,
-			_elm_lang$core$Set$toList(model.selected)));
-	return {
-		ctor: '_Tuple2',
-		_0: model,
-		_1: A2(_gdotdesign$elm_ui$Ui_Helpers_Emitter$send, model.uid, value)
-	};
-};
-var _gdotdesign$elm_ui$Ui_Chooser$toggleMultipleItem = F2(
-	function (value, model) {
-		var updated_set = A2(_elm_lang$core$Set$member, value, model.selected) ? ((model.deselectable || (_elm_lang$core$Native_Utils.cmp(
-			_elm_lang$core$Set$size(model.selected),
-			1) > 0)) ? A2(_elm_lang$core$Set$remove, value, model.selected) : model.selected) : A2(_elm_lang$core$Set$insert, value, model.selected);
-		return _gdotdesign$elm_ui$Ui_Chooser$sendValue(
-			_elm_lang$core$Native_Utils.update(
-				model,
-				{selected: updated_set}));
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$toggleSingleItem = F2(
-	function (value, model) {
-		var updatedModel = (A2(_elm_lang$core$Set$member, value, model.selected) && model.deselectable) ? _elm_lang$core$Native_Utils.update(
-			model,
-			{selected: _elm_lang$core$Set$empty}) : _elm_lang$core$Native_Utils.update(
-			model,
-			{
-				selected: _elm_lang$core$Set$singleton(value)
-			});
-		return _gdotdesign$elm_ui$Ui_Chooser$sendValue(updatedModel);
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$selectFirst = function (model) {
-	var _p0 = _elm_lang$core$List$head(model.data);
-	if (_p0.ctor === 'Just') {
-		return _gdotdesign$elm_ui$Ui_Chooser$sendValue(
-			_elm_lang$core$Native_Utils.update(
-				model,
-				{
-					selected: _elm_lang$core$Set$singleton(_p0._0.value)
-				}));
-	} else {
-		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-	}
-};
-var _gdotdesign$elm_ui$Ui_Chooser$updateData = F2(
-	function (data, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{data: data});
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$getFirstSelected = function (model) {
-	return _elm_lang$core$List$head(
-		_elm_lang$core$Set$toList(model.selected));
-};
-var _gdotdesign$elm_ui$Ui_Chooser$toggleItem = F2(
-	function (value, model) {
-		return model.multiple ? A2(_gdotdesign$elm_ui$Ui_Chooser$toggleMultipleItem, value, model) : A2(_gdotdesign$elm_ui$Ui_Chooser$toggleSingleItem, value, model);
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$close = function (model) {
-	return A2(
-		_gdotdesign$elm_ui$Ui_Chooser$setInputValue,
-		'',
-		_gdotdesign$elm_ui$Ui_Helpers_Dropdown$close(model));
-};
-var _gdotdesign$elm_ui$Ui_Chooser$closeIfShouldClose = function (model) {
-	return model.closeOnSelect ? _gdotdesign$elm_ui$Ui_Chooser$close(model) : model;
-};
-var _gdotdesign$elm_ui$Ui_Chooser$toggleItemAndClose = F2(
-	function (value, model) {
-		var _p1 = A2(_gdotdesign$elm_ui$Ui_Chooser$toggleItem, value, model);
-		var updatedModel = _p1._0;
-		var effect = _p1._1;
-		return {
-			ctor: '_Tuple2',
-			_0: _gdotdesign$elm_ui$Ui_Chooser$closeIfShouldClose(updatedModel),
-			_1: effect
-		};
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$setValue = F2(
-	function (value, model) {
-		var newSelected = _elm_lang$core$Set$singleton(value);
-		return _elm_lang$core$Native_Utils.eq(
-			_elm_lang$core$Set$size(
-				A2(_elm_lang$core$Set$diff, newSelected, model.selected)),
-			0) ? model : _elm_lang$core$Native_Utils.update(
-			model,
-			{selected: newSelected});
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$update = F2(
-	function (action, model) {
-		var _p2 = action;
-		switch (_p2.ctor) {
-			case 'Enter':
-				var $function = model.closeOnSelect ? _gdotdesign$elm_ui$Ui_Helpers_Dropdown$toggle : _gdotdesign$elm_ui$Ui_Helpers_Dropdown$open;
-				var _p3 = A2(_gdotdesign$elm_ui$Ui_Chooser$toggleItem, model.intended, model);
-				var updatedModel = _p3._0;
-				var effect = _p3._1;
-				return {
-					ctor: '_Tuple2',
-					_0: $function(updatedModel),
-					_1: effect
-				};
-			case 'Dropdown':
-				return {
-					ctor: '_Tuple2',
-					_0: A2(_gdotdesign$elm_ui$Ui_Helpers_Dropdown$update, _p2._0, model),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'Select':
-				return A2(_gdotdesign$elm_ui$Ui_Chooser$toggleItemAndClose, _p2._0, model);
-			case 'Filter':
-				return {
-					ctor: '_Tuple2',
-					_0: _gdotdesign$elm_ui$Ui_Chooser$intendFirst(
-						A2(_gdotdesign$elm_ui$Ui_Chooser$setInputValue, _p2._0, model)),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'Toggle':
-				return {
-					ctor: '_Tuple2',
-					_0: _gdotdesign$elm_ui$Ui_Chooser$intendFirst(
-						_gdotdesign$elm_ui$Ui_Helpers_Dropdown$open(model)),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'Focus':
-				return {
-					ctor: '_Tuple2',
-					_0: _gdotdesign$elm_ui$Ui_Chooser$intendFirst(
-						_gdotdesign$elm_ui$Ui_Helpers_Dropdown$open(model)),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'Close':
-				return {
-					ctor: '_Tuple2',
-					_0: _gdotdesign$elm_ui$Ui_Chooser$close(model),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'Blur':
-				return {
-					ctor: '_Tuple2',
-					_0: _gdotdesign$elm_ui$Ui_Chooser$close(model),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'Next':
-				return {
-					ctor: '_Tuple2',
-					_0: _gdotdesign$elm_ui$Ui_Helpers_Dropdown$open(
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								intended: A2(
-									_gdotdesign$elm_ui$Ui_Helpers_Intendable$next,
-									model.intended,
-									_gdotdesign$elm_ui$Ui_Chooser$availableItems(model))
-							})),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'Prev':
-				return {
-					ctor: '_Tuple2',
-					_0: _gdotdesign$elm_ui$Ui_Helpers_Dropdown$open(
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								intended: A2(
-									_gdotdesign$elm_ui$Ui_Helpers_Intendable$previous,
-									model.intended,
-									_gdotdesign$elm_ui$Ui_Chooser$availableItems(model))
-							})),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			default:
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$renderWhenClosed = F2(
-	function (value, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{renderWhenClosed: value});
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$items = F2(
-	function (value, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{data: value});
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$multiple = F2(
-	function (value, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{multiple: value});
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$searchable = F2(
-	function (value, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{searchable: value});
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$deselectable = F2(
-	function (value, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{deselectable: value});
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$closeOnSelect = F2(
-	function (value, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{closeOnSelect: value});
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$placeholder = F2(
-	function (value, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{placeholder: value});
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$onChange = F2(
-	function (msg, model) {
-		var decoder = A2(
-			_elm_lang$core$Json_Decode$map,
-			_elm_lang$core$Set$fromList,
-			_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string));
-		return A2(
-			_gdotdesign$elm_ui$Ui_Helpers_Emitter$listen,
-			model.uid,
-			A3(_gdotdesign$elm_ui$Ui_Helpers_Emitter$decode, decoder, _elm_lang$core$Set$empty, msg));
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$init = function (_p4) {
-	return A2(
-		_gdotdesign$elm_ui$Ui_Helpers_Dropdown$offset,
-		5,
-		{
-			render: function (item) {
-				return _elm_lang$html$Html$text(item.label);
-			},
-			dropdown: _gdotdesign$elm_ui$Ui_Helpers_Dropdown$init,
-			renderWhenClosed: true,
-			closeOnSelect: false,
-			deselectable: false,
-			selected: _elm_lang$core$Set$empty,
-			searchable: false,
-			multiple: false,
-			disabled: false,
-			readonly: false,
-			placeholder: '',
-			uid: _gdotdesign$elm_ui$Ui_Native_Uid$uid(
-				{ctor: '_Tuple0'}),
-			intended: '',
-			value: '',
-			data: {ctor: '[]'}
-		});
-};
-var _gdotdesign$elm_ui$Ui_Chooser$Item = F3(
-	function (a, b, c) {
-		return {label: a, value: b, id: c};
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$Model = function (a) {
-	return function (b) {
-		return function (c) {
-			return function (d) {
-				return function (e) {
-					return function (f) {
-						return function (g) {
-							return function (h) {
-								return function (i) {
-									return function (j) {
-										return function (k) {
-											return function (l) {
-												return function (m) {
-													return function (n) {
-														return function (o) {
-															return {render: a, dropdown: b, renderWhenClosed: c, selected: d, placeholder: e, closeOnSelect: f, deselectable: g, intended: h, searchable: i, data: j, multiple: k, disabled: l, readonly: m, value: n, uid: o};
-														};
-													};
-												};
-											};
-										};
-									};
-								};
-							};
-						};
-					};
-				};
-			};
-		};
-	};
-};
-var _gdotdesign$elm_ui$Ui_Chooser$Blur = {ctor: 'Blur'};
-var _gdotdesign$elm_ui$Ui_Chooser$NoOp = {ctor: 'NoOp'};
-var _gdotdesign$elm_ui$Ui_Chooser$Prev = {ctor: 'Prev'};
-var _gdotdesign$elm_ui$Ui_Chooser$Next = {ctor: 'Next'};
-var _gdotdesign$elm_ui$Ui_Chooser$Enter = {ctor: 'Enter'};
-var _gdotdesign$elm_ui$Ui_Chooser$Close = {ctor: 'Close'};
-var _gdotdesign$elm_ui$Ui_Chooser$Focus = {ctor: 'Focus'};
-var _gdotdesign$elm_ui$Ui_Chooser$Toggle = {ctor: 'Toggle'};
-var _gdotdesign$elm_ui$Ui_Chooser$Select = function (a) {
-	return {ctor: 'Select', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Chooser$renderItem = F2(
-	function (model, item) {
-		return A3(
-			_elm_lang$html$Html$node,
-			'ui-chooser-item',
-			_elm_lang$core$List$concat(
-				{
-					ctor: '::',
-					_0: {
-						ctor: '::',
-						_0: A2(
-							_gdotdesign$elm_ui$Html_Events_Extra$onPreventDefault,
-							'mousedown',
-							_gdotdesign$elm_ui$Ui_Chooser$Select(item.value)),
-						_1: {ctor: '[]'}
-					},
-					_1: {
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Ui$attributeList(
-							{
-								ctor: '::',
-								_0: {
-									ctor: '_Tuple2',
-									_0: 'selected',
-									_1: A2(_elm_lang$core$Set$member, item.value, model.selected)
-								},
-								_1: {
-									ctor: '::',
-									_0: {
-										ctor: '_Tuple2',
-										_0: 'intended',
-										_1: _elm_lang$core$Native_Utils.eq(item.value, model.intended)
-									},
-									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {ctor: '[]'}
-					}
-				}),
-			{
-				ctor: '::',
-				_0: model.render(item),
-				_1: {ctor: '[]'}
-			});
-	});
-var _gdotdesign$elm_ui$Ui_Chooser$Filter = function (a) {
-	return {ctor: 'Filter', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Chooser$Dropdown = function (a) {
-	return {ctor: 'Dropdown', _0: a};
-};
-var _gdotdesign$elm_ui$Ui_Chooser$subscriptions = function (model) {
-	return A2(
-		_elm_lang$core$Platform_Sub$map,
-		_gdotdesign$elm_ui$Ui_Chooser$Dropdown,
-		_gdotdesign$elm_ui$Ui_Helpers_Dropdown$subscriptions(model));
-};
-var _gdotdesign$elm_ui$Ui_Chooser$render = function (model) {
-	var actions = A2(
-		_gdotdesign$elm_ui$Ui$enabledActions,
-		model,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Events$onMouseDown(_gdotdesign$elm_ui$Ui_Chooser$Toggle),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onInput(_gdotdesign$elm_ui$Ui_Chooser$Filter),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Events$onFocus(_gdotdesign$elm_ui$Ui_Chooser$Focus),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html_Events$onBlur(_gdotdesign$elm_ui$Ui_Chooser$Blur),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_gdotdesign$elm_ui$Html_Events_Extra$onKeys,
-								true,
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									{
-										ctor: '::',
-										_0: {ctor: '_Tuple2', _0: 27, _1: _gdotdesign$elm_ui$Ui_Chooser$Close},
-										_1: {
-											ctor: '::',
-											_0: {ctor: '_Tuple2', _0: 13, _1: _gdotdesign$elm_ui$Ui_Chooser$Enter},
-											_1: {
-												ctor: '::',
-												_0: {ctor: '_Tuple2', _0: 40, _1: _gdotdesign$elm_ui$Ui_Chooser$Next},
-												_1: {
-													ctor: '::',
-													_0: {ctor: '_Tuple2', _0: 38, _1: _gdotdesign$elm_ui$Ui_Chooser$Prev},
-													_1: {ctor: '[]'}
-												}
-											}
-										}
-									},
-									(!model.searchable) ? {
-										ctor: '::',
-										_0: {ctor: '_Tuple2', _0: 32, _1: _gdotdesign$elm_ui$Ui_Chooser$Enter},
-										_1: {ctor: '[]'}
-									} : {ctor: '[]'})),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
-			}
-		});
-	var isReadOnly = (!model.searchable) || ((!model.dropdown.open) || model.readonly);
-	var placeholder_ = _elm_lang$core$Set$isEmpty(model.selected) ? model.placeholder : _gdotdesign$elm_ui$Ui_Chooser$label(model);
-	var val = (model.dropdown.open && model.searchable) ? model.value : _gdotdesign$elm_ui$Ui_Chooser$label(model);
-	var children = (model.dropdown.open || ((!model.dropdown.open) && model.renderWhenClosed)) ? A2(
-		_elm_lang$core$List$map,
-		A2(_elm_lang$html$Html_Lazy$lazy2, _gdotdesign$elm_ui$Ui_Chooser$renderItem, model),
-		_gdotdesign$elm_ui$Ui_Chooser$items_(model)) : {ctor: '[]'};
-	return A2(
-		_gdotdesign$elm_ui$Ui_Helpers_Dropdown$view,
-		{
-			address: _gdotdesign$elm_ui$Ui_Chooser$Dropdown,
-			tag: 'ui-chooser',
-			attributes: _elm_lang$core$List$concat(
-				{
-					ctor: '::',
-					_0: _gdotdesign$elm_ui$Ui$attributeList(
-						{
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'searchable', _1: model.searchable},
-							_1: {
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'open', _1: model.dropdown.open},
-								_1: {
-									ctor: '::',
-									_0: {ctor: '_Tuple2', _0: 'disabled', _1: model.disabled},
-									_1: {
-										ctor: '::',
-										_0: {ctor: '_Tuple2', _0: 'readonly', _1: model.readonly},
-										_1: {ctor: '[]'}
-									}
-								}
-							}
-						}),
-					_1: {
-						ctor: '::',
-						_0: _gdotdesign$elm_ui$Ui_Styles$apply(_gdotdesign$elm_ui$Ui_Styles_Chooser$defaultStyle),
-						_1: {ctor: '[]'}
-					}
-				}),
-			contents: {
-				ctor: '::',
-				_0: A2(
-					_gdotdesign$elm_ui$Ui_ScrolledPanel$view,
-					{
-						ctor: '::',
-						_0: A2(_gdotdesign$elm_ui$Html_Events_Extra$onPreventDefault, 'mousedown', _gdotdesign$elm_ui$Ui_Chooser$NoOp),
-						_1: {ctor: '[]'}
-					},
-					children),
-				_1: {ctor: '[]'}
-			},
-			children: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$input,
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$placeholder(placeholder_),
-							_1: {
-								ctor: '::',
-								_0: A2(_elm_lang$html$Html_Attributes$attribute, 'id', model.uid),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$disabled(model.disabled),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$readonly(isReadOnly),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$value(val),
-											_1: {ctor: '[]'}
-										}
-									}
-								}
-							}
-						},
-						actions),
-					{ctor: '[]'}),
-				_1: {ctor: '[]'}
-			}
-		},
-		model);
-};
-var _gdotdesign$elm_ui$Ui_Chooser$view = function (model) {
-	return A2(_elm_lang$html$Html_Lazy$lazy, _gdotdesign$elm_ui$Ui_Chooser$render, model);
 };
 
 var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond = 1000;
@@ -21649,6 +13521,1045 @@ var _justinmimbs$elm_date_extra$Date_Extra$equalBy = F3(
 var _justinmimbs$elm_date_extra$Date_Extra$Second = {ctor: 'Second'};
 var _justinmimbs$elm_date_extra$Date_Extra$Millisecond = {ctor: 'Millisecond'};
 
+var _rluiten$elm_date_extra$Date_Extra_Core$prevMonth = function (month) {
+	var _p0 = month;
+	switch (_p0.ctor) {
+		case 'Jan':
+			return _elm_lang$core$Date$Dec;
+		case 'Feb':
+			return _elm_lang$core$Date$Jan;
+		case 'Mar':
+			return _elm_lang$core$Date$Feb;
+		case 'Apr':
+			return _elm_lang$core$Date$Mar;
+		case 'May':
+			return _elm_lang$core$Date$Apr;
+		case 'Jun':
+			return _elm_lang$core$Date$May;
+		case 'Jul':
+			return _elm_lang$core$Date$Jun;
+		case 'Aug':
+			return _elm_lang$core$Date$Jul;
+		case 'Sep':
+			return _elm_lang$core$Date$Aug;
+		case 'Oct':
+			return _elm_lang$core$Date$Sep;
+		case 'Nov':
+			return _elm_lang$core$Date$Oct;
+		default:
+			return _elm_lang$core$Date$Nov;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$nextMonth = function (month) {
+	var _p1 = month;
+	switch (_p1.ctor) {
+		case 'Jan':
+			return _elm_lang$core$Date$Feb;
+		case 'Feb':
+			return _elm_lang$core$Date$Mar;
+		case 'Mar':
+			return _elm_lang$core$Date$Apr;
+		case 'Apr':
+			return _elm_lang$core$Date$May;
+		case 'May':
+			return _elm_lang$core$Date$Jun;
+		case 'Jun':
+			return _elm_lang$core$Date$Jul;
+		case 'Jul':
+			return _elm_lang$core$Date$Aug;
+		case 'Aug':
+			return _elm_lang$core$Date$Sep;
+		case 'Sep':
+			return _elm_lang$core$Date$Oct;
+		case 'Oct':
+			return _elm_lang$core$Date$Nov;
+		case 'Nov':
+			return _elm_lang$core$Date$Dec;
+		default:
+			return _elm_lang$core$Date$Jan;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$intToMonth = function (month) {
+	return (_elm_lang$core$Native_Utils.cmp(month, 1) < 1) ? _elm_lang$core$Date$Jan : (_elm_lang$core$Native_Utils.eq(month, 2) ? _elm_lang$core$Date$Feb : (_elm_lang$core$Native_Utils.eq(month, 3) ? _elm_lang$core$Date$Mar : (_elm_lang$core$Native_Utils.eq(month, 4) ? _elm_lang$core$Date$Apr : (_elm_lang$core$Native_Utils.eq(month, 5) ? _elm_lang$core$Date$May : (_elm_lang$core$Native_Utils.eq(month, 6) ? _elm_lang$core$Date$Jun : (_elm_lang$core$Native_Utils.eq(month, 7) ? _elm_lang$core$Date$Jul : (_elm_lang$core$Native_Utils.eq(month, 8) ? _elm_lang$core$Date$Aug : (_elm_lang$core$Native_Utils.eq(month, 9) ? _elm_lang$core$Date$Sep : (_elm_lang$core$Native_Utils.eq(month, 10) ? _elm_lang$core$Date$Oct : (_elm_lang$core$Native_Utils.eq(month, 11) ? _elm_lang$core$Date$Nov : _elm_lang$core$Date$Dec))))))))));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$monthToInt = function (month) {
+	var _p2 = month;
+	switch (_p2.ctor) {
+		case 'Jan':
+			return 1;
+		case 'Feb':
+			return 2;
+		case 'Mar':
+			return 3;
+		case 'Apr':
+			return 4;
+		case 'May':
+			return 5;
+		case 'Jun':
+			return 6;
+		case 'Jul':
+			return 7;
+		case 'Aug':
+			return 8;
+		case 'Sep':
+			return 9;
+		case 'Oct':
+			return 10;
+		case 'Nov':
+			return 11;
+		default:
+			return 12;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear = function (year) {
+	return (_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], year, 4),
+		0) && (!_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], year, 100),
+		0))) || _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], year, 400),
+		0);
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$isLeapYearDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear(
+		_elm_lang$core$Date$year(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$yearToDayLength = function (year) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear(year) ? 366 : 365;
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInMonth = F2(
+	function (year, month) {
+		var _p3 = month;
+		switch (_p3.ctor) {
+			case 'Jan':
+				return 31;
+			case 'Feb':
+				return _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear(year) ? 29 : 28;
+			case 'Mar':
+				return 31;
+			case 'Apr':
+				return 30;
+			case 'May':
+				return 31;
+			case 'Jun':
+				return 30;
+			case 'Jul':
+				return 31;
+			case 'Aug':
+				return 31;
+			case 'Sep':
+				return 30;
+			case 'Oct':
+				return 31;
+			case 'Nov':
+				return 30;
+			default:
+				return 31;
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate = function (date) {
+	return A2(
+		_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$monthList = {
+	ctor: '::',
+	_0: _elm_lang$core$Date$Jan,
+	_1: {
+		ctor: '::',
+		_0: _elm_lang$core$Date$Feb,
+		_1: {
+			ctor: '::',
+			_0: _elm_lang$core$Date$Mar,
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Date$Apr,
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Date$May,
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Date$Jun,
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$core$Date$Jul,
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Date$Aug,
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$core$Date$Sep,
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$core$Date$Oct,
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$core$Date$Nov,
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$core$Date$Dec,
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$toTime = function (_p4) {
+	return _elm_lang$core$Basics$floor(
+		_elm_lang$core$Date$toTime(_p4));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$fromTime = function (_p5) {
+	return _elm_lang$core$Date$fromTime(
+		_elm_lang$core$Basics$toFloat(_p5));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$prevDay = function (day) {
+	var _p6 = day;
+	switch (_p6.ctor) {
+		case 'Mon':
+			return _elm_lang$core$Date$Sun;
+		case 'Tue':
+			return _elm_lang$core$Date$Mon;
+		case 'Wed':
+			return _elm_lang$core$Date$Tue;
+		case 'Thu':
+			return _elm_lang$core$Date$Wed;
+		case 'Fri':
+			return _elm_lang$core$Date$Thu;
+		case 'Sat':
+			return _elm_lang$core$Date$Fri;
+		default:
+			return _elm_lang$core$Date$Sat;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$nextDay = function (day) {
+	var _p7 = day;
+	switch (_p7.ctor) {
+		case 'Mon':
+			return _elm_lang$core$Date$Tue;
+		case 'Tue':
+			return _elm_lang$core$Date$Wed;
+		case 'Wed':
+			return _elm_lang$core$Date$Thu;
+		case 'Thu':
+			return _elm_lang$core$Date$Fri;
+		case 'Fri':
+			return _elm_lang$core$Date$Sat;
+		case 'Sat':
+			return _elm_lang$core$Date$Sun;
+		default:
+			return _elm_lang$core$Date$Mon;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek = function (day) {
+	var _p8 = day;
+	switch (_p8.ctor) {
+		case 'Mon':
+			return 1;
+		case 'Tue':
+			return 2;
+		case 'Wed':
+			return 3;
+		case 'Thu':
+			return 4;
+		case 'Fri':
+			return 5;
+		case 'Sat':
+			return 6;
+		default:
+			return 7;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$daysBackToStartOfWeek = F2(
+	function (dateDay, startOfWeekDay) {
+		var startOfWeekDayIndex = _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek(startOfWeekDay);
+		var dateDayIndex = _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek(dateDay);
+		return (_elm_lang$core$Native_Utils.cmp(dateDayIndex, startOfWeekDayIndex) < 0) ? ((7 + dateDayIndex) - startOfWeekDayIndex) : (dateDayIndex - startOfWeekDayIndex);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond = _elm_lang$core$Basics$floor(_elm_lang$core$Time$millisecond);
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond = _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond * 1000;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute = _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond * 60;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour = _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute * 60;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksADay = _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour * 24;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek = _rluiten$elm_date_extra$Date_Extra_Core$ticksADay * 7;
+var _rluiten$elm_date_extra$Date_Extra_Core$firstOfMonthTicks = function (date) {
+	var dateTicks = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date);
+	var day = _elm_lang$core$Date$day(date);
+	return dateTicks + ((1 - day) * _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$lastOfPrevMonthDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
+		_rluiten$elm_date_extra$Date_Extra_Core$firstOfMonthTicks(date) - _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInPrevMonth = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate(
+		_rluiten$elm_date_extra$Date_Extra_Core$lastOfPrevMonthDate(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$toFirstOfMonth = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
+		_rluiten$elm_date_extra$Date_Extra_Core$firstOfMonthTicks(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthTicks = function (date) {
+	var dateTicks = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date);
+	var day = _elm_lang$core$Date$day(date);
+	var month = _elm_lang$core$Date$month(date);
+	var year = _elm_lang$core$Date$year(date);
+	var daysInMonthVal = A2(_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth, year, month);
+	var addDays = daysInMonthVal - day;
+	return dateTicks + (addDays * _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$firstOfNextMonthDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
+		_rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthTicks(date) + _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInNextMonth = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate(
+		_rluiten$elm_date_extra$Date_Extra_Core$firstOfNextMonthDate(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
+		_rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthTicks(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$epochDateStr = '1970-01-01T00:00:00Z';
+
+var _rluiten$elm_date_extra$Date_Extra_Config$Config = F2(
+	function (a, b) {
+		return {i18n: a, format: b};
+	});
+
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayOfMonthWithSuffix = F2(
+	function (pad, day) {
+		var value = function () {
+			var _p0 = day;
+			switch (_p0) {
+				case 1:
+					return '1st';
+				case 21:
+					return '21st';
+				case 2:
+					return '2nd';
+				case 22:
+					return '22nd';
+				case 3:
+					return '3rd';
+				case 23:
+					return '23rd';
+				case 31:
+					return '31st';
+				default:
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(day),
+						'th');
+			}
+		}();
+		return pad ? A3(
+			_elm_lang$core$String$padLeft,
+			4,
+			_elm_lang$core$Native_Utils.chr(' '),
+			value) : value;
+	});
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthName = function (month) {
+	var _p1 = month;
+	switch (_p1.ctor) {
+		case 'Jan':
+			return 'January';
+		case 'Feb':
+			return 'February';
+		case 'Mar':
+			return 'March';
+		case 'Apr':
+			return 'April';
+		case 'May':
+			return 'May';
+		case 'Jun':
+			return 'June';
+		case 'Jul':
+			return 'July';
+		case 'Aug':
+			return 'August';
+		case 'Sep':
+			return 'September';
+		case 'Oct':
+			return 'October';
+		case 'Nov':
+			return 'November';
+		default:
+			return 'December';
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthShort = function (month) {
+	var _p2 = month;
+	switch (_p2.ctor) {
+		case 'Jan':
+			return 'Jan';
+		case 'Feb':
+			return 'Feb';
+		case 'Mar':
+			return 'Mar';
+		case 'Apr':
+			return 'Apr';
+		case 'May':
+			return 'May';
+		case 'Jun':
+			return 'Jun';
+		case 'Jul':
+			return 'Jul';
+		case 'Aug':
+			return 'Aug';
+		case 'Sep':
+			return 'Sep';
+		case 'Oct':
+			return 'Oct';
+		case 'Nov':
+			return 'Nov';
+		default:
+			return 'Dec';
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayName = function (day) {
+	var _p3 = day;
+	switch (_p3.ctor) {
+		case 'Mon':
+			return 'Monday';
+		case 'Tue':
+			return 'Tuesday';
+		case 'Wed':
+			return 'Wednesday';
+		case 'Thu':
+			return 'Thursday';
+		case 'Fri':
+			return 'Friday';
+		case 'Sat':
+			return 'Saturday';
+		default:
+			return 'Sunday';
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayShort = function (day) {
+	var _p4 = day;
+	switch (_p4.ctor) {
+		case 'Mon':
+			return 'Mon';
+		case 'Tue':
+			return 'Tue';
+		case 'Wed':
+			return 'Wed';
+		case 'Thu':
+			return 'Thu';
+		case 'Fri':
+			return 'Fri';
+		case 'Sat':
+			return 'Sat';
+		default:
+			return 'Sun';
+	}
+};
+
+var _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config = {
+	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayOfMonthWithSuffix},
+	format: {date: '%-m/%-d/%Y', longDate: '%A, %B %d, %Y', time: '%-H:%M %p', longTime: '%-H:%M:%S %p', dateTime: '%-m/%-d/%Y %-I:%M %p', firstDayOfWeek: _elm_lang$core$Date$Sun}
+};
+
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayOfMonthWithSuffix = function (_p0) {
+	return _elm_lang$core$Basics$toString;
+};
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$monthName = function (month) {
+	var _p1 = month;
+	switch (_p1.ctor) {
+		case 'Jan':
+			return 'januari';
+		case 'Feb':
+			return 'februari';
+		case 'Mar':
+			return 'maart';
+		case 'Apr':
+			return 'april';
+		case 'May':
+			return 'mei';
+		case 'Jun':
+			return 'juni';
+		case 'Jul':
+			return 'juli';
+		case 'Aug':
+			return 'augustus';
+		case 'Sep':
+			return 'september';
+		case 'Oct':
+			return 'oktober';
+		case 'Nov':
+			return 'november';
+		default:
+			return 'december';
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$monthShort = function (month) {
+	var _p2 = month;
+	switch (_p2.ctor) {
+		case 'Jan':
+			return 'jan';
+		case 'Feb':
+			return 'feb';
+		case 'Mar':
+			return 'mrt';
+		case 'Apr':
+			return 'apr';
+		case 'May':
+			return 'mei';
+		case 'Jun':
+			return 'jun';
+		case 'Jul':
+			return 'jul';
+		case 'Aug':
+			return 'aug';
+		case 'Sep':
+			return 'sep';
+		case 'Oct':
+			return 'okt';
+		case 'Nov':
+			return 'nov';
+		default:
+			return 'dec';
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayName = function (day) {
+	var _p3 = day;
+	switch (_p3.ctor) {
+		case 'Mon':
+			return 'maandag';
+		case 'Tue':
+			return 'dinsdag';
+		case 'Wed':
+			return 'woensdag';
+		case 'Thu':
+			return 'donderdag';
+		case 'Fri':
+			return 'vrijdag';
+		case 'Sat':
+			return 'zaterdag';
+		default:
+			return 'zondag';
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayShort = function (day) {
+	var _p4 = day;
+	switch (_p4.ctor) {
+		case 'Mon':
+			return 'ma';
+		case 'Tue':
+			return 'di';
+		case 'Wed':
+			return 'wo';
+		case 'Thu':
+			return 'do';
+		case 'Fri':
+			return 'vr';
+		case 'Sat':
+			return 'za';
+		default:
+			return 'zo';
+	}
+};
+
+var _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config = {
+	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayOfMonthWithSuffix},
+	format: {date: '%-m/%-d/%Y', longDate: '%A, %B %d, %Y', time: '%H:%M', longTime: '%-H:%M:%S %p', dateTime: '%-m/%-d/%Y %-I:%M %p', firstDayOfWeek: _elm_lang$core$Date$Mon}
+};
+
+var _rluiten$elm_date_extra$Date_Extra_Period$diff = F2(
+	function (date1, date2) {
+		var millisecondDiff = _elm_lang$core$Date$millisecond(date1) - _elm_lang$core$Date$millisecond(date2);
+		var secondDiff = _elm_lang$core$Date$second(date1) - _elm_lang$core$Date$second(date2);
+		var minuteDiff = _elm_lang$core$Date$minute(date1) - _elm_lang$core$Date$minute(date2);
+		var hourDiff = _elm_lang$core$Date$hour(date1) - _elm_lang$core$Date$hour(date2);
+		var ticksDiff = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date1) - _rluiten$elm_date_extra$Date_Extra_Core$toTime(date2);
+		var ticksDayDiff = (((ticksDiff - (hourDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour)) - (minuteDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute)) - (secondDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond)) - (millisecondDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond);
+		var onlyDaysDiff = (ticksDayDiff / _rluiten$elm_date_extra$Date_Extra_Core$ticksADay) | 0;
+		var _p0 = function () {
+			if (_elm_lang$core$Native_Utils.cmp(onlyDaysDiff, 0) < 0) {
+				var absDayDiff = _elm_lang$core$Basics$abs(onlyDaysDiff);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Basics$negate((absDayDiff / 7) | 0),
+					_1: _elm_lang$core$Basics$negate(
+						A2(_elm_lang$core$Basics_ops['%'], absDayDiff, 7))
+				};
+			} else {
+				return {
+					ctor: '_Tuple2',
+					_0: (onlyDaysDiff / 7) | 0,
+					_1: A2(_elm_lang$core$Basics_ops['%'], onlyDaysDiff, 7)
+				};
+			}
+		}();
+		var weekDiff = _p0._0;
+		var dayDiff = _p0._1;
+		return {week: weekDiff, day: dayDiff, hour: hourDiff, minute: minuteDiff, second: secondDiff, millisecond: millisecondDiff};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Period$addTimeUnit = F3(
+	function (unit, addend, date) {
+		return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
+			A2(
+				F2(
+					function (x, y) {
+						return x + y;
+					}),
+				addend * unit,
+				_rluiten$elm_date_extra$Date_Extra_Core$toTime(date)));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Period$toTicks = function (period) {
+	var _p1 = period;
+	switch (_p1.ctor) {
+		case 'Millisecond':
+			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond;
+		case 'Second':
+			return _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond;
+		case 'Minute':
+			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute;
+		case 'Hour':
+			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour;
+		case 'Day':
+			return _rluiten$elm_date_extra$Date_Extra_Core$ticksADay;
+		case 'Week':
+			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek;
+		default:
+			var _p2 = _p1._0;
+			return (((((_rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond * _p2.millisecond) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksASecond * _p2.second)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute * _p2.minute)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour * _p2.hour)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksADay * _p2.day)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek * _p2.week);
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Period$add = function (period) {
+	return _rluiten$elm_date_extra$Date_Extra_Period$addTimeUnit(
+		_rluiten$elm_date_extra$Date_Extra_Period$toTicks(period));
+};
+var _rluiten$elm_date_extra$Date_Extra_Period$zeroDelta = {week: 0, day: 0, hour: 0, minute: 0, second: 0, millisecond: 0};
+var _rluiten$elm_date_extra$Date_Extra_Period$DeltaRecord = F6(
+	function (a, b, c, d, e, f) {
+		return {week: a, day: b, hour: c, minute: d, second: e, millisecond: f};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Period$Delta = function (a) {
+	return {ctor: 'Delta', _0: a};
+};
+var _rluiten$elm_date_extra$Date_Extra_Period$Week = {ctor: 'Week'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Day = {ctor: 'Day'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Hour = {ctor: 'Hour'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Minute = {ctor: 'Minute'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Second = {ctor: 'Second'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Millisecond = {ctor: 'Millisecond'};
+
+var _rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil = F3(
+	function (year, month, day) {
+		var doy = (((((153 * (month + ((_elm_lang$core$Native_Utils.cmp(month, 2) > 0) ? -3 : 9))) + 2) / 5) | 0) + day) - 1;
+		var y = year - ((_elm_lang$core$Native_Utils.cmp(month, 2) < 1) ? 1 : 0);
+		var era = (((_elm_lang$core$Native_Utils.cmp(y, 0) > -1) ? y : (y - 399)) / 400) | 0;
+		var yoe = y - (era * 400);
+		var doe = (((yoe * 365) + ((yoe / 4) | 0)) - ((yoe / 100) | 0)) + doy;
+		return ((era * 146097) + doe) - 719468;
+	});
+var _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields = F7(
+	function (year, month, day, hour, minute, second, millisecond) {
+		var monthInt = _rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month);
+		var c_year = (_elm_lang$core$Native_Utils.cmp(year, 0) < 0) ? 0 : year;
+		var c_day = A3(
+			_elm_lang$core$Basics$clamp,
+			1,
+			A2(_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth, c_year, month),
+			day);
+		var dayCount = A3(_rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil, c_year, monthInt, c_day);
+		return _rluiten$elm_date_extra$Date_Extra_Period$toTicks(
+			_rluiten$elm_date_extra$Date_Extra_Period$Delta(
+				{
+					millisecond: A3(_elm_lang$core$Basics$clamp, 0, 999, millisecond),
+					second: A3(_elm_lang$core$Basics$clamp, 0, 59, second),
+					minute: A3(_elm_lang$core$Basics$clamp, 0, 59, minute),
+					hour: A3(_elm_lang$core$Basics$clamp, 0, 23, hour),
+					day: dayCount,
+					week: 0
+				}));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromDateFields = function (date) {
+	return A7(
+		_rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date),
+		_elm_lang$core$Date$day(date),
+		_elm_lang$core$Date$hour(date),
+		_elm_lang$core$Date$minute(date),
+		_elm_lang$core$Date$second(date),
+		_elm_lang$core$Date$millisecond(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset = function (date) {
+	var v1Ticks = _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromDateFields(date);
+	var dateTicks = _elm_lang$core$Basics$floor(
+		_elm_lang$core$Date$toTime(date));
+	return ((dateTicks - v1Ticks) / _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute) | 0;
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset = F2(
+	function (offsetMinutes, date) {
+		return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
+			A2(
+				F2(
+					function (x, y) {
+						return x + y;
+					}),
+				offsetMinutes * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute,
+				_rluiten$elm_date_extra$Date_Extra_Core$toTime(date)));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsUtc = function (date) {
+	var offset = _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset(date);
+	var oHours = (offset / _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour) | 0;
+	var oMinutes = ((offset - (oHours * _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour)) / _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute) | 0;
+	return A2(_rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset, offset, date);
+};
+
+var _rluiten$elm_date_extra$Date_Extra_Create$epochDate = _elm_lang$core$Date$fromTime(0);
+var _rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset = function () {
+	var inMinutes = (_elm_lang$core$Date$hour(_rluiten$elm_date_extra$Date_Extra_Create$epochDate) * 60) + _elm_lang$core$Date$minute(_rluiten$elm_date_extra$Date_Extra_Create$epochDate);
+	return _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Date$year(_rluiten$elm_date_extra$Date_Extra_Create$epochDate),
+		1969) ? (0 - (inMinutes - (24 * 60))) : (0 - inMinutes);
+}();
+var _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset = _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset;
+var _rluiten$elm_date_extra$Date_Extra_Create$adjustedTicksToDate = function (ticks) {
+	var date = A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Millisecond, ticks + (_rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute), _rluiten$elm_date_extra$Date_Extra_Create$epochDate);
+	var dateOffset = _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(date);
+	return _elm_lang$core$Native_Utils.eq(dateOffset, _rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset) ? date : A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Minute, dateOffset - _rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset, date);
+};
+var _rluiten$elm_date_extra$Date_Extra_Create$dateFromFields = F7(
+	function (year, month, day, hour, minute, second, millisecond) {
+		return _rluiten$elm_date_extra$Date_Extra_Create$adjustedTicksToDate(
+			A7(_rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields, year, month, day, hour, minute, second, millisecond));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Create$timeFromFields = A3(_rluiten$elm_date_extra$Date_Extra_Create$dateFromFields, 1970, _elm_lang$core$Date$Jan, 1);
+
+var _rluiten$elm_date_extra$Date_Extra_Format$toHourMin = function (offsetMinutes) {
+	return {
+		ctor: '_Tuple2',
+		_0: (offsetMinutes / 60) | 0,
+		_1: A2(_elm_lang$core$Basics_ops['%'], offsetMinutes, 60)
+	};
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$padWithN = F2(
+	function (n, c) {
+		return function (_p0) {
+			return A3(
+				_elm_lang$core$String$padLeft,
+				n,
+				c,
+				_elm_lang$core$Basics$toString(_p0));
+		};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Format$padWith = function (c) {
+	return function (_p1) {
+		return A3(
+			_elm_lang$core$String$padLeft,
+			2,
+			c,
+			_elm_lang$core$Basics$toString(_p1));
+	};
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$hourMod12 = function (h) {
+	return _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], h, 12),
+		0) ? 12 : A2(_elm_lang$core$Basics_ops['%'], h, 12);
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$formatOffsetStr = F2(
+	function (betweenHoursMinutes, offset) {
+		var _p2 = _rluiten$elm_date_extra$Date_Extra_Format$toHourMin(
+			_elm_lang$core$Basics$abs(offset));
+		var hour = _p2._0;
+		var minute = _p2._1;
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			(_elm_lang$core$Native_Utils.cmp(offset, 0) < 1) ? '+' : '-',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					hour),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					betweenHoursMinutes,
+					A2(
+						_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+						_elm_lang$core$Native_Utils.chr('0'),
+						minute))));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Format$collapse = function (m) {
+	return A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Basics$identity, m);
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$formatToken = F4(
+	function (config, offset, d, m) {
+		var symbol = A2(
+			_elm_lang$core$Maybe$withDefault,
+			' ',
+			_rluiten$elm_date_extra$Date_Extra_Format$collapse(
+				_elm_lang$core$List$head(m.submatches)));
+		var _p3 = symbol;
+		switch (_p3) {
+			case 'Y':
+				return A3(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWithN,
+					4,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$year(d));
+			case 'y':
+				return A2(
+					_elm_lang$core$String$right,
+					2,
+					A3(
+						_rluiten$elm_date_extra$Date_Extra_Format$padWithN,
+						2,
+						_elm_lang$core$Native_Utils.chr('0'),
+						_elm_lang$core$Date$year(d)));
+			case 'm':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
+						_elm_lang$core$Date$month(d)));
+			case '_m':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
+						_elm_lang$core$Date$month(d)));
+			case '-m':
+				return _elm_lang$core$Basics$toString(
+					_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
+						_elm_lang$core$Date$month(d)));
+			case 'B':
+				return config.i18n.monthName(
+					_elm_lang$core$Date$month(d));
+			case '^B':
+				return _elm_lang$core$String$toUpper(
+					config.i18n.monthName(
+						_elm_lang$core$Date$month(d)));
+			case 'b':
+				return config.i18n.monthShort(
+					_elm_lang$core$Date$month(d));
+			case '^b':
+				return _elm_lang$core$String$toUpper(
+					config.i18n.monthShort(
+						_elm_lang$core$Date$month(d)));
+			case 'd':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$day(d));
+			case '-d':
+				return _elm_lang$core$Basics$toString(
+					_elm_lang$core$Date$day(d));
+			case '-@d':
+				return A2(
+					config.i18n.dayOfMonthWithSuffix,
+					false,
+					_elm_lang$core$Date$day(d));
+			case 'e':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_elm_lang$core$Date$day(d));
+			case '@e':
+				return A2(
+					config.i18n.dayOfMonthWithSuffix,
+					true,
+					_elm_lang$core$Date$day(d));
+			case 'A':
+				return config.i18n.dayName(
+					_elm_lang$core$Date$dayOfWeek(d));
+			case '^A':
+				return _elm_lang$core$String$toUpper(
+					config.i18n.dayName(
+						_elm_lang$core$Date$dayOfWeek(d)));
+			case 'a':
+				return config.i18n.dayShort(
+					_elm_lang$core$Date$dayOfWeek(d));
+			case '^a':
+				return _elm_lang$core$String$toUpper(
+					config.i18n.dayShort(
+						_elm_lang$core$Date$dayOfWeek(d)));
+			case 'H':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$hour(d));
+			case '-H':
+				return _elm_lang$core$Basics$toString(
+					_elm_lang$core$Date$hour(d));
+			case 'k':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_elm_lang$core$Date$hour(d));
+			case 'I':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_rluiten$elm_date_extra$Date_Extra_Format$hourMod12(
+						_elm_lang$core$Date$hour(d)));
+			case '-I':
+				return _elm_lang$core$Basics$toString(
+					_rluiten$elm_date_extra$Date_Extra_Format$hourMod12(
+						_elm_lang$core$Date$hour(d)));
+			case 'l':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_rluiten$elm_date_extra$Date_Extra_Format$hourMod12(
+						_elm_lang$core$Date$hour(d)));
+			case 'p':
+				return (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$Date$hour(d),
+					12) < 0) ? 'AM' : 'PM';
+			case 'P':
+				return (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$Date$hour(d),
+					12) < 0) ? 'am' : 'pm';
+			case 'M':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$minute(d));
+			case 'S':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$second(d));
+			case 'L':
+				return A3(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWithN,
+					3,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$millisecond(d));
+			case '%':
+				return symbol;
+			case 'z':
+				return A2(_rluiten$elm_date_extra$Date_Extra_Format$formatOffsetStr, '', offset);
+			case ':z':
+				return A2(_rluiten$elm_date_extra$Date_Extra_Format$formatOffsetStr, ':', offset);
+			default:
+				return '';
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Format$formatRegex = _elm_lang$core$Regex$regex('%(y|Y|m|_m|-m|B|^B|b|^b|d|-d|-@d|e|@e|A|^A|a|^a|H|-H|k|I|-I|l|p|P|M|S|%|L|z|:z)');
+var _rluiten$elm_date_extra$Date_Extra_Format$formatOffset = F4(
+	function (config, targetOffset, formatStr, date) {
+		var dateOffset = _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(date);
+		var hackOffset = dateOffset - targetOffset;
+		return A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_rluiten$elm_date_extra$Date_Extra_Format$formatRegex,
+			A3(
+				_rluiten$elm_date_extra$Date_Extra_Format$formatToken,
+				config,
+				targetOffset,
+				A2(_rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset, hackOffset, date)),
+			formatStr);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Format$format = F3(
+	function (config, formatStr, date) {
+		return A4(
+			_rluiten$elm_date_extra$Date_Extra_Format$formatOffset,
+			config,
+			_rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(date),
+			formatStr,
+			date);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Format$formatUtc = F3(
+	function (config, formatStr, date) {
+		return A4(_rluiten$elm_date_extra$Date_Extra_Format$formatOffset, config, 0, formatStr, date);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Format$isoDateString = function (date) {
+	var day = _elm_lang$core$Date$day(date);
+	var month = _elm_lang$core$Date$month(date);
+	var year = _elm_lang$core$Date$year(date);
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		A3(
+			_elm_lang$core$String$padLeft,
+			4,
+			_elm_lang$core$Native_Utils.chr('0'),
+			_elm_lang$core$Basics$toString(year)),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'-',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A3(
+					_elm_lang$core$String$padLeft,
+					2,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Basics$toString(
+						_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month))),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'-',
+					A3(
+						_elm_lang$core$String$padLeft,
+						2,
+						_elm_lang$core$Native_Utils.chr('0'),
+						_elm_lang$core$Basics$toString(day))))));
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$utcIsoDateString = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Format$isoDateString(
+		_rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsUtc(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$yearInt = function (year) {
+	return A3(
+		_elm_lang$core$String$padLeft,
+		4,
+		_elm_lang$core$Native_Utils.chr('0'),
+		_elm_lang$core$Basics$toString(year));
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$year = function (date) {
+	return A3(
+		_elm_lang$core$String$padLeft,
+		4,
+		_elm_lang$core$Native_Utils.chr('0'),
+		_elm_lang$core$Basics$toString(
+			_elm_lang$core$Date$year(date)));
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$monthMonth = function (month) {
+	return A3(
+		_elm_lang$core$String$padLeft,
+		2,
+		_elm_lang$core$Native_Utils.chr('0'),
+		_elm_lang$core$Basics$toString(
+			_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month)));
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$month = function (date) {
+	return A3(
+		_elm_lang$core$String$padLeft,
+		2,
+		_elm_lang$core$Native_Utils.chr('0'),
+		_elm_lang$core$Basics$toString(
+			_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
+				_elm_lang$core$Date$month(date))));
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$isoTimeFormat = '%H:%M:%S';
+var _rluiten$elm_date_extra$Date_Extra_Format$isoDateFormat = '%Y-%m-%d';
+var _rluiten$elm_date_extra$Date_Extra_Format$isoMsecOffsetFormat = '%Y-%m-%dT%H:%M:%S.%L%:z';
+var _rluiten$elm_date_extra$Date_Extra_Format$isoString = A2(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config, _rluiten$elm_date_extra$Date_Extra_Format$isoMsecOffsetFormat);
+var _rluiten$elm_date_extra$Date_Extra_Format$isoOffsetFormat = '%Y-%m-%dT%H:%M:%S%z';
+var _rluiten$elm_date_extra$Date_Extra_Format$isoMsecFormat = '%Y-%m-%dT%H:%M:%S.%L';
+var _rluiten$elm_date_extra$Date_Extra_Format$isoStringNoOffset = A2(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config, _rluiten$elm_date_extra$Date_Extra_Format$isoMsecFormat);
+var _rluiten$elm_date_extra$Date_Extra_Format$utcIsoString = function (date) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		A3(_rluiten$elm_date_extra$Date_Extra_Format$formatUtc, _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config, _rluiten$elm_date_extra$Date_Extra_Format$isoMsecFormat, date),
+		'Z');
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$isoFormat = '%Y-%m-%dT%H:%M:%S';
+
 var _user$project$Data_Licence$licenceToString = function (maybeLicence) {
 	var _p0 = maybeLicence;
 	if (_p0.ctor === 'Just') {
@@ -21748,9 +14659,9 @@ var _user$project$Data_RaceType$raceTypeDecoder = function (string) {
 		_user$project$Data_RaceType$raceType(string));
 };
 
-var _user$project$Page_Race_Add_Model$Model = F3(
-	function (a, b, c) {
-		return {name: a, raceType: b, calendar: c};
+var _user$project$Page_Race_Add_Model$Model = F4(
+	function (a, b, c, d) {
+		return {name: a, raceType: b, date: c, datePicker: d};
 	});
 
 var _user$project$Data_Outfit$outfitToString = function (outfit) {
@@ -21843,25 +14754,10 @@ var _user$project$Data_ResultCategory$resultCategoryDecoder = function (string) 
 	}
 };
 
-var _user$project$Page_Result_Add_Model$initial = {
-	raceKey: '',
-	riderKey: _elm_lang$core$Maybe$Nothing,
-	result: '',
-	category: _user$project$Data_ResultCategory$Amateurs,
-	outfit: _user$project$Data_Outfit$WTOS,
-	strava: '',
-	chooser: A2(
-		_gdotdesign$elm_ui$Ui_Chooser$searchable,
-		true,
-		A2(
-			_gdotdesign$elm_ui$Ui_Chooser$closeOnSelect,
-			true,
-			_gdotdesign$elm_ui$Ui_Chooser$init(
-				{ctor: '_Tuple0'})))
-};
-var _user$project$Page_Result_Add_Model$Model = F7(
-	function (a, b, c, d, e, f, g) {
-		return {raceKey: a, riderKey: b, result: c, category: d, outfit: e, strava: f, chooser: g};
+var _user$project$Page_Result_Add_Model$initial = {raceKey: '', riderKey: _elm_lang$core$Maybe$Nothing, result: '', category: _user$project$Data_ResultCategory$Amateurs, outfit: _user$project$Data_Outfit$WTOS, strava: ''};
+var _user$project$Page_Result_Add_Model$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {raceKey: a, riderKey: b, result: c, category: d, outfit: e, strava: f};
 	});
 
 var _user$project$App_Page$ResultAdd = function (a) {
@@ -22304,8 +15200,8 @@ var _user$project$App_OutsideInfo$getInfoFromOutside = F2(
 			});
 	});
 
-var _user$project$Page_Result_Add_Msg$Chooser = function (a) {
-	return {ctor: 'Chooser', _0: a};
+var _user$project$Page_Result_Add_Msg$Rider = function (a) {
+	return {ctor: 'Rider', _0: a};
 };
 var _user$project$Page_Result_Add_Msg$Result = function (a) {
 	return {ctor: 'Result', _0: a};
@@ -22326,8 +15222,8 @@ var _user$project$Page_Rider_Add_Msg$Licence = function (a) {
 };
 var _user$project$Page_Rider_Add_Msg$Submit = {ctor: 'Submit'};
 
-var _user$project$Page_Race_Add_Msg$Calendar = function (a) {
-	return {ctor: 'Calendar', _0: a};
+var _user$project$Page_Race_Add_Msg$ToDatePicker = function (a) {
+	return {ctor: 'ToDatePicker', _0: a};
 };
 var _user$project$Page_Race_Add_Msg$RaceType = function (a) {
 	return {ctor: 'RaceType', _0: a};
@@ -22484,12 +15380,10 @@ var _user$project$App_UrlUpdate$urlUpdate = F2(
 						_elm_lang$dom$Dom$focus('result'))
 				};
 			case 'RaceAdd':
-				var raceAdd = A3(
-					_user$project$Page_Race_Add_Model$Model,
-					'',
-					_user$project$Data_RaceType$Classic,
-					_gdotdesign$elm_ui$Ui_Calendar$init(
-						{ctor: '_Tuple0'}));
+				var _p2 = _elm_community$elm_datepicker$DatePicker$init;
+				var datePicker = _p2._0;
+				var datePickerFx = _p2._1;
+				var raceAdd = A4(_user$project$Page_Race_Add_Model$Model, '', _user$project$Data_RaceType$Classic, _elm_lang$core$Maybe$Nothing, datePicker);
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -22497,10 +15391,22 @@ var _user$project$App_UrlUpdate$urlUpdate = F2(
 						{
 							page: _user$project$App_Page$RaceAdd(raceAdd)
 						}),
-					_1: A2(
-						_elm_lang$core$Task$attempt,
-						_elm_lang$core$Basics$always(_user$project$App_Msg$Noop),
-						_elm_lang$dom$Dom$focus('name'))
+					_1: _elm_lang$core$Platform_Cmd$batch(
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$Platform_Cmd$map,
+								_user$project$App_Msg$RaceAdd,
+								A2(_elm_lang$core$Platform_Cmd$map, _user$project$Page_Race_Add_Msg$ToDatePicker, datePickerFx)),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$core$Task$attempt,
+									_elm_lang$core$Basics$always(_user$project$App_Msg$Noop),
+									_elm_lang$dom$Dom$focus('name')),
+								_1: {ctor: '[]'}
+							}
+						})
 				};
 			case 'RiderAdd':
 				var add = A2(_user$project$Page_Rider_Add_Model$Model, '', _elm_lang$core$Maybe$Nothing);
@@ -22537,13 +15443,13 @@ var _user$project$App_UrlUpdate$urlUpdate = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
-				var _p2 = _user$project$App_UrlUpdate$routeToPage(route);
-				if (_p2.ctor === 'Just') {
+				var _p3 = _user$project$App_UrlUpdate$routeToPage(route);
+				if (_p3.ctor === 'Just') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							app,
-							{page: _p2._0}),
+							{page: _p3._0}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
@@ -22620,52 +15526,58 @@ var _user$project$Page_Rider_Add_Update$update = F2(
 var _user$project$Page_Race_Add_Update$dateFormat = function (date) {
 	return A3(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config, '%Y-%m-%d 00:00:00', date);
 };
+var _user$project$Page_Race_Add_Update$settings = _elm_community$elm_datepicker$DatePicker$defaultSettings;
 var _user$project$Page_Race_Add_Update$update = F2(
 	function (msg, app) {
 		var _p0 = app.page;
 		if (_p0.ctor === 'RaceAdd') {
-			var _p3 = _p0._0;
+			var _p5 = _p0._0;
 			var _p1 = msg;
 			switch (_p1.ctor) {
 				case 'Submit':
-					var dateString = _user$project$Page_Race_Add_Update$dateFormat(_p3.calendar.value);
-					var payload = _elm_lang$core$Json_Encode$object(
-						{
-							ctor: '::',
-							_0: {
-								ctor: '_Tuple2',
-								_0: 'name',
-								_1: _elm_lang$core$Json_Encode$string(_p3.name)
-							},
-							_1: {
+					var _p2 = _p5.date;
+					if (_p2.ctor === 'Just') {
+						var payload = _elm_lang$core$Json_Encode$object(
+							{
 								ctor: '::',
 								_0: {
 									ctor: '_Tuple2',
-									_0: 'date',
-									_1: _elm_lang$core$Json_Encode$string(dateString)
+									_0: 'name',
+									_1: _elm_lang$core$Json_Encode$string(_p5.name)
 								},
 								_1: {
 									ctor: '::',
 									_0: {
 										ctor: '_Tuple2',
-										_0: 'category',
+										_0: 'date',
 										_1: _elm_lang$core$Json_Encode$string(
-											_user$project$Data_RaceType$raceTypeToString(_p3.raceType))
+											_user$project$Page_Race_Add_Update$dateFormat(_p2._0))
 									},
-									_1: {ctor: '[]'}
+									_1: {
+										ctor: '::',
+										_0: {
+											ctor: '_Tuple2',
+											_0: 'category',
+											_1: _elm_lang$core$Json_Encode$string(
+												_user$project$Data_RaceType$raceTypeToString(_p5.raceType))
+										},
+										_1: {ctor: '[]'}
+									}
 								}
-							}
-						});
-					return {
-						ctor: '_Tuple2',
-						_0: app,
-						_1: _user$project$App_OutsideInfo$sendInfoOutside(
-							_user$project$App_OutsideInfo$RaceAdd(payload))
-					};
+							});
+						return {
+							ctor: '_Tuple2',
+							_0: app,
+							_1: _user$project$App_OutsideInfo$sendInfoOutside(
+								_user$project$App_OutsideInfo$RaceAdd(payload))
+						};
+					} else {
+						return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
+					}
 				case 'Name':
 					var nextPage = _user$project$App_Page$RaceAdd(
 						_elm_lang$core$Native_Utils.update(
-							_p3,
+							_p5,
 							{name: _p1._0}));
 					return {
 						ctor: '_Tuple2',
@@ -22677,7 +15589,7 @@ var _user$project$Page_Race_Add_Update$update = F2(
 				case 'RaceType':
 					var nextPage = _user$project$App_Page$RaceAdd(
 						_elm_lang$core$Native_Utils.update(
-							_p3,
+							_p5,
 							{raceType: _p1._0}));
 					return {
 						ctor: '_Tuple2',
@@ -22687,19 +15599,28 @@ var _user$project$Page_Race_Add_Update$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				default:
-					var _p2 = A2(_gdotdesign$elm_ui$Ui_Calendar$update, _p1._0, _p3.calendar);
-					var calendar = _p2._0;
-					var cmd = _p2._1;
+					var _p3 = A3(_elm_community$elm_datepicker$DatePicker$update, _user$project$Page_Race_Add_Update$settings, _p1._0, _p5.datePicker);
+					var newDatePicker = _p3._0;
+					var datePickerFx = _p3._1;
+					var dateEvent = _p3._2;
+					var newDate = function () {
+						var _p4 = dateEvent;
+						if (_p4.ctor === 'Changed') {
+							return _p4._0;
+						} else {
+							return _p5.date;
+						}
+					}();
 					var nextPage = _user$project$App_Page$RaceAdd(
 						_elm_lang$core$Native_Utils.update(
-							_p3,
-							{calendar: calendar}));
+							_p5,
+							{date: newDate, datePicker: newDatePicker}));
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							app,
 							{page: nextPage}),
-						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Page_Race_Add_Msg$Calendar, cmd)
+						_1: _elm_lang$core$Platform_Cmd$none
 					};
 			}
 		} else {
@@ -22707,13 +15628,6 @@ var _user$project$Page_Race_Add_Update$update = F2(
 		}
 	});
 
-var _user$project$Page_Result_Add_Update$riderKey = function (chooser) {
-	return A2(
-		_elm_lang$core$Maybe$withDefault,
-		'',
-		_elm_lang$core$List$head(
-			_elm_lang$core$Set$toList(chooser.selected)));
-};
 var _user$project$Page_Result_Add_Update$update = F2(
 	function (msg, app) {
 		var _p0 = app.page;
@@ -22736,7 +15650,7 @@ var _user$project$Page_Result_Add_Update$update = F2(
 									ctor: '_Tuple2',
 									_0: 'riderKey',
 									_1: _elm_lang$core$Json_Encode$string(
-										_user$project$Page_Result_Add_Update$riderKey(_p3.chooser))
+										A2(_elm_lang$core$Maybe$withDefault, '', _p3.riderKey))
 								},
 								_1: {
 									ctor: '::',
@@ -22810,19 +15724,22 @@ var _user$project$Page_Result_Add_Update$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				default:
-					var _p2 = A2(_gdotdesign$elm_ui$Ui_Chooser$update, _p1._0, _p3.chooser);
-					var chooser = _p2._0;
-					var cmd = _p2._1;
-					var nextPage = _user$project$App_Page$ResultAdd(
+					var _p2 = _p1._0;
+					var nextPage = _elm_lang$core$String$isEmpty(_p2) ? _user$project$App_Page$ResultAdd(
 						_elm_lang$core$Native_Utils.update(
 							_p3,
-							{chooser: chooser}));
+							{riderKey: _elm_lang$core$Maybe$Nothing})) : _user$project$App_Page$ResultAdd(
+						_elm_lang$core$Native_Utils.update(
+							_p3,
+							{
+								riderKey: _elm_lang$core$Maybe$Just(_p2)
+							}));
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							app,
 							{page: nextPage}),
-						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Page_Result_Add_Msg$Chooser, cmd)
+						_1: _elm_lang$core$Platform_Cmd$none
 					};
 			}
 		} else {
@@ -23050,7 +15967,11 @@ var _user$project$Page_Race_Details$resultsByCategory = F3(
 					ctor: '::',
 					_0: A2(
 						_elm_lang$html$Html$h5,
-						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('title is-5'),
+							_1: {ctor: '[]'}
+						},
 						{
 							ctor: '::',
 							_0: _elm_lang$html$Html$text(
@@ -23061,7 +15982,11 @@ var _user$project$Page_Race_Details$resultsByCategory = F3(
 						ctor: '::',
 						_0: A2(
 							_elm_lang$html$Html$table,
-							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('table'),
+								_1: {ctor: '[]'}
+							},
 							{
 								ctor: '::',
 								_0: A2(
@@ -23167,7 +16092,7 @@ var _user$project$Page_Race_Details$addResultButton = function (race) {
 		_elm_lang$html$Html$button,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('waves-effect waves-light btn'),
+			_0: _elm_lang$html$Html_Attributes$class('button'),
 			_1: {
 				ctor: '::',
 				_0: _elm_lang$html$Html_Events$onClick(
@@ -23195,7 +16120,7 @@ var _user$project$Page_Race_Details$info = function (race) {
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('row'),
+			_0: _elm_lang$html$Html_Attributes$class('card'),
 			_1: {ctor: '[]'}
 		},
 		{
@@ -23204,41 +16129,116 @@ var _user$project$Page_Race_Details$info = function (race) {
 				_elm_lang$html$Html$div,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('col s4 m5'),
+					_0: _elm_lang$html$Html_Attributes$class('card-content'),
 					_1: {ctor: '[]'}
 				},
 				{
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$ul,
+						_elm_lang$html$Html$div,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('collection'),
+							_0: _elm_lang$html$Html_Attributes$class('content'),
 							_1: {ctor: '[]'}
 						},
 						{
 							ctor: '::',
-							_0: A2(_user$project$Page_Race_Details$infoLi, 'Name ', race.name),
-							_1: {
-								ctor: '::',
-								_0: A2(_user$project$Page_Race_Details$infoLi, 'Date ', dateString),
-								_1: {
+							_0: A2(
+								_elm_lang$html$Html$dl,
+								{ctor: '[]'},
+								{
 									ctor: '::',
 									_0: A2(
-										_user$project$Page_Race_Details$infoLi,
-										'Category ',
-										_elm_lang$core$Basics$toString(race.raceType)),
+										_elm_lang$html$Html$dt,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Name'),
+											_1: {ctor: '[]'}
+										}),
 									_1: {
 										ctor: '::',
 										_0: A2(
-											_user$project$Page_Race_Details$infoLi,
-											'Points ',
-											_elm_lang$core$Basics$toString(
-												_user$project$Data_RaceType$getPointsByRaceType(race.raceType))),
-										_1: {ctor: '[]'}
+											_elm_lang$html$Html$dd,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(race.name),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$dt,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Date'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$dd,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(dateString),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$dt,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Category'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$dd,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text(
+																	_elm_lang$core$Basics$toString(race.raceType)),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$dt,
+																{ctor: '[]'},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('Points'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$dd,
+																	{ctor: '[]'},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text(
+																			_elm_lang$core$Basics$toString(
+																				_user$project$Data_RaceType$getPointsByRaceType(race.raceType))),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											}
+										}
 									}
-								}
-							}
+								}),
+							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
 				}),
@@ -23284,7 +16284,11 @@ var _user$project$Page_Race_Details$view = F5(
 							ctor: '::',
 							_0: A2(
 								_elm_lang$html$Html$h2,
-								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('title is-2'),
+									_1: {ctor: '[]'}
+								},
 								{
 									ctor: '::',
 									_0: _elm_lang$html$Html$text(_p5.name),
@@ -23305,7 +16309,11 @@ var _user$project$Page_Race_Details$view = F5(
 								ctor: '::',
 								_0: A2(
 									_elm_lang$html$Html$h3,
-									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('title is-3'),
+										_1: {ctor: '[]'}
+									},
 									{
 										ctor: '::',
 										_0: _elm_lang$html$Html$text('Results'),
@@ -23338,26 +16346,19 @@ var _user$project$Page_Race_List$countParticipants = F2(
 				results));
 	});
 var _user$project$Page_Race_List$addButton = A2(
-	_elm_lang$html$Html$div,
-	{ctor: '[]'},
+	_elm_lang$html$Html$a,
 	{
 		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$a,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$href('#races/add'),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('waves-effect waves-light btn'),
-					_1: {ctor: '[]'}
-				}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text('Add race'),
-				_1: {ctor: '[]'}
-			}),
+		_0: _elm_lang$html$Html_Attributes$href('#races/add'),
+		_1: {
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('button'),
+			_1: {ctor: '[]'}
+		}
+	},
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html$text('Add race'),
 		_1: {ctor: '[]'}
 	});
 var _user$project$Page_Race_List$dateFormat = function (date) {
@@ -23375,7 +16376,11 @@ var _user$project$Page_Race_List$raceTable = F2(
 				unsortedRaces));
 		return A2(
 			_elm_lang$html$Html$table,
-			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('table'),
+				_1: {ctor: '[]'}
+			},
 			{
 				ctor: '::',
 				_0: A2(
@@ -23529,7 +16534,11 @@ var _user$project$Page_Race_List$view = F2(
 				ctor: '::',
 				_0: A2(
 					_elm_lang$html$Html$h2,
-					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('title is-2'),
+						_1: {ctor: '[]'}
+					},
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html$text('Races'),
@@ -23608,35 +16617,85 @@ var _user$project$Page_Race_Add_View$raceTypeButtons = function (current) {
 		},
 		{
 			ctor: '::',
+			_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'classic', 'Klassieker', _user$project$Data_RaceType$Classic, current),
+			_1: {
+				ctor: '::',
+				_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'criterum', 'Criterium', _user$project$Data_RaceType$Criterium, current),
+				_1: {
+					ctor: '::',
+					_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'regiocross', 'Regiocross', _user$project$Data_RaceType$Regiocross, current),
+					_1: {
+						ctor: '::',
+						_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'other', 'Other', _user$project$Data_RaceType$Other, current),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
+var _user$project$Page_Race_Add_View$dateFormat = function (date) {
+	return A3(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config, '%Y-%m-%d', date);
+};
+var _user$project$Page_Race_Add_View$settings = function () {
+	var defaultSettings = _elm_community$elm_datepicker$DatePicker$defaultSettings;
+	return _elm_lang$core$Native_Utils.update(
+		defaultSettings,
+		{dateFormatter: _user$project$Page_Race_Add_View$dateFormat, firstDayOfWeek: _elm_lang$core$Date$Mon});
+}();
+var _user$project$Page_Race_Add_View$horizontal = function (body) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('field is-horizontal'),
+			_1: {ctor: '[]'}
+		},
+		body);
+};
+var _user$project$Page_Race_Add_View$field = function (body) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('field-body'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('control'),
+					_1: {ctor: '[]'}
+				},
+				body),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Page_Race_Add_View$label = function (text) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('field-label'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
 			_0: A2(
 				_elm_lang$html$Html$label,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('active'),
+					_0: _elm_lang$html$Html_Attributes$class('label'),
 					_1: {ctor: '[]'}
 				},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Category'),
+					_0: _elm_lang$html$Html$text(text),
 					_1: {ctor: '[]'}
 				}),
-			_1: {
-				ctor: '::',
-				_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'classic', 'Klassieker', _user$project$Data_RaceType$Classic, current),
-				_1: {
-					ctor: '::',
-					_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'criterum', 'Criterium', _user$project$Data_RaceType$Criterium, current),
-					_1: {
-						ctor: '::',
-						_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'regiocross', 'Regiocross', _user$project$Data_RaceType$Regiocross, current),
-						_1: {
-							ctor: '::',
-							_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'other', 'Other', _user$project$Data_RaceType$Other, current),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
-			}
+			_1: {ctor: '[]'}
 		});
 };
 var _user$project$Page_Race_Add_View$view = function (raceAdd) {
@@ -23651,7 +16710,11 @@ var _user$project$Page_Race_Add_View$view = function (raceAdd) {
 			ctor: '::',
 			_0: A2(
 				_elm_lang$html$Html$h2,
-				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('title is-2'),
+					_1: {ctor: '[]'}
+				},
 				{
 					ctor: '::',
 					_0: _elm_lang$html$Html$text('Add Race'),
@@ -23659,172 +16722,129 @@ var _user$project$Page_Race_Add_View$view = function (raceAdd) {
 				}),
 			_1: {
 				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{ctor: '[]'},
+				_0: _user$project$Page_Race_Add_View$horizontal(
 					{
 						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('row'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('col s6 input-field'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$input,
-											{
+						_0: _user$project$Page_Race_Add_View$label('Name'),
+						_1: {
+							ctor: '::',
+							_0: _user$project$Page_Race_Add_View$field(
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$input,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$id('name'),
+											_1: {
 												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$id('name'),
+												_0: _elm_lang$html$Html_Attributes$type_('text'),
 												_1: {
 													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$type_('text'),
+													_0: _elm_lang$html$Html_Events$onInput(_user$project$Page_Race_Add_Msg$Name),
 													_1: {
 														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onInput(_user$project$Page_Race_Add_Msg$Name),
+														_0: _elm_lang$html$Html_Attributes$autofocus(true),
 														_1: {
 															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$autofocus(true),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$value(raceName),
-																_1: {ctor: '[]'}
-															}
+															_0: _elm_lang$html$Html_Attributes$value(raceName),
+															_1: {ctor: '[]'}
 														}
 													}
 												}
-											},
-											{ctor: '[]'}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$label,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$for('name'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Name'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('row'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _user$project$Page_Race_Add_View$raceTypeButtons(raceAdd.raceType),
+											}
+										},
+										{ctor: '[]'}),
 									_1: {ctor: '[]'}
 								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _user$project$Page_Race_Add_View$horizontal(
+						{
+							ctor: '::',
+							_0: _user$project$Page_Race_Add_View$label('Category'),
 							_1: {
 								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{ctor: '[]'},
+								_0: _user$project$Page_Race_Add_View$field(
 									{
 										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$map,
-											_user$project$Page_Race_Add_Msg$Calendar,
-											A2(_gdotdesign$elm_ui$Ui_Calendar$view, 'en_us', raceAdd.calendar)),
+										_0: _user$project$Page_Race_Add_View$raceTypeButtons(raceAdd.raceType),
 										_1: {ctor: '[]'}
 									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _user$project$Page_Race_Add_View$horizontal(
+							{
+								ctor: '::',
+								_0: _user$project$Page_Race_Add_View$label('Date'),
 								_1: {
 									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('row'),
-											_1: {ctor: '[]'}
-										},
+									_0: _user$project$Page_Race_Add_View$field(
 										{
 											ctor: '::',
 											_0: A2(
-												_elm_lang$html$Html$div,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('col s6'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$button,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('waves-effect waves-light btn'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$type_('submit'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Events$onClick(_user$project$Page_Race_Add_Msg$Submit),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$name('action'),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
-																			_1: {ctor: '[]'}
-																		}
-																	}
-																}
-															}
-														},
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html$text('Add Race'),
-															_1: {
-																ctor: '::',
-																_0: A2(
-																	_elm_lang$html$Html$i,
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$class('material-icons right'),
-																		_1: {ctor: '[]'}
-																	},
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html$text('send'),
-																		_1: {ctor: '[]'}
-																	}),
-																_1: {ctor: '[]'}
-															}
-														}),
-													_1: {ctor: '[]'}
-												}),
+												_elm_lang$html$Html$map,
+												_user$project$Page_Race_Add_Msg$ToDatePicker,
+												A3(_elm_community$elm_datepicker$DatePicker$view, raceAdd.date, _user$project$Page_Race_Add_View$settings, raceAdd.datePicker)),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
 								}
-							}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _user$project$Page_Race_Add_View$horizontal(
+								{
+									ctor: '::',
+									_0: _user$project$Page_Race_Add_View$label(''),
+									_1: {
+										ctor: '::',
+										_0: _user$project$Page_Race_Add_View$field(
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$button,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('button'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$type_('submit'),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Events$onClick(_user$project$Page_Race_Add_Msg$Submit),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$name('action'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
+																		_1: {ctor: '[]'}
+																	}
+																}
+															}
+														}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Add Race'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
 						}
-					}),
-				_1: {ctor: '[]'}
+					}
+				}
 			}
 		});
 };
@@ -23835,110 +16855,93 @@ var _user$project$Page_Rider_Details$info = F2(
 			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('row'),
+				_0: _elm_lang$html$Html_Attributes$class('card'),
 				_1: {ctor: '[]'}
 			},
 			{
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$ul,
+					_elm_lang$html$Html$div,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('collection col s4 m5'),
+						_0: _elm_lang$html$Html_Attributes$class('card-content'),
 						_1: {ctor: '[]'}
 					},
 					{
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$li,
+							_elm_lang$html$Html$div,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('collection-item'),
+								_0: _elm_lang$html$Html_Attributes$class('content'),
 								_1: {ctor: '[]'}
 							},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text('Name '),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$span,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('secondary-content'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text(rider.name),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$li,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('collection-item'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Licence '),
-									_1: {
+								_0: A2(
+									_elm_lang$html$Html$dl,
+									{ctor: '[]'},
+									{
 										ctor: '::',
 										_0: A2(
-											_elm_lang$html$Html$span,
+											_elm_lang$html$Html$dt,
+											{ctor: '[]'},
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('secondary-content'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text(
-													_elm_lang$core$Basics$toString(rider.licence)),
+												_0: _elm_lang$html$Html$text('Name'),
 												_1: {ctor: '[]'}
 											}),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$li,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('collection-item'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Points '),
 										_1: {
 											ctor: '::',
 											_0: A2(
-												_elm_lang$html$Html$span,
+												_elm_lang$html$Html$dd,
+												{ctor: '[]'},
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('secondary-content'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text(
-														_elm_lang$core$Basics$toString(points)),
+													_0: _elm_lang$html$Html$text(rider.name),
 													_1: {ctor: '[]'}
 												}),
-											_1: {ctor: '[]'}
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$dt,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Licence'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$dd,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text(
+																_elm_lang$core$Basics$toString(rider.licence)),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$dd,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text(
+																	_elm_lang$core$Basics$toString(points)),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
 										}
 									}),
 								_1: {ctor: '[]'}
-							}
-						}
+							}),
+						_1: {ctor: '[]'}
 					}),
 				_1: {ctor: '[]'}
 			});
@@ -24055,7 +17058,11 @@ var _user$project$Page_Rider_Details$resultsTable = F2(
 	function (results, races) {
 		return A2(
 			_elm_lang$html$Html$table,
-			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('table'),
+				_1: {ctor: '[]'}
+			},
 			{
 				ctor: '::',
 				_0: A2(
@@ -24155,7 +17162,11 @@ var _user$project$Page_Rider_Details$view = F5(
 					ctor: '::',
 					_0: A2(
 						_elm_lang$html$Html$h2,
-						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('title is-2'),
+							_1: {ctor: '[]'}
+						},
 						{
 							ctor: '::',
 							_0: _elm_lang$html$Html$text('Rider'),
@@ -24194,7 +17205,11 @@ var _user$project$Page_Rider_Details$view = F5(
 					ctor: '::',
 					_0: A2(
 						_elm_lang$html$Html$h2,
-						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('title is-2'),
+							_1: {ctor: '[]'}
+						},
 						{
 							ctor: '::',
 							_0: _elm_lang$html$Html$text(_p4.name),
@@ -24214,26 +17229,19 @@ var _user$project$Page_Rider_Details$view = F5(
 	});
 
 var _user$project$Page_Rider_List$addButton = A2(
-	_elm_lang$html$Html$div,
-	{ctor: '[]'},
+	_elm_lang$html$Html$a,
 	{
 		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$a,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$href('#riders/add'),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('waves-effect waves-light btn'),
-					_1: {ctor: '[]'}
-				}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text('Add rider'),
-				_1: {ctor: '[]'}
-			}),
+		_0: _elm_lang$html$Html_Attributes$href('#riders/add'),
+		_1: {
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('button'),
+			_1: {ctor: '[]'}
+		}
+	},
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html$text('Add rider'),
 		_1: {ctor: '[]'}
 	});
 var _user$project$Page_Rider_List$view = F3(
@@ -24245,7 +17253,11 @@ var _user$project$Page_Rider_List$view = F3(
 				ctor: '::',
 				_0: A2(
 					_elm_lang$html$Html$h2,
-					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('title is-2'),
+						_1: {ctor: '[]'}
+					},
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html$text('Riders'),
@@ -24258,7 +17270,11 @@ var _user$project$Page_Rider_List$view = F3(
 						ctor: '::',
 						_0: A2(
 							_elm_lang$html$Html$table,
-							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('table'),
+								_1: {ctor: '[]'}
+							},
 							{
 								ctor: '::',
 								_0: A2(
@@ -24396,7 +17412,7 @@ var _user$project$Page_Rider_Add_View$licenceButtonCheck = F4(
 			}
 		}();
 		return A2(
-			_elm_lang$html$Html$p,
+			_elm_lang$html$Html$label,
 			{ctor: '[]'},
 			{
 				ctor: '::',
@@ -24428,15 +17444,11 @@ var _user$project$Page_Rider_Add_View$licenceButtonCheck = F4(
 				_1: {
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$label,
+						_elm_lang$html$Html$span,
+						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$for(categoryName),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(categoryText),
+							_0: _elm_lang$html$Html$text(categoryName),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
@@ -24448,37 +17460,22 @@ var _user$project$Page_Rider_Add_View$licenceButtons = function (maybeCurrent) {
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('col s6'),
+			_0: _elm_lang$html$Html_Attributes$class('control'),
 			_1: {ctor: '[]'}
 		},
 		{
 			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$label,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('active'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('Category'),
-					_1: {ctor: '[]'}
-				}),
+			_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'elite', 'Elite', _user$project$Data_Licence$Elite, maybeCurrent),
 			_1: {
 				ctor: '::',
-				_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'elite', 'Elite', _user$project$Data_Licence$Elite, maybeCurrent),
+				_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'amateurs', 'Amateurs', _user$project$Data_Licence$Amateurs, maybeCurrent),
 				_1: {
 					ctor: '::',
-					_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'amateurs', 'Amateurs', _user$project$Data_Licence$Amateurs, maybeCurrent),
+					_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'basislidmaatschap', 'Basislidmaatschap', _user$project$Data_Licence$Basislidmaatschap, maybeCurrent),
 					_1: {
 						ctor: '::',
-						_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'basislidmaatschap', 'Basislidmaatschap', _user$project$Data_Licence$Basislidmaatschap, maybeCurrent),
-						_1: {
-							ctor: '::',
-							_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'other', 'Other', _user$project$Data_Licence$Other, maybeCurrent),
-							_1: {ctor: '[]'}
-						}
+						_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'other', 'Other', _user$project$Data_Licence$Other, maybeCurrent),
+						_1: {ctor: '[]'}
 					}
 				}
 			}
@@ -24496,7 +17493,11 @@ var _user$project$Page_Rider_Add_View$view = function (add) {
 			ctor: '::',
 			_0: A2(
 				_elm_lang$html$Html$h2,
-				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('title is-2'),
+					_1: {ctor: '[]'}
+				},
 				{
 					ctor: '::',
 					_0: _elm_lang$html$Html$text('Add rider'),
@@ -24506,32 +17507,48 @@ var _user$project$Page_Rider_Add_View$view = function (add) {
 				ctor: '::',
 				_0: A2(
 					_elm_lang$html$Html$div,
-					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('field'),
+						_1: {ctor: '[]'}
+					},
 					{
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$div,
+							_elm_lang$html$Html$label,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('row'),
-								_1: {ctor: '[]'}
+								_0: _elm_lang$html$Html_Attributes$class('label'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$for('name'),
+									_1: {ctor: '[]'}
+								}
 							},
 							{
 								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('col s6 input-field'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$input,
-											{
+								_0: _elm_lang$html$Html$text('Name'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('control'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$input,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$id('name'),
+											_1: {
 												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$id('name'),
+												_0: _elm_lang$html$Html_Attributes$class('input'),
 												_1: {
 													ctor: '::',
 													_0: _elm_lang$html$Html_Attributes$type_('text'),
@@ -24549,113 +17566,76 @@ var _user$project$Page_Rider_Add_View$view = function (add) {
 														}
 													}
 												}
-											},
-											{ctor: '[]'}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$label,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$for('name'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Name'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('row'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _user$project$Page_Rider_Add_View$licenceButtons(add.licence),
+											}
+										},
+										{ctor: '[]'}),
 									_1: {ctor: '[]'}
 								}),
-							_1: {
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _user$project$Page_Rider_Add_View$licenceButtons(add.licence),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('field'),
+								_1: {ctor: '[]'}
+							},
+							{
 								ctor: '::',
 								_0: A2(
 									_elm_lang$html$Html$div,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('row'),
+										_0: _elm_lang$html$Html_Attributes$class('control'),
 										_1: {ctor: '[]'}
 									},
 									{
 										ctor: '::',
 										_0: A2(
-											_elm_lang$html$Html$div,
+											_elm_lang$html$Html$button,
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('col s6'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$button,
-													{
+												_0: _elm_lang$html$Html_Attributes$class('button'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('is-primary'),
+													_1: {
 														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('waves-effect waves-light btn'),
+														_0: _elm_lang$html$Html_Attributes$type_('submit'),
 														_1: {
 															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$type_('submit'),
+															_0: _elm_lang$html$Html_Events$onClick(_user$project$Page_Rider_Add_Msg$Submit),
 															_1: {
 																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onClick(_user$project$Page_Rider_Add_Msg$Submit),
+																_0: _elm_lang$html$Html_Attributes$name('action'),
 																_1: {
 																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$name('action'),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
-																		_1: {ctor: '[]'}
-																	}
+																	_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
+																	_1: {ctor: '[]'}
 																}
 															}
 														}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text('Add rider'),
-														_1: {
-															ctor: '::',
-															_0: A2(
-																_elm_lang$html$Html$i,
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$class('material-icons right'),
-																	_1: {ctor: '[]'}
-																},
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html$text('send'),
-																	_1: {ctor: '[]'}
-																}),
-															_1: {ctor: '[]'}
-														}
-													}),
+													}
+												}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Add rider'),
 												_1: {ctor: '[]'}
 											}),
 										_1: {ctor: '[]'}
 									}),
 								_1: {ctor: '[]'}
-							}
-						}
-					}),
-				_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}
 			}
 		});
 };
@@ -24715,29 +17695,14 @@ var _user$project$Page_Result_Add_View$outfitButtons = A2(
 	{ctor: '[]'},
 	{
 		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$label,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$for('result'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text('Outfit'),
-				_1: {ctor: '[]'}
-			}),
+		_0: A4(_user$project$Page_Result_Add_View$outfitButton, 'wtos', 'WTOS', _user$project$Data_Outfit$WTOS, true),
 		_1: {
 			ctor: '::',
-			_0: A4(_user$project$Page_Result_Add_View$outfitButton, 'wtos', 'WTOS', _user$project$Data_Outfit$WTOS, true),
+			_0: A4(_user$project$Page_Result_Add_View$outfitButton, 'wasp', 'WASP', _user$project$Data_Outfit$WASP, false),
 			_1: {
 				ctor: '::',
-				_0: A4(_user$project$Page_Result_Add_View$outfitButton, 'wasp', 'WASP', _user$project$Data_Outfit$WASP, false),
-				_1: {
-					ctor: '::',
-					_0: A4(_user$project$Page_Result_Add_View$outfitButton, 'other', 'Other', _user$project$Data_Outfit$Other, false),
-					_1: {ctor: '[]'}
-				}
+				_0: A4(_user$project$Page_Result_Add_View$outfitButton, 'other', 'Other', _user$project$Data_Outfit$Other, false),
+				_1: {ctor: '[]'}
 			}
 		}
 	});
@@ -24800,32 +17765,17 @@ var _user$project$Page_Result_Add_View$resultCategoryButtons = A2(
 	{ctor: '[]'},
 	{
 		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$label,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$for('result'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text('Category'),
-				_1: {ctor: '[]'}
-			}),
+		_0: A4(_user$project$Page_Result_Add_View$resultCategoryButtonCheck, 'amateurs', 'Amateurs', _user$project$Data_ResultCategory$Amateurs, true),
 		_1: {
 			ctor: '::',
-			_0: A4(_user$project$Page_Result_Add_View$resultCategoryButtonCheck, 'amateurs', 'Amateurs', _user$project$Data_ResultCategory$Amateurs, true),
+			_0: A3(_user$project$Page_Result_Add_View$resultCategoryButton, 'basislidmaatschap', 'Basislidmaatschap', _user$project$Data_ResultCategory$Basislidmaatschap),
 			_1: {
 				ctor: '::',
-				_0: A3(_user$project$Page_Result_Add_View$resultCategoryButton, 'basislidmaatschap', 'Basislidmaatschap', _user$project$Data_ResultCategory$Basislidmaatschap),
+				_0: A3(_user$project$Page_Result_Add_View$resultCategoryButton, 'cata', 'Cat A', _user$project$Data_ResultCategory$CatA),
 				_1: {
 					ctor: '::',
-					_0: A3(_user$project$Page_Result_Add_View$resultCategoryButton, 'cata', 'Cat A', _user$project$Data_ResultCategory$CatA),
-					_1: {
-						ctor: '::',
-						_0: A3(_user$project$Page_Result_Add_View$resultCategoryButton, 'catb', 'Cat B', _user$project$Data_ResultCategory$CatB),
-						_1: {ctor: '[]'}
-					}
+					_0: A3(_user$project$Page_Result_Add_View$resultCategoryButton, 'catb', 'Cat B', _user$project$Data_ResultCategory$CatB),
+					_1: {ctor: '[]'}
 				}
 			}
 		}
@@ -24853,11 +17803,10 @@ var _user$project$Page_Result_Add_View$view = F4(
 		var items = A2(
 			_elm_lang$core$List$map,
 			function (rider) {
-				return {id: rider.key, label: rider.name, value: rider.key};
+				return {text: rider.name, value: rider.key};
 			},
 			filteredRiders);
-		var chooser = A2(_gdotdesign$elm_ui$Ui_Chooser$items, items, resultAdd.chooser);
-		var submitDisabled = _elm_lang$core$String$isEmpty(resultAdd.result);
+		var submitDisabled = _elm_lang$core$String$isEmpty(resultAdd.result) || _elm_lang$core$Native_Utils.eq(resultAdd.riderKey, _elm_lang$core$Maybe$Nothing);
 		return A2(
 			_elm_lang$html$Html$div,
 			{ctor: '[]'},
@@ -24865,7 +17814,11 @@ var _user$project$Page_Result_Add_View$view = F4(
 				ctor: '::',
 				_0: A2(
 					_elm_lang$html$Html$h2,
-					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('title is-2'),
+						_1: {ctor: '[]'}
+					},
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html$text(
@@ -24878,7 +17831,7 @@ var _user$project$Page_Result_Add_View$view = F4(
 						_elm_lang$html$Html$div,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('row'),
+							_0: _elm_lang$html$Html_Attributes$class('field is-horizontal'),
 							_1: {ctor: '[]'}
 						},
 						{
@@ -24887,116 +17840,27 @@ var _user$project$Page_Result_Add_View$view = F4(
 								_elm_lang$html$Html$div,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('input-field col s6'),
+									_0: _elm_lang$html$Html_Attributes$class('field-label'),
 									_1: {ctor: '[]'}
 								},
 								{
 									ctor: '::',
 									_0: A2(
-										_elm_lang$html$Html$input,
+										_elm_lang$html$Html$label,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$id('result'),
+											_0: _elm_lang$html$Html_Attributes$class('label'),
 											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$type_('text'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onInput(_user$project$Page_Result_Add_Msg$Result),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$autofocus(true),
-														_1: {ctor: '[]'}
-													}
-												}
-											}
-										},
-										{ctor: '[]'}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$label,
-											{
 												ctor: '::',
 												_0: _elm_lang$html$Html_Attributes$for('result'),
 												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Result'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('row'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('input-field col s6'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$div,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$map,
-													_user$project$Page_Result_Add_Msg$Chooser,
-													_gdotdesign$elm_ui$Ui_Chooser$view(chooser)),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
+											}
+										},
+										{
 											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$label,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$for('rider'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('active'),
-														_1: {ctor: '[]'}
-													}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Rider'),
-													_1: {ctor: '[]'}
-												}),
+											_0: _elm_lang$html$Html$text('Result'),
 											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('row'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _user$project$Page_Result_Add_View$resultCategoryButtons,
+										}),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -25005,12 +17869,120 @@ var _user$project$Page_Result_Add_View$view = F4(
 									_elm_lang$html$Html$div,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('row'),
+										_0: _elm_lang$html$Html_Attributes$class('field-body'),
 										_1: {ctor: '[]'}
 									},
 									{
 										ctor: '::',
-										_0: _user$project$Page_Result_Add_View$outfitButtons,
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('field'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$p,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('control has-icons-left'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$input,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$id('result'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$class('input'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$type_('text'),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Events$onInput(_user$project$Page_Result_Add_Msg$Result),
+																			_1: {
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$autofocus(true),
+																				_1: {ctor: '[]'}
+																			}
+																		}
+																	}
+																}
+															},
+															{ctor: '[]'}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$span,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$class('icon is-small is-left'),
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: A2(
+																		_elm_lang$html$Html$i,
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$class('fa fa-trophy'),
+																			_1: {ctor: '[]'}
+																		},
+																		{ctor: '[]'}),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('field is-horizontal'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('field-label'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$label,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('label'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$for('result'),
+													_1: {ctor: '[]'}
+												}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Rider'),
+												_1: {ctor: '[]'}
+											}),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
@@ -25019,55 +17991,321 @@ var _user$project$Page_Result_Add_View$view = F4(
 										_elm_lang$html$Html$div,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('row'),
+											_0: _elm_lang$html$Html_Attributes$class('field-body'),
 											_1: {ctor: '[]'}
 										},
 										{
 											ctor: '::',
 											_0: A2(
-												_elm_lang$html$Html$button,
+												_elm_lang$html$Html$div,
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('waves-effect waves-light btn'),
+													_0: _elm_lang$html$Html_Attributes$class('field'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$div,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('control'),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$div,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$class('select'),
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: A2(
+																		_elm_lang$html$Html$select,
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Events$onInput(_user$project$Page_Result_Add_Msg$Rider),
+																			_1: {ctor: '[]'}
+																		},
+																		A2(
+																			_elm_lang$core$Basics_ops['++'],
+																			{
+																				ctor: '::',
+																				_0: A2(
+																					_elm_lang$html$Html$option,
+																					{ctor: '[]'},
+																					{ctor: '[]'}),
+																				_1: {ctor: '[]'}
+																			},
+																			A2(
+																				_elm_lang$core$List$map,
+																				function (item) {
+																					return A2(
+																						_elm_lang$html$Html$option,
+																						{
+																							ctor: '::',
+																							_0: _elm_lang$html$Html_Attributes$value(item.value),
+																							_1: {ctor: '[]'}
+																						},
+																						{
+																							ctor: '::',
+																							_0: _elm_lang$html$Html$text(item.text),
+																							_1: {ctor: '[]'}
+																						});
+																				},
+																				items))),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('field is-horizontal'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('field-label'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$label,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('label'),
 													_1: {
 														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$type_('submit'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Events$onClick(_user$project$Page_Result_Add_Msg$Submit),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$name('action'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
-																	_1: {ctor: '[]'}
-																}
-															}
-														}
+														_0: _elm_lang$html$Html_Attributes$for('result'),
+														_1: {ctor: '[]'}
 													}
 												},
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html$text('Add result'),
-													_1: {
+													_0: _elm_lang$html$Html$text('Category'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('field-body'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$div,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('field'),
+														_1: {ctor: '[]'}
+													},
+													{
 														ctor: '::',
 														_0: A2(
-															_elm_lang$html$Html$i,
+															_elm_lang$html$Html$p,
 															{
 																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$class('material-icons right'),
+																_0: _elm_lang$html$Html_Attributes$class('control'),
 																_1: {ctor: '[]'}
 															},
 															{
 																ctor: '::',
-																_0: _elm_lang$html$Html$text('send'),
+																_0: _user$project$Page_Result_Add_View$resultCategoryButtons,
 																_1: {ctor: '[]'}
 															}),
 														_1: {ctor: '[]'}
-													}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('field is-horizontal'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('field-label'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$label,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('label'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$for('result'),
+															_1: {ctor: '[]'}
+														}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Outfit'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$div,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('field-body'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$div,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('field'),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$p,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$class('control'),
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: _user$project$Page_Result_Add_View$outfitButtons,
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
 												}),
 											_1: {ctor: '[]'}
+										}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('field is-horizontal'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$div,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('field-label'),
+													_1: {ctor: '[]'}
+												},
+												{ctor: '[]'}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$div,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('field-body'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$div,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('field'),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$p,
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$class('control'),
+																		_1: {ctor: '[]'}
+																	},
+																	{
+																		ctor: '::',
+																		_0: A2(
+																			_elm_lang$html$Html$button,
+																			{
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$class('button is-primary'),
+																				_1: {
+																					ctor: '::',
+																					_0: _elm_lang$html$Html_Attributes$type_('submit'),
+																					_1: {
+																						ctor: '::',
+																						_0: _elm_lang$html$Html_Events$onClick(_user$project$Page_Result_Add_Msg$Submit),
+																						_1: {
+																							ctor: '::',
+																							_0: _elm_lang$html$Html_Attributes$name('action'),
+																							_1: {
+																								ctor: '::',
+																								_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
+																								_1: {ctor: '[]'}
+																							}
+																						}
+																					}
+																				}
+																			},
+																			{
+																				ctor: '::',
+																				_0: _elm_lang$html$Html$text('Add result'),
+																				_1: {ctor: '[]'}
+																			}),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}
 										}),
 									_1: {ctor: '[]'}
 								}
@@ -25088,13 +18326,9 @@ var _user$project$App_View$raceLi = function (race) {
 				_elm_lang$html$Html$a,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('collection-item'),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$href(
-							A2(_elm_lang$core$Basics_ops['++'], '#races/', race.key)),
-						_1: {ctor: '[]'}
-					}
+					_0: _elm_lang$html$Html_Attributes$href(
+						A2(_elm_lang$core$Basics_ops['++'], '#races/', race.key)),
+					_1: {ctor: '[]'}
 				},
 				{
 					ctor: '::',
@@ -25104,51 +18338,37 @@ var _user$project$App_View$raceLi = function (race) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$App_View$headerLi = F2(
-	function (url, label) {
-		return A2(
-			_elm_lang$html$Html$li,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('collection-header'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$h4,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$a,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$href(url),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text(label),
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			});
-	});
 var _user$project$App_View$sidebar = function (races) {
 	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
+		_elm_lang$html$Html$aside,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('menu'),
+			_1: {ctor: '[]'}
+		},
 		{
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$h2,
-				{ctor: '[]'},
+				_elm_lang$html$Html$p,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('WRS'),
+					_0: _elm_lang$html$Html_Attributes$class('menu-label'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$a,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$href('#races'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Races'),
+							_1: {ctor: '[]'}
+						}),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
@@ -25157,94 +18377,92 @@ var _user$project$App_View$sidebar = function (races) {
 					_elm_lang$html$Html$ul,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('collection'),
+						_0: _elm_lang$html$Html_Attributes$class('menu-list'),
 						_1: {ctor: '[]'}
 					},
 					A2(
-						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$List$map,
+						_user$project$App_View$raceLi,
+						_user$project$Data_Race$lastRaces(races))),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$p,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('menu-label'),
+							_1: {ctor: '[]'}
+						},
 						{
 							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$li,
+								_elm_lang$html$Html$a,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('collection-header'),
+									_0: _elm_lang$html$Html_Attributes$href('#riders'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Riders'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$p,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('menu-label'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$a,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$href('https://wtos.nl/topic/het-grote-verslagentopic-van-michiel'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Verslagen'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$p,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('menu-label'),
 									_1: {ctor: '[]'}
 								},
 								{
 									ctor: '::',
 									_0: A2(
-										_elm_lang$html$Html$h4,
-										{ctor: '[]'},
+										_elm_lang$html$Html$a,
 										{
 											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$a,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$href('#races'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Races'),
-													_1: {ctor: '[]'}
-												}),
+											_0: _elm_lang$html$Html_Attributes$href('https://wtos.nl/topic/wedstrijdrennerssysteem-v3'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Feedback'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
-						},
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							A2(
-								_elm_lang$core$List$map,
-								_user$project$App_View$raceLi,
-								_user$project$Data_Race$lastRaces(races)),
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$li,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('collection-header'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$h4,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$a,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$href('#riders'),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text('Riders'),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(_user$project$App_View$headerLi, 'https://wtos.nl/topic/het-grote-verslagentopic-van-michiel/', 'Verslagen'),
-									_1: {
-										ctor: '::',
-										_0: A2(_user$project$App_View$headerLi, 'https://wtos.nl/topic/wedstrijdrennerssysteem-v3/', 'Feedback'),
-										_1: {ctor: '[]'}
-									}
-								}
-							}))),
-				_1: {ctor: '[]'}
+						}
+					}
+				}
 			}
 		});
 };
@@ -25380,15 +18598,27 @@ var _user$project$App_View$mainView = F4(
 	function (app, races, riders, results) {
 		return A2(
 			_elm_lang$html$Html$div,
-			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('columns'),
+				_1: {ctor: '[]'}
+			},
 			{
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$div,
+					_elm_lang$html$Html$section,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('col s3 m4'),
-						_1: {ctor: '[]'}
+						_0: _elm_lang$html$Html_Attributes$class('section'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('column'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('is-one-fifth'),
+								_1: {ctor: '[]'}
+							}
+						}
 					},
 					{
 						ctor: '::',
@@ -25398,11 +18628,15 @@ var _user$project$App_View$mainView = F4(
 				_1: {
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$div,
+						_elm_lang$html$Html$section,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('col s9 m8'),
-							_1: {ctor: '[]'}
+							_0: _elm_lang$html$Html_Attributes$class('section'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('column'),
+								_1: {ctor: '[]'}
+							}
 						},
 						{
 							ctor: '::',
@@ -25429,7 +18663,11 @@ var _user$project$App_View$loadingPage = function (app) {
 				ctor: '::',
 				_0: A2(
 					_elm_lang$html$Html$h2,
-					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('title is-2'),
+						_1: {ctor: '[]'}
+					},
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html$text('Loading data'),
@@ -25453,18 +18691,7 @@ var _user$project$App_View$view = function (app) {
 		},
 		{
 			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('row'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: _user$project$App_View$loadingPage(app),
-					_1: {ctor: '[]'}
-				}),
+			_0: _user$project$App_View$loadingPage(app),
 			_1: {ctor: '[]'}
 		});
 };
