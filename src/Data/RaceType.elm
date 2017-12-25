@@ -1,27 +1,69 @@
-module Data.RaceType exposing (RaceType, RaceType(..), raceType, raceTypeToString, raceTypeDecoder, getPointsByRaceType)
+module Data.RaceType exposing (RaceType, RaceType(..), raceType, raceTypeToString, raceTypeDecoder, getPointsByRaceType, raceTypeReadable, raceTypes)
 
 import Json.Decode
 
 
 type RaceType
-    = Classic
+    = Trainingskoers
     | Criterium
-    | Regiocross
+    | Zomoco
+    | Classic
+    | Cross
+    | Omloop
+    | Studentscup
+    | CK
+    | NK
+    | Cyclosportive
     | Other
     | Unknown
+
+raceTypes =
+    [ Trainingskoers
+    , Criterium
+    , Zomoco
+    , Classic
+    , Cross
+    , Omloop
+    , Studentscup
+    , CK
+    , NK
+    , Cyclosportive
+    , Other
+    ]
 
 
 raceType : String -> RaceType
 raceType string =
     case string of
-        "classic" ->
-            Classic
+        "trainingskoers" ->
+            Trainingskoers
 
         "criterium" ->
             Criterium
 
-        "regiocross" ->
-            Regiocross
+        "zomoco" ->
+            Zomoco
+
+        "classic" ->
+            Classic
+
+        "cross" ->
+            Cross
+
+        "omloop" ->
+            Omloop
+
+        "studentencup" ->
+            Studentscup
+
+        "CK" ->
+            CK
+
+        "NK" ->
+            NK
+
+        "cyclosportive" ->
+            Cyclosportive
 
         "other" ->
             Other
@@ -33,21 +75,74 @@ raceType string =
 raceTypeToString : RaceType -> String
 raceTypeToString category =
     case category of
-        Classic ->
-            "classic"
+        Trainingskoers ->
+            "trainingskoers"
 
         Criterium ->
             "criterium"
 
-        Regiocross ->
-            "regiocross"
+        Zomoco ->
+            "zomoco"
 
-        Other ->
+        Classic ->
+            "classic"
+
+        Cross ->
+            "cross"
+
+        Omloop ->
+            "omloop"
+
+        Studentscup ->
+            "studentencup"
+
+        CK ->
+            "CK"
+
+        NK ->
+            "NK"
+
+        Cyclosportive ->
+            "cyclosportive"
+
+        _ ->
             "other"
 
-        Unknown ->
-            "unknown"
+raceTypeReadable : RaceType -> String
+raceTypeReadable category =
+    case category of
+        Trainingskoers ->
+            "trainingskoers"
 
+        Criterium ->
+            "criterium"
+
+        Zomoco ->
+            "ZoMoCo"
+
+        Classic ->
+            "klassieker"
+
+        Cross ->
+            "cross"
+
+        Omloop ->
+            "omloop"
+
+        Studentscup ->
+            "studentencup"
+
+        CK ->
+            "Clubkampioenschap"
+
+        NK ->
+            "Nederlands kampioenschap"
+
+        Cyclosportive ->
+            "Cyclosportive"
+
+        _ ->
+            "other"
 
 raceTypeDecoder : String -> Json.Decode.Decoder RaceType
 raceTypeDecoder string =
@@ -57,17 +152,38 @@ raceTypeDecoder string =
 getPointsByRaceType : RaceType -> Int
 getPointsByRaceType category =
     case category of
-        Classic ->
-            4
+        Trainingskoers ->
+            1
 
         Criterium ->
             3
 
-        Regiocross ->
+        Zomoco ->
             2
+
+        Classic ->
+            3
+
+        Cross ->
+            2
+
+        Omloop ->
+            4
+
+        Studentscup ->
+            3
+
+        CK ->
+            4
+
+        NK ->
+            5
+
+        Cyclosportive ->
+            4
 
         Other ->
             0
 
         Unknown ->
-            0
+            1

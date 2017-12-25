@@ -7,7 +7,7 @@ import Date exposing (day)
 import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import DatePicker
-import Data.RaceType as RaceType exposing (RaceType)
+import Data.RaceType as RaceType exposing (RaceType, raceTypes, raceTypeReadable, raceTypeToString)
 import Page.Race.Add.Model exposing (Model)
 import Page.Race.Add.Msg as Msg exposing (Msg)
 
@@ -32,15 +32,18 @@ dateFormat : Date.Date -> String
 dateFormat date =
     Date.Extra.Format.format config "%Y-%m-%d" date
 
+
 settings : DatePicker.Settings
 settings =
     let
-        defaultSettings = DatePicker.defaultSettings
+        defaultSettings =
+            DatePicker.defaultSettings
     in
-        { defaultSettings 
+        { defaultSettings
             | dateFormatter = dateFormat
             , firstDayOfWeek = Date.Mon
         }
+
 
 view : Model -> Html Msg
 view raceAdd =
@@ -67,24 +70,31 @@ view raceAdd =
                 ]
             , horizontal
                 [ label ""
-                , field [ button
-                            [ class "button"
-                            , type_ "submit"
-                            , onClick Msg.Submit
-                            , Html.Attributes.name "action"
-                            , disabled submitDisabled
-                            ]
-                            [ Html.text "Add Race" ]
+                , field
+                    [ button
+                        [ class "button"
+                        , type_ "submit"
+                        , onClick Msg.Submit
+                        , Html.Attributes.name "action"
+                        , disabled submitDisabled
                         ]
+                        [ Html.text "Add Race" ]
+                    ]
                 ]
             ]
 
 
-raceTypeButtonCheck : String -> String -> RaceType -> RaceType -> Html Msg
-raceTypeButtonCheck raceTypeName raceTypeText raceType current =
+raceTypeButtonCheck : RaceType -> RaceType -> Html Msg
+raceTypeButtonCheck raceType current =
     let
         isChecked =
             raceType == current
+
+        raceTypeName =
+            raceTypeToString raceType
+
+        raceTypeText =
+            raceTypeReadable raceType
     in
         p []
             [ input [ checked isChecked, name "type", type_ "radio", id raceTypeName, onClick (Msg.RaceType raceType) ] []
@@ -94,9 +104,5 @@ raceTypeButtonCheck raceTypeName raceTypeText raceType current =
 
 raceTypeButtons : RaceType -> Html Msg
 raceTypeButtons current =
-    div [ class "col s6" ]
-        [ raceTypeButtonCheck "classic" "Klassieker" RaceType.Classic current
-        , raceTypeButtonCheck "criterum" "Criterium" RaceType.Criterium current
-        , raceTypeButtonCheck "regiocross" "Regiocross" RaceType.Regiocross current
-        , raceTypeButtonCheck "other" "Other" RaceType.Other current
-        ]
+    div [ class "col s6" ] <|
+        List.map (\raceType -> raceTypeButtonCheck raceType current) raceTypes

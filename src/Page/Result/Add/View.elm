@@ -6,7 +6,7 @@ import Html.Events exposing (onInput, onClick)
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race)
 import Data.Rider exposing (Rider)
-import Data.ResultCategory as ResultCategory exposing (ResultCategory)
+import Data.ResultCategory as ResultCategory exposing (ResultCategory, resultCategories, categoryReadable, categoryToString)
 import Data.RaceResult exposing (RaceResult)
 import Page.Result.Add.Model exposing (Model)
 import Page.Result.Add.Msg as Msg exposing (Msg)
@@ -18,8 +18,9 @@ view race resultAdd riders results =
         submitDisabled =
             --not (riderNameExists resultAdd.riderName riders)
             -- ||
-            String.isEmpty resultAdd.result ||
-            resultAdd.riderKey == Nothing
+            String.isEmpty resultAdd.result
+                || resultAdd.riderKey
+                == Nothing
 
         filteredRiders =
             List.filter
@@ -66,7 +67,7 @@ view race resultAdd riders results =
                         [ div [ class "control" ]
                             [ div [ class "select" ]
                                 [ select [ onInput Msg.Rider ]
-                                    ( [ option [] [] ] ++ List.map (\item -> option [ value item.value ] [ text item.text  ] ) items )
+                                    ([ option [] [] ] ++ List.map (\item -> option [ value item.value ] [ text item.text ]) items)
                                 ]
                             ]
                         ]
@@ -78,7 +79,7 @@ view race resultAdd riders results =
                     ]
                 , div [ class "field-body" ]
                     [ div [ class "field" ]
-                        [ p [ class "control" ] [ resultCategoryButtons ]
+                        [ p [ class "control" ] [ resultCategoryButtons resultAdd.category ]
                         ]
                     ]
                 ]
@@ -122,27 +123,28 @@ resultExists rider race results =
         == 1
 
 
-resultCategoryButtonCheck : String -> String -> ResultCategory -> Bool -> Html Msg
-resultCategoryButtonCheck resultCategoryName resultCategoryText category isChecked =
-    p []
-        [ input [ checked isChecked, name "resultCategory", type_ "radio", id resultCategoryName, onClick (Msg.Category category) ] []
-        , label [ for resultCategoryName ] [ text resultCategoryText ]
-        ]
+resultCategoryButton : ResultCategory -> ResultCategory -> Html Msg
+resultCategoryButton category current =
+    let
+        isChecked =
+            category == current
+
+        resultCategoryName =
+            categoryToString category
+
+        resultCategoryText =
+            categoryReadable category
+    in
+        p []
+            [ input [ checked isChecked, name "resultCategory", type_ "radio", id resultCategoryName, onClick (Msg.Category category) ] []
+            , label [ for resultCategoryName ] [ text resultCategoryText ]
+            ]
 
 
-resultCategoryButton : String -> String -> ResultCategory -> Html Msg
-resultCategoryButton resultCategoryName resultCategoryText resultCategory =
-    resultCategoryButtonCheck resultCategoryName resultCategoryText resultCategory False
-
-
-resultCategoryButtons : Html Msg
-resultCategoryButtons =
-    div []
-        [ resultCategoryButtonCheck "amateurs" "Amateurs" ResultCategory.Amateurs True
-        , resultCategoryButton "basislidmaatschap" "Basislidmaatschap" ResultCategory.Basislidmaatschap
-        , resultCategoryButton "cata" "Cat A" ResultCategory.CatA
-        , resultCategoryButton "catb" "Cat B" ResultCategory.CatB
-        ]
+resultCategoryButtons : ResultCategory -> Html Msg
+resultCategoryButtons current =
+    div [] <|
+        List.map (\resultCategory -> resultCategoryButton resultCategory current) resultCategories
 
 
 outfitButton : String -> String -> Outfit -> Bool -> Html Msg

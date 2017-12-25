@@ -55,7 +55,7 @@ urlUpdate route app =
                 ( datePicker, datePickerFx ) =
                     DatePicker.init
                 raceAdd =
-                    RaceAdd.Model "" RaceType.Classic Nothing datePicker -- (Ui.Calendar.init ())
+                    RaceAdd.Model "" RaceType.Trainingskoers Nothing datePicker
             in
                 ( { app | page = App.Page.RaceAdd raceAdd }
                 , Cmd.batch [ Cmd.map RaceAdd.ToDatePicker datePickerFx |> Cmd.map Msg.RaceAdd
