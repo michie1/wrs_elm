@@ -103,8 +103,6 @@ sidebar races =
         [ p [ class "menu-label" ] [ a [ href "#races" ] [ text "Races" ] ]
         , ul [ class "menu-list" ] (List.map raceLi <| lastRaces races)
         , p [ class "menu-label" ] [ a [ href "#riders" ] [ text "Riders" ] ]
-        , p [ class "menu-label" ] [ a [ href "https://wtos.nl/topic/het-grote-verslagentopic-van-michiel" ] [ text "Verslagen" ] ]
-        , p [ class "menu-label" ] [ a [ href "https://wtos.nl/topic/wedstrijdrennerssysteem-v3" ] [ text "Feedback" ] ]
         ]
 
 raceLi : Race -> Html App.Msg.Msg
