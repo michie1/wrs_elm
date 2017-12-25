@@ -32,12 +32,12 @@ setup(firebase, app);
 function loadRiders() {
   firebase.database().ref('/riders/').orderByChild('id').on('value', function(snapshot) {
     const val = snapshot.val();
-    const arr = Object.keys(val).
+    const arr = val ? Object.keys(val).
       map(function (key) {
         return Object.assign({
             key: key
           }, val[key]);
-      });
+      }) : [];
     app.ports.infoForElm.send({
       tag: 'RidersLoaded',
       data: arr
@@ -48,12 +48,12 @@ function loadRiders() {
 function loadRaces() {
   firebase.database().ref('/races/').on('value', function(snapshot) {
     const val = snapshot.val();
-    const arr = Object.keys(val).
+    const arr = val ? Object.keys(val).
       map(function (key) {
         return Object.assign({
             key: key
           }, val[key]);
-      });
+      }) : [];
     app.ports.infoForElm.send({
       tag: 'RacesLoaded',
       data: arr
@@ -64,12 +64,12 @@ function loadRaces() {
 function loadResults() {
   firebase.database().ref('/results/').on('value', function(snapshot) {
     const val = snapshot.val();
-    const arr = Object.keys(val).
+    const arr = val ? Object.keys(val).
       map(function (key) {
         return Object.assign({
             key: key
           }, val[key]);
-      });
+      }) : [];
     app.ports.infoForElm.send({
       tag: 'ResultsLoaded',
       data: arr

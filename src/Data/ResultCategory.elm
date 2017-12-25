@@ -63,6 +63,7 @@ categoryToString category =
         Unknown ->
             "unknown"
 
+
 categoryReadable : ResultCategory -> String
 categoryReadable category =
     case category of
@@ -96,23 +97,37 @@ categoryReadable category =
         Unknown ->
             "unknown"
 
+
 resultCategoryDecoder : String -> Json.Decode.Decoder ResultCategory
 resultCategoryDecoder string =
-    case string of
-        "amateurs" ->
-            Json.Decode.succeed Amateurs
+    Json.Decode.succeed <|
+        case string of
+            "amateurs" ->
+                Amateurs
 
-        "basislidmaatschap" ->
-            Json.Decode.succeed Basislidmaatschap
+            "elite" ->
+                Elite
 
-        "cata" ->
-            Json.Decode.succeed CatA
+            "cat. a" ->
+                CatA
 
-        "catb" ->
-            Json.Decode.succeed CatB
+            "basislidmaatschap" ->
+                Basislidmaatschap
 
-        "unknown" ->
-            Json.Decode.succeed Unknown
+            "elite/amateurs" ->
+                EliteAmateurs
 
-        _ ->
-            Json.Decode.succeed Unknown
+            "cat. b" ->
+                CatB
+
+            "cat. c" ->
+                CatC
+
+            "cat. d" ->
+                CatD
+
+            "other" ->
+                Other
+
+            _ ->
+                Unknown
