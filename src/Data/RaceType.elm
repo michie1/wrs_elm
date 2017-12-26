@@ -162,7 +162,7 @@ getPointsByRaceType category =
             2
 
         Classic ->
-            3
+            4
 
         Cross ->
             2
@@ -174,7 +174,7 @@ getPointsByRaceType category =
             3
 
         CK ->
-            4
+            2
 
         NK ->
             5
@@ -186,4 +186,4 @@ getPointsByRaceType category =
             0
 
         Unknown ->
-            1
+            0

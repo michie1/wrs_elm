@@ -60,6 +60,7 @@ info rider points =
                     , dd [] [ text rider.name ]
                     , dt [] [ text "Licence" ]
                     , dd [] [ text (toString rider.licence) ]
+                    , dt [] [ text "Points" ]
                     , dd [] [ text <| toString <| points ]
                     ]
                 ]

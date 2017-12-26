@@ -108,7 +108,7 @@ resultCategoryDecoder string =
             "elite" ->
                 Elite
 
-            "cat. a" ->
+            "cata" ->
                 CatA
 
             "basislidmaatschap" ->
@@ -117,13 +117,13 @@ resultCategoryDecoder string =
             "elite/amateurs" ->
                 EliteAmateurs
 
-            "cat. b" ->
+            "catb" ->
                 CatB
 
-            "cat. c" ->
+            "catc" ->
                 CatC
 
-            "cat. d" ->
+            "catd" ->
                 CatD
 
             "other" ->

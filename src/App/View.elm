@@ -1,7 +1,7 @@
 module App.View exposing (view)
 
 import Html exposing (Html, h2, div, text, a, ul, li, aside, p, section)
-import Html.Attributes exposing (href, class)
+import Html.Attributes exposing (href, class, target)
 import App.Msg
 import App.Model exposing (App)
 import App.Page
@@ -84,23 +84,18 @@ loadingPage app =
 
 spinner : Html App.Msg.Msg
 spinner =
-    div [ class "preloader-wrapper big active" ]
-        [ div [ class "spinner-layer spinner-blue-only" ]
-            [ div [ class "circle-clipper left" ]
-                [ div [ class "circle" ] []
-                , div [ class "gap-patch" ] []
-                , div [ class "circle" ] []
-                ]
-            , div [ class "circle-clipper right" ] []
-            , div [ class "circle" ] []
-            ]
+    div [ class "spinner" ]
+        [ div [ class "bounce1" ] [ ]
+        , div [ class "bounce2" ] [ ]
+        , div [ class "bounce3" ] [ ]
         ]
-
+    -- div [ class "loader" ] [ text "Loading..." ]
 
 sidebar : List Race -> Html App.Msg.Msg
 sidebar races =
     aside [ class "menu" ]
-        [ p [ class "menu-label" ] [ a [ href "#races" ] [ text "Races" ] ]
+        [ p [ class "menu-label" ] [ a [ href "https://wtos.nl", target "_blank" ] [ text "WTOS.nl" ] ]
+        , p [ class "menu-label" ] [ a [ href "#races" ] [ text "Races" ] ]
         , ul [ class "menu-list" ] (List.map raceLi <| lastRaces races)
         , p [ class "menu-label" ] [ a [ href "#riders" ] [ text "Riders" ] ]
         ]
