@@ -14607,47 +14607,166 @@ var _user$project$Page_Rider_Add_Model$Model = F2(
 var _user$project$Data_RaceType$getPointsByRaceType = function (category) {
 	var _p0 = category;
 	switch (_p0.ctor) {
-		case 'Classic':
-			return 4;
+		case 'Trainingskoers':
+			return 1;
 		case 'Criterium':
 			return 3;
-		case 'Regiocross':
+		case 'Zomoco':
 			return 2;
+		case 'Classic':
+			return 4;
+		case 'Cross':
+			return 2;
+		case 'Omloop':
+			return 4;
+		case 'Studentscup':
+			return 3;
+		case 'CK':
+			return 2;
+		case 'NK':
+			return 5;
+		case 'Cyclosportive':
+			return 4;
 		case 'Other':
 			return 0;
 		default:
 			return 0;
 	}
 };
-var _user$project$Data_RaceType$raceTypeToString = function (category) {
+var _user$project$Data_RaceType$raceTypeReadable = function (category) {
 	var _p1 = category;
 	switch (_p1.ctor) {
-		case 'Classic':
-			return 'classic';
+		case 'Trainingskoers':
+			return 'trainingskoers';
 		case 'Criterium':
 			return 'criterium';
-		case 'Regiocross':
-			return 'regiocross';
-		case 'Other':
-			return 'other';
+		case 'Zomoco':
+			return 'ZoMoCo';
+		case 'Classic':
+			return 'klassieker';
+		case 'Cross':
+			return 'cross';
+		case 'Omloop':
+			return 'omloop';
+		case 'Studentscup':
+			return 'studentencup';
+		case 'CK':
+			return 'Clubkampioenschap';
+		case 'NK':
+			return 'Nederlands kampioenschap';
+		case 'Cyclosportive':
+			return 'Cyclosportive';
 		default:
-			return 'unknown';
+			return 'other';
+	}
+};
+var _user$project$Data_RaceType$raceTypeToString = function (category) {
+	var _p2 = category;
+	switch (_p2.ctor) {
+		case 'Trainingskoers':
+			return 'trainingskoers';
+		case 'Criterium':
+			return 'criterium';
+		case 'Zomoco':
+			return 'zomoco';
+		case 'Classic':
+			return 'classic';
+		case 'Cross':
+			return 'cross';
+		case 'Omloop':
+			return 'omloop';
+		case 'Studentscup':
+			return 'studentencup';
+		case 'CK':
+			return 'CK';
+		case 'NK':
+			return 'NK';
+		case 'Cyclosportive':
+			return 'cyclosportive';
+		default:
+			return 'other';
 	}
 };
 var _user$project$Data_RaceType$Unknown = {ctor: 'Unknown'};
 var _user$project$Data_RaceType$Other = {ctor: 'Other'};
-var _user$project$Data_RaceType$Regiocross = {ctor: 'Regiocross'};
-var _user$project$Data_RaceType$Criterium = {ctor: 'Criterium'};
+var _user$project$Data_RaceType$Cyclosportive = {ctor: 'Cyclosportive'};
+var _user$project$Data_RaceType$NK = {ctor: 'NK'};
+var _user$project$Data_RaceType$CK = {ctor: 'CK'};
+var _user$project$Data_RaceType$Studentscup = {ctor: 'Studentscup'};
+var _user$project$Data_RaceType$Omloop = {ctor: 'Omloop'};
+var _user$project$Data_RaceType$Cross = {ctor: 'Cross'};
 var _user$project$Data_RaceType$Classic = {ctor: 'Classic'};
+var _user$project$Data_RaceType$Zomoco = {ctor: 'Zomoco'};
+var _user$project$Data_RaceType$Criterium = {ctor: 'Criterium'};
+var _user$project$Data_RaceType$Trainingskoers = {ctor: 'Trainingskoers'};
+var _user$project$Data_RaceType$raceTypes = {
+	ctor: '::',
+	_0: _user$project$Data_RaceType$Trainingskoers,
+	_1: {
+		ctor: '::',
+		_0: _user$project$Data_RaceType$Criterium,
+		_1: {
+			ctor: '::',
+			_0: _user$project$Data_RaceType$Zomoco,
+			_1: {
+				ctor: '::',
+				_0: _user$project$Data_RaceType$Classic,
+				_1: {
+					ctor: '::',
+					_0: _user$project$Data_RaceType$Cross,
+					_1: {
+						ctor: '::',
+						_0: _user$project$Data_RaceType$Omloop,
+						_1: {
+							ctor: '::',
+							_0: _user$project$Data_RaceType$Studentscup,
+							_1: {
+								ctor: '::',
+								_0: _user$project$Data_RaceType$CK,
+								_1: {
+									ctor: '::',
+									_0: _user$project$Data_RaceType$NK,
+									_1: {
+										ctor: '::',
+										_0: _user$project$Data_RaceType$Cyclosportive,
+										_1: {
+											ctor: '::',
+											_0: _user$project$Data_RaceType$Other,
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+};
 var _user$project$Data_RaceType$raceType = function (string) {
-	var _p2 = string;
-	switch (_p2) {
-		case 'classic':
-			return _user$project$Data_RaceType$Classic;
+	var _p3 = string;
+	switch (_p3) {
+		case 'trainingskoers':
+			return _user$project$Data_RaceType$Trainingskoers;
 		case 'criterium':
 			return _user$project$Data_RaceType$Criterium;
-		case 'regiocross':
-			return _user$project$Data_RaceType$Regiocross;
+		case 'zomoco':
+			return _user$project$Data_RaceType$Zomoco;
+		case 'classic':
+			return _user$project$Data_RaceType$Classic;
+		case 'cross':
+			return _user$project$Data_RaceType$Cross;
+		case 'omloop':
+			return _user$project$Data_RaceType$Omloop;
+		case 'studentencup':
+			return _user$project$Data_RaceType$Studentscup;
+		case 'CK':
+			return _user$project$Data_RaceType$CK;
+		case 'NK':
+			return _user$project$Data_RaceType$NK;
+		case 'cyclosportive':
+			return _user$project$Data_RaceType$Cyclosportive;
 		case 'other':
 			return _user$project$Data_RaceType$Other;
 		default:
@@ -14695,63 +14814,130 @@ var _user$project$Data_Outfit$outfitDecoder = function (string) {
 		}());
 };
 
-var _user$project$Data_ResultCategory$categoryToString = function (category) {
+var _user$project$Data_ResultCategory$categoryReadable = function (category) {
 	var _p0 = category;
 	switch (_p0.ctor) {
 		case 'Amateurs':
 			return 'amateurs';
+		case 'Elite':
+			return 'elite';
+		case 'CatA':
+			return 'cat. a';
 		case 'Basislidmaatschap':
 			return 'basislidmaatschap';
+		case 'EliteAmateurs':
+			return 'elite/amateurs';
+		case 'CatB':
+			return 'cat. b';
+		case 'CatC':
+			return 'cat. c';
+		case 'CatD':
+			return 'cat. d';
+		case 'Other':
+			return 'other';
+		default:
+			return 'unknown';
+	}
+};
+var _user$project$Data_ResultCategory$categoryToString = function (category) {
+	var _p1 = category;
+	switch (_p1.ctor) {
+		case 'Amateurs':
+			return 'amateurs';
+		case 'Elite':
+			return 'elite';
 		case 'CatA':
 			return 'cata';
+		case 'Basislidmaatschap':
+			return 'basislidmaatschap';
+		case 'EliteAmateurs':
+			return 'elite_amateurs';
 		case 'CatB':
 			return 'catb';
+		case 'CatC':
+			return 'catc';
+		case 'CatD':
+			return 'catd';
+		case 'Other':
+			return 'other';
 		default:
 			return 'unknown';
 	}
 };
 var _user$project$Data_ResultCategory$Unknown = {ctor: 'Unknown'};
+var _user$project$Data_ResultCategory$Other = {ctor: 'Other'};
+var _user$project$Data_ResultCategory$CatD = {ctor: 'CatD'};
+var _user$project$Data_ResultCategory$CatC = {ctor: 'CatC'};
 var _user$project$Data_ResultCategory$CatB = {ctor: 'CatB'};
-var _user$project$Data_ResultCategory$CatA = {ctor: 'CatA'};
 var _user$project$Data_ResultCategory$Basislidmaatschap = {ctor: 'Basislidmaatschap'};
+var _user$project$Data_ResultCategory$EliteAmateurs = {ctor: 'EliteAmateurs'};
+var _user$project$Data_ResultCategory$CatA = {ctor: 'CatA'};
+var _user$project$Data_ResultCategory$Elite = {ctor: 'Elite'};
 var _user$project$Data_ResultCategory$Amateurs = {ctor: 'Amateurs'};
 var _user$project$Data_ResultCategory$resultCategories = {
 	ctor: '::',
 	_0: _user$project$Data_ResultCategory$Amateurs,
 	_1: {
 		ctor: '::',
-		_0: _user$project$Data_ResultCategory$Basislidmaatschap,
+		_0: _user$project$Data_ResultCategory$Elite,
 		_1: {
 			ctor: '::',
 			_0: _user$project$Data_ResultCategory$CatA,
 			_1: {
 				ctor: '::',
-				_0: _user$project$Data_ResultCategory$CatB,
+				_0: _user$project$Data_ResultCategory$Basislidmaatschap,
 				_1: {
 					ctor: '::',
-					_0: _user$project$Data_ResultCategory$Unknown,
-					_1: {ctor: '[]'}
+					_0: _user$project$Data_ResultCategory$EliteAmateurs,
+					_1: {
+						ctor: '::',
+						_0: _user$project$Data_ResultCategory$CatB,
+						_1: {
+							ctor: '::',
+							_0: _user$project$Data_ResultCategory$CatC,
+							_1: {
+								ctor: '::',
+								_0: _user$project$Data_ResultCategory$CatD,
+								_1: {
+									ctor: '::',
+									_0: _user$project$Data_ResultCategory$Other,
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
 				}
 			}
 		}
 	}
 };
 var _user$project$Data_ResultCategory$resultCategoryDecoder = function (string) {
-	var _p1 = string;
-	switch (_p1) {
-		case 'amateurs':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Data_ResultCategory$Amateurs);
-		case 'basislidmaatschap':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Data_ResultCategory$Basislidmaatschap);
-		case 'cata':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Data_ResultCategory$CatA);
-		case 'catb':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Data_ResultCategory$CatB);
-		case 'unknown':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Data_ResultCategory$Unknown);
-		default:
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Data_ResultCategory$Unknown);
-	}
+	return _elm_lang$core$Json_Decode$succeed(
+		function () {
+			var _p2 = string;
+			switch (_p2) {
+				case 'amateurs':
+					return _user$project$Data_ResultCategory$Amateurs;
+				case 'elite':
+					return _user$project$Data_ResultCategory$Elite;
+				case 'cata':
+					return _user$project$Data_ResultCategory$CatA;
+				case 'basislidmaatschap':
+					return _user$project$Data_ResultCategory$Basislidmaatschap;
+				case 'elite/amateurs':
+					return _user$project$Data_ResultCategory$EliteAmateurs;
+				case 'catb':
+					return _user$project$Data_ResultCategory$CatB;
+				case 'catc':
+					return _user$project$Data_ResultCategory$CatC;
+				case 'catd':
+					return _user$project$Data_ResultCategory$CatD;
+				case 'other':
+					return _user$project$Data_ResultCategory$Other;
+				default:
+					return _user$project$Data_ResultCategory$Unknown;
+			}
+		}());
 };
 
 var _user$project$Page_Result_Add_Model$initial = {raceKey: '', riderKey: _elm_lang$core$Maybe$Nothing, result: '', category: _user$project$Data_ResultCategory$Amateurs, outfit: _user$project$Data_Outfit$WTOS, strava: ''};
@@ -15383,7 +15569,7 @@ var _user$project$App_UrlUpdate$urlUpdate = F2(
 				var _p2 = _elm_community$elm_datepicker$DatePicker$init;
 				var datePicker = _p2._0;
 				var datePickerFx = _p2._1;
-				var raceAdd = A4(_user$project$Page_Race_Add_Model$Model, '', _user$project$Data_RaceType$Classic, _elm_lang$core$Maybe$Nothing, datePicker);
+				var raceAdd = A4(_user$project$Page_Race_Add_Model$Model, '', _user$project$Data_RaceType$Trainingskoers, _elm_lang$core$Maybe$Nothing, datePicker);
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -16556,8 +16742,10 @@ var _user$project$Page_Race_List$view = F2(
 			});
 	});
 
-var _user$project$Page_Race_Add_View$raceTypeButtonCheck = F4(
-	function (raceTypeName, raceTypeText, raceType, current) {
+var _user$project$Page_Race_Add_View$raceTypeButtonCheck = F2(
+	function (raceType, current) {
+		var raceTypeText = _user$project$Data_RaceType$raceTypeReadable(raceType);
+		var raceTypeName = _user$project$Data_RaceType$raceTypeToString(raceType);
 		var isChecked = _elm_lang$core$Native_Utils.eq(raceType, current);
 		return A2(
 			_elm_lang$html$Html$p,
@@ -16615,23 +16803,12 @@ var _user$project$Page_Race_Add_View$raceTypeButtons = function (current) {
 			_0: _elm_lang$html$Html_Attributes$class('col s6'),
 			_1: {ctor: '[]'}
 		},
-		{
-			ctor: '::',
-			_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'classic', 'Klassieker', _user$project$Data_RaceType$Classic, current),
-			_1: {
-				ctor: '::',
-				_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'criterum', 'Criterium', _user$project$Data_RaceType$Criterium, current),
-				_1: {
-					ctor: '::',
-					_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'regiocross', 'Regiocross', _user$project$Data_RaceType$Regiocross, current),
-					_1: {
-						ctor: '::',
-						_0: A4(_user$project$Page_Race_Add_View$raceTypeButtonCheck, 'other', 'Other', _user$project$Data_RaceType$Other, current),
-						_1: {ctor: '[]'}
-					}
-				}
-			}
-		});
+		A2(
+			_elm_lang$core$List$map,
+			function (raceType) {
+				return A2(_user$project$Page_Race_Add_View$raceTypeButtonCheck, raceType, current);
+			},
+			_user$project$Data_RaceType$raceTypes));
 };
 var _user$project$Page_Race_Add_View$dateFormat = function (date) {
 	return A3(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config, '%Y-%m-%d', date);
@@ -16925,15 +17102,26 @@ var _user$project$Page_Rider_Details$info = F2(
 													_1: {
 														ctor: '::',
 														_0: A2(
-															_elm_lang$html$Html$dd,
+															_elm_lang$html$Html$dt,
 															{ctor: '[]'},
 															{
 																ctor: '::',
-																_0: _elm_lang$html$Html$text(
-																	_elm_lang$core$Basics$toString(points)),
+																_0: _elm_lang$html$Html$text('Points'),
 																_1: {ctor: '[]'}
 															}),
-														_1: {ctor: '[]'}
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$dd,
+																{ctor: '[]'},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text(
+																		_elm_lang$core$Basics$toString(points)),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}
 													}
 												}
 											}
@@ -17706,8 +17894,11 @@ var _user$project$Page_Result_Add_View$outfitButtons = A2(
 			}
 		}
 	});
-var _user$project$Page_Result_Add_View$resultCategoryButtonCheck = F4(
-	function (resultCategoryName, resultCategoryText, category, isChecked) {
+var _user$project$Page_Result_Add_View$resultCategoryButton = F2(
+	function (category, current) {
+		var resultCategoryText = _user$project$Data_ResultCategory$categoryReadable(category);
+		var resultCategoryName = _user$project$Data_ResultCategory$categoryToString(category);
+		var isChecked = _elm_lang$core$Native_Utils.eq(category, current);
 		return A2(
 			_elm_lang$html$Html$p,
 			{ctor: '[]'},
@@ -17756,30 +17947,17 @@ var _user$project$Page_Result_Add_View$resultCategoryButtonCheck = F4(
 				}
 			});
 	});
-var _user$project$Page_Result_Add_View$resultCategoryButton = F3(
-	function (resultCategoryName, resultCategoryText, resultCategory) {
-		return A4(_user$project$Page_Result_Add_View$resultCategoryButtonCheck, resultCategoryName, resultCategoryText, resultCategory, false);
-	});
-var _user$project$Page_Result_Add_View$resultCategoryButtons = A2(
-	_elm_lang$html$Html$div,
-	{ctor: '[]'},
-	{
-		ctor: '::',
-		_0: A4(_user$project$Page_Result_Add_View$resultCategoryButtonCheck, 'amateurs', 'Amateurs', _user$project$Data_ResultCategory$Amateurs, true),
-		_1: {
-			ctor: '::',
-			_0: A3(_user$project$Page_Result_Add_View$resultCategoryButton, 'basislidmaatschap', 'Basislidmaatschap', _user$project$Data_ResultCategory$Basislidmaatschap),
-			_1: {
-				ctor: '::',
-				_0: A3(_user$project$Page_Result_Add_View$resultCategoryButton, 'cata', 'Cat A', _user$project$Data_ResultCategory$CatA),
-				_1: {
-					ctor: '::',
-					_0: A3(_user$project$Page_Result_Add_View$resultCategoryButton, 'catb', 'Cat B', _user$project$Data_ResultCategory$CatB),
-					_1: {ctor: '[]'}
-				}
-			}
-		}
-	});
+var _user$project$Page_Result_Add_View$resultCategoryButtons = function (current) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		A2(
+			_elm_lang$core$List$map,
+			function (resultCategory) {
+				return A2(_user$project$Page_Result_Add_View$resultCategoryButton, resultCategory, current);
+			},
+			_user$project$Data_ResultCategory$resultCategories));
+};
 var _user$project$Page_Result_Add_View$resultExists = F3(
 	function (rider, race, results) {
 		return _elm_lang$core$Native_Utils.eq(
@@ -18135,7 +18313,7 @@ var _user$project$Page_Result_Add_View$view = F4(
 															},
 															{
 																ctor: '::',
-																_0: _user$project$Page_Result_Add_View$resultCategoryButtons,
+																_0: _user$project$Page_Result_Add_View$resultCategoryButtons(resultAdd.category),
 																_1: {ctor: '[]'}
 															}),
 														_1: {ctor: '[]'}
@@ -18361,12 +18539,16 @@ var _user$project$App_View$sidebar = function (races) {
 						_elm_lang$html$Html$a,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$href('#races'),
-							_1: {ctor: '[]'}
+							_0: _elm_lang$html$Html_Attributes$href('https://wtos.nl'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$target('_blank'),
+								_1: {ctor: '[]'}
+							}
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text('Races'),
+							_0: _elm_lang$html$Html$text('WTOS.nl'),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
@@ -18374,41 +18556,41 @@ var _user$project$App_View$sidebar = function (races) {
 			_1: {
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$ul,
+					_elm_lang$html$Html$p,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('menu-list'),
+						_0: _elm_lang$html$Html_Attributes$class('menu-label'),
 						_1: {ctor: '[]'}
 					},
-					A2(
-						_elm_lang$core$List$map,
-						_user$project$App_View$raceLi,
-						_user$project$Data_Race$lastRaces(races))),
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$a,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$href('#races'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Races'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
 				_1: {
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$p,
+						_elm_lang$html$Html$ul,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('menu-label'),
+							_0: _elm_lang$html$Html_Attributes$class('menu-list'),
 							_1: {ctor: '[]'}
 						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$a,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$href('#riders'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Riders'),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}),
+						A2(
+							_elm_lang$core$List$map,
+							_user$project$App_View$raceLi,
+							_user$project$Data_Race$lastRaces(races))),
 					_1: {
 						ctor: '::',
 						_0: A2(
@@ -18424,43 +18606,17 @@ var _user$project$App_View$sidebar = function (races) {
 									_elm_lang$html$Html$a,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$href('https://wtos.nl/topic/het-grote-verslagentopic-van-michiel'),
+										_0: _elm_lang$html$Html_Attributes$href('#riders'),
 										_1: {ctor: '[]'}
 									},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('Verslagen'),
+										_0: _elm_lang$html$Html$text('Riders'),
 										_1: {ctor: '[]'}
 									}),
 								_1: {ctor: '[]'}
 							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$p,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('menu-label'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$a,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$href('https://wtos.nl/topic/wedstrijdrennerssysteem-v3'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Feedback'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
+						_1: {ctor: '[]'}
 					}
 				}
 			}
@@ -18470,7 +18626,7 @@ var _user$project$App_View$spinner = A2(
 	_elm_lang$html$Html$div,
 	{
 		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$class('preloader-wrapper big active'),
+		_0: _elm_lang$html$Html_Attributes$class('spinner'),
 		_1: {ctor: '[]'}
 	},
 	{
@@ -18479,77 +18635,33 @@ var _user$project$App_View$spinner = A2(
 			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('spinner-layer spinner-blue-only'),
+				_0: _elm_lang$html$Html_Attributes$class('bounce1'),
 				_1: {ctor: '[]'}
 			},
-			{
+			{ctor: '[]'}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('bounce2'),
+					_1: {ctor: '[]'}
+				},
+				{ctor: '[]'}),
+			_1: {
 				ctor: '::',
 				_0: A2(
 					_elm_lang$html$Html$div,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('circle-clipper left'),
+						_0: _elm_lang$html$Html_Attributes$class('bounce3'),
 						_1: {ctor: '[]'}
 					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('circle'),
-								_1: {ctor: '[]'}
-							},
-							{ctor: '[]'}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('gap-patch'),
-									_1: {ctor: '[]'}
-								},
-								{ctor: '[]'}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('circle'),
-										_1: {ctor: '[]'}
-									},
-									{ctor: '[]'}),
-								_1: {ctor: '[]'}
-							}
-						}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('circle-clipper right'),
-							_1: {ctor: '[]'}
-						},
-						{ctor: '[]'}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('circle'),
-								_1: {ctor: '[]'}
-							},
-							{ctor: '[]'}),
-						_1: {ctor: '[]'}
-					}
-				}
-			}),
-		_1: {ctor: '[]'}
+					{ctor: '[]'}),
+				_1: {ctor: '[]'}
+			}
+		}
 	});
 var _user$project$App_View$viewPage = F4(
 	function (app, races, riders, results) {
