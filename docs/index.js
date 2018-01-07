@@ -14,8 +14,7 @@ function setup(firebase, app) {
   firebase.auth().signInAnonymously();
 }
 
-const config = require('./config');
-firebase.initializeApp(config);
+firebase.initializeApp(config); // from config.js
 
 const app = Elm.Main.embed(document.getElementById('main'));
 
