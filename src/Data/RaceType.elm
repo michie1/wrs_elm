@@ -144,13 +144,13 @@ raceTypeReadable category =
             "studentencup"
 
         CK ->
-            "Clubkampioenschap"
+            "clubkampioenschap"
 
         NK ->
             "Nederlands kampioenschap"
 
         Cyclosportive ->
-            "Cyclosportive"
+            "cyclosportive"
 
         _ ->
             "other"
