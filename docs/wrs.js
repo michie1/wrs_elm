@@ -14617,6 +14617,8 @@ var _user$project$Data_RaceType$getPointsByRaceType = function (category) {
 			return 4;
 		case 'Cross':
 			return 2;
+		case 'Beach':
+			return 3;
 		case 'Omloop':
 			return 4;
 		case 'Studentscup':
@@ -14646,6 +14648,8 @@ var _user$project$Data_RaceType$raceTypeReadable = function (category) {
 			return 'klassieker';
 		case 'Cross':
 			return 'cross';
+		case 'Beach':
+			return 'beachrace';
 		case 'Omloop':
 			return 'omloop';
 		case 'Studentscup':
@@ -14673,6 +14677,8 @@ var _user$project$Data_RaceType$raceTypeToString = function (category) {
 			return 'classic';
 		case 'Cross':
 			return 'cross';
+		case 'Beach':
+			return 'beach';
 		case 'Omloop':
 			return 'omloop';
 		case 'Studentscup':
@@ -14694,6 +14700,7 @@ var _user$project$Data_RaceType$NK = {ctor: 'NK'};
 var _user$project$Data_RaceType$CK = {ctor: 'CK'};
 var _user$project$Data_RaceType$Studentscup = {ctor: 'Studentscup'};
 var _user$project$Data_RaceType$Omloop = {ctor: 'Omloop'};
+var _user$project$Data_RaceType$Beach = {ctor: 'Beach'};
 var _user$project$Data_RaceType$Cross = {ctor: 'Cross'};
 var _user$project$Data_RaceType$Classic = {ctor: 'Classic'};
 var _user$project$Data_RaceType$Zomoco = {ctor: 'Zomoco'};
@@ -14716,23 +14723,27 @@ var _user$project$Data_RaceType$raceTypes = {
 					_0: _user$project$Data_RaceType$Cross,
 					_1: {
 						ctor: '::',
-						_0: _user$project$Data_RaceType$Omloop,
+						_0: _user$project$Data_RaceType$Beach,
 						_1: {
 							ctor: '::',
-							_0: _user$project$Data_RaceType$Studentscup,
+							_0: _user$project$Data_RaceType$Omloop,
 							_1: {
 								ctor: '::',
-								_0: _user$project$Data_RaceType$CK,
+								_0: _user$project$Data_RaceType$Studentscup,
 								_1: {
 									ctor: '::',
-									_0: _user$project$Data_RaceType$NK,
+									_0: _user$project$Data_RaceType$CK,
 									_1: {
 										ctor: '::',
-										_0: _user$project$Data_RaceType$Cyclosportive,
+										_0: _user$project$Data_RaceType$NK,
 										_1: {
 											ctor: '::',
-											_0: _user$project$Data_RaceType$Other,
-											_1: {ctor: '[]'}
+											_0: _user$project$Data_RaceType$Cyclosportive,
+											_1: {
+												ctor: '::',
+												_0: _user$project$Data_RaceType$Other,
+												_1: {ctor: '[]'}
+											}
 										}
 									}
 								}
@@ -14757,6 +14768,8 @@ var _user$project$Data_RaceType$raceType = function (string) {
 			return _user$project$Data_RaceType$Classic;
 		case 'cross':
 			return _user$project$Data_RaceType$Cross;
+		case 'beach':
+			return _user$project$Data_RaceType$Beach;
 		case 'omloop':
 			return _user$project$Data_RaceType$Omloop;
 		case 'studentencup':
