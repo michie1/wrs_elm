@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   apiKey: "AIzaSyCCzStZqMSpKAnBaSNK1MNlaleBTR9b-dA",
   authDomain: "cycling-results.firebaseapp.com",
   databaseURL: "https://cycling-results.firebaseio.com",
