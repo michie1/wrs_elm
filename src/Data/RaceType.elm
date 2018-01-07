@@ -9,6 +9,7 @@ type RaceType
     | Zomoco
     | Classic
     | Cross
+    | Beach
     | Omloop
     | Studentscup
     | CK
@@ -23,6 +24,7 @@ raceTypes =
     , Zomoco
     , Classic
     , Cross
+    , Beach
     , Omloop
     , Studentscup
     , CK
@@ -49,6 +51,9 @@ raceType string =
 
         "cross" ->
             Cross
+
+        "beach" ->
+            Beach
 
         "omloop" ->
             Omloop
@@ -90,6 +95,9 @@ raceTypeToString category =
         Cross ->
             "cross"
 
+        Beach ->
+            "beach"
+
         Omloop ->
             "omloop"
 
@@ -125,6 +133,9 @@ raceTypeReadable category =
 
         Cross ->
             "cross"
+
+        Beach ->
+            "beachrace"
 
         Omloop ->
             "omloop"
@@ -166,6 +177,9 @@ getPointsByRaceType category =
 
         Cross ->
             2
+
+        Beach ->
+            3
 
         Omloop ->
             4
