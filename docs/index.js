@@ -1,7 +1,7 @@
 'use strict';
 
 function setup(firebase, app) {
-  var database = firebase.database();
+  const database = firebase.database();
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -14,17 +14,10 @@ function setup(firebase, app) {
   firebase.auth().signInAnonymously();
 }
 
-var config = {
-  apiKey: "AIzaSyCCzStZqMSpKAnBaSNK1MNlaleBTR9b-dA",
-  authDomain: "cycling-results.firebaseapp.com",
-  databaseURL: "https://cycling-results.firebaseio.com",
-  projectId: "cycling-results",
-  storageBucket: "cycling-results.appspot.com",
-  messagingSenderId: "939143658590"
-};
+const config = require('./config');
 firebase.initializeApp(config);
 
-var app = Elm.Main.embed(document.getElementById('main'));
+const app = Elm.Main.embed(document.getElementById('main'));
 
 setup(firebase, app);
 
