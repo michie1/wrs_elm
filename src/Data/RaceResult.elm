@@ -4,7 +4,7 @@ import Json.Decode
 import Json.Decode.Pipeline
 import Data.ResultCategory exposing (ResultCategory, resultCategoryDecoder)
 import Data.Outfit as Outfit exposing (Outfit, outfitDecoder)
-import Data.Race exposing (Race, getRaceByKey)
+import Data.Race exposing (Race, getRace)
 import Data.RaceType exposing (getPointsByRaceType)
 
 
@@ -61,7 +61,7 @@ getPointsByResults results races =
 getPointsByResult : RaceResult -> List Race -> Int
 getPointsByResult result races =
     if result.outfit == Outfit.WTOS then
-        case getRaceByKey result.raceKey races of
+        case getRace result.raceKey races of
             Just race ->
                 getPointsByRaceType race.raceType
 

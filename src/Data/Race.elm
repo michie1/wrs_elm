@@ -1,4 +1,4 @@
-module Data.Race exposing (Race, lastRaces, getRace, racesDecoder, getRaceByKey)
+module Data.Race exposing (Race, lastRaces, getRace, racesDecoder)
 
 import Date exposing (Date)
 import Date.Extra
@@ -47,11 +47,3 @@ race =
 racesDecoder : Json.Decode.Decoder (List Race)
 racesDecoder =
     Json.Decode.list race
-
-
-getRaceByKey : String -> List Race -> Maybe Race
-getRaceByKey raceKey races =
-    List.head <|
-        List.filter
-            (\race -> race.key == raceKey)
-            races
