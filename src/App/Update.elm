@@ -47,11 +47,15 @@ update msg app =
             ( app, App.OutsideInfo.sendInfoOutside <| App.OutsideInfo.LogError err )
 
         Msg.RaceAdd subMsg ->
-            let
-                ( nextApp, nextCmd ) =
-                    RaceAdd.update subMsg app
-            in
-                ( nextApp, Cmd.map Msg.RaceAdd nextCmd )
+            case app.page of
+                App.Page.RaceAdd page ->
+                    let
+                        ( nextPage, nextCmd ) =
+                            RaceAdd.update subMsg page
+                    in
+                        ( { app | page = App.Page.RaceAdd nextPage }, Cmd.map Msg.RaceAdd nextCmd )
+                _ ->
+                    ( app, Cmd.none )
 
         Msg.RiderAdd subMsg ->
             let

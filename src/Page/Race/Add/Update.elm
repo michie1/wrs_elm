@@ -9,6 +9,7 @@ import App.Model exposing (App)
 import App.Page
 import App.OutsideInfo exposing (sendInfoOutside)
 import Page.Race.Add.Msg as Msg exposing (Msg)
+import Page.Race.Add.Model exposing (Model)
 import Data.RaceType exposing (raceTypeToString)
 
 
@@ -17,66 +18,58 @@ settings =
     DatePicker.defaultSettings
 
 
-update : Msg -> App -> ( App, Cmd Msg )
-update msg app =
-    case app.page of
-        App.Page.RaceAdd page ->
-            case msg of
-                Msg.Submit ->
-                    case page.date of
-                        Just date ->
-                            let
-                                payload =
-                                    Json.Encode.object
-                                        [ ( "name", Json.Encode.string page.name )
-                                        , ( "date", Json.Encode.string <| dateFormat date )
-                                        , ( "category", Json.Encode.string <| raceTypeToString page.raceType )
-                                        ]
-                            in
-                                ( app, sendInfoOutside <| App.OutsideInfo.RaceAdd payload )
-
-                        Nothing ->
-                            ( app, Cmd.none )
-
-                Msg.Name name ->
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg page =
+    case msg of
+        Msg.Submit ->
+            case page.date of
+                Just date ->
                     let
-                        nextPage =
-                            App.Page.RaceAdd
-                                { page | name = name }
+                        payload =
+                            Json.Encode.object
+                                [ ( "name", Json.Encode.string page.name )
+                                , ( "date", Json.Encode.string <| dateFormat date )
+                                , ( "category", Json.Encode.string <| raceTypeToString page.raceType )
+                                ]
                     in
-                        ( { app | page = nextPage }, Cmd.none )
+                        ( page, sendInfoOutside <| App.OutsideInfo.RaceAdd payload )
 
-                Msg.RaceType raceType ->
-                    let
-                        nextPage =
-                            App.Page.RaceAdd
-                                { page | raceType = raceType }
-                    in
-                        ( { app | page = nextPage }, Cmd.none )
+                Nothing ->
+                    ( page, Cmd.none )
 
-                Msg.ToDatePicker subMsg ->
-                    let
-                        ( newDatePicker, datePickerFx, dateEvent ) =
-                            DatePicker.update settings subMsg page.datePicker
+        Msg.Name name ->
+            let
+                nextPage =
+                        { page | name = name }
+            in
+                ( nextPage, Cmd.none )
 
-                        newDate =
-                            case dateEvent of
-                                DatePicker.Changed newDate ->
-                                    newDate
+        Msg.RaceType raceType ->
+            let
+                nextPage =
+                        { page | raceType = raceType }
+            in
+                ( nextPage, Cmd.none )
 
-                                _ ->
-                                    page.date
+        Msg.ToDatePicker subMsg ->
+            let
+                ( newDatePicker, datePickerFx, dateEvent ) =
+                    DatePicker.update settings subMsg page.datePicker
 
-                        nextPage =
-                            App.Page.RaceAdd
-                                { page | date = newDate, datePicker = newDatePicker }
-                    in
-                        ( { app | page = nextPage }
-                        , Cmd.none
-                        )
+                newDate =
+                    case dateEvent of
+                        DatePicker.Changed newDate ->
+                            newDate
 
-        _ ->
-            ( app, Cmd.none )
+                        _ ->
+                            page.date
+
+                nextPage =
+                        { page | date = newDate, datePicker = newDatePicker }
+            in
+                ( nextPage
+                , Cmd.none
+                )
 
 
 dateFormat : Date.Date -> String
