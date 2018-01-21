@@ -1,7 +1,5 @@
 module Page.Rider.Add.Update exposing (update)
 
-import App.Model exposing (App)
-import App.Page
 import Json.Encode
 import App.OutsideInfo exposing (sendInfoOutside)
 import Page.Rider.Add.Msg as Msg exposing (Msg)
@@ -19,10 +17,11 @@ update msg page =
                         payload =
                             Json.Encode.object
                                 [ ( "name", Json.Encode.string page.name )
-                                , ( "licence", Json.Encode.string <| licenceToString page.licence )
+                                , ( "licence", Json.Encode.string <| licenceToString licence )
                                 ]
                     in
                         ( page, sendInfoOutside <| App.OutsideInfo.RiderAdd payload )
+
                 Nothing ->
                     ( page, Cmd.none )
 

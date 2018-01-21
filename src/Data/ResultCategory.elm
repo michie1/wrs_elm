@@ -68,34 +68,34 @@ categoryReadable : ResultCategory -> String
 categoryReadable category =
     case category of
         Amateurs ->
-            "amateurs"
+            "Amateurs"
 
         Elite ->
-            "elite"
+            "Elite"
 
         CatA ->
-            "cat. a"
+            "Cat. a"
 
         Basislidmaatschap ->
-            "basislidmaatschap"
+            "Basislidmaatschap"
 
         EliteAmateurs ->
-            "elite/amateurs"
+            "Elite/amateurs"
 
         CatB ->
-            "cat. b"
+            "Cat. b"
 
         CatC ->
-            "cat. c"
+            "Cat. c"
 
         CatD ->
-            "cat. d"
+            "Cat. d"
 
         Other ->
-            "other"
+            "Other"
 
         Unknown ->
-            "unknown"
+            "Unknown"
 
 
 resultCategoryDecoder : String -> Json.Decode.Decoder ResultCategory

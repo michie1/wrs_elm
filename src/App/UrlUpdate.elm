@@ -6,7 +6,6 @@ import App.Msg as Msg exposing (Msg)
 import App.Page
 import App.Model exposing (App)
 import App.Routing
-import App.OutsideInfo exposing (sendInfoOutside)
 import Page.Result.Add.Model as ResultAdd
 import Page.Race.Add.Model as RaceAdd
 import Page.Race.Add.Msg as RaceAdd
@@ -54,13 +53,15 @@ urlUpdate route app =
             let
                 ( datePicker, datePickerFx ) =
                     DatePicker.init
+
                 raceAdd =
                     RaceAdd.Model "" RaceType.Trainingskoers Nothing datePicker
             in
                 ( { app | page = App.Page.RaceAdd raceAdd }
-                , Cmd.batch [ Cmd.map RaceAdd.ToDatePicker datePickerFx |> Cmd.map Msg.RaceAdd
-                            , Task.attempt (always Msg.Noop) (Dom.focus "name")
-                            ]
+                , Cmd.batch
+                    [ Cmd.map RaceAdd.ToDatePicker datePickerFx |> Cmd.map Msg.RaceAdd
+                    , Task.attempt (always Msg.Noop) (Dom.focus "name")
+                    ]
                 )
 
         App.Routing.RiderAdd ->
@@ -89,4 +90,3 @@ urlUpdate route app =
 
                 Nothing ->
                     ( app, Cmd.none )
-

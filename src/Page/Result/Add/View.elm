@@ -6,7 +6,7 @@ import Html.Events exposing (onInput, onClick)
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race)
 import Data.Rider exposing (Rider)
-import Data.ResultCategory as ResultCategory exposing (ResultCategory, resultCategories, categoryReadable, categoryToString)
+import Data.ResultCategory exposing (ResultCategory, resultCategories, categoryReadable, categoryToString)
 import Data.RaceResult exposing (RaceResult)
 import Page.Result.Add.Model exposing (Model)
 import Page.Result.Add.Msg as Msg exposing (Msg)
@@ -67,7 +67,7 @@ view race resultAdd riders results =
                         [ div [ class "control" ]
                             [ div [ class "select" ]
                                 [ select [ onInput Msg.Rider ]
-                                    ([ option [] [] ] ++ List.map (\item -> option [ value item.value ] [ text item.text ]) items)
+                                    (option [] [] :: List.map (\item -> option [ value item.value ] [ text item.text ]) items)
                                 ]
                             ]
                         ]

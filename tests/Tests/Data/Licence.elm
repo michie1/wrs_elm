@@ -10,7 +10,7 @@ suite =
     describe "Data Licence"
         [ test "licenceToString" <|
             \_ ->
-                Expect.equal "elite" (licenceToString (Just Elite))
+                Expect.equal "elite" (licenceToString Elite)
         , test "licence" <|
             \_ ->
                 Expect.equal Amateurs (licence "amateurs")

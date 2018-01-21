@@ -85,11 +85,15 @@ loadingPage app =
 spinner : Html App.Msg.Msg
 spinner =
     div [ class "spinner" ]
-        [ div [ class "bounce1" ] [ ]
-        , div [ class "bounce2" ] [ ]
-        , div [ class "bounce3" ] [ ]
+        [ div [ class "bounce1" ] []
+        , div [ class "bounce2" ] []
+        , div [ class "bounce3" ] []
         ]
-    -- div [ class "loader" ] [ text "Loading..." ]
+
+
+
+-- div [ class "loader" ] [ text "Loading..." ]
+
 
 sidebar : List Race -> Html App.Msg.Msg
 sidebar races =
@@ -99,6 +103,7 @@ sidebar races =
         , ul [ class "menu-list" ] (List.map raceLi <| lastRaces races)
         , p [ class "menu-label" ] [ a [ href "#riders" ] [ text "Riders" ] ]
         ]
+
 
 raceLi : Race -> Html App.Msg.Msg
 raceLi race =

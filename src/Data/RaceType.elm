@@ -18,6 +18,8 @@ type RaceType
     | Other
     | Unknown
 
+
+raceTypes : List RaceType
 raceTypes =
     [ Trainingskoers
     , Criterium
@@ -116,44 +118,46 @@ raceTypeToString category =
         _ ->
             "other"
 
+
 raceTypeReadable : RaceType -> String
 raceTypeReadable category =
     case category of
         Trainingskoers ->
-            "trainingskoers"
+            "Trainingskoers"
 
         Criterium ->
-            "criterium"
+            "Criterium"
 
         Zomoco ->
             "ZoMoCo"
 
         Classic ->
-            "klassieker"
+            "Klassieker"
 
         Cross ->
-            "cross"
+            "Cross"
 
         Beach ->
-            "beachrace"
+            "Beachrace"
 
         Omloop ->
-            "omloop"
+            "Omloop"
 
         Studentscup ->
-            "studentencup"
+            "Studentencup"
 
         CK ->
-            "clubkampioenschap"
+            "Clubkampioenschap"
 
         NK ->
             "Nederlands kampioenschap"
 
         Cyclosportive ->
-            "cyclosportive"
+            "Cyclosportive"
 
         _ ->
-            "other"
+            "Other"
+
 
 raceTypeDecoder : String -> Json.Decode.Decoder RaceType
 raceTypeDecoder string =

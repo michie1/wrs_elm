@@ -1,9 +1,6 @@
 module Page.Result.Add.Update exposing (update)
 
 import Json.Encode
-import Set
-import App.Model exposing (App)
-import App.Page
 import App.OutsideInfo exposing (sendInfoOutside)
 import Page.Result.Add.Msg as Msg exposing (Msg)
 import Page.Result.Add.Model exposing (Model)
@@ -21,20 +18,21 @@ update msg page =
                         payload =
                             Json.Encode.object
                                 [ ( "raceKey", Json.Encode.string page.raceKey )
-                                , ( "riderKey", Json.Encode.string (Maybe.withDefault "" page.riderKey) )
+                                , ( "riderKey", Json.Encode.string riderKey )
                                 , ( "result", Json.Encode.string page.result )
                                 , ( "category", Json.Encode.string <| categoryToString page.category )
                                 , ( "outfit", Json.Encode.string <| outfitToString page.outfit )
                                 ]
                     in
                         ( page, sendInfoOutside <| App.OutsideInfo.ResultAdd payload )
+
                 Nothing ->
                     ( page, Cmd.none )
 
         Msg.Outfit outfit ->
             let
                 nextPage =
-                        { page | outfit = outfit }
+                    { page | outfit = outfit }
             in
                 ( nextPage
                 , Cmd.none
@@ -43,7 +41,7 @@ update msg page =
         Msg.Category category ->
             let
                 nextPage =
-                        { page | category = category }
+                    { page | category = category }
             in
                 ( nextPage
                 , Cmd.none
@@ -52,7 +50,7 @@ update msg page =
         Msg.Result result ->
             let
                 nextPage =
-                        { page | result = result }
+                    { page | result = result }
             in
                 ( nextPage
                 , Cmd.none
@@ -62,12 +60,10 @@ update msg page =
             let
                 nextPage =
                     if String.isEmpty riderKey then
-                            { page | riderKey = Nothing }
+                        { page | riderKey = Nothing }
                     else
-                            { page | riderKey = Just riderKey }
+                        { page | riderKey = Just riderKey }
             in
                 ( nextPage
-                , Cmd.none 
+                , Cmd.none
                 )
-
-     

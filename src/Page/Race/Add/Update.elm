@@ -5,8 +5,6 @@ import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import Json.Encode
 import DatePicker
-import App.Model exposing (App)
-import App.Page
 import App.OutsideInfo exposing (sendInfoOutside)
 import Page.Race.Add.Msg as Msg exposing (Msg)
 import Page.Race.Add.Model exposing (Model)
@@ -40,32 +38,32 @@ update msg page =
         Msg.Name name ->
             let
                 nextPage =
-                        { page | name = name }
+                    { page | name = name }
             in
                 ( nextPage, Cmd.none )
 
         Msg.RaceType raceType ->
             let
                 nextPage =
-                        { page | raceType = raceType }
+                    { page | raceType = raceType }
             in
                 ( nextPage, Cmd.none )
 
         Msg.ToDatePicker subMsg ->
             let
-                ( newDatePicker, datePickerFx, dateEvent ) =
+                ( newDatePicker, _, dateEvent ) =
                     DatePicker.update settings subMsg page.datePicker
 
                 newDate =
                     case dateEvent of
-                        DatePicker.Changed newDate ->
-                            newDate
+                        DatePicker.Changed date ->
+                            date
 
                         _ ->
                             page.date
 
                 nextPage =
-                        { page | date = newDate, datePicker = newDatePicker }
+                    { page | date = newDate, datePicker = newDatePicker }
             in
                 ( nextPage
                 , Cmd.none

@@ -1,6 +1,6 @@
 module Page.Rider.Details exposing (view)
 
-import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, ul, li, span, h2, p, dd, dl, dt)
+import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, h2, p, dd, dl, dt)
 import Html.Attributes exposing (class, href)
 import Date
 import Date.Extra.Format
@@ -49,6 +49,7 @@ view _ riderKey races riders results =
                         , info rider points
                         , resultsTable riderResults races
                         ]
+
 
 info : Rider -> Int -> Html App.Msg.Msg
 info rider points =

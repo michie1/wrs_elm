@@ -1,6 +1,6 @@
 module Page.Race.Details exposing (view)
 
-import Html exposing (Html, button, span, h2, h3, h5, p, ul, li, a, div, header, text, table, tbody, thead, tr, td, th, dt, dd, dl)
+import Html exposing (Html, button, span, h2, h3, h5, a, div, text, table, tbody, thead, tr, td, th, dt, dd, dl)
 import Html.Attributes exposing (href, class, style)
 import Html.Events exposing (onClick)
 import Date
@@ -95,10 +95,6 @@ info race =
                     ]
                 ]
             ]
-
-infoLi : String -> String -> Html App.Msg.Msg
-infoLi label spanText =
-    li [ class "collection-item" ] [ text label, span [ class "secondary-content" ] [ text spanText ] ]
 
 
 resultsTable : List RaceResult -> List Rider -> Html msg

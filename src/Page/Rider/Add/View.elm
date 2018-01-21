@@ -1,6 +1,6 @@
 module Page.Rider.Add.View exposing (view)
 
-import Html exposing (Html, p, button, div, text, input, i, h2, label, span)
+import Html exposing (Html, button, div, text, input, h2, label, span)
 import Html.Attributes exposing (value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
 import Data.Licence as Licence exposing (Licence)
@@ -63,7 +63,7 @@ licenceButtonCheck categoryName categoryText categoryModel maybeCurrent =
     in
         label []
             [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (Msg.Licence categoryModel) ] []
-            , span [] [ text categoryName ]
+            , span [] [ text categoryText ]
             ]
 
 

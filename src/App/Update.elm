@@ -80,5 +80,6 @@ update msg app =
                         ( { app | page = App.Page.ResultAdd nextPage }
                         , Cmd.map Msg.ResultAdd nextCmd
                         )
+
                 _ ->
-                    ( app , Cmd.none )
+                    ( app, Cmd.none )

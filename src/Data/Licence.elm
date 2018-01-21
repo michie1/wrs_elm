@@ -10,22 +10,19 @@ type Licence
     | Other
 
 
-licenceToString : Maybe Licence -> String
-licenceToString maybeLicence =
-    case maybeLicence of
-        Just Elite ->
+licenceToString : Licence -> String
+licenceToString licence =
+    case licence of
+        Elite ->
             "elite"
 
-        Just Amateurs ->
+        Amateurs ->
             "amateurs"
 
-        Just Basislidmaatschap ->
+        Basislidmaatschap ->
             "basislidmaatschap"
 
-        Just Other ->
-            "other"
-
-        Nothing ->
+        Other ->
             "other"
 
 
