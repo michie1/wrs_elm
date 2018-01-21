@@ -10,5 +10,4 @@ type alias Model =
     , raceType : RaceType
     , date : Maybe Date.Date
     , datePicker : DatePicker.DatePicker
-    --, calendar : Ui.Calendar.Model
     }

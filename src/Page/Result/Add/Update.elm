@@ -6,16 +6,17 @@ import App.Model exposing (App)
 import App.Page
 import App.OutsideInfo exposing (sendInfoOutside)
 import Page.Result.Add.Msg as Msg exposing (Msg)
+import Page.Result.Add.Model exposing (Model)
 import Data.Outfit exposing (outfitToString)
 import Data.ResultCategory exposing (categoryToString)
 
 
-update : Msg -> App -> ( App, Cmd Msg )
-update msg app =
-    case app.page of
-        App.Page.ResultAdd page ->
-            case msg of
-                Msg.Submit ->
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg page =
+    case msg of
+        Msg.Submit ->
+            case page.riderKey of
+                Just riderKey ->
                     let
                         payload =
                             Json.Encode.object
@@ -26,51 +27,47 @@ update msg app =
                                 , ( "outfit", Json.Encode.string <| outfitToString page.outfit )
                                 ]
                     in
-                        ( app, sendInfoOutside <| App.OutsideInfo.ResultAdd payload )
+                        ( page, sendInfoOutside <| App.OutsideInfo.ResultAdd payload )
+                Nothing ->
+                    ( page, Cmd.none )
 
-                Msg.Outfit outfit ->
-                    let
-                        nextPage =
-                            App.Page.ResultAdd
-                                { page | outfit = outfit }
-                    in
-                        ( { app | page = nextPage }
-                        , Cmd.none
-                        )
+        Msg.Outfit outfit ->
+            let
+                nextPage =
+                        { page | outfit = outfit }
+            in
+                ( nextPage
+                , Cmd.none
+                )
 
-                Msg.Category category ->
-                    let
-                        nextPage =
-                            App.Page.ResultAdd
-                                { page | category = category }
-                    in
-                        ( { app | page = nextPage }
-                        , Cmd.none
-                        )
+        Msg.Category category ->
+            let
+                nextPage =
+                        { page | category = category }
+            in
+                ( nextPage
+                , Cmd.none
+                )
 
-                Msg.Result result ->
-                    let
-                        nextPage =
-                            App.Page.ResultAdd
-                                { page | result = result }
-                    in
-                        ( { app | page = nextPage }
-                        , Cmd.none
-                        )
+        Msg.Result result ->
+            let
+                nextPage =
+                        { page | result = result }
+            in
+                ( nextPage
+                , Cmd.none
+                )
 
-                Msg.Rider riderKey ->
-                    let
-                        nextPage =
-                            if String.isEmpty riderKey then
-                                App.Page.ResultAdd
-                                    { page | riderKey = Nothing }
-                            else
-                                App.Page.ResultAdd
-                                    { page | riderKey = Just riderKey }
-                    in
-                        ( { app | page = nextPage }
-                        , Cmd.none 
-                        )
+        Msg.Rider riderKey ->
+            let
+                nextPage =
+                    if String.isEmpty riderKey then
+                            { page | riderKey = Nothing }
+                    else
+                            { page | riderKey = Just riderKey }
+            in
+                ( nextPage
+                , Cmd.none 
+                )
 
-        _ ->
-            ( app, Cmd.none )
+     

@@ -54,19 +54,31 @@ update msg app =
                             RaceAdd.update subMsg page
                     in
                         ( { app | page = App.Page.RaceAdd nextPage }, Cmd.map Msg.RaceAdd nextCmd )
+
                 _ ->
                     ( app, Cmd.none )
 
         Msg.RiderAdd subMsg ->
-            let
-                ( nextApp, nextCmd ) =
-                    RiderAdd.update subMsg app
-            in
-                ( nextApp, Cmd.map Msg.RiderAdd nextCmd )
+            case app.page of
+                App.Page.RiderAdd page ->
+                    let
+                        ( nextPage, nextCmd ) =
+                            RiderAdd.update subMsg page
+                    in
+                        ( { app | page = App.Page.RiderAdd nextPage }, Cmd.map Msg.RiderAdd nextCmd )
+
+                _ ->
+                    ( app, Cmd.none )
 
         Msg.ResultAdd subMsg ->
-            let
-                ( nextApp, nextCmd ) =
-                    ResultAdd.update subMsg app
-            in
-                ( nextApp, Cmd.map Msg.ResultAdd nextCmd )
+            case app.page of
+                App.Page.ResultAdd page ->
+                    let
+                        ( nextPage, nextCmd ) =
+                            ResultAdd.update subMsg page
+                    in
+                        ( { app | page = App.Page.ResultAdd nextPage }
+                        , Cmd.map Msg.ResultAdd nextCmd
+                        )
+                _ ->
+                    ( app , Cmd.none )

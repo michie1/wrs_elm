@@ -10,6 +10,8 @@ import Page.Race.Add.Model exposing (Model)
 import Data.RaceType exposing (RaceType(Classic, Criterium))
 import DatePicker
 import Date
+import App.OutsideInfo exposing (sendInfoOutside)
+import Json.Encode
 
 suite : Test
 suite =
@@ -51,9 +53,13 @@ suite =
                         DatePicker.init
                     before = Model "before" Classic (Just (Date.fromTime 0)) datePicker
                     ( nextPage, cmd ) =
-                       update (Msg.Submit) before
-                    _ = Debug.log "cmd" cmd
-                    home = cmd.home
+                        update (Msg.Submit) before
+                    payload =
+                        Json.Encode.object
+                            [ ( "name", Json.Encode.string "before" )
+                            , ( "date", Json.Encode.string "1970-01-01 00:00:00" )
+                            , ( "category", Json.Encode.string "classic" )
+                            ]
                 in
-                    Expect.notEqual cmd Cmd.none
+                    Expect.equal cmd (sendInfoOutside <| App.OutsideInfo.RaceAdd payload)
         ]

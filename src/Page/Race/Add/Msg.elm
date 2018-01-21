@@ -8,4 +8,3 @@ type Msg
     | Name String
     | RaceType RaceType
     | ToDatePicker DatePicker.Msg
-    --| Calendar Ui.Calendar.Msg

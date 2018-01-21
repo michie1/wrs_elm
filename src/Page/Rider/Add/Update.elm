@@ -5,15 +5,16 @@ import App.Page
 import Json.Encode
 import App.OutsideInfo exposing (sendInfoOutside)
 import Page.Rider.Add.Msg as Msg exposing (Msg)
+import Page.Rider.Add.Model exposing (Model)
 import Data.Licence exposing (licenceToString)
 
 
-update : Msg -> App -> ( App, Cmd Msg )
-update msg app =
-    case app.page of
-        App.Page.RiderAdd page ->
-            case msg of
-                Msg.Submit ->
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg page =
+    case msg of
+        Msg.Submit ->
+            case page.licence of
+                Just licence ->
                     let
                         payload =
                             Json.Encode.object
@@ -21,23 +22,12 @@ update msg app =
                                 , ( "licence", Json.Encode.string <| licenceToString page.licence )
                                 ]
                     in
-                        ( app, sendInfoOutside <| App.OutsideInfo.RiderAdd payload )
+                        ( page, sendInfoOutside <| App.OutsideInfo.RiderAdd payload )
+                Nothing ->
+                    ( page, Cmd.none )
 
-                Msg.Name name ->
-                    let
-                        nextPage =
-                            App.Page.RiderAdd
-                                { page | name = name }
-                    in
-                        ( { app | page = nextPage }, Cmd.none )
+        Msg.Name name ->
+            ( { page | name = name }, Cmd.none )
 
-                Msg.Licence licence ->
-                    let
-                        nextPage =
-                            App.Page.RiderAdd
-                                { page | licence = Just licence }
-                    in
-                        ( { app | page = nextPage }, Cmd.none )
-
-        _ ->
-            ( app, Cmd.none )
+        Msg.Licence licence ->
+            ( { page | licence = Just licence }, Cmd.none )
