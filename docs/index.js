@@ -14,7 +14,11 @@ function setup(firebase, app) {
   firebase.auth().signInAnonymously();
 }
 
-firebase.initializeApp(config); // from config.js
+if (hasParam('test')) {
+  firebase.initializeApp(testConfig);
+} else {
+  firebase.initializeApp(config);
+}
 
 const app = Elm.Main.embed(document.getElementById('main'));
 

@@ -46,13 +46,16 @@ suite =
         , test "getPointsByRiderId" <|
             \_ ->
                 let
-                    riderKey = "riderKey"
-                    results = 
+                    riderKey =
+                        "riderKey"
+
+                    results =
                         [ RaceResult "resultKey" riderKey "raceKey" "5" Elite WTOS
                         , RaceResult "resultKey2" riderKey "raceKey2" "4" Elite WASP
                         , RaceResult "resultKey3" riderKey "raceKey3" "4" Elite WTOS
                         ]
-                    races = 
+
+                    races =
                         [ Race "raceKey" "name" (Date.fromTime 6) Criterium
                         , Race "raceKey2" "name" (Date.fromTime 7) Data.RaceType.Classic
                         , Race "raceKey3" "name" (Date.fromTime 8) Data.RaceType.Classic
