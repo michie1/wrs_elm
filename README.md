@@ -1,14 +1,13 @@
 # Installation
 
-Prerequisites: 
+Prerequisites:
  * Node LTS
  * Npm LTS
 
 Install elm:
 
 ```sh
-sudo npm install -g elm &&
-sudo npm install elm-github-install -g
+sudo npm install -g elm
 ```
 
 Get code:
@@ -22,7 +21,7 @@ Install dependencies:
 
 ```sh
 npm install &&
-elm-github-install
+elm install
 
 ```
 
@@ -33,4 +32,3 @@ npm run dev
 ```
 
 Check [http://localhost:8080](http://localhost:8080)
-
