@@ -9,6 +9,7 @@ type ResultCategory
     | CatA
     | EliteAmateurs
     | Basislidmaatschap
+    | Sportklasse
     | CatB
     | CatC
     | CatD
@@ -23,6 +24,7 @@ resultCategories =
     , CatA
     , Basislidmaatschap
     , EliteAmateurs
+    , Sportklasse
     , CatB
     , CatC
     , CatD
@@ -47,6 +49,9 @@ categoryToString category =
 
         EliteAmateurs ->
             "elite_amateurs"
+
+        Sportklasse ->
+            "sportklasse"
 
         CatB ->
             "catb"
@@ -82,6 +87,9 @@ categoryReadable category =
         EliteAmateurs ->
             "Elite/amateurs"
 
+        Sportklasse ->
+            "sportklasse"
+
         CatB ->
             "Cat. b"
 
@@ -116,6 +124,9 @@ resultCategoryDecoder string =
 
             "elite/amateurs" ->
                 EliteAmateurs
+
+            "sportklasse" ->
+                Sportklasse
 
             "catb" ->
                 CatB
