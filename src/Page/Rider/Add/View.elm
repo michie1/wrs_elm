@@ -73,5 +73,6 @@ licenceButtons maybeCurrent =
         [ licenceButtonCheck "elite" "Elite" Licence.Elite maybeCurrent
         , licenceButtonCheck "amateurs" "Amateurs" Licence.Amateurs maybeCurrent
         , licenceButtonCheck "basislidmaatschap" "Basislidmaatschap" Licence.Basislidmaatschap maybeCurrent
+        , licenceButtonCheck "sportklasse" "Sportklasse" Licence.Sportklasse maybeCurrent
         , licenceButtonCheck "other" "Other" Licence.Other maybeCurrent
         ]
