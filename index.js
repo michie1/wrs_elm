@@ -1,5 +1,20 @@
 'use strict';
 
+function hasParam(name) {
+  var regex = new RegExp('[\\?&]' + name );
+  var results = regex.exec(location.search);
+  return results !== null;
+};
+
+var url_string = window.location.href;
+var url = new URL(url_string);
+var token = url.searchParams.get("token");
+
+if (token !== null) {
+  localStorage.setItem('token', token);
+  window.history.replaceState(null, null, window.location.href.split('?')[0]);
+}
+
 function setup(firebase, app) {
   const database = firebase.database();
 
@@ -18,7 +33,9 @@ const config = require('./config');
 firebase.initializeApp(config);
 
 const Elm = require('./src/Main');
-const app = Elm.Main.embed(document.getElementById('main'));
+const app = Elm.Main.embed(document.getElementById('main'), {
+  token: localStorage.getItem('token')
+});
 
 setup(firebase, app);
 
