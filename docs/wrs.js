@@ -14712,6 +14712,10 @@ var _user$project$Data_RaceType$getPointsByRaceType = function (category) {
 			return 5;
 		case 'Cyclosportive':
 			return 4;
+		case 'TimeTrial':
+			return 3;
+		case 'Toertocht':
+			return 2;
 		case 'Other':
 			return 0;
 		default:
@@ -14743,6 +14747,10 @@ var _user$project$Data_RaceType$raceTypeReadable = function (category) {
 			return 'Nederlands kampioenschap';
 		case 'Cyclosportive':
 			return 'Cyclosportive';
+		case 'TimeTrial':
+			return 'Time trial';
+		case 'Toertocht':
+			return 'Toertocht';
 		default:
 			return 'Other';
 	}
@@ -14772,12 +14780,18 @@ var _user$project$Data_RaceType$raceTypeToString = function (category) {
 			return 'NK';
 		case 'Cyclosportive':
 			return 'cyclosportive';
+		case 'TimeTrial':
+			return 'timetrial';
+		case 'Toertocht':
+			return 'toertocht';
 		default:
 			return 'other';
 	}
 };
 var _user$project$Data_RaceType$Unknown = {ctor: 'Unknown'};
 var _user$project$Data_RaceType$Other = {ctor: 'Other'};
+var _user$project$Data_RaceType$Toertocht = {ctor: 'Toertocht'};
+var _user$project$Data_RaceType$TimeTrial = {ctor: 'TimeTrial'};
 var _user$project$Data_RaceType$Cyclosportive = {ctor: 'Cyclosportive'};
 var _user$project$Data_RaceType$NK = {ctor: 'NK'};
 var _user$project$Data_RaceType$CK = {ctor: 'CK'};
@@ -14824,8 +14838,16 @@ var _user$project$Data_RaceType$raceTypes = {
 											_0: _user$project$Data_RaceType$Cyclosportive,
 											_1: {
 												ctor: '::',
-												_0: _user$project$Data_RaceType$Other,
-												_1: {ctor: '[]'}
+												_0: _user$project$Data_RaceType$TimeTrial,
+												_1: {
+													ctor: '::',
+													_0: _user$project$Data_RaceType$Toertocht,
+													_1: {
+														ctor: '::',
+														_0: _user$project$Data_RaceType$Other,
+														_1: {ctor: '[]'}
+													}
+												}
 											}
 										}
 									}
@@ -14863,6 +14885,10 @@ var _user$project$Data_RaceType$raceType = function (string) {
 			return _user$project$Data_RaceType$NK;
 		case 'cyclosportive':
 			return _user$project$Data_RaceType$Cyclosportive;
+		case 'timetrial':
+			return _user$project$Data_RaceType$TimeTrial;
+		case 'toertocht':
+			return _user$project$Data_RaceType$Toertocht;
 		case 'other':
 			return _user$project$Data_RaceType$Other;
 		default:
