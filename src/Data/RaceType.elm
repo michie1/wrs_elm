@@ -12,6 +12,7 @@ type RaceType
     | Beach
     | Omloop
     | Studentscup
+    | MTB
     | CK
     | NK
     | Cyclosportive
@@ -31,6 +32,7 @@ raceTypes =
     , Beach
     , Omloop
     , Studentscup
+    , MTB
     , CK
     , NK
     , Cyclosportive
@@ -66,6 +68,9 @@ raceType string =
 
         "studentencup" ->
             Studentscup
+
+        "MTB" ->
+            MTB
 
         "CK" ->
             CK
@@ -116,6 +121,9 @@ raceTypeToString category =
         Studentscup ->
             "studentencup"
 
+        MTB ->
+            "MTB"
+
         CK ->
             "CK"
 
@@ -161,6 +169,9 @@ raceTypeReadable category =
 
         Studentscup ->
             "Studentencup"
+
+        MTB ->
+            "Mountainbike"
 
         CK ->
             "Clubkampioenschap"
@@ -212,6 +223,9 @@ getPointsByRaceType category =
 
         Studentscup ->
             3
+
+        MTB ->
+            4
 
         CK ->
             2
