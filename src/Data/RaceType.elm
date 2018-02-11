@@ -15,6 +15,8 @@ type RaceType
     | CK
     | NK
     | Cyclosportive
+    | TimeTrial
+    | Toertocht
     | Other
     | Unknown
 
@@ -32,6 +34,8 @@ raceTypes =
     , CK
     , NK
     , Cyclosportive
+    , TimeTrial
+    , Toertocht
     , Other
     ]
 
@@ -71,6 +75,12 @@ raceType string =
 
         "cyclosportive" ->
             Cyclosportive
+
+        "timetrial" ->
+            TimeTrial
+
+        "toertocht" ->
+            Toertocht
 
         "other" ->
             Other
@@ -115,6 +125,12 @@ raceTypeToString category =
         Cyclosportive ->
             "cyclosportive"
 
+        TimeTrial ->
+            "timetrial"
+
+        Toertocht ->
+            "toertocht"
+
         _ ->
             "other"
 
@@ -154,6 +170,12 @@ raceTypeReadable category =
 
         Cyclosportive ->
             "Cyclosportive"
+
+        TimeTrial ->
+            "Time trial"
+
+        Toertocht ->
+            "Toertocht"
 
         _ ->
             "Other"
@@ -199,6 +221,12 @@ getPointsByRaceType category =
 
         Cyclosportive ->
             4
+
+        TimeTrial ->
+            3
+
+        Toertocht ->
+            2
 
         Other ->
             0
