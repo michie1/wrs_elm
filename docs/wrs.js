@@ -14706,6 +14706,8 @@ var _user$project$Data_RaceType$getPointsByRaceType = function (category) {
 			return 4;
 		case 'Studentscup':
 			return 3;
+		case 'MTB':
+			return 4;
 		case 'CK':
 			return 2;
 		case 'NK':
@@ -14741,6 +14743,8 @@ var _user$project$Data_RaceType$raceTypeReadable = function (category) {
 			return 'Omloop';
 		case 'Studentscup':
 			return 'Studentencup';
+		case 'MTB':
+			return 'Mountainbike';
 		case 'CK':
 			return 'Clubkampioenschap';
 		case 'NK':
@@ -14774,6 +14778,8 @@ var _user$project$Data_RaceType$raceTypeToString = function (category) {
 			return 'omloop';
 		case 'Studentscup':
 			return 'studentencup';
+		case 'MTB':
+			return 'MTB';
 		case 'CK':
 			return 'CK';
 		case 'NK':
@@ -14795,6 +14801,7 @@ var _user$project$Data_RaceType$TimeTrial = {ctor: 'TimeTrial'};
 var _user$project$Data_RaceType$Cyclosportive = {ctor: 'Cyclosportive'};
 var _user$project$Data_RaceType$NK = {ctor: 'NK'};
 var _user$project$Data_RaceType$CK = {ctor: 'CK'};
+var _user$project$Data_RaceType$MTB = {ctor: 'MTB'};
 var _user$project$Data_RaceType$Studentscup = {ctor: 'Studentscup'};
 var _user$project$Data_RaceType$Omloop = {ctor: 'Omloop'};
 var _user$project$Data_RaceType$Beach = {ctor: 'Beach'};
@@ -14829,23 +14836,27 @@ var _user$project$Data_RaceType$raceTypes = {
 								_0: _user$project$Data_RaceType$Studentscup,
 								_1: {
 									ctor: '::',
-									_0: _user$project$Data_RaceType$CK,
+									_0: _user$project$Data_RaceType$MTB,
 									_1: {
 										ctor: '::',
-										_0: _user$project$Data_RaceType$NK,
+										_0: _user$project$Data_RaceType$CK,
 										_1: {
 											ctor: '::',
-											_0: _user$project$Data_RaceType$Cyclosportive,
+											_0: _user$project$Data_RaceType$NK,
 											_1: {
 												ctor: '::',
-												_0: _user$project$Data_RaceType$TimeTrial,
+												_0: _user$project$Data_RaceType$Cyclosportive,
 												_1: {
 													ctor: '::',
-													_0: _user$project$Data_RaceType$Toertocht,
+													_0: _user$project$Data_RaceType$TimeTrial,
 													_1: {
 														ctor: '::',
-														_0: _user$project$Data_RaceType$Other,
-														_1: {ctor: '[]'}
+														_0: _user$project$Data_RaceType$Toertocht,
+														_1: {
+															ctor: '::',
+															_0: _user$project$Data_RaceType$Other,
+															_1: {ctor: '[]'}
+														}
 													}
 												}
 											}
@@ -14879,6 +14890,8 @@ var _user$project$Data_RaceType$raceType = function (string) {
 			return _user$project$Data_RaceType$Omloop;
 		case 'studentencup':
 			return _user$project$Data_RaceType$Studentscup;
+		case 'MTB':
+			return _user$project$Data_RaceType$MTB;
 		case 'CK':
 			return _user$project$Data_RaceType$CK;
 		case 'NK':
