@@ -9,6 +9,7 @@ import App.OutsideInfo
 import Page.Rider.Add.Update as RiderAdd
 import Page.Race.Add.Update as RaceAdd
 import Page.Result.Add.Update as ResultAdd
+import Page.Result.Edit.Update as ResultEdit
 
 
 update : Msg -> App -> ( App, Cmd Msg )
@@ -86,3 +87,18 @@ update msg app =
 
                 _ ->
                     ( app, Cmd.none )
+
+        Msg.ResultEdit subMsg ->
+            case app.page of
+                App.Page.ResultEdit page ->
+                    let
+                        ( nextPage, nextCmd ) =
+                            ResultEdit.update subMsg page
+                    in
+                        ( { app | page = App.Page.ResultEdit nextPage }
+                        , Cmd.map Msg.ResultEdit nextCmd
+                        )
+
+                _ ->
+                    ( app, Cmd.none )
+

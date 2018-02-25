@@ -14,6 +14,7 @@ type Route
     | Races
     | Results
     | ResultAdd String
+    | ResultEdit String
 
 
 url : App.Page.Page -> String
@@ -40,6 +41,9 @@ url page =
         App.Page.ResultAdd add ->
             "#races/" ++ add.raceKey ++ "/add"
 
+        App.Page.ResultEdit edit ->
+            "#results/" ++ edit.resultKey ++ "/edit"
+
 
 matchers : Parser (Route -> a) a
 matchers =
@@ -50,6 +54,7 @@ matchers =
         , map RiderDetails (s "riders" </> string)
         , map Riders (s "riders")
         , map ResultAdd (s "races" </> string </> s "add")
+        , map ResultEdit (s "results" </> string </> s "edit")
         , map RaceAdd (s "races" </> s "add")
         , map RaceDetails (s "races" </> string)
         , map Races (s "races")

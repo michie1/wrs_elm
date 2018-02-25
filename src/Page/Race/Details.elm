@@ -128,6 +128,7 @@ resultsByCategory category results riders =
                             [ tr []
                                 [ th [] [ text "Rider" ]
                                 , th [] [ text "Result" ]
+                                , th [] [ text "Edit" ]
                                 ]
                             ]
                         , tbody [] <|
@@ -160,6 +161,11 @@ resultRow result riders =
                             [ text rider.name ]
                         ]
                     , resultTd result.result
+                    , td []
+                        [ a
+                            [ href ("#results/" ++ result.key ++ "/edit"), style [ ( "display", "block" ) ] ]
+                            [ text ("edit" ++ result.result ++ " " ++ result.key) ]
+                        ]
                     ]
 
 

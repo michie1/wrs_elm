@@ -16,6 +16,7 @@ import Page.Rider.Details
 import Page.Rider.List
 import Page.Rider.Add.View
 import Page.Result.Add.View
+import Page.Result.Edit.View
 
 
 view : App -> Html App.Msg.Msg
@@ -68,6 +69,10 @@ viewPage app races riders results =
 
                     Nothing ->
                         div [] [ text "Race does not exist." ]
+
+        App.Page.ResultEdit edit ->
+            Page.Result.Edit.View.view edit
+                |> Html.map App.Msg.ResultEdit
 
 
 loadingPage : App -> Html App.Msg.Msg
