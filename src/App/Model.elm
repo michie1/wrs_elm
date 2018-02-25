@@ -3,6 +3,7 @@ module App.Model exposing (App, initial)
 import Data.Race exposing (Race)
 import Data.Rider exposing (Rider)
 import Data.RaceResult exposing (RaceResult)
+import Data.User exposing (User)
 import App.Page exposing (Page)
 import Data.Flags exposing (Flags)
 import Json.Decode
@@ -27,11 +28,14 @@ type alias App =
     , races : Maybe (List Race)
     , results : Maybe (List RaceResult)
     , token : Maybe String
+    , user : Maybe User
     }
 
 
-initial : Flags -> App
-initial flags =
+initial : App
+initial =
+    App App.Page.Races Nothing Nothing Nothing Nothing Nothing
+    {--
     let
         a =
             case flags.token of
@@ -54,4 +58,4 @@ initial flags =
                 Nothing ->
                     1
     in
-        App App.Page.Races Nothing Nothing Nothing flags.token
+    --}

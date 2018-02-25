@@ -11,31 +11,34 @@ var url = new URL(url_string);
 var token = url.searchParams.get("token");
 
 if (token !== null) {
-  localStorage.setItem('token', token);
   window.history.replaceState(null, null, window.location.href.split('?')[0]);
 }
 
 function setup(firebase, app) {
-  const database = firebase.database();
+  loadRiders();
+  loadRaces();
+  loadResults();
 
   firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      loadRiders();
-      loadRaces();
-      loadResults();
+    if (user !== null) {
+      if (user.isAnonymous === false) {
+        userSignedIn(user);
+      }
+    } else {
+      firebase.auth().signInAnonymously();
     }
   });
 
-  firebase.auth().signInAnonymously();
+  if (token !== null) {
+    firebase.auth().signInWithCustomToken(token);
+  }
 }
 
 const config = require('./config');
 firebase.initializeApp(config);
 
 const Elm = require('./src/Main');
-const app = Elm.Main.embed(document.getElementById('main'), {
-  token: localStorage.getItem('token')
-});
+const app = Elm.Main.embed(document.getElementById('main'));
 
 setup(firebase, app);
 
@@ -125,6 +128,15 @@ function addResult(result) {
         }
       });
     });
+}
+
+function userSignedIn(user) {
+  app.ports.infoForElm.send({
+    tag: 'UserLoaded',
+    data: {
+      email: user.uid
+    }
+  });
 }
 
 app.ports.infoForOutside.subscribe(function (msg) {

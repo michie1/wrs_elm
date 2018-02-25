@@ -5,6 +5,7 @@ import Json.Decode exposing (decodeValue)
 import Data.Rider exposing (Rider, ridersDecoder)
 import Data.Race exposing (Race, racesDecoder)
 import Data.RaceResult exposing (RaceResult, resultsDecoder, resultDecoder)
+import Data.User exposing (userDecoder)
 
 
 port infoForOutside : GenericOutsideData -> Cmd msg
@@ -82,6 +83,14 @@ getInfoFromOutside tagger onError =
                         Err e ->
                             onError e
 
+                "UserLoaded" ->
+                    case decodeValue userDecoder outsideInfo.data of
+                        Ok response ->
+                            tagger <| UserLoaded response.email
+
+                        Err e ->
+                            onError e
+
                 _ ->
                     onError <| "Unexpected info from outside: " ++ toString outsideInfo
         )
@@ -101,6 +110,7 @@ type InfoForElm
     | RaceAdded String
     | RiderAdded String
     | ResultAdded String
+    | UserLoaded String
 
 
 type alias GenericOutsideData =
