@@ -7,6 +7,7 @@ import App.Model exposing (App)
 import App.Page
 import Data.Race exposing (Race, lastRaces, getRace)
 import Data.Rider exposing (Rider)
+import Data.User exposing (User)
 import Data.RaceResult exposing (RaceResult)
 import Page.Race.Details
 import Page.Race.List
@@ -24,10 +25,10 @@ view app =
         ]
 
 
-mainView : App -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
-mainView app races riders results =
+mainView : App -> List Race -> List Rider -> List RaceResult -> Maybe User -> Html App.Msg.Msg
+mainView app races riders results maybeUser =
     div [ class "columns" ]
-        [ section [ class "section", class "column", class "is-one-fifth" ] [ sidebar races ]
+        [ section [ class "section", class "column", class "is-one-fifth" ] [ sidebar races maybeUser]
         , section [ class "section", class "column" ] [ viewPage app races riders results ]
         ]
 
@@ -73,7 +74,7 @@ loadingPage : App -> Html App.Msg.Msg
 loadingPage app =
     case ( app.races, app.riders, app.results ) of
         ( Just races, Just riders, Just results ) ->
-            mainView app races riders results
+            mainView app races riders results app.user
 
         ( _, _, _ ) ->
             div [ class "col s9 m8 offset-s3 offset-m4" ]
@@ -95,13 +96,29 @@ spinner =
 -- div [ class "loader" ] [ text "Loading..." ]
 
 
-sidebar : List Race -> Html App.Msg.Msg
-sidebar races =
+sidebar : List Race -> Maybe User -> Html App.Msg.Msg
+sidebar races maybeUser =
     aside [ class "menu" ]
         [ p [ class "menu-label" ] [ a [ href "https://wtos.nl", target "_blank" ] [ text "WTOS.nl" ] ]
         , p [ class "menu-label" ] [ a [ href "#races" ] [ text "Races" ] ]
         , ul [ class "menu-list" ] (List.map raceLi <| lastRaces races)
         , p [ class "menu-label" ] [ a [ href "#riders" ] [ text "Riders" ] ]
+        , userUl maybeUser
+        ]
+
+userUl : Maybe User -> Html App.Msg.Msg
+userUl maybeUser =
+    div []
+        [ p [ class "menu-label" ] [ text "User" ]
+        , ul [ class "menu-list" ] <|
+            case maybeUser of
+                Just user ->
+                    [ li [] [ a [ href "#" ] [ text user.email ] ]
+                    , li [] [ a [ href "#" ] [ text "Logout" ] ]
+                    ]
+
+                Nothing ->
+                    [ li [] [ text "Login" ] ]
         ]
 
 
