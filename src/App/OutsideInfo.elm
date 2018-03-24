@@ -29,6 +29,9 @@ sendInfoOutside info =
         ResultEdit payload ->
             infoForOutside { tag = "ResultEdit", data = payload }
 
+        UserSignOut ->
+            infoForOutside { tag = "UserSignOut", data = (Json.Encode.bool True) }
+
         LogError err ->
             infoForOutside { tag = "LogError", data = Json.Encode.string err }
 
@@ -102,6 +105,10 @@ getInfoFromOutside tagger onError =
                         Err e ->
                             onError e
 
+                "UserSignedOut" ->
+                    tagger <| UserSignedOut
+
+
                 _ ->
                     onError <| "Unexpected info from outside: " ++ toString outsideInfo
         )
@@ -112,6 +119,7 @@ type InfoForOutside
     | RiderAdd Json.Encode.Value
     | ResultAdd Json.Encode.Value
     | ResultEdit Json.Encode.Value
+    | UserSignOut
     | LogError String
 
 
@@ -124,6 +132,7 @@ type InfoForElm
     | ResultAdded String
     | ResultEdited String
     | UserLoaded String
+    | UserSignedOut
 
 
 type alias GenericOutsideData =

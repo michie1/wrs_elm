@@ -35,27 +35,3 @@ type alias App =
 initial : App
 initial =
     App App.Page.Races Nothing Nothing Nothing Nothing Nothing
-    {--
-    let
-        a =
-            case flags.token of
-                Just token ->
-                    case (decodeToken tokenDecoder token) of
-                        Ok val ->
-                            let
-                                _ = Debug.log "val"
-                                    (toString val)
-                            in
-                                1
-
-                        Err err ->
-                            let
-                                _ = Debug.log "err"
-                                    err
-                            in
-                                0
-
-                Nothing ->
-                    1
-    in
-    --}

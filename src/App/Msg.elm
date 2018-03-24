@@ -19,3 +19,4 @@ type Msg
     | RiderAdd RiderAdd.Msg
     | ResultAdd ResultAdd.Msg
     | ResultEdit ResultEdit.Msg
+    | UserSignOut

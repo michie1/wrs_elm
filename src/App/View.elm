@@ -1,7 +1,8 @@
 module App.View exposing (view)
 
-import Html exposing (Html, h2, div, text, a, ul, li, aside, p, section)
+import Html exposing (Html, button, h2, div, text, a, ul, li, aside, p, section)
 import Html.Attributes exposing (href, class, target)
+import Html.Events exposing (onClick)
 import App.Msg
 import App.Model exposing (App)
 import App.Page
@@ -17,6 +18,7 @@ import Page.Rider.List
 import Page.Rider.Add.View
 import Page.Result.Add.View
 import Page.Result.Edit.View
+import App.OutsideInfo exposing (sendInfoOutside)
 
 
 view : App -> Html App.Msg.Msg
@@ -119,11 +121,11 @@ userUl maybeUser =
             case maybeUser of
                 Just user ->
                     [ li [] [ a [ href "#" ] [ text user.email ] ]
-                    , li [] [ a [ href "#" ] [ text "Logout" ] ]
+                    , li [] [ button [ class "button", onClick App.Msg.UserSignOut ] [ text "Sign out" ] ]
                     ]
 
                 Nothing ->
-                    [ li [] [ text "Login" ] ]
+                    [ li [] [ a [ href "http://wtos.nl/wrslogin2.php" ] [ text "Sign in" ] ] ]
         ]
 
 

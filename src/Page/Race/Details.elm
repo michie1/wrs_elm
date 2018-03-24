@@ -1,6 +1,6 @@
 module Page.Race.Details exposing (view)
 
-import Html exposing (Html, button, span, h2, h3, h5, a, div, text, table, tbody, thead, tr, td, th, dt, dd, dl)
+import Html exposing (Html, button, span, h2, h3, h5, a, div, text, table, tbody, thead, tr, td, th, dt, dd, dl, i)
 import Html.Attributes exposing (href, class, style)
 import Html.Events exposing (onClick)
 import Date
@@ -23,7 +23,7 @@ dateFormat date =
 
 
 view : App.Model.App -> String -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
-view _ raceKey races riders results =
+view app raceKey races riders results =
     let
         maybeRace =
             List.head
@@ -31,6 +31,9 @@ view _ raceKey races riders results =
                     (\race -> race.key == raceKey)
                     races
                 )
+
+        signedIn =
+            app.user /= Nothing
     in
         case maybeRace of
             Nothing ->
@@ -52,7 +55,7 @@ view _ raceKey races riders results =
                             [ h3 [ class "title is-3" ] [ text "Results" ]
                             , addResultButton race
                             ]
-                        , resultsTable raceResults riders
+                        , resultsTable raceResults riders signedIn
                         ]
 
 
@@ -97,16 +100,16 @@ info race =
             ]
 
 
-resultsTable : List RaceResult -> List Rider -> Html msg
-resultsTable results riders =
+resultsTable : List RaceResult -> List Rider -> Bool -> Html msg
+resultsTable results riders signedIn =
     div [] <|
         List.map
-            (\category -> resultsByCategory category results riders)
+            (\category -> resultsByCategory category results riders signedIn)
             resultCategories
 
 
-resultsByCategory : ResultCategory -> List RaceResult -> List Rider -> Html msg
-resultsByCategory category results riders =
+resultsByCategory : ResultCategory -> List RaceResult -> List Rider -> Bool -> Html msg
+resultsByCategory category results riders signedIn =
     let
         catResults =
             List.sortBy
@@ -128,17 +131,20 @@ resultsByCategory category results riders =
                             [ tr []
                                 [ th [] [ text "Rider" ]
                                 , th [] [ text "Result" ]
-                                , th [] [ text "Edit" ]
+                                , if signedIn then
+                                    th [] [ text "Edit" ]
+                                  else
+                                    text ""
                                 ]
                             ]
                         , tbody [] <|
-                            List.map (\result -> resultRow result riders) catResults
+                            List.map (\result -> resultRow result riders signedIn) catResults
                         ]
                     ]
 
 
-resultRow : RaceResult -> List Rider -> Html msg
-resultRow result riders =
+resultRow : RaceResult -> List Rider -> Bool -> Html msg
+resultRow result riders signedIn =
     let
         maybeRider =
             List.head
@@ -161,11 +167,12 @@ resultRow result riders =
                             [ text rider.name ]
                         ]
                     , resultTd result.result
-                    , td []
-                        [ a
-                            [ href ("#results/" ++ result.key ++ "/edit"), style [ ( "display", "block" ) ] ]
-                            [ text ("edit" ++ result.result ++ " " ++ result.key) ]
-                        ]
+                    , if signedIn then
+                        td [] [ a [ href ("#results/" ++ result.key ++ "/edit"), style [ ( "display", "block" ) ] ]
+                            [ span [ class "icon has-text-info" ] [ i [ class "fas fa-pen-square" ] [ text "" ] ] ]
+                            ]
+                      else
+                        text ""
                     ]
 
 

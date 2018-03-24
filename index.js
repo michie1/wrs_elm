@@ -150,6 +150,16 @@ function userSignedIn(user) {
   });
 }
 
+function userSignOut() {
+  firebase.auth().signOut()
+    .then(function () {
+      app.ports.infoForElm.send({
+        tag: 'UserSignedOut',
+        data: true
+      });
+    });
+}
+
 app.ports.infoForOutside.subscribe(function (msg) {
   if (msg.tag === 'RiderAdd') {
     addRider(msg.data);
@@ -159,6 +169,8 @@ app.ports.infoForOutside.subscribe(function (msg) {
     addResult(msg.data);
   } else if (msg.tag === 'ResultEdit') {
     editResult(msg.data);
+  } else if (msg.tag === 'UserSignOut') {
+    userSignOut();
   } else {
     console.log('msg', msg);
   }

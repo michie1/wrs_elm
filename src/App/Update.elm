@@ -48,6 +48,8 @@ update msg app =
                     ( app, App.Helpers.navigate <| App.Page.RaceDetails raceKey )
                 App.OutsideInfo.UserLoaded email ->
                     ( { app | user = Just { email = email } }, Cmd.none )
+                App.OutsideInfo.UserSignedOut ->
+                    ( { app | user = Nothing }, Cmd.none ) 
 
         Msg.LogErr err ->
             ( app, App.OutsideInfo.sendInfoOutside <| App.OutsideInfo.LogError err )
@@ -103,4 +105,7 @@ update msg app =
 
                 _ ->
                     ( app, Cmd.none )
+
+        Msg.UserSignOut ->
+            ( app, App.OutsideInfo.sendInfoOutside <| App.OutsideInfo.UserSignOut )
 
