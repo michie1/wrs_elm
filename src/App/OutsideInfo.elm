@@ -26,6 +26,9 @@ sendInfoOutside info =
         ResultAdd payload ->
             infoForOutside { tag = "ResultAdd", data = payload }
 
+        ResultEdit payload ->
+            infoForOutside { tag = "ResultEdit", data = payload }
+
         LogError err ->
             infoForOutside { tag = "LogError", data = Json.Encode.string err }
 
@@ -83,6 +86,14 @@ getInfoFromOutside tagger onError =
                         Err e ->
                             onError e
 
+                "ResultEdited" ->
+                    case decodeValue Json.Decode.string outsideInfo.data of
+                        Ok raceKey ->
+                            tagger <| ResultEdited raceKey
+
+                        Err e ->
+                            onError e
+
                 "UserLoaded" ->
                     case decodeValue userDecoder outsideInfo.data of
                         Ok response ->
@@ -100,6 +111,7 @@ type InfoForOutside
     = RaceAdd Json.Encode.Value
     | RiderAdd Json.Encode.Value
     | ResultAdd Json.Encode.Value
+    | ResultEdit Json.Encode.Value
     | LogError String
 
 
@@ -110,6 +122,7 @@ type InfoForElm
     | RaceAdded String
     | RiderAdded String
     | ResultAdded String
+    | ResultEdited String
     | UserLoaded String
 
 

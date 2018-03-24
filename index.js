@@ -8,7 +8,7 @@ function hasParam(name) {
 
 var url_string = window.location.href;
 var url = new URL(url_string);
-var token = url.searchParams.get("token");
+var token = url.searchParams.get('token');
 
 if (token !== null) {
   window.history.replaceState(null, null, window.location.href.split('?')[0]);
@@ -130,6 +130,17 @@ function addResult(result) {
     });
 }
 
+function editResult(result) {
+  firebase.database().ref('results/' + result.key).update({
+    result: result.result,
+  }).then(function () {
+    app.ports.infoForElm.send({
+      tag: 'ResultEdited',
+      data: result.raceKey
+    });
+  });
+}
+
 function userSignedIn(user) {
   app.ports.infoForElm.send({
     tag: 'UserLoaded',
@@ -146,6 +157,8 @@ app.ports.infoForOutside.subscribe(function (msg) {
     addRace(msg.data);
   } else if (msg.tag === 'ResultAdd') {
     addResult(msg.data);
+  } else if (msg.tag === 'ResultEdit') {
+    editResult(msg.data);
   } else {
     console.log('msg', msg);
   }

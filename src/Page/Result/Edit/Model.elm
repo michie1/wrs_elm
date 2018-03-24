@@ -5,6 +5,7 @@ import Data.RaceResult exposing (RaceResult)
 type alias Model =
     { result : String
     , resultKey : String
+    , raceKey : String
     }
 
 
@@ -25,14 +26,17 @@ initial resultKey maybeResults =
                         in
                             { result = result.result
                             , resultKey = resultKey
+                            , raceKey = result.raceKey
                             }
 
                     Nothing ->
                         { result = "asdf"
                         , resultKey = resultKey
+                        , raceKey = "1234"
                         }
 
         Nothing ->
             { result = "1234"
             , resultKey = resultKey
+            , raceKey = "1234"
             }

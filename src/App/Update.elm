@@ -44,6 +44,8 @@ update msg app =
                 App.OutsideInfo.ResultAdded raceKey ->
                     ( app, App.Helpers.navigate <| App.Page.RaceDetails raceKey )
 
+                App.OutsideInfo.ResultEdited raceKey ->
+                    ( app, App.Helpers.navigate <| App.Page.RaceDetails raceKey )
                 App.OutsideInfo.UserLoaded email ->
                     ( { app | user = Just { email = email } }, Cmd.none )
 

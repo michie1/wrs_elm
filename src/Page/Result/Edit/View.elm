@@ -22,7 +22,7 @@ view resultEdit =
 
     in
         div []
-            [ h2 [ class "title is-2" ] [ text ("Edit result for ") ]
+            [ h2 [ class "title is-2" ] [ text ("Edit result") ]
             , div [ class "field is-horizontal" ]
                 [ div [ class "field-label" ]
                     [ label [ class "label", for "result" ] [ text "Result" ]

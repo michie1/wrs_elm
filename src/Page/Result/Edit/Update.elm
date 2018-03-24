@@ -12,25 +12,17 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg page =
     case msg of
         Msg.Submit ->
-            ( page, Cmd.none )
-            {--
-            case page.riderKey of
-                Just riderKey ->
-                    let
-                        payload =
-                            Json.Encode.object
-                                [ ( "raceKey", Json.Encode.string page.raceKey )
-                                , ( "riderKey", Json.Encode.string riderKey )
-                                , ( "result", Json.Encode.string page.result )
-                                , ( "category", Json.Encode.string <| categoryToString page.category )
-                                , ( "outfit", Json.Encode.string <| outfitToString page.outfit )
-                                ]
-                    in
-                        ( page, sendInfoOutside <| App.OutsideInfo.ResultAdd payload )
+            let
+                payload =
+                    Json.Encode.object
+                        [ ( "key", Json.Encode.string page.resultKey )
+                        , ( "raceKey", Json.Encode.string page.raceKey )
+                        , ( "result", Json.Encode.string page.result )
+                        ]
+            in
+                ( page, sendInfoOutside <| App.OutsideInfo.ResultEdit payload )
 
-                Nothing ->
-                    ( page, Cmd.none )
-            --}
+
 
 
         Msg.Result result ->
