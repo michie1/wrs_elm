@@ -28,10 +28,10 @@ view app =
         ]
 
 
-mainView : App -> List Race -> List Rider -> List RaceResult -> Maybe User -> Html App.Msg.Msg
-mainView app races riders results maybeUser =
+mainView : App -> List Race -> List Rider -> List RaceResult -> Maybe User -> String -> Html App.Msg.Msg
+mainView app races riders results maybeUser wtosLoginUrl =
     div [ class "columns" ]
-        [ section [ class "section", class "column", class "is-one-fifth" ] [ sidebar races maybeUser]
+        [ section [ class "section", class "column", class "is-one-fifth" ] [ sidebar races maybeUser wtosLoginUrl ]
         , section [ class "section", class "column" ] [ viewPage app races riders results ]
         ]
 
@@ -81,7 +81,7 @@ loadingPage : App -> Html App.Msg.Msg
 loadingPage app =
     case ( app.races, app.riders, app.results ) of
         ( Just races, Just riders, Just results ) ->
-            mainView app races riders results app.user
+            mainView app races riders results app.user app.wtosLoginUrl
 
         ( _, _, _ ) ->
             div [ class "col s9 m8 offset-s3 offset-m4" ]
@@ -103,18 +103,18 @@ spinner =
 -- div [ class "loader" ] [ text "Loading..." ]
 
 
-sidebar : List Race -> Maybe User -> Html App.Msg.Msg
-sidebar races maybeUser =
+sidebar : List Race -> Maybe User -> String -> Html App.Msg.Msg
+sidebar races maybeUser wtosLoginUrl =
     aside [ class "menu" ]
         [ p [ class "menu-label" ] [ a [ href "https://wtos.nl", target "_blank" ] [ text "WTOS.nl" ] ]
         , p [ class "menu-label" ] [ a [ href "#races" ] [ text "Races" ] ]
         , ul [ class "menu-list" ] (List.map raceLi <| lastRaces races)
         , p [ class "menu-label" ] [ a [ href "#riders" ] [ text "Riders" ] ]
-        , userUl maybeUser
+        , userUl maybeUser wtosLoginUrl
         ]
 
-userUl : Maybe User -> Html App.Msg.Msg
-userUl maybeUser =
+userUl : Maybe User -> String -> Html App.Msg.Msg
+userUl maybeUser wtosLoginUrl =
     div []
         [ p [ class "menu-label" ] [ text "User" ]
         , ul [ class "menu-list" ] <|
@@ -125,7 +125,7 @@ userUl maybeUser =
                     ]
 
                 Nothing ->
-                    [ li [] [ a [ href "http://wtos.nl/wrslogin2.php" ] [ text "Sign in" ] ] ]
+                    [ li [] [ a [ href wtosLoginUrl ] [ text "Sign in" ] ] ]
         ]
 
 

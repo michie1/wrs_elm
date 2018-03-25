@@ -10,9 +10,9 @@ import App.View
 import App.OutsideInfo
 import Data.Flags exposing (Flags)
 
-main : Program Never App Msg
+main : Program Flags App Msg
 main =
-    Navigation.program
+    Navigation.programWithFlags
         parser
         { init = init
         , update = App.Update.update
@@ -26,14 +26,14 @@ parser location =
     Msg.UrlUpdate (App.Routing.routeParser location)
 
 
-init : Navigation.Location -> ( App, Cmd Msg )
-init location =
+init : Flags -> Navigation.Location -> ( App, Cmd Msg )
+init flags location =
     let
         route =
             App.Routing.routeParser location
 
         initialApp =
-            App.Model.initial
+            App.Model.initial flags
 
         ( app, cmd ) =
             App.UrlUpdate.urlUpdate route initialApp

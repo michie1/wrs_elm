@@ -29,9 +29,10 @@ type alias App =
     , results : Maybe (List RaceResult)
     , token : Maybe String
     , user : Maybe User
+    , wtosLoginUrl: String
     }
 
 
-initial : App
-initial =
-    App App.Page.Races Nothing Nothing Nothing Nothing Nothing
+initial : Flags -> App
+initial flags =
+    App App.Page.Races Nothing Nothing Nothing Nothing Nothing flags.wtosLoginUrl

@@ -38,7 +38,9 @@ const config = require('./config');
 firebase.initializeApp(config);
 
 const Elm = require('./src/Main');
-const app = Elm.Main.embed(document.getElementById('main'));
+const app = Elm.Main.embed(document.getElementById('main'), {
+  wtosLoginUrl: config.wtosLoginUrl
+});
 
 setup(firebase, app);
 
