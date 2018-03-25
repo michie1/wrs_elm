@@ -7,6 +7,7 @@ type Licence
     = Elite
     | Amateurs
     | Basislidmaatschap
+    | Sportklasse
     | Other
 
 
@@ -21,6 +22,9 @@ licenceToString licence =
 
         Basislidmaatschap ->
             "basislidmaatschap"
+
+        Sportklasse ->
+            "sportklasse"
 
         Other ->
             "other"
@@ -37,6 +41,9 @@ licence string =
 
         "basislidmaatschap" ->
             Basislidmaatschap
+
+        "sportklasse" ->
+            Sportklasse
 
         _ ->
             Other

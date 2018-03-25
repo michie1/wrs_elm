@@ -174,5 +174,6 @@ app.ports.infoForOutside.subscribe(function (msg) {
     userSignOut();
   } else {
     console.log('msg', msg);
+    document.getElementsByTagName('body')[0].innerHTML = 'Something went wrong. Please try again in Chrome or see console for detailed error message.';
   }
 });

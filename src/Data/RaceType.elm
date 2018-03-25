@@ -12,9 +12,12 @@ type RaceType
     | Beach
     | Omloop
     | Studentscup
+    | MTB
     | CK
     | NK
     | Cyclosportive
+    | TimeTrial
+    | Toertocht
     | Other
     | Unknown
 
@@ -29,9 +32,12 @@ raceTypes =
     , Beach
     , Omloop
     , Studentscup
+    , MTB
     , CK
     , NK
     , Cyclosportive
+    , TimeTrial
+    , Toertocht
     , Other
     ]
 
@@ -63,6 +69,9 @@ raceType string =
         "studentencup" ->
             Studentscup
 
+        "MTB" ->
+            MTB
+
         "CK" ->
             CK
 
@@ -71,6 +80,12 @@ raceType string =
 
         "cyclosportive" ->
             Cyclosportive
+
+        "timetrial" ->
+            TimeTrial
+
+        "toertocht" ->
+            Toertocht
 
         "other" ->
             Other
@@ -106,6 +121,9 @@ raceTypeToString category =
         Studentscup ->
             "studentencup"
 
+        MTB ->
+            "MTB"
+
         CK ->
             "CK"
 
@@ -114,6 +132,12 @@ raceTypeToString category =
 
         Cyclosportive ->
             "cyclosportive"
+
+        TimeTrial ->
+            "timetrial"
+
+        Toertocht ->
+            "toertocht"
 
         _ ->
             "other"
@@ -146,6 +170,9 @@ raceTypeReadable category =
         Studentscup ->
             "Studentencup"
 
+        MTB ->
+            "Mountainbike"
+
         CK ->
             "Clubkampioenschap"
 
@@ -154,6 +181,12 @@ raceTypeReadable category =
 
         Cyclosportive ->
             "Cyclosportive"
+
+        TimeTrial ->
+            "Time trial"
+
+        Toertocht ->
+            "Toertocht"
 
         _ ->
             "Other"
@@ -191,6 +224,9 @@ getPointsByRaceType category =
         Studentscup ->
             3
 
+        MTB ->
+            4
+
         CK ->
             2
 
@@ -199,6 +235,12 @@ getPointsByRaceType category =
 
         Cyclosportive ->
             4
+
+        TimeTrial ->
+            3
+
+        Toertocht ->
+            2
 
         Other ->
             0
