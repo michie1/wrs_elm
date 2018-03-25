@@ -169,7 +169,7 @@ resultRow result riders signedIn =
                     , resultTd result.result
                     , if signedIn then
                         td [] [ a [ href ("#results/" ++ result.key ++ "/edit"), style [ ( "display", "block" ) ] ]
-                            [ span [ class "icon has-text-info" ] [ i [ class "fas fa-pen-square" ] [ text "" ] ] ]
+                            [ span [ class "icon" ] [ i [ class "fas fa-pencil-alt" ] [ text "" ] ] ]
                             ]
                       else
                         text ""
