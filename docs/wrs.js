@@ -10549,6 +10549,28 @@ var _elm_community$json_extra$Json_Decode_Extra$andMap = _elm_lang$core$Json_Dec
 var _elm_community$json_extra$Json_Decode_Extra_ops = _elm_community$json_extra$Json_Decode_Extra_ops || {};
 _elm_community$json_extra$Json_Decode_Extra_ops['|:'] = _elm_lang$core$Basics$flip(_elm_community$json_extra$Json_Decode_Extra$andMap);
 
+var _elm_lang$core$Native_Bitwise = function() {
+
+return {
+	and: F2(function and(a, b) { return a & b; }),
+	or: F2(function or(a, b) { return a | b; }),
+	xor: F2(function xor(a, b) { return a ^ b; }),
+	complement: function complement(a) { return ~a; },
+	shiftLeftBy: F2(function(offset, a) { return a << offset; }),
+	shiftRightBy: F2(function(offset, a) { return a >> offset; }),
+	shiftRightZfBy: F2(function(offset, a) { return a >>> offset; })
+};
+
+}();
+
+var _elm_lang$core$Bitwise$shiftRightZfBy = _elm_lang$core$Native_Bitwise.shiftRightZfBy;
+var _elm_lang$core$Bitwise$shiftRightBy = _elm_lang$core$Native_Bitwise.shiftRightBy;
+var _elm_lang$core$Bitwise$shiftLeftBy = _elm_lang$core$Native_Bitwise.shiftLeftBy;
+var _elm_lang$core$Bitwise$complement = _elm_lang$core$Native_Bitwise.complement;
+var _elm_lang$core$Bitwise$xor = _elm_lang$core$Native_Bitwise.xor;
+var _elm_lang$core$Bitwise$or = _elm_lang$core$Native_Bitwise.or;
+var _elm_lang$core$Bitwise$and = _elm_lang$core$Native_Bitwise.and;
+
 //import Maybe, Native.List //
 
 var _elm_lang$core$Native_Regex = function() {
@@ -14642,6 +14664,815 @@ var _rluiten$elm_date_extra$Date_Extra_Format$utcIsoString = function (date) {
 };
 var _rluiten$elm_date_extra$Date_Extra_Format$isoFormat = '%Y-%m-%dT%H:%M:%S';
 
+var _truqu$elm_base64$Base64_Decode$charToInt = function ($char) {
+	var _p0 = $char;
+	switch (_p0.valueOf()) {
+		case 'A':
+			return 0;
+		case 'B':
+			return 1;
+		case 'C':
+			return 2;
+		case 'D':
+			return 3;
+		case 'E':
+			return 4;
+		case 'F':
+			return 5;
+		case 'G':
+			return 6;
+		case 'H':
+			return 7;
+		case 'I':
+			return 8;
+		case 'J':
+			return 9;
+		case 'K':
+			return 10;
+		case 'L':
+			return 11;
+		case 'M':
+			return 12;
+		case 'N':
+			return 13;
+		case 'O':
+			return 14;
+		case 'P':
+			return 15;
+		case 'Q':
+			return 16;
+		case 'R':
+			return 17;
+		case 'S':
+			return 18;
+		case 'T':
+			return 19;
+		case 'U':
+			return 20;
+		case 'V':
+			return 21;
+		case 'W':
+			return 22;
+		case 'X':
+			return 23;
+		case 'Y':
+			return 24;
+		case 'Z':
+			return 25;
+		case 'a':
+			return 26;
+		case 'b':
+			return 27;
+		case 'c':
+			return 28;
+		case 'd':
+			return 29;
+		case 'e':
+			return 30;
+		case 'f':
+			return 31;
+		case 'g':
+			return 32;
+		case 'h':
+			return 33;
+		case 'i':
+			return 34;
+		case 'j':
+			return 35;
+		case 'k':
+			return 36;
+		case 'l':
+			return 37;
+		case 'm':
+			return 38;
+		case 'n':
+			return 39;
+		case 'o':
+			return 40;
+		case 'p':
+			return 41;
+		case 'q':
+			return 42;
+		case 'r':
+			return 43;
+		case 's':
+			return 44;
+		case 't':
+			return 45;
+		case 'u':
+			return 46;
+		case 'v':
+			return 47;
+		case 'w':
+			return 48;
+		case 'x':
+			return 49;
+		case 'y':
+			return 50;
+		case 'z':
+			return 51;
+		case '0':
+			return 52;
+		case '1':
+			return 53;
+		case '2':
+			return 54;
+		case '3':
+			return 55;
+		case '4':
+			return 56;
+		case '5':
+			return 57;
+		case '6':
+			return 58;
+		case '7':
+			return 59;
+		case '8':
+			return 60;
+		case '9':
+			return 61;
+		case '+':
+			return 62;
+		case '/':
+			return 63;
+		default:
+			return 0;
+	}
+};
+var _truqu$elm_base64$Base64_Decode$intToString = function ($int) {
+	if (_elm_lang$core$Native_Utils.cmp($int, 65536) < 1) {
+		return _elm_lang$core$String$fromChar(
+			_elm_lang$core$Char$fromCode($int));
+	} else {
+		var c = $int - 65536;
+		return _elm_lang$core$String$fromList(
+			{
+				ctor: '::',
+				_0: _elm_lang$core$Char$fromCode(55296 | (c >>> 10)),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Char$fromCode(56320 | (1023 & c)),
+					_1: {ctor: '[]'}
+				}
+			});
+	}
+};
+var _truqu$elm_base64$Base64_Decode$add = F2(
+	function ($char, _p1) {
+		var _p2 = _p1;
+		var _p4 = _p2._2;
+		var _p3 = _p2._1;
+		var shiftAndAdd = function ($int) {
+			return (63 & $int) | (_p2._0 << 6);
+		};
+		return _elm_lang$core$Native_Utils.eq(_p3, 0) ? (_elm_lang$core$Native_Utils.eq(128 & $char, 0) ? {
+			ctor: '_Tuple3',
+			_0: 0,
+			_1: 0,
+			_2: A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p4,
+				_truqu$elm_base64$Base64_Decode$intToString($char))
+		} : (_elm_lang$core$Native_Utils.eq(224 & $char, 192) ? {ctor: '_Tuple3', _0: 31 & $char, _1: 1, _2: _p4} : (_elm_lang$core$Native_Utils.eq(240 & $char, 224) ? {ctor: '_Tuple3', _0: 15 & $char, _1: 2, _2: _p4} : {ctor: '_Tuple3', _0: 7 & $char, _1: 3, _2: _p4}))) : (_elm_lang$core$Native_Utils.eq(_p3, 1) ? {
+			ctor: '_Tuple3',
+			_0: 0,
+			_1: 0,
+			_2: A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p4,
+				_truqu$elm_base64$Base64_Decode$intToString(
+					shiftAndAdd($char)))
+		} : {
+			ctor: '_Tuple3',
+			_0: shiftAndAdd($char),
+			_1: _p3 - 1,
+			_2: _p4
+		});
+	});
+var _truqu$elm_base64$Base64_Decode$toUTF16 = F2(
+	function ($char, acc) {
+		return {
+			ctor: '_Tuple3',
+			_0: 0,
+			_1: 0,
+			_2: A2(
+				_truqu$elm_base64$Base64_Decode$add,
+				255 & ($char >>> 0),
+				A2(
+					_truqu$elm_base64$Base64_Decode$add,
+					255 & ($char >>> 8),
+					A2(_truqu$elm_base64$Base64_Decode$add, 255 & ($char >>> 16), acc)))
+		};
+	});
+var _truqu$elm_base64$Base64_Decode$chomp = F2(
+	function (char_, _p5) {
+		var _p6 = _p5;
+		var _p10 = _p6._2;
+		var _p9 = _p6._0;
+		var _p8 = _p6._1;
+		var $char = _truqu$elm_base64$Base64_Decode$charToInt(char_);
+		var _p7 = _p8;
+		if (_p7 === 3) {
+			return A2(_truqu$elm_base64$Base64_Decode$toUTF16, _p9 | $char, _p10);
+		} else {
+			return {ctor: '_Tuple3', _0: ($char << ((3 - _p8) * 6)) | _p9, _1: _p8 + 1, _2: _p10};
+		}
+	});
+var _truqu$elm_base64$Base64_Decode$initial = {
+	ctor: '_Tuple3',
+	_0: 0,
+	_1: 0,
+	_2: {ctor: '_Tuple3', _0: 0, _1: 0, _2: ''}
+};
+var _truqu$elm_base64$Base64_Decode$wrapUp = function (_p11) {
+	var _p12 = _p11;
+	return (_elm_lang$core$Native_Utils.cmp(_p12._2._1, 0) > 0) ? _elm_lang$core$Result$Err('Invalid UTF-16') : _elm_lang$core$Result$Ok(_p12._2._2);
+};
+var _truqu$elm_base64$Base64_Decode$stripNulls = F2(
+	function (input, output) {
+		return A2(_elm_lang$core$String$endsWith, '==', input) ? A2(_elm_lang$core$String$dropRight, 2, output) : (A2(_elm_lang$core$String$endsWith, '=', input) ? A2(_elm_lang$core$String$dropRight, 1, output) : output);
+	});
+var _truqu$elm_base64$Base64_Decode$validBase64Regex = _elm_lang$core$Regex$regex('^([A-Za-z0-9\\/+]{4})*([A-Za-z0-9\\/+]{2}[A-Za-z0-9\\/+=]{2})?$');
+var _truqu$elm_base64$Base64_Decode$validate = function (input) {
+	return A2(_elm_lang$core$Regex$contains, _truqu$elm_base64$Base64_Decode$validBase64Regex, input) ? _elm_lang$core$Result$Ok(input) : _elm_lang$core$Result$Err('Invalid base64');
+};
+var _truqu$elm_base64$Base64_Decode$pad = function (input) {
+	var _p13 = A2(
+		_elm_lang$core$Basics$rem,
+		_elm_lang$core$String$length(input),
+		4);
+	switch (_p13) {
+		case 3:
+			return A2(_elm_lang$core$Basics_ops['++'], input, '=');
+		case 2:
+			return A2(_elm_lang$core$Basics_ops['++'], input, '==');
+		default:
+			return input;
+	}
+};
+var _truqu$elm_base64$Base64_Decode$validateAndDecode = function (input) {
+	return A2(
+		_elm_lang$core$Result$map,
+		_truqu$elm_base64$Base64_Decode$stripNulls(input),
+		A2(
+			_elm_lang$core$Result$andThen,
+			function (_p14) {
+				return _truqu$elm_base64$Base64_Decode$wrapUp(
+					A3(_elm_lang$core$String$foldl, _truqu$elm_base64$Base64_Decode$chomp, _truqu$elm_base64$Base64_Decode$initial, _p14));
+			},
+			_truqu$elm_base64$Base64_Decode$validate(input)));
+};
+var _truqu$elm_base64$Base64_Decode$decode = function (_p15) {
+	return _truqu$elm_base64$Base64_Decode$validateAndDecode(
+		_truqu$elm_base64$Base64_Decode$pad(_p15));
+};
+
+var _truqu$elm_base64$Base64_Encode$intToBase64 = function (i) {
+	var _p0 = i;
+	switch (_p0) {
+		case 0:
+			return 'A';
+		case 1:
+			return 'B';
+		case 2:
+			return 'C';
+		case 3:
+			return 'D';
+		case 4:
+			return 'E';
+		case 5:
+			return 'F';
+		case 6:
+			return 'G';
+		case 7:
+			return 'H';
+		case 8:
+			return 'I';
+		case 9:
+			return 'J';
+		case 10:
+			return 'K';
+		case 11:
+			return 'L';
+		case 12:
+			return 'M';
+		case 13:
+			return 'N';
+		case 14:
+			return 'O';
+		case 15:
+			return 'P';
+		case 16:
+			return 'Q';
+		case 17:
+			return 'R';
+		case 18:
+			return 'S';
+		case 19:
+			return 'T';
+		case 20:
+			return 'U';
+		case 21:
+			return 'V';
+		case 22:
+			return 'W';
+		case 23:
+			return 'X';
+		case 24:
+			return 'Y';
+		case 25:
+			return 'Z';
+		case 26:
+			return 'a';
+		case 27:
+			return 'b';
+		case 28:
+			return 'c';
+		case 29:
+			return 'd';
+		case 30:
+			return 'e';
+		case 31:
+			return 'f';
+		case 32:
+			return 'g';
+		case 33:
+			return 'h';
+		case 34:
+			return 'i';
+		case 35:
+			return 'j';
+		case 36:
+			return 'k';
+		case 37:
+			return 'l';
+		case 38:
+			return 'm';
+		case 39:
+			return 'n';
+		case 40:
+			return 'o';
+		case 41:
+			return 'p';
+		case 42:
+			return 'q';
+		case 43:
+			return 'r';
+		case 44:
+			return 's';
+		case 45:
+			return 't';
+		case 46:
+			return 'u';
+		case 47:
+			return 'v';
+		case 48:
+			return 'w';
+		case 49:
+			return 'x';
+		case 50:
+			return 'y';
+		case 51:
+			return 'z';
+		case 52:
+			return '0';
+		case 53:
+			return '1';
+		case 54:
+			return '2';
+		case 55:
+			return '3';
+		case 56:
+			return '4';
+		case 57:
+			return '5';
+		case 58:
+			return '6';
+		case 59:
+			return '7';
+		case 60:
+			return '8';
+		case 61:
+			return '9';
+		case 62:
+			return '+';
+		default:
+			return '/';
+	}
+};
+var _truqu$elm_base64$Base64_Encode$toBase64 = function ($int) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_truqu$elm_base64$Base64_Encode$intToBase64(63 & ($int >>> 18)),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_truqu$elm_base64$Base64_Encode$intToBase64(63 & ($int >>> 12)),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_truqu$elm_base64$Base64_Encode$intToBase64(63 & ($int >>> 6)),
+				_truqu$elm_base64$Base64_Encode$intToBase64(63 & ($int >>> 0)))));
+};
+var _truqu$elm_base64$Base64_Encode$add = F2(
+	function ($char, _p1) {
+		var _p2 = _p1;
+		var _p5 = _p2._0;
+		var _p4 = _p2._1;
+		var current = (_p2._2 << 8) | $char;
+		var _p3 = _p4;
+		if (_p3 === 2) {
+			return {
+				ctor: '_Tuple3',
+				_0: A2(
+					_elm_lang$core$Basics_ops['++'],
+					_p5,
+					_truqu$elm_base64$Base64_Encode$toBase64(current)),
+				_1: 0,
+				_2: 0
+			};
+		} else {
+			return {ctor: '_Tuple3', _0: _p5, _1: _p4 + 1, _2: current};
+		}
+	});
+var _truqu$elm_base64$Base64_Encode$chomp = F2(
+	function (char_, _p6) {
+		var _p7 = _p6;
+		var _p9 = _p7._1;
+		var $char = _elm_lang$core$Char$toCode(char_);
+		var _p8 = _p7._0;
+		if (_p8.ctor === 'Nothing') {
+			return (_elm_lang$core$Native_Utils.cmp($char, 128) < 0) ? {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A2(_truqu$elm_base64$Base64_Encode$add, $char, _p9)
+			} : ((_elm_lang$core$Native_Utils.cmp($char, 2048) < 0) ? {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A2(
+					_truqu$elm_base64$Base64_Encode$add,
+					128 | (63 & $char),
+					A2(_truqu$elm_base64$Base64_Encode$add, 192 | ($char >>> 6), _p9))
+			} : (((_elm_lang$core$Native_Utils.cmp($char, 55296) < 0) || (_elm_lang$core$Native_Utils.cmp($char, 57344) > -1)) ? {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A2(
+					_truqu$elm_base64$Base64_Encode$add,
+					128 | (63 & $char),
+					A2(
+						_truqu$elm_base64$Base64_Encode$add,
+						128 | (63 & ($char >>> 6)),
+						A2(_truqu$elm_base64$Base64_Encode$add, 224 | ($char >>> 12), _p9)))
+			} : {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Just($char),
+				_1: _p9
+			}));
+		} else {
+			var combined = A2(
+				F2(
+					function (x, y) {
+						return x + y;
+					}),
+				65536,
+				(1023 & $char) | ((1023 & _p8._0) << 10));
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A2(
+					_truqu$elm_base64$Base64_Encode$add,
+					128 | (63 & combined),
+					A2(
+						_truqu$elm_base64$Base64_Encode$add,
+						128 | (63 & (combined >>> 6)),
+						A2(
+							_truqu$elm_base64$Base64_Encode$add,
+							128 | (63 & (combined >>> 12)),
+							A2(_truqu$elm_base64$Base64_Encode$add, 240 | (combined >>> 18), _p9))))
+			};
+		}
+	});
+var _truqu$elm_base64$Base64_Encode$wrapUp = function (_p10) {
+	var _p11 = _p10;
+	var _p14 = _p11._1._0;
+	var _p13 = _p11._1._2;
+	var _p12 = _p11._1._1;
+	switch (_p12) {
+		case 1:
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p14,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_truqu$elm_base64$Base64_Encode$intToBase64(63 & (_p13 >>> 2)),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_truqu$elm_base64$Base64_Encode$intToBase64(63 & (_p13 << 4)),
+						'==')));
+		case 2:
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p14,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_truqu$elm_base64$Base64_Encode$intToBase64(63 & (_p13 >>> 10)),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_truqu$elm_base64$Base64_Encode$intToBase64(63 & (_p13 >>> 4)),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_truqu$elm_base64$Base64_Encode$intToBase64(63 & (_p13 << 2)),
+							'='))));
+		default:
+			return _p14;
+	}
+};
+var _truqu$elm_base64$Base64_Encode$initial = {
+	ctor: '_Tuple2',
+	_0: _elm_lang$core$Maybe$Nothing,
+	_1: {ctor: '_Tuple3', _0: '', _1: 0, _2: 0}
+};
+var _truqu$elm_base64$Base64_Encode$encode = function (input) {
+	return _truqu$elm_base64$Base64_Encode$wrapUp(
+		A3(_elm_lang$core$String$foldl, _truqu$elm_base64$Base64_Encode$chomp, _truqu$elm_base64$Base64_Encode$initial, input));
+};
+
+var _truqu$elm_base64$Base64$decode = _truqu$elm_base64$Base64_Decode$decode;
+var _truqu$elm_base64$Base64$encode = _truqu$elm_base64$Base64_Encode$encode;
+
+var _simonh1000$elm_jwt$Jwt$authenticate = F3(
+	function (url, dec, credentials) {
+		return A3(
+			_elm_lang$http$Http$post,
+			url,
+			_elm_lang$http$Http$jsonBody(credentials),
+			dec);
+	});
+var _simonh1000$elm_jwt$Jwt$createRequestObject = F5(
+	function (method, token, url, body, dec) {
+		return {
+			method: method,
+			headers: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$http$Http$header,
+					'Authorization',
+					A2(_elm_lang$core$Basics_ops['++'], 'Bearer ', token)),
+				_1: {ctor: '[]'}
+			},
+			url: url,
+			body: body,
+			expect: _elm_lang$http$Http$expectJson(dec),
+			timeout: _elm_lang$core$Maybe$Nothing,
+			withCredentials: false
+		};
+	});
+var _simonh1000$elm_jwt$Jwt$createRequest = F4(
+	function (method, token, url, body) {
+		return function (_p0) {
+			return _elm_lang$http$Http$request(
+				A5(_simonh1000$elm_jwt$Jwt$createRequestObject, method, token, url, body, _p0));
+		};
+	});
+var _simonh1000$elm_jwt$Jwt$get = F3(
+	function (token, url, dec) {
+		return A5(_simonh1000$elm_jwt$Jwt$createRequest, 'GET', token, url, _elm_lang$http$Http$emptyBody, dec);
+	});
+var _simonh1000$elm_jwt$Jwt$post = _simonh1000$elm_jwt$Jwt$createRequest('POST');
+var _simonh1000$elm_jwt$Jwt$put = _simonh1000$elm_jwt$Jwt$createRequest('PUT');
+var _simonh1000$elm_jwt$Jwt$delete = F3(
+	function (token, url, dec) {
+		return A5(_simonh1000$elm_jwt$Jwt$createRequest, 'DELETE', token, url, _elm_lang$http$Http$emptyBody, dec);
+	});
+var _simonh1000$elm_jwt$Jwt$unurl = function () {
+	var fix = function (c) {
+		var _p1 = c;
+		switch (_p1.valueOf()) {
+			case '-':
+				return _elm_lang$core$Native_Utils.chr('+');
+			case '_':
+				return _elm_lang$core$Native_Utils.chr('/');
+			default:
+				return c;
+		}
+	};
+	return _elm_lang$core$String$map(fix);
+}();
+var _simonh1000$elm_jwt$Jwt$TokenDecodeError = function (a) {
+	return {ctor: 'TokenDecodeError', _0: a};
+};
+var _simonh1000$elm_jwt$Jwt$TokenProcessingError = function (a) {
+	return {ctor: 'TokenProcessingError', _0: a};
+};
+var _simonh1000$elm_jwt$Jwt$fixlength = function (s) {
+	var _p2 = A2(
+		_elm_lang$core$Basics_ops['%'],
+		_elm_lang$core$String$length(s),
+		4);
+	switch (_p2) {
+		case 0:
+			return _elm_lang$core$Result$Ok(s);
+		case 2:
+			return _elm_lang$core$Result$Ok(
+				_elm_lang$core$String$concat(
+					{
+						ctor: '::',
+						_0: s,
+						_1: {
+							ctor: '::',
+							_0: '==',
+							_1: {ctor: '[]'}
+						}
+					}));
+		case 3:
+			return _elm_lang$core$Result$Ok(
+				_elm_lang$core$String$concat(
+					{
+						ctor: '::',
+						_0: s,
+						_1: {
+							ctor: '::',
+							_0: '=',
+							_1: {ctor: '[]'}
+						}
+					}));
+		default:
+			return _elm_lang$core$Result$Err(
+				_simonh1000$elm_jwt$Jwt$TokenProcessingError('Wrong length'));
+	}
+};
+var _simonh1000$elm_jwt$Jwt$getTokenBody = function (token) {
+	var processor = function (_p3) {
+		return A2(
+			_elm_lang$core$List$map,
+			_simonh1000$elm_jwt$Jwt$fixlength,
+			A2(
+				_elm_lang$core$String$split,
+				'.',
+				_simonh1000$elm_jwt$Jwt$unurl(_p3)));
+	};
+	var _p4 = processor(token);
+	_v2_2:
+	do {
+		if ((_p4.ctor === '::') && (_p4._1.ctor === '::')) {
+			if (_p4._1._0.ctor === 'Err') {
+				if ((_p4._1._1.ctor === '::') && (_p4._1._1._1.ctor === '[]')) {
+					return _elm_lang$core$Result$Err(_p4._1._0._0);
+				} else {
+					break _v2_2;
+				}
+			} else {
+				if ((_p4._1._1.ctor === '::') && (_p4._1._1._1.ctor === '[]')) {
+					return _elm_lang$core$Result$Ok(_p4._1._0._0);
+				} else {
+					break _v2_2;
+				}
+			}
+		} else {
+			break _v2_2;
+		}
+	} while(false);
+	return _elm_lang$core$Result$Err(
+		_simonh1000$elm_jwt$Jwt$TokenProcessingError('Token has invalid shape'));
+};
+var _simonh1000$elm_jwt$Jwt$decodeToken = function (dec) {
+	return function (_p5) {
+		return A2(
+			_elm_lang$core$Result$andThen,
+			function (_p6) {
+				return A2(
+					_elm_lang$core$Result$mapError,
+					_simonh1000$elm_jwt$Jwt$TokenDecodeError,
+					A2(_elm_lang$core$Json_Decode$decodeString, dec, _p6));
+			},
+			A2(
+				_elm_lang$core$Result$andThen,
+				function (_p7) {
+					return A2(
+						_elm_lang$core$Result$mapError,
+						_simonh1000$elm_jwt$Jwt$TokenDecodeError,
+						_truqu$elm_base64$Base64$decode(_p7));
+				},
+				_simonh1000$elm_jwt$Jwt$getTokenBody(_p5)));
+	};
+};
+var _simonh1000$elm_jwt$Jwt$isExpired = F2(
+	function (now, token) {
+		return A2(
+			_elm_lang$core$Result$map,
+			function (exp) {
+				return _elm_lang$core$Native_Utils.cmp(now, exp * 1000) > 0;
+			},
+			A2(
+				_simonh1000$elm_jwt$Jwt$decodeToken,
+				A2(_elm_lang$core$Json_Decode$field, 'exp', _elm_lang$core$Json_Decode$float),
+				token));
+	});
+var _simonh1000$elm_jwt$Jwt$tokenDecoder = function (inner) {
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (tokenStr) {
+			var transformedToken = A2(
+				_elm_lang$core$Result$andThen,
+				_elm_lang$core$Json_Decode$decodeString(inner),
+				A2(
+					_elm_lang$core$Result$mapError,
+					F2(
+						function (x, y) {
+							return A2(_elm_lang$core$Basics_ops['++'], x, y);
+						})('base64 error: '),
+					A2(
+						_elm_lang$core$Result$andThen,
+						_truqu$elm_base64$Base64$decode,
+						A2(
+							_elm_lang$core$Result$mapError,
+							_elm_lang$core$Basics$toString,
+							_simonh1000$elm_jwt$Jwt$getTokenBody(tokenStr)))));
+			var _p8 = transformedToken;
+			if (_p8.ctor === 'Ok') {
+				return _elm_lang$core$Json_Decode$succeed(_p8._0);
+			} else {
+				return _elm_lang$core$Json_Decode$fail(_p8._0);
+			}
+		},
+		_elm_lang$core$Json_Decode$string);
+};
+var _simonh1000$elm_jwt$Jwt$TokenNotExpired = {ctor: 'TokenNotExpired'};
+var _simonh1000$elm_jwt$Jwt$TokenExpired = {ctor: 'TokenExpired'};
+var _simonh1000$elm_jwt$Jwt$checkUnacceptedToken = F2(
+	function (token, now) {
+		var _p9 = A2(_simonh1000$elm_jwt$Jwt$isExpired, now, token);
+		if (_p9.ctor === 'Ok') {
+			if (_p9._0 === true) {
+				return _simonh1000$elm_jwt$Jwt$TokenExpired;
+			} else {
+				return _simonh1000$elm_jwt$Jwt$TokenNotExpired;
+			}
+		} else {
+			return _p9._0;
+		}
+	});
+var _simonh1000$elm_jwt$Jwt$checkTokenExpiry = function (token) {
+	return A2(
+		_elm_lang$core$Task$andThen,
+		function (_p10) {
+			return _elm_lang$core$Task$succeed(
+				A2(_simonh1000$elm_jwt$Jwt$checkUnacceptedToken, token, _p10));
+		},
+		_elm_lang$core$Time$now);
+};
+var _simonh1000$elm_jwt$Jwt$Unauthorized = {ctor: 'Unauthorized'};
+var _simonh1000$elm_jwt$Jwt$HttpError = function (a) {
+	return {ctor: 'HttpError', _0: a};
+};
+var _simonh1000$elm_jwt$Jwt$promote401 = function (err) {
+	var _p11 = err;
+	if (_p11.ctor === 'BadStatus') {
+		return _elm_lang$core$Native_Utils.eq(_p11._0.status.code, 401) ? _simonh1000$elm_jwt$Jwt$Unauthorized : _simonh1000$elm_jwt$Jwt$HttpError(err);
+	} else {
+		return _simonh1000$elm_jwt$Jwt$HttpError(err);
+	}
+};
+var _simonh1000$elm_jwt$Jwt$send = F2(
+	function (msgCreator, req) {
+		var conv = function (fn) {
+			return function (_p12) {
+				return fn(
+					A2(_elm_lang$core$Result$mapError, _simonh1000$elm_jwt$Jwt$promote401, _p12));
+			};
+		};
+		return A2(
+			_elm_lang$http$Http$send,
+			conv(msgCreator),
+			req);
+	});
+var _simonh1000$elm_jwt$Jwt$handleError = F2(
+	function (token, err) {
+		var _p13 = _simonh1000$elm_jwt$Jwt$promote401(err);
+		if (_p13.ctor === 'Unauthorized') {
+			return _simonh1000$elm_jwt$Jwt$checkTokenExpiry(token);
+		} else {
+			return _elm_lang$core$Task$succeed(
+				_simonh1000$elm_jwt$Jwt$HttpError(err));
+		}
+	});
+var _simonh1000$elm_jwt$Jwt$sendCheckExpired = F3(
+	function (token, msgCreator, req) {
+		return A2(
+			_elm_lang$core$Task$perform,
+			msgCreator,
+			A2(
+				_elm_lang$core$Task$onError,
+				function (_p14) {
+					return A2(
+						_elm_lang$core$Task$map,
+						_elm_lang$core$Result$Err,
+						A2(_simonh1000$elm_jwt$Jwt$handleError, token, _p14));
+				},
+				A2(
+					_elm_lang$core$Task$map,
+					_elm_lang$core$Result$Ok,
+					_elm_lang$http$Http$toTask(req))));
+	});
+
 var _user$project$Data_Licence$licenceToString = function (licence) {
 	var _p0 = licence;
 	switch (_p0.ctor) {
@@ -14651,14 +15482,11 @@ var _user$project$Data_Licence$licenceToString = function (licence) {
 			return 'amateurs';
 		case 'Basislidmaatschap':
 			return 'basislidmaatschap';
-		case 'Sportklasse':
-			return 'sportklasse';
 		default:
 			return 'other';
 	}
 };
 var _user$project$Data_Licence$Other = {ctor: 'Other'};
-var _user$project$Data_Licence$Sportklasse = {ctor: 'Sportklasse'};
 var _user$project$Data_Licence$Basislidmaatschap = {ctor: 'Basislidmaatschap'};
 var _user$project$Data_Licence$Amateurs = {ctor: 'Amateurs'};
 var _user$project$Data_Licence$Elite = {ctor: 'Elite'};
@@ -14671,8 +15499,6 @@ var _user$project$Data_Licence$licence = function (string) {
 			return _user$project$Data_Licence$Amateurs;
 		case 'basislidmaatschap':
 			return _user$project$Data_Licence$Basislidmaatschap;
-		case 'sportklasse':
-			return _user$project$Data_Licence$Sportklasse;
 		default:
 			return _user$project$Data_Licence$Other;
 	}
@@ -14706,18 +15532,12 @@ var _user$project$Data_RaceType$getPointsByRaceType = function (category) {
 			return 4;
 		case 'Studentscup':
 			return 3;
-		case 'MTB':
-			return 4;
 		case 'CK':
 			return 2;
 		case 'NK':
 			return 5;
 		case 'Cyclosportive':
 			return 4;
-		case 'TimeTrial':
-			return 3;
-		case 'Toertocht':
-			return 2;
 		case 'Other':
 			return 0;
 		default:
@@ -14743,18 +15563,12 @@ var _user$project$Data_RaceType$raceTypeReadable = function (category) {
 			return 'Omloop';
 		case 'Studentscup':
 			return 'Studentencup';
-		case 'MTB':
-			return 'Mountainbike';
 		case 'CK':
 			return 'Clubkampioenschap';
 		case 'NK':
 			return 'Nederlands kampioenschap';
 		case 'Cyclosportive':
 			return 'Cyclosportive';
-		case 'TimeTrial':
-			return 'Time trial';
-		case 'Toertocht':
-			return 'Toertocht';
 		default:
 			return 'Other';
 	}
@@ -14778,30 +15592,21 @@ var _user$project$Data_RaceType$raceTypeToString = function (category) {
 			return 'omloop';
 		case 'Studentscup':
 			return 'studentencup';
-		case 'MTB':
-			return 'MTB';
 		case 'CK':
 			return 'CK';
 		case 'NK':
 			return 'NK';
 		case 'Cyclosportive':
 			return 'cyclosportive';
-		case 'TimeTrial':
-			return 'timetrial';
-		case 'Toertocht':
-			return 'toertocht';
 		default:
 			return 'other';
 	}
 };
 var _user$project$Data_RaceType$Unknown = {ctor: 'Unknown'};
 var _user$project$Data_RaceType$Other = {ctor: 'Other'};
-var _user$project$Data_RaceType$Toertocht = {ctor: 'Toertocht'};
-var _user$project$Data_RaceType$TimeTrial = {ctor: 'TimeTrial'};
 var _user$project$Data_RaceType$Cyclosportive = {ctor: 'Cyclosportive'};
 var _user$project$Data_RaceType$NK = {ctor: 'NK'};
 var _user$project$Data_RaceType$CK = {ctor: 'CK'};
-var _user$project$Data_RaceType$MTB = {ctor: 'MTB'};
 var _user$project$Data_RaceType$Studentscup = {ctor: 'Studentscup'};
 var _user$project$Data_RaceType$Omloop = {ctor: 'Omloop'};
 var _user$project$Data_RaceType$Beach = {ctor: 'Beach'};
@@ -14836,29 +15641,17 @@ var _user$project$Data_RaceType$raceTypes = {
 								_0: _user$project$Data_RaceType$Studentscup,
 								_1: {
 									ctor: '::',
-									_0: _user$project$Data_RaceType$MTB,
+									_0: _user$project$Data_RaceType$CK,
 									_1: {
 										ctor: '::',
-										_0: _user$project$Data_RaceType$CK,
+										_0: _user$project$Data_RaceType$NK,
 										_1: {
 											ctor: '::',
-											_0: _user$project$Data_RaceType$NK,
+											_0: _user$project$Data_RaceType$Cyclosportive,
 											_1: {
 												ctor: '::',
-												_0: _user$project$Data_RaceType$Cyclosportive,
-												_1: {
-													ctor: '::',
-													_0: _user$project$Data_RaceType$TimeTrial,
-													_1: {
-														ctor: '::',
-														_0: _user$project$Data_RaceType$Toertocht,
-														_1: {
-															ctor: '::',
-															_0: _user$project$Data_RaceType$Other,
-															_1: {ctor: '[]'}
-														}
-													}
-												}
+												_0: _user$project$Data_RaceType$Other,
+												_1: {ctor: '[]'}
 											}
 										}
 									}
@@ -14890,18 +15683,12 @@ var _user$project$Data_RaceType$raceType = function (string) {
 			return _user$project$Data_RaceType$Omloop;
 		case 'studentencup':
 			return _user$project$Data_RaceType$Studentscup;
-		case 'MTB':
-			return _user$project$Data_RaceType$MTB;
 		case 'CK':
 			return _user$project$Data_RaceType$CK;
 		case 'NK':
 			return _user$project$Data_RaceType$NK;
 		case 'cyclosportive':
 			return _user$project$Data_RaceType$Cyclosportive;
-		case 'timetrial':
-			return _user$project$Data_RaceType$TimeTrial;
-		case 'toertocht':
-			return _user$project$Data_RaceType$Toertocht;
 		case 'other':
 			return _user$project$Data_RaceType$Other;
 		default:
@@ -14962,10 +15749,6 @@ var _user$project$Data_ResultCategory$categoryReadable = function (category) {
 			return 'Basislidmaatschap';
 		case 'EliteAmateurs':
 			return 'Elite/amateurs';
-		case 'AmateursSportklasse':
-			return 'Amateurs/sportklasse';
-		case 'Sportklasse':
-			return 'Sportklasse';
 		case 'CatB':
 			return 'Cat. b';
 		case 'CatC':
@@ -14991,10 +15774,6 @@ var _user$project$Data_ResultCategory$categoryToString = function (category) {
 			return 'basislidmaatschap';
 		case 'EliteAmateurs':
 			return 'elite_amateurs';
-		case 'AmateursSportklasse':
-			return 'amateurs_sportklasse';
-		case 'Sportklasse':
-			return 'sportklasse';
 		case 'CatB':
 			return 'catb';
 		case 'CatC':
@@ -15012,10 +15791,8 @@ var _user$project$Data_ResultCategory$Other = {ctor: 'Other'};
 var _user$project$Data_ResultCategory$CatD = {ctor: 'CatD'};
 var _user$project$Data_ResultCategory$CatC = {ctor: 'CatC'};
 var _user$project$Data_ResultCategory$CatB = {ctor: 'CatB'};
-var _user$project$Data_ResultCategory$Sportklasse = {ctor: 'Sportklasse'};
-var _user$project$Data_ResultCategory$AmateursSportklasse = {ctor: 'AmateursSportklasse'};
-var _user$project$Data_ResultCategory$EliteAmateurs = {ctor: 'EliteAmateurs'};
 var _user$project$Data_ResultCategory$Basislidmaatschap = {ctor: 'Basislidmaatschap'};
+var _user$project$Data_ResultCategory$EliteAmateurs = {ctor: 'EliteAmateurs'};
 var _user$project$Data_ResultCategory$CatA = {ctor: 'CatA'};
 var _user$project$Data_ResultCategory$Elite = {ctor: 'Elite'};
 var _user$project$Data_ResultCategory$Amateurs = {ctor: 'Amateurs'};
@@ -15036,25 +15813,17 @@ var _user$project$Data_ResultCategory$resultCategories = {
 					_0: _user$project$Data_ResultCategory$EliteAmateurs,
 					_1: {
 						ctor: '::',
-						_0: _user$project$Data_ResultCategory$AmateursSportklasse,
+						_0: _user$project$Data_ResultCategory$CatB,
 						_1: {
 							ctor: '::',
-							_0: _user$project$Data_ResultCategory$Sportklasse,
+							_0: _user$project$Data_ResultCategory$CatC,
 							_1: {
 								ctor: '::',
-								_0: _user$project$Data_ResultCategory$CatB,
+								_0: _user$project$Data_ResultCategory$CatD,
 								_1: {
 									ctor: '::',
-									_0: _user$project$Data_ResultCategory$CatC,
-									_1: {
-										ctor: '::',
-										_0: _user$project$Data_ResultCategory$CatD,
-										_1: {
-											ctor: '::',
-											_0: _user$project$Data_ResultCategory$Other,
-											_1: {ctor: '[]'}
-										}
-									}
+									_0: _user$project$Data_ResultCategory$Other,
+									_1: {ctor: '[]'}
 								}
 							}
 						}
@@ -15077,12 +15846,8 @@ var _user$project$Data_ResultCategory$resultCategoryDecoder = function (string) 
 					return _user$project$Data_ResultCategory$CatA;
 				case 'basislidmaatschap':
 					return _user$project$Data_ResultCategory$Basislidmaatschap;
-				case 'elite_amateurs':
+				case 'elite/amateurs':
 					return _user$project$Data_ResultCategory$EliteAmateurs;
-				case 'amateurs_sportklasse':
-					return _user$project$Data_ResultCategory$AmateursSportklasse;
-				case 'sportklasse':
-					return _user$project$Data_ResultCategory$Sportklasse;
 				case 'catb':
 					return _user$project$Data_ResultCategory$CatB;
 				case 'catc':
@@ -15102,157 +15867,6 @@ var _user$project$Page_Result_Add_Model$Model = F6(
 	function (a, b, c, d, e, f) {
 		return {raceKey: a, riderKey: b, result: c, category: d, outfit: e, strava: f};
 	});
-
-var _user$project$App_Page$ResultAdd = function (a) {
-	return {ctor: 'ResultAdd', _0: a};
-};
-var _user$project$App_Page$RiderAdd = function (a) {
-	return {ctor: 'RiderAdd', _0: a};
-};
-var _user$project$App_Page$RiderDetails = function (a) {
-	return {ctor: 'RiderDetails', _0: a};
-};
-var _user$project$App_Page$Riders = {ctor: 'Riders'};
-var _user$project$App_Page$RaceAdd = function (a) {
-	return {ctor: 'RaceAdd', _0: a};
-};
-var _user$project$App_Page$RaceDetails = function (a) {
-	return {ctor: 'RaceDetails', _0: a};
-};
-var _user$project$App_Page$Races = {ctor: 'Races'};
-
-var _user$project$App_Routing$url = function (page) {
-	var _p0 = page;
-	switch (_p0.ctor) {
-		case 'Riders':
-			return '#riders';
-		case 'RiderDetails':
-			return A2(_elm_lang$core$Basics_ops['++'], '#riders/', _p0._0);
-		case 'RiderAdd':
-			return '#riders/add';
-		case 'Races':
-			return '#races';
-		case 'RaceDetails':
-			return A2(_elm_lang$core$Basics_ops['++'], '#races/', _p0._0);
-		case 'RaceAdd':
-			return '#races/add';
-		default:
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				'#races/',
-				A2(_elm_lang$core$Basics_ops['++'], _p0._0.raceKey, '/add'));
-	}
-};
-var _user$project$App_Routing$ResultAdd = function (a) {
-	return {ctor: 'ResultAdd', _0: a};
-};
-var _user$project$App_Routing$Results = {ctor: 'Results'};
-var _user$project$App_Routing$Races = {ctor: 'Races'};
-var _user$project$App_Routing$RaceDetails = function (a) {
-	return {ctor: 'RaceDetails', _0: a};
-};
-var _user$project$App_Routing$RaceAdd = {ctor: 'RaceAdd'};
-var _user$project$App_Routing$Riders = {ctor: 'Riders'};
-var _user$project$App_Routing$RiderAdd = {ctor: 'RiderAdd'};
-var _user$project$App_Routing$RiderDetails = function (a) {
-	return {ctor: 'RiderDetails', _0: a};
-};
-var _user$project$App_Routing$matchers = _evancz$url_parser$UrlParser$oneOf(
-	{
-		ctor: '::',
-		_0: A2(
-			_evancz$url_parser$UrlParser$map,
-			_user$project$App_Routing$Races,
-			_evancz$url_parser$UrlParser$s('races')),
-		_1: {
-			ctor: '::',
-			_0: A2(
-				_evancz$url_parser$UrlParser$map,
-				_user$project$App_Routing$Races,
-				_evancz$url_parser$UrlParser$s('')),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_evancz$url_parser$UrlParser$map,
-					_user$project$App_Routing$RiderAdd,
-					A2(
-						_evancz$url_parser$UrlParser_ops['</>'],
-						_evancz$url_parser$UrlParser$s('riders'),
-						_evancz$url_parser$UrlParser$s('add'))),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_evancz$url_parser$UrlParser$map,
-						_user$project$App_Routing$RiderDetails,
-						A2(
-							_evancz$url_parser$UrlParser_ops['</>'],
-							_evancz$url_parser$UrlParser$s('riders'),
-							_evancz$url_parser$UrlParser$string)),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_evancz$url_parser$UrlParser$map,
-							_user$project$App_Routing$Riders,
-							_evancz$url_parser$UrlParser$s('riders')),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_evancz$url_parser$UrlParser$map,
-								_user$project$App_Routing$ResultAdd,
-								A2(
-									_evancz$url_parser$UrlParser_ops['</>'],
-									_evancz$url_parser$UrlParser$s('races'),
-									A2(
-										_evancz$url_parser$UrlParser_ops['</>'],
-										_evancz$url_parser$UrlParser$string,
-										_evancz$url_parser$UrlParser$s('add')))),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_evancz$url_parser$UrlParser$map,
-									_user$project$App_Routing$RaceAdd,
-									A2(
-										_evancz$url_parser$UrlParser_ops['</>'],
-										_evancz$url_parser$UrlParser$s('races'),
-										_evancz$url_parser$UrlParser$s('add'))),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_evancz$url_parser$UrlParser$map,
-										_user$project$App_Routing$RaceDetails,
-										A2(
-											_evancz$url_parser$UrlParser_ops['</>'],
-											_evancz$url_parser$UrlParser$s('races'),
-											_evancz$url_parser$UrlParser$string)),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_evancz$url_parser$UrlParser$map,
-											_user$project$App_Routing$Races,
-											_evancz$url_parser$UrlParser$s('races')),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_evancz$url_parser$UrlParser$map,
-												_user$project$App_Routing$Results,
-												_evancz$url_parser$UrlParser$s('results')),
-											_1: {ctor: '[]'}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	});
-var _user$project$App_Routing$routeParser = function (location) {
-	return A2(
-		_elm_lang$core$Maybe$withDefault,
-		_user$project$App_Routing$Races,
-		A2(_evancz$url_parser$UrlParser$parseHash, _user$project$App_Routing$matchers, location));
-};
 
 var _user$project$Data_Race$getRace = F2(
 	function (raceKey, races) {
@@ -15359,6 +15973,209 @@ var _user$project$Data_RaceResult$resultDecoder = A3(
 						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_RaceResult$RaceResult)))))));
 var _user$project$Data_RaceResult$resultsDecoder = _elm_lang$core$Json_Decode$list(_user$project$Data_RaceResult$resultDecoder);
 
+var _user$project$Page_Result_Edit_Model$initial = F2(
+	function (resultKey, maybeResults) {
+		var _p0 = A2(_elm_lang$core$Debug$log, 'maybeResults', maybeResults);
+		if (_p0.ctor === 'Just') {
+			var maybeResult = _elm_lang$core$List$head(
+				A2(
+					_elm_lang$core$List$filter,
+					function (r) {
+						return _elm_lang$core$Native_Utils.eq(r.key, resultKey);
+					},
+					_p0._0));
+			var _p1 = maybeResult;
+			if (_p1.ctor === 'Just') {
+				var _p3 = _p1._0;
+				var _p2 = A2(_elm_lang$core$Debug$log, 'hoi', _p3);
+				return {result: _p3.result, resultKey: resultKey, raceKey: _p3.raceKey};
+			} else {
+				return {result: 'asdf', resultKey: resultKey, raceKey: '1234'};
+			}
+		} else {
+			return {result: '1234', resultKey: resultKey, raceKey: '1234'};
+		}
+	});
+var _user$project$Page_Result_Edit_Model$Model = F3(
+	function (a, b, c) {
+		return {result: a, resultKey: b, raceKey: c};
+	});
+
+var _user$project$App_Page$ResultEdit = function (a) {
+	return {ctor: 'ResultEdit', _0: a};
+};
+var _user$project$App_Page$ResultAdd = function (a) {
+	return {ctor: 'ResultAdd', _0: a};
+};
+var _user$project$App_Page$RiderAdd = function (a) {
+	return {ctor: 'RiderAdd', _0: a};
+};
+var _user$project$App_Page$RiderDetails = function (a) {
+	return {ctor: 'RiderDetails', _0: a};
+};
+var _user$project$App_Page$Riders = {ctor: 'Riders'};
+var _user$project$App_Page$RaceAdd = function (a) {
+	return {ctor: 'RaceAdd', _0: a};
+};
+var _user$project$App_Page$RaceDetails = function (a) {
+	return {ctor: 'RaceDetails', _0: a};
+};
+var _user$project$App_Page$Races = {ctor: 'Races'};
+
+var _user$project$App_Routing$url = function (page) {
+	var _p0 = page;
+	switch (_p0.ctor) {
+		case 'Riders':
+			return '#riders';
+		case 'RiderDetails':
+			return A2(_elm_lang$core$Basics_ops['++'], '#riders/', _p0._0);
+		case 'RiderAdd':
+			return '#riders/add';
+		case 'Races':
+			return '#races';
+		case 'RaceDetails':
+			return A2(_elm_lang$core$Basics_ops['++'], '#races/', _p0._0);
+		case 'RaceAdd':
+			return '#races/add';
+		case 'ResultAdd':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'#races/',
+				A2(_elm_lang$core$Basics_ops['++'], _p0._0.raceKey, '/add'));
+		default:
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'#results/',
+				A2(_elm_lang$core$Basics_ops['++'], _p0._0.resultKey, '/edit'));
+	}
+};
+var _user$project$App_Routing$ResultEdit = function (a) {
+	return {ctor: 'ResultEdit', _0: a};
+};
+var _user$project$App_Routing$ResultAdd = function (a) {
+	return {ctor: 'ResultAdd', _0: a};
+};
+var _user$project$App_Routing$Results = {ctor: 'Results'};
+var _user$project$App_Routing$Races = {ctor: 'Races'};
+var _user$project$App_Routing$RaceDetails = function (a) {
+	return {ctor: 'RaceDetails', _0: a};
+};
+var _user$project$App_Routing$RaceAdd = {ctor: 'RaceAdd'};
+var _user$project$App_Routing$Riders = {ctor: 'Riders'};
+var _user$project$App_Routing$RiderAdd = {ctor: 'RiderAdd'};
+var _user$project$App_Routing$RiderDetails = function (a) {
+	return {ctor: 'RiderDetails', _0: a};
+};
+var _user$project$App_Routing$matchers = _evancz$url_parser$UrlParser$oneOf(
+	{
+		ctor: '::',
+		_0: A2(
+			_evancz$url_parser$UrlParser$map,
+			_user$project$App_Routing$Races,
+			_evancz$url_parser$UrlParser$s('races')),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_evancz$url_parser$UrlParser$map,
+				_user$project$App_Routing$Races,
+				_evancz$url_parser$UrlParser$s('')),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_evancz$url_parser$UrlParser$map,
+					_user$project$App_Routing$RiderAdd,
+					A2(
+						_evancz$url_parser$UrlParser_ops['</>'],
+						_evancz$url_parser$UrlParser$s('riders'),
+						_evancz$url_parser$UrlParser$s('add'))),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_evancz$url_parser$UrlParser$map,
+						_user$project$App_Routing$RiderDetails,
+						A2(
+							_evancz$url_parser$UrlParser_ops['</>'],
+							_evancz$url_parser$UrlParser$s('riders'),
+							_evancz$url_parser$UrlParser$string)),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_evancz$url_parser$UrlParser$map,
+							_user$project$App_Routing$Riders,
+							_evancz$url_parser$UrlParser$s('riders')),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_evancz$url_parser$UrlParser$map,
+								_user$project$App_Routing$ResultAdd,
+								A2(
+									_evancz$url_parser$UrlParser_ops['</>'],
+									_evancz$url_parser$UrlParser$s('races'),
+									A2(
+										_evancz$url_parser$UrlParser_ops['</>'],
+										_evancz$url_parser$UrlParser$string,
+										_evancz$url_parser$UrlParser$s('add')))),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_evancz$url_parser$UrlParser$map,
+									_user$project$App_Routing$ResultEdit,
+									A2(
+										_evancz$url_parser$UrlParser_ops['</>'],
+										_evancz$url_parser$UrlParser$s('results'),
+										A2(
+											_evancz$url_parser$UrlParser_ops['</>'],
+											_evancz$url_parser$UrlParser$string,
+											_evancz$url_parser$UrlParser$s('edit')))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$url_parser$UrlParser$map,
+										_user$project$App_Routing$RaceAdd,
+										A2(
+											_evancz$url_parser$UrlParser_ops['</>'],
+											_evancz$url_parser$UrlParser$s('races'),
+											_evancz$url_parser$UrlParser$s('add'))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$url_parser$UrlParser$map,
+											_user$project$App_Routing$RaceDetails,
+											A2(
+												_evancz$url_parser$UrlParser_ops['</>'],
+												_evancz$url_parser$UrlParser$s('races'),
+												_evancz$url_parser$UrlParser$string)),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$url_parser$UrlParser$map,
+												_user$project$App_Routing$Races,
+												_evancz$url_parser$UrlParser$s('races')),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_evancz$url_parser$UrlParser$map,
+													_user$project$App_Routing$Results,
+													_evancz$url_parser$UrlParser$s('results')),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _user$project$App_Routing$routeParser = function (location) {
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		_user$project$App_Routing$Races,
+		A2(_evancz$url_parser$UrlParser$parseHash, _user$project$App_Routing$matchers, location));
+};
+
 var _user$project$Data_Rider$getPointsByRiderId = F3(
 	function (riderKey, results, races) {
 		return A2(
@@ -15396,6 +16213,14 @@ var _user$project$Data_Rider$rider = A4(
 		A2(_elm_lang$core$Json_Decode$andThen, _user$project$Data_Licence$licenceDecoder, _elm_lang$core$Json_Decode$string)));
 var _user$project$Data_Rider$ridersDecoder = _elm_lang$core$Json_Decode$list(_user$project$Data_Rider$rider);
 
+var _user$project$Data_User$User = function (a) {
+	return {email: a};
+};
+var _user$project$Data_User$userDecoder = A2(
+	_elm_lang$core$Json_Decode$map,
+	_user$project$Data_User$User,
+	A2(_elm_lang$core$Json_Decode$field, 'email', _elm_lang$core$Json_Decode$string));
+
 var _user$project$App_OutsideInfo$infoForOutside = _elm_lang$core$Native_Platform.outgoingPort(
 	'infoForOutside',
 	function (v) {
@@ -15413,6 +16238,15 @@ var _user$project$App_OutsideInfo$sendInfoOutside = function (info) {
 		case 'ResultAdd':
 			return _user$project$App_OutsideInfo$infoForOutside(
 				{tag: 'ResultAdd', data: _p0._0});
+		case 'ResultEdit':
+			return _user$project$App_OutsideInfo$infoForOutside(
+				{tag: 'ResultEdit', data: _p0._0});
+		case 'UserSignOut':
+			return _user$project$App_OutsideInfo$infoForOutside(
+				{
+					tag: 'UserSignOut',
+					data: _elm_lang$core$Json_Encode$bool(true)
+				});
 		default:
 			return _user$project$App_OutsideInfo$infoForOutside(
 				{
@@ -15442,6 +16276,10 @@ var _user$project$App_OutsideInfo$GenericOutsideData = F2(
 var _user$project$App_OutsideInfo$LogError = function (a) {
 	return {ctor: 'LogError', _0: a};
 };
+var _user$project$App_OutsideInfo$UserSignOut = {ctor: 'UserSignOut'};
+var _user$project$App_OutsideInfo$ResultEdit = function (a) {
+	return {ctor: 'ResultEdit', _0: a};
+};
 var _user$project$App_OutsideInfo$ResultAdd = function (a) {
 	return {ctor: 'ResultAdd', _0: a};
 };
@@ -15450,6 +16288,13 @@ var _user$project$App_OutsideInfo$RiderAdd = function (a) {
 };
 var _user$project$App_OutsideInfo$RaceAdd = function (a) {
 	return {ctor: 'RaceAdd', _0: a};
+};
+var _user$project$App_OutsideInfo$UserSignedOut = {ctor: 'UserSignedOut'};
+var _user$project$App_OutsideInfo$UserLoaded = function (a) {
+	return {ctor: 'UserLoaded', _0: a};
+};
+var _user$project$App_OutsideInfo$ResultEdited = function (a) {
+	return {ctor: 'ResultEdited', _0: a};
 };
 var _user$project$App_OutsideInfo$ResultAdded = function (a) {
 	return {ctor: 'ResultAdded', _0: a};
@@ -15523,6 +16368,24 @@ var _user$project$App_OutsideInfo$getInfoFromOutside = F2(
 						} else {
 							return onError(_p7._0);
 						}
+					case 'ResultEdited':
+						var _p8 = A2(_elm_lang$core$Json_Decode$decodeValue, _elm_lang$core$Json_Decode$string, outsideInfo.data);
+						if (_p8.ctor === 'Ok') {
+							return tagger(
+								_user$project$App_OutsideInfo$ResultEdited(_p8._0));
+						} else {
+							return onError(_p8._0);
+						}
+					case 'UserLoaded':
+						var _p9 = A2(_elm_lang$core$Json_Decode$decodeValue, _user$project$Data_User$userDecoder, outsideInfo.data);
+						if (_p9.ctor === 'Ok') {
+							return tagger(
+								_user$project$App_OutsideInfo$UserLoaded(_p9._0.email));
+						} else {
+							return onError(_p9._0);
+						}
+					case 'UserSignedOut':
+						return tagger(_user$project$App_OutsideInfo$UserSignedOut);
 					default:
 						return onError(
 							A2(
@@ -15547,6 +16410,11 @@ var _user$project$Page_Result_Add_Msg$Category = function (a) {
 };
 var _user$project$Page_Result_Add_Msg$Submit = {ctor: 'Submit'};
 
+var _user$project$Page_Result_Edit_Msg$Result = function (a) {
+	return {ctor: 'Result', _0: a};
+};
+var _user$project$Page_Result_Edit_Msg$Submit = {ctor: 'Submit'};
+
 var _user$project$Page_Rider_Add_Msg$Name = function (a) {
 	return {ctor: 'Name', _0: a};
 };
@@ -15566,6 +16434,10 @@ var _user$project$Page_Race_Add_Msg$Name = function (a) {
 };
 var _user$project$Page_Race_Add_Msg$Submit = {ctor: 'Submit'};
 
+var _user$project$App_Msg$UserSignOut = {ctor: 'UserSignOut'};
+var _user$project$App_Msg$ResultEdit = function (a) {
+	return {ctor: 'ResultEdit', _0: a};
+};
 var _user$project$App_Msg$ResultAdd = function (a) {
 	return {ctor: 'ResultAdd', _0: a};
 };
@@ -15659,11 +16531,24 @@ var _user$project$App_Helpers$navigate = function (page) {
 		_user$project$App_Routing$url(page));
 };
 
-var _user$project$App_Model$App = F4(
-	function (a, b, c, d) {
-		return {page: a, riders: b, races: c, results: d};
+var _user$project$Data_Flags$Flags = function (a) {
+	return {wtosLoginUrl: a};
+};
+
+var _user$project$App_Model$DecodedToken = function (a) {
+	return {email: a};
+};
+var _user$project$App_Model$tokenDecoder = A2(
+	_elm_lang$core$Json_Decode$map,
+	_user$project$App_Model$DecodedToken,
+	A2(_elm_lang$core$Json_Decode$field, 'email', _elm_lang$core$Json_Decode$string));
+var _user$project$App_Model$App = F7(
+	function (a, b, c, d, e, f, g) {
+		return {page: a, riders: b, races: c, results: d, token: e, user: f, wtosLoginUrl: g};
 	});
-var _user$project$App_Model$initial = A4(_user$project$App_Model$App, _user$project$App_Page$Races, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing);
+var _user$project$App_Model$initial = function (flags) {
+	return A7(_user$project$App_Model$App, _user$project$App_Page$Races, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, flags.wtosLoginUrl);
+};
 
 var _user$project$App_UrlUpdate$routeToPage = function (route) {
 	var routePages = {
@@ -15695,6 +16580,20 @@ var _user$project$App_UrlUpdate$urlUpdate = F2(
 	function (route, app) {
 		var _p1 = route;
 		switch (_p1.ctor) {
+			case 'ResultEdit':
+				var resultEdit = A2(_user$project$Page_Result_Edit_Model$initial, _p1._0, app.results);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						app,
+						{
+							page: _user$project$App_Page$ResultEdit(resultEdit)
+						}),
+					_1: A2(
+						_elm_lang$core$Task$attempt,
+						_elm_lang$core$Basics$always(_user$project$App_Msg$Noop),
+						_elm_lang$dom$Dom$focus('result'))
+				};
 			case 'ResultAdd':
 				var resultAdd = _user$project$Page_Result_Add_Model$initial;
 				var resultAddWithRaceKey = _elm_lang$core$Native_Utils.update(
@@ -16012,6 +16911,50 @@ var _user$project$Page_Result_Add_Update$update = F2(
 		}
 	});
 
+var _user$project$Page_Result_Edit_Update$update = F2(
+	function (msg, page) {
+		var _p0 = msg;
+		if (_p0.ctor === 'Submit') {
+			var payload = _elm_lang$core$Json_Encode$object(
+				{
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'key',
+						_1: _elm_lang$core$Json_Encode$string(page.resultKey)
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'raceKey',
+							_1: _elm_lang$core$Json_Encode$string(page.raceKey)
+						},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'result',
+								_1: _elm_lang$core$Json_Encode$string(page.result)
+							},
+							_1: {ctor: '[]'}
+						}
+					}
+				});
+			return {
+				ctor: '_Tuple2',
+				_0: page,
+				_1: _user$project$App_OutsideInfo$sendInfoOutside(
+					_user$project$App_OutsideInfo$ResultEdit(payload))
+			};
+		} else {
+			var nextPage = _elm_lang$core$Native_Utils.update(
+				page,
+				{result: _p0._0});
+			return {ctor: '_Tuple2', _0: nextPage, _1: _elm_lang$core$Platform_Cmd$none};
+		}
+	});
+
 var _user$project$App_Update$update = F2(
 	function (msg, app) {
 		var _p0 = msg;
@@ -16073,12 +17016,38 @@ var _user$project$App_Update$update = F2(
 							_1: _user$project$App_Helpers$navigate(
 								_user$project$App_Page$RiderDetails(_p1._0))
 						};
-					default:
+					case 'ResultAdded':
 						return {
 							ctor: '_Tuple2',
 							_0: app,
 							_1: _user$project$App_Helpers$navigate(
 								_user$project$App_Page$RaceDetails(_p1._0))
+						};
+					case 'ResultEdited':
+						return {
+							ctor: '_Tuple2',
+							_0: app,
+							_1: _user$project$App_Helpers$navigate(
+								_user$project$App_Page$RaceDetails(_p1._0))
+						};
+					case 'UserLoaded':
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								app,
+								{
+									user: _elm_lang$core$Maybe$Just(
+										{email: _p1._0})
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					default:
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								app,
+								{user: _elm_lang$core$Maybe$Nothing}),
+							_1: _elm_lang$core$Platform_Cmd$none
 						};
 				}
 			case 'LogErr':
@@ -16124,7 +17093,7 @@ var _user$project$App_Update$update = F2(
 				} else {
 					return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
 				}
-			default:
+			case 'ResultAdd':
 				var _p6 = app.page;
 				if (_p6.ctor === 'ResultAdd') {
 					var _p7 = A2(_user$project$Page_Result_Add_Update$update, _p0._0, _p6._0);
@@ -16142,6 +17111,30 @@ var _user$project$App_Update$update = F2(
 				} else {
 					return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
 				}
+			case 'ResultEdit':
+				var _p8 = app.page;
+				if (_p8.ctor === 'ResultEdit') {
+					var _p9 = A2(_user$project$Page_Result_Edit_Update$update, _p0._0, _p8._0);
+					var nextPage = _p9._0;
+					var nextCmd = _p9._1;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							app,
+							{
+								page: _user$project$App_Page$ResultEdit(nextPage)
+							}),
+						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$ResultEdit, nextCmd)
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: app,
+					_1: _user$project$App_OutsideInfo$sendInfoOutside(_user$project$App_OutsideInfo$UserSignOut)
+				};
 		}
 	});
 
@@ -16162,8 +17155,8 @@ var _user$project$Page_Race_Details$resultTd = function (result) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Page_Race_Details$resultRow = F2(
-	function (result, riders) {
+var _user$project$Page_Race_Details$resultRow = F3(
+	function (result, riders, signedIn) {
 		var maybeRider = _elm_lang$core$List$head(
 			A2(
 				_elm_lang$core$List$filter,
@@ -16227,13 +17220,70 @@ var _user$project$Page_Race_Details$resultRow = F2(
 					_1: {
 						ctor: '::',
 						_0: _user$project$Page_Race_Details$resultTd(result.result),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: signedIn ? A2(
+								_elm_lang$html$Html$td,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$a,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$href(
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													'#results/',
+													A2(_elm_lang$core$Basics_ops['++'], result.key, '/edit'))),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$style(
+													{
+														ctor: '::',
+														_0: {ctor: '_Tuple2', _0: 'display', _1: 'block'},
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$span,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('icon'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$i,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('fas fa-pencil-alt'),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text(''),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}) : _elm_lang$html$Html$text(''),
+							_1: {ctor: '[]'}
+						}
 					}
 				});
 		}
 	});
-var _user$project$Page_Race_Details$resultsByCategory = F3(
-	function (category, results, riders) {
+var _user$project$Page_Race_Details$resultsByCategory = F4(
+	function (category, results, riders, signedIn) {
 		var catResults = A2(
 			_elm_lang$core$List$sortBy,
 			function (_) {
@@ -16309,7 +17359,18 @@ var _user$project$Page_Race_Details$resultsByCategory = F3(
 															_0: _elm_lang$html$Html$text('Result'),
 															_1: {ctor: '[]'}
 														}),
-													_1: {ctor: '[]'}
+													_1: {
+														ctor: '::',
+														_0: signedIn ? A2(
+															_elm_lang$html$Html$th,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('Edit'),
+																_1: {ctor: '[]'}
+															}) : _elm_lang$html$Html$text(''),
+														_1: {ctor: '[]'}
+													}
 												}
 											}),
 										_1: {ctor: '[]'}
@@ -16322,7 +17383,7 @@ var _user$project$Page_Race_Details$resultsByCategory = F3(
 										A2(
 											_elm_lang$core$List$map,
 											function (result) {
-												return A2(_user$project$Page_Race_Details$resultRow, result, riders);
+												return A3(_user$project$Page_Race_Details$resultRow, result, riders, signedIn);
 											},
 											catResults)),
 									_1: {ctor: '[]'}
@@ -16333,15 +17394,15 @@ var _user$project$Page_Race_Details$resultsByCategory = F3(
 				});
 		}
 	});
-var _user$project$Page_Race_Details$resultsTable = F2(
-	function (results, riders) {
+var _user$project$Page_Race_Details$resultsTable = F3(
+	function (results, riders, signedIn) {
 		return A2(
 			_elm_lang$html$Html$div,
 			{ctor: '[]'},
 			A2(
 				_elm_lang$core$List$map,
 				function (category) {
-					return A3(_user$project$Page_Race_Details$resultsByCategory, category, results, riders);
+					return A4(_user$project$Page_Race_Details$resultsByCategory, category, results, riders, signedIn);
 				},
 				_user$project$Data_ResultCategory$resultCategories));
 	});
@@ -16508,7 +17569,8 @@ var _user$project$Page_Race_Details$info = function (race) {
 		});
 };
 var _user$project$Page_Race_Details$view = F5(
-	function (_p3, raceKey, races, riders, results) {
+	function (app, raceKey, races, riders, results) {
+		var signedIn = !_elm_lang$core$Native_Utils.eq(app.user, _elm_lang$core$Maybe$Nothing);
 		var maybeRace = _elm_lang$core$List$head(
 			A2(
 				_elm_lang$core$List$filter,
@@ -16516,8 +17578,8 @@ var _user$project$Page_Race_Details$view = F5(
 					return _elm_lang$core$Native_Utils.eq(race.key, raceKey);
 				},
 				races));
-		var _p4 = maybeRace;
-		if (_p4.ctor === 'Nothing') {
+		var _p3 = maybeRace;
+		if (_p3.ctor === 'Nothing') {
 			return A2(
 				_elm_lang$html$Html$div,
 				{ctor: '[]'},
@@ -16527,11 +17589,11 @@ var _user$project$Page_Race_Details$view = F5(
 					_1: {ctor: '[]'}
 				});
 		} else {
-			var _p5 = _p4._0;
+			var _p4 = _p3._0;
 			var raceResults = A2(
 				_elm_lang$core$List$filter,
 				function (result) {
-					return _elm_lang$core$Native_Utils.eq(result.raceKey, _p5.key);
+					return _elm_lang$core$Native_Utils.eq(result.raceKey, _p4.key);
 				},
 				results);
 			return A2(
@@ -16553,12 +17615,12 @@ var _user$project$Page_Race_Details$view = F5(
 								},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text(_p5.name),
+									_0: _elm_lang$html$Html$text(_p4.name),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
 								ctor: '::',
-								_0: _user$project$Page_Race_Details$info(_p5),
+								_0: _user$project$Page_Race_Details$info(_p4),
 								_1: {ctor: '[]'}
 							}
 						}),
@@ -16583,13 +17645,13 @@ var _user$project$Page_Race_Details$view = F5(
 									}),
 								_1: {
 									ctor: '::',
-									_0: _user$project$Page_Race_Details$addResultButton(_p5),
+									_0: _user$project$Page_Race_Details$addResultButton(_p4),
 									_1: {ctor: '[]'}
 								}
 							}),
 						_1: {
 							ctor: '::',
-							_0: A2(_user$project$Page_Race_Details$resultsTable, raceResults, riders),
+							_0: A3(_user$project$Page_Race_Details$resultsTable, raceResults, riders, signedIn),
 							_1: {ctor: '[]'}
 						}
 					}
@@ -17738,12 +18800,8 @@ var _user$project$Page_Rider_Add_View$licenceButtons = function (maybeCurrent) {
 					_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'basislidmaatschap', 'Basislidmaatschap', _user$project$Data_Licence$Basislidmaatschap, maybeCurrent),
 					_1: {
 						ctor: '::',
-						_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'sportklasse', 'Sportklasse', _user$project$Data_Licence$Sportklasse, maybeCurrent),
-						_1: {
-							ctor: '::',
-							_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'other', 'Other', _user$project$Data_Licence$Other, maybeCurrent),
-							_1: {ctor: '[]'}
-						}
+						_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'other', 'Other', _user$project$Data_Licence$Other, maybeCurrent),
+						_1: {ctor: '[]'}
 					}
 				}
 			}
@@ -18571,6 +19629,242 @@ var _user$project$Page_Result_Add_View$view = F4(
 			});
 	});
 
+var _user$project$Page_Result_Edit_View$view = function (resultEdit) {
+	var submitDisabled = _elm_lang$core$String$isEmpty(resultEdit.result);
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h2,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('title is-2'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Edit result'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('field is-horizontal'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('field-label'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$label,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('label'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$for('result'),
+											_1: {ctor: '[]'}
+										}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Result'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('field-body'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('field'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$p,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('control has-icons-left'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$input,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$id('result'),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('input'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$type_('text'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Events$onInput(_user$project$Page_Result_Edit_Msg$Result),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$autofocus(true),
+																			_1: {
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$value(resultEdit.result),
+																				_1: {ctor: '[]'}
+																			}
+																		}
+																	}
+																}
+															}
+														},
+														{ctor: '[]'}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$span,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('icon is-small is-left'),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$i,
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$class('fa fa-trophy'),
+																		_1: {ctor: '[]'}
+																	},
+																	{ctor: '[]'}),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('field is-horizontal'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('field-label'),
+									_1: {ctor: '[]'}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('field-body'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('field'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$p,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('control'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$button,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('button is-primary'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$type_('submit'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Events$onClick(_user$project$Page_Result_Edit_Msg$Submit),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$name('action'),
+																			_1: {
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
+																				_1: {ctor: '[]'}
+																			}
+																		}
+																	}
+																}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('Edit result'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+
 var _user$project$App_View$raceLi = function (race) {
 	return A2(
 		_elm_lang$html$Html$li,
@@ -18593,44 +19887,126 @@ var _user$project$App_View$raceLi = function (race) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$App_View$sidebar = function (races) {
-	return A2(
-		_elm_lang$html$Html$aside,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('menu'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$p,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('menu-label'),
-					_1: {ctor: '[]'}
-				},
-				{
+var _user$project$App_View$userUl = F2(
+	function (maybeUser, wtosLoginUrl) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$p,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('menu-label'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('User'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$a,
+						_elm_lang$html$Html$ul,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$href('https://wtos.nl'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$target('_blank'),
-								_1: {ctor: '[]'}
-							}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('WTOS.nl'),
+							_0: _elm_lang$html$Html_Attributes$class('menu-list'),
 							_1: {ctor: '[]'}
-						}),
+						},
+						function () {
+							var _p0 = maybeUser;
+							if (_p0.ctor === 'Just') {
+								return {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$li,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$a,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$href('#'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text(_p0._0.email),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$li,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$button,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('button'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Events$onClick(_user$project$App_Msg$UserSignOut),
+															_1: {ctor: '[]'}
+														}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Sign out'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								};
+							} else {
+								return {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$li,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$a,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$href(wtosLoginUrl),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Sign in'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								};
+							}
+						}()),
 					_1: {ctor: '[]'}
-				}),
-			_1: {
+				}
+			});
+	});
+var _user$project$App_View$sidebar = F3(
+	function (races, maybeUser, wtosLoginUrl) {
+		return A2(
+			_elm_lang$html$Html$aside,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('menu'),
+				_1: {ctor: '[]'}
+			},
+			{
 				ctor: '::',
 				_0: A2(
 					_elm_lang$html$Html$p,
@@ -18645,12 +20021,16 @@ var _user$project$App_View$sidebar = function (races) {
 							_elm_lang$html$Html$a,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$href('#races'),
-								_1: {ctor: '[]'}
+								_0: _elm_lang$html$Html_Attributes$href('https://wtos.nl'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$target('_blank'),
+									_1: {ctor: '[]'}
+								}
 							},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text('Races'),
+								_0: _elm_lang$html$Html$text('WTOS.nl'),
 								_1: {ctor: '[]'}
 							}),
 						_1: {ctor: '[]'}
@@ -18658,47 +20038,76 @@ var _user$project$App_View$sidebar = function (races) {
 				_1: {
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$ul,
+						_elm_lang$html$Html$p,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('menu-list'),
+							_0: _elm_lang$html$Html_Attributes$class('menu-label'),
 							_1: {ctor: '[]'}
 						},
-						A2(
-							_elm_lang$core$List$map,
-							_user$project$App_View$raceLi,
-							_user$project$Data_Race$lastRaces(races))),
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$a,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$href('#races'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Races'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}),
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$p,
+							_elm_lang$html$Html$ul,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('menu-label'),
+								_0: _elm_lang$html$Html_Attributes$class('menu-list'),
 								_1: {ctor: '[]'}
 							},
-							{
+							A2(
+								_elm_lang$core$List$map,
+								_user$project$App_View$raceLi,
+								_user$project$Data_Race$lastRaces(races))),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$p,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('menu-label'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$a,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$href('#riders'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Riders'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
 								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$a,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$href('#riders'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Riders'),
-										_1: {ctor: '[]'}
-									}),
+								_0: A2(_user$project$App_View$userUl, maybeUser, wtosLoginUrl),
 								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
+							}
+						}
 					}
 				}
-			}
-		});
-};
+			});
+	});
 var _user$project$App_View$spinner = A2(
 	_elm_lang$html$Html$div,
 	{
@@ -18742,35 +20151,35 @@ var _user$project$App_View$spinner = A2(
 	});
 var _user$project$App_View$viewPage = F4(
 	function (app, races, riders, results) {
-		var _p0 = app.page;
-		switch (_p0.ctor) {
+		var _p1 = app.page;
+		switch (_p1.ctor) {
 			case 'RiderDetails':
-				return A5(_user$project$Page_Rider_Details$view, app, _p0._0, races, riders, results);
+				return A5(_user$project$Page_Rider_Details$view, app, _p1._0, races, riders, results);
 			case 'Riders':
 				return A3(_user$project$Page_Rider_List$view, riders, races, results);
 			case 'RiderAdd':
 				return A2(
 					_elm_lang$html$Html$map,
 					_user$project$App_Msg$RiderAdd,
-					_user$project$Page_Rider_Add_View$view(_p0._0));
+					_user$project$Page_Rider_Add_View$view(_p1._0));
 			case 'RaceDetails':
-				return A5(_user$project$Page_Race_Details$view, app, _p0._0, races, riders, results);
+				return A5(_user$project$Page_Race_Details$view, app, _p1._0, races, riders, results);
 			case 'Races':
 				return A2(_user$project$Page_Race_List$view, races, results);
 			case 'RaceAdd':
 				return A2(
 					_elm_lang$html$Html$map,
 					_user$project$App_Msg$RaceAdd,
-					_user$project$Page_Race_Add_View$view(_p0._0));
-			default:
-				var _p2 = _p0._0;
-				var maybeRace = A2(_user$project$Data_Race$getRace, _p2.raceKey, races);
-				var _p1 = maybeRace;
-				if (_p1.ctor === 'Just') {
+					_user$project$Page_Race_Add_View$view(_p1._0));
+			case 'ResultAdd':
+				var _p3 = _p1._0;
+				var maybeRace = A2(_user$project$Data_Race$getRace, _p3.raceKey, races);
+				var _p2 = maybeRace;
+				if (_p2.ctor === 'Just') {
 					return A2(
 						_elm_lang$html$Html$map,
 						_user$project$App_Msg$ResultAdd,
-						A4(_user$project$Page_Result_Add_View$view, _p1._0, _p2, riders, results));
+						A4(_user$project$Page_Result_Add_View$view, _p2._0, _p3, riders, results));
 				} else {
 					return A2(
 						_elm_lang$html$Html$div,
@@ -18781,10 +20190,15 @@ var _user$project$App_View$viewPage = F4(
 							_1: {ctor: '[]'}
 						});
 				}
+			default:
+				return A2(
+					_elm_lang$html$Html$map,
+					_user$project$App_Msg$ResultEdit,
+					_user$project$Page_Result_Edit_View$view(_p1._0));
 		}
 	});
-var _user$project$App_View$mainView = F4(
-	function (app, races, riders, results) {
+var _user$project$App_View$mainView = F6(
+	function (app, races, riders, results, maybeUser, wtosLoginUrl) {
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -18811,7 +20225,7 @@ var _user$project$App_View$mainView = F4(
 					},
 					{
 						ctor: '::',
-						_0: _user$project$App_View$sidebar(races),
+						_0: A3(_user$project$App_View$sidebar, races, maybeUser, wtosLoginUrl),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -18837,9 +20251,9 @@ var _user$project$App_View$mainView = F4(
 			});
 	});
 var _user$project$App_View$loadingPage = function (app) {
-	var _p3 = {ctor: '_Tuple3', _0: app.races, _1: app.riders, _2: app.results};
-	if (((_p3._0.ctor === 'Just') && (_p3._1.ctor === 'Just')) && (_p3._2.ctor === 'Just')) {
-		return A4(_user$project$App_View$mainView, app, _p3._0._0, _p3._1._0, _p3._2._0);
+	var _p4 = {ctor: '_Tuple3', _0: app.races, _1: app.riders, _2: app.results};
+	if (((_p4._0.ctor === 'Just') && (_p4._1.ctor === 'Just')) && (_p4._2.ctor === 'Just')) {
+		return A6(_user$project$App_View$mainView, app, _p4._0._0, _p4._1._0, _p4._2._0, app.user, app.wtosLoginUrl);
 	} else {
 		return A2(
 			_elm_lang$html$Html$div,
@@ -18893,22 +20307,30 @@ var _user$project$Main$subscriptions = function (_p0) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Main$init = function (location) {
-	var initialApp = _user$project$App_Model$initial;
-	var route = _user$project$App_Routing$routeParser(location);
-	var _p1 = A2(_user$project$App_UrlUpdate$urlUpdate, route, initialApp);
-	var app = _p1._0;
-	var cmd = _p1._1;
-	return {ctor: '_Tuple2', _0: app, _1: cmd};
-};
+var _user$project$Main$init = F2(
+	function (flags, location) {
+		var initialApp = _user$project$App_Model$initial(flags);
+		var route = _user$project$App_Routing$routeParser(location);
+		var _p1 = A2(_user$project$App_UrlUpdate$urlUpdate, route, initialApp);
+		var app = _p1._0;
+		var cmd = _p1._1;
+		return {ctor: '_Tuple2', _0: app, _1: cmd};
+	});
 var _user$project$Main$parser = function (location) {
 	return _user$project$App_Msg$UrlUpdate(
 		_user$project$App_Routing$routeParser(location));
 };
 var _user$project$Main$main = A2(
-	_elm_lang$navigation$Navigation$program,
+	_elm_lang$navigation$Navigation$programWithFlags,
 	_user$project$Main$parser,
-	{init: _user$project$Main$init, update: _user$project$App_Update$update, subscriptions: _user$project$Main$subscriptions, view: _user$project$App_View$view})();
+	{init: _user$project$Main$init, update: _user$project$App_Update$update, subscriptions: _user$project$Main$subscriptions, view: _user$project$App_View$view})(
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (wtosLoginUrl) {
+			return _elm_lang$core$Json_Decode$succeed(
+				{wtosLoginUrl: wtosLoginUrl});
+		},
+		A2(_elm_lang$core$Json_Decode$field, 'wtosLoginUrl', _elm_lang$core$Json_Decode$string)));
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};

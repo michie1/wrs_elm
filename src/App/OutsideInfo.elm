@@ -5,6 +5,7 @@ import Json.Decode exposing (decodeValue)
 import Data.Rider exposing (Rider, ridersDecoder)
 import Data.Race exposing (Race, racesDecoder)
 import Data.RaceResult exposing (RaceResult, resultsDecoder, resultDecoder)
+import Data.User exposing (userDecoder)
 
 
 port infoForOutside : GenericOutsideData -> Cmd msg
@@ -24,6 +25,12 @@ sendInfoOutside info =
 
         ResultAdd payload ->
             infoForOutside { tag = "ResultAdd", data = payload }
+
+        ResultEdit payload ->
+            infoForOutside { tag = "ResultEdit", data = payload }
+
+        UserSignOut ->
+            infoForOutside { tag = "UserSignOut", data = (Json.Encode.bool True) }
 
         LogError err ->
             infoForOutside { tag = "LogError", data = Json.Encode.string err }
@@ -82,6 +89,26 @@ getInfoFromOutside tagger onError =
                         Err e ->
                             onError e
 
+                "ResultEdited" ->
+                    case decodeValue Json.Decode.string outsideInfo.data of
+                        Ok raceKey ->
+                            tagger <| ResultEdited raceKey
+
+                        Err e ->
+                            onError e
+
+                "UserLoaded" ->
+                    case decodeValue userDecoder outsideInfo.data of
+                        Ok response ->
+                            tagger <| UserLoaded response.email
+
+                        Err e ->
+                            onError e
+
+                "UserSignedOut" ->
+                    tagger <| UserSignedOut
+
+
                 _ ->
                     onError <| "Unexpected info from outside: " ++ toString outsideInfo
         )
@@ -91,6 +118,8 @@ type InfoForOutside
     = RaceAdd Json.Encode.Value
     | RiderAdd Json.Encode.Value
     | ResultAdd Json.Encode.Value
+    | ResultEdit Json.Encode.Value
+    | UserSignOut
     | LogError String
 
 
@@ -101,6 +130,9 @@ type InfoForElm
     | RaceAdded String
     | RiderAdded String
     | ResultAdded String
+    | ResultEdited String
+    | UserLoaded String
+    | UserSignedOut
 
 
 type alias GenericOutsideData =

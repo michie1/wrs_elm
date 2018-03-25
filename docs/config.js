@@ -4,7 +4,8 @@ const config = {
   databaseURL: "https://cycling-results.firebaseio.com",
   projectId: "cycling-results",
   storageBucket: "cycling-results.appspot.com",
-  messagingSenderId: "939143658590"
+  messagingSenderId: "939143658590",
+  wtosLoginUrl: "https://wtos.nl/wrslogin.php"
 };
 
 const testConfig = {
@@ -13,7 +14,8 @@ const testConfig = {
   databaseURL: "https://cycling-results-dev.firebaseio.com",
   projectId: "cycling-results-dev",
   storageBucket: "",
-  messagingSenderId: "863333663162"
+  messagingSenderId: "863333663162",
+  wtosLoginUrl: "https://wtos.nl/wrslogin.php"
 };
 
 function hasParam(name) {

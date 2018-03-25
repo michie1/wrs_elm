@@ -7,6 +7,7 @@ import App.Page
 import App.Model exposing (App)
 import App.Routing
 import Page.Result.Add.Model as ResultAdd
+import Page.Result.Edit.Model as ResultEdit
 import Page.Race.Add.Model as RaceAdd
 import Page.Race.Add.Msg as RaceAdd
 import Page.Rider.Add.Model as RiderAdd
@@ -37,6 +38,15 @@ routeToPage route =
 urlUpdate : App.Routing.Route -> App -> ( App, Cmd Msg )
 urlUpdate route app =
     case route of
+        App.Routing.ResultEdit resultKey ->
+            let
+                resultEdit =
+                    ResultEdit.initial resultKey app.results
+            in
+                ( { app | page = App.Page.ResultEdit resultEdit }
+                , Task.attempt (always Msg.Noop) (Dom.focus "result")
+                )
+
         App.Routing.ResultAdd raceKey ->
             let
                 resultAdd =

@@ -4,5 +4,6 @@ module.exports = {
   databaseURL: "https://cycling-results-dev.firebaseio.com",
   projectId: "cycling-results-dev",
   storageBucket: "",
-  messagingSenderId: "863333663162"
+  messagingSenderId: "863333663162",
+  wtosLoginUrl: "https://wtos.nl/wrslogin.php?dev"
 };

@@ -1,24 +1,45 @@
 'use strict';
 
+function hasParam(name) {
+  var regex = new RegExp('[\\?&]' + name );
+  var results = regex.exec(location.search);
+  return results !== null;
+};
+
+var url = new URL(window.location.href);
+var token = url.searchParams.get('token');
+
+if (token !== null) {
+  window.history.replaceState(null, null, window.location.href.split('?')[0]);
+}
+
 function setup(firebase, app) {
-  const database = firebase.database();
+  loadRiders();
+  loadRaces();
+  loadResults();
 
   firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      loadRiders();
-      loadRaces();
-      loadResults();
+    if (user !== null) {
+      if (user.isAnonymous === false) {
+        userSignedIn(user);
+      }
+    } else {
+      firebase.auth().signInAnonymously();
     }
   });
 
-  firebase.auth().signInAnonymously();
+  if (token !== null) {
+    firebase.auth().signInWithCustomToken(token);
+  }
 }
 
 const config = require('./config');
 firebase.initializeApp(config);
 
 const Elm = require('./src/Main');
-const app = Elm.Main.embed(document.getElementById('main'));
+const app = Elm.Main.embed(document.getElementById('main'), {
+  wtosLoginUrl: config.wtosLoginUrl
+});
 
 setup(firebase, app);
 
@@ -110,6 +131,36 @@ function addResult(result) {
     });
 }
 
+function editResult(result) {
+  firebase.database().ref('results/' + result.key).update({
+    result: result.result,
+  }).then(function () {
+    app.ports.infoForElm.send({
+      tag: 'ResultEdited',
+      data: result.raceKey
+    });
+  });
+}
+
+function userSignedIn(user) {
+  app.ports.infoForElm.send({
+    tag: 'UserLoaded',
+    data: {
+      email: user.uid
+    }
+  });
+}
+
+function userSignOut() {
+  firebase.auth().signOut()
+    .then(function () {
+      app.ports.infoForElm.send({
+        tag: 'UserSignedOut',
+        data: true
+      });
+    });
+}
+
 app.ports.infoForOutside.subscribe(function (msg) {
   if (msg.tag === 'RiderAdd') {
     addRider(msg.data);
@@ -117,6 +168,10 @@ app.ports.infoForOutside.subscribe(function (msg) {
     addRace(msg.data);
   } else if (msg.tag === 'ResultAdd') {
     addResult(msg.data);
+  } else if (msg.tag === 'ResultEdit') {
+    editResult(msg.data);
+  } else if (msg.tag === 'UserSignOut') {
+    userSignOut();
   } else {
     console.log('msg', msg);
     document.getElementsByTagName('body')[0].innerHTML = 'Something went wrong. Please try again in Chrome or see console for detailed error message.';

@@ -9,6 +9,7 @@ import App.OutsideInfo
 import Page.Rider.Add.Update as RiderAdd
 import Page.Race.Add.Update as RaceAdd
 import Page.Result.Add.Update as ResultAdd
+import Page.Result.Edit.Update as ResultEdit
 
 
 update : Msg -> App -> ( App, Cmd Msg )
@@ -42,6 +43,13 @@ update msg app =
 
                 App.OutsideInfo.ResultAdded raceKey ->
                     ( app, App.Helpers.navigate <| App.Page.RaceDetails raceKey )
+
+                App.OutsideInfo.ResultEdited raceKey ->
+                    ( app, App.Helpers.navigate <| App.Page.RaceDetails raceKey )
+                App.OutsideInfo.UserLoaded email ->
+                    ( { app | user = Just { email = email } }, Cmd.none )
+                App.OutsideInfo.UserSignedOut ->
+                    ( { app | user = Nothing }, Cmd.none ) 
 
         Msg.LogErr err ->
             ( app, App.OutsideInfo.sendInfoOutside <| App.OutsideInfo.LogError err )
@@ -83,3 +91,21 @@ update msg app =
 
                 _ ->
                     ( app, Cmd.none )
+
+        Msg.ResultEdit subMsg ->
+            case app.page of
+                App.Page.ResultEdit page ->
+                    let
+                        ( nextPage, nextCmd ) =
+                            ResultEdit.update subMsg page
+                    in
+                        ( { app | page = App.Page.ResultEdit nextPage }
+                        , Cmd.map Msg.ResultEdit nextCmd
+                        )
+
+                _ ->
+                    ( app, Cmd.none )
+
+        Msg.UserSignOut ->
+            ( app, App.OutsideInfo.sendInfoOutside <| App.OutsideInfo.UserSignOut )
+

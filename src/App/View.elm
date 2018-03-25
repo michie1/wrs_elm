@@ -1,12 +1,14 @@
 module App.View exposing (view)
 
-import Html exposing (Html, h2, div, text, a, ul, li, aside, p, section)
+import Html exposing (Html, button, h2, div, text, a, ul, li, aside, p, section)
 import Html.Attributes exposing (href, class, target)
+import Html.Events exposing (onClick)
 import App.Msg
 import App.Model exposing (App)
 import App.Page
 import Data.Race exposing (Race, lastRaces, getRace)
 import Data.Rider exposing (Rider)
+import Data.User exposing (User)
 import Data.RaceResult exposing (RaceResult)
 import Page.Race.Details
 import Page.Race.List
@@ -15,6 +17,8 @@ import Page.Rider.Details
 import Page.Rider.List
 import Page.Rider.Add.View
 import Page.Result.Add.View
+import Page.Result.Edit.View
+import App.OutsideInfo exposing (sendInfoOutside)
 
 
 view : App -> Html App.Msg.Msg
@@ -24,10 +28,10 @@ view app =
         ]
 
 
-mainView : App -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
-mainView app races riders results =
+mainView : App -> List Race -> List Rider -> List RaceResult -> Maybe User -> String -> Html App.Msg.Msg
+mainView app races riders results maybeUser wtosLoginUrl =
     div [ class "columns" ]
-        [ section [ class "section", class "column", class "is-one-fifth" ] [ sidebar races ]
+        [ section [ class "section", class "column", class "is-one-fifth" ] [ sidebar races maybeUser wtosLoginUrl ]
         , section [ class "section", class "column" ] [ viewPage app races riders results ]
         ]
 
@@ -68,12 +72,16 @@ viewPage app races riders results =
                     Nothing ->
                         div [] [ text "Race does not exist." ]
 
+        App.Page.ResultEdit edit ->
+            Page.Result.Edit.View.view edit
+                |> Html.map App.Msg.ResultEdit
+
 
 loadingPage : App -> Html App.Msg.Msg
 loadingPage app =
     case ( app.races, app.riders, app.results ) of
         ( Just races, Just riders, Just results ) ->
-            mainView app races riders results
+            mainView app races riders results app.user app.wtosLoginUrl
 
         ( _, _, _ ) ->
             div [ class "col s9 m8 offset-s3 offset-m4" ]
@@ -95,13 +103,29 @@ spinner =
 -- div [ class "loader" ] [ text "Loading..." ]
 
 
-sidebar : List Race -> Html App.Msg.Msg
-sidebar races =
+sidebar : List Race -> Maybe User -> String -> Html App.Msg.Msg
+sidebar races maybeUser wtosLoginUrl =
     aside [ class "menu" ]
         [ p [ class "menu-label" ] [ a [ href "https://wtos.nl", target "_blank" ] [ text "WTOS.nl" ] ]
         , p [ class "menu-label" ] [ a [ href "#races" ] [ text "Races" ] ]
         , ul [ class "menu-list" ] (List.map raceLi <| lastRaces races)
         , p [ class "menu-label" ] [ a [ href "#riders" ] [ text "Riders" ] ]
+        , userUl maybeUser wtosLoginUrl
+        ]
+
+userUl : Maybe User -> String -> Html App.Msg.Msg
+userUl maybeUser wtosLoginUrl =
+    div []
+        [ p [ class "menu-label" ] [ text "User" ]
+        , ul [ class "menu-list" ] <|
+            case maybeUser of
+                Just user ->
+                    [ li [] [ a [ href "#" ] [ text user.email ] ]
+                    , li [] [ button [ class "button", onClick App.Msg.UserSignOut ] [ text "Sign out" ] ]
+                    ]
+
+                Nothing ->
+                    [ li [] [ a [ href wtosLoginUrl ] [ text "Sign in" ] ] ]
         ]
 
 
