@@ -6318,7 +6318,7 @@ var _elm_lang$core$Date$Jan = {ctor: 'Jan'};
 var _elm_community$elm_datepicker$DatePicker_Date$yearRange = F2(
 	function (_p0, range) {
 		var _p1 = _p0;
-		var _p5 = _p1.focused;
+		var _p5 = _p1.today;
 		var _p4 = _p1.currentMonth;
 		var _p2 = range;
 		switch (_p2.ctor) {
@@ -9547,6 +9547,7 @@ var _elm_community$elm_datepicker$DatePicker$ChangeFocus = function (a) {
 var _elm_community$elm_datepicker$DatePicker$datePicker = F3(
 	function (pickedDate, settings, _p14) {
 		var _p15 = _p14;
+		var _p20 = _p15.today;
 		var onChange = function (handler) {
 			return A2(
 				_elm_lang$html$Html_Events$on,
@@ -9623,7 +9624,7 @@ var _elm_community$elm_datepicker$DatePicker$datePicker = F3(
 		var currentDate = A2(
 			_elm_community$elm_datepicker$DatePicker_ops['?>'],
 			A2(_elm_community$elm_datepicker$DatePicker_ops['??>'], _p15.focused, pickedDate),
-			_p15.today);
+			_p20);
 		var _p18 = A2(_elm_community$elm_datepicker$DatePicker$prepareDates, currentDate, settings.firstDayOfWeek);
 		var currentMonth = _p18.currentMonth;
 		var currentDates = _p18.currentDates;
@@ -9757,7 +9758,7 @@ var _elm_community$elm_datepicker$DatePicker$datePicker = F3(
 				yearOption,
 				A2(
 					_elm_community$elm_datepicker$DatePicker_Date$yearRange,
-					{focused: currentDate, currentMonth: currentMonth},
+					{currentMonth: currentMonth, today: _p20},
 					settings.changeYear)));
 		return A2(
 			_elm_lang$html$Html$div,
@@ -9958,9 +9959,9 @@ var _elm_community$elm_datepicker$DatePicker$datePicker = F3(
 			});
 	});
 var _elm_community$elm_datepicker$DatePicker$view = F3(
-	function (pickedDate, settings, _p20) {
-		var _p21 = _p20;
-		var _p23 = _p21._0;
+	function (pickedDate, settings, _p21) {
+		var _p22 = _p21;
+		var _p24 = _p22._0;
 		var inputClasses = A2(
 			_elm_lang$core$Basics_ops['++'],
 			{
@@ -9973,11 +9974,11 @@ var _elm_community$elm_datepicker$DatePicker$view = F3(
 				_1: {ctor: '[]'}
 			},
 			settings.inputClassList);
-		var potentialInputId = function (_p22) {
+		var potentialInputId = function (_p23) {
 			return A2(
 				_elm_lang$core$List$filterMap,
 				_elm_lang$core$Basics$identity,
-				_elm_lang$core$List$singleton(_p22));
+				_elm_lang$core$List$singleton(_p23));
 		}(
 			A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$id, settings.inputId));
 		var inputCommon = function (xs) {
@@ -10041,7 +10042,7 @@ var _elm_community$elm_datepicker$DatePicker$view = F3(
 								_elm_lang$core$Maybe$withDefault,
 								'',
 								A2(_elm_lang$core$Maybe$map, settings.dateFormatter, pickedDate)),
-							_p23.inputText)),
+							_p24.inputText)),
 					_1: {ctor: '[]'}
 				}
 			});
@@ -10058,7 +10059,7 @@ var _elm_community$elm_datepicker$DatePicker$view = F3(
 				_0: dateInput,
 				_1: {
 					ctor: '::',
-					_0: _p21._0.open ? A3(_elm_community$elm_datepicker$DatePicker$datePicker, pickedDate, settings, _p23) : _elm_lang$html$Html$text(''),
+					_0: _p22._0.open ? A3(_elm_community$elm_datepicker$DatePicker$datePicker, pickedDate, settings, _p24) : _elm_lang$html$Html$text(''),
 					_1: {ctor: '[]'}
 				}
 			});
@@ -10111,29 +10112,29 @@ _elm_community$elm_datepicker$DatePicker_ops['!'] = F2(
 		};
 	});
 var _elm_community$elm_datepicker$DatePicker$update = F3(
-	function (settings, msg, _p24) {
-		var _p25 = _p24;
-		var _p33 = _p25._0;
-		var _p26 = msg;
-		switch (_p26.ctor) {
+	function (settings, msg, _p25) {
+		var _p26 = _p25;
+		var _p34 = _p26._0;
+		var _p27 = msg;
+		switch (_p27.ctor) {
 			case 'CurrentDate':
-				var _p27 = _p26._0;
+				var _p28 = _p27._0;
 				return A2(
 					_elm_community$elm_datepicker$DatePicker_ops['!'],
 					_elm_lang$core$Native_Utils.update(
-						_p33,
+						_p34,
 						{
-							focused: _elm_lang$core$Maybe$Just(_p27),
-							today: _p27
+							focused: _elm_lang$core$Maybe$Just(_p28),
+							today: _p28
 						}),
 					{ctor: '[]'});
 			case 'ChangeFocus':
 				return A2(
 					_elm_community$elm_datepicker$DatePicker_ops['!'],
 					_elm_lang$core$Native_Utils.update(
-						_p33,
+						_p34,
 						{
-							focused: _elm_lang$core$Maybe$Just(_p26._0)
+							focused: _elm_lang$core$Maybe$Just(_p27._0)
 						}),
 					{ctor: '[]'});
 			case 'Pick':
@@ -10141,37 +10142,37 @@ var _elm_community$elm_datepicker$DatePicker$update = F3(
 					ctor: '_Tuple3',
 					_0: _elm_community$elm_datepicker$DatePicker$DatePicker(
 						_elm_lang$core$Native_Utils.update(
-							_p33,
+							_p34,
 							{open: false, inputText: _elm_lang$core$Maybe$Nothing, focused: _elm_lang$core$Maybe$Nothing})),
 					_1: _elm_lang$core$Platform_Cmd$none,
-					_2: _elm_community$elm_datepicker$DatePicker$Changed(_p26._0)
+					_2: _elm_community$elm_datepicker$DatePicker$Changed(_p27._0)
 				};
 			case 'Text':
 				return A2(
 					_elm_community$elm_datepicker$DatePicker_ops['!'],
 					_elm_lang$core$Native_Utils.update(
-						_p33,
+						_p34,
 						{
-							inputText: _elm_lang$core$Maybe$Just(_p26._0)
+							inputText: _elm_lang$core$Maybe$Just(_p27._0)
 						}),
 					{ctor: '[]'});
 			case 'SubmitText':
-				var isWhitespace = function (_p28) {
+				var isWhitespace = function (_p29) {
 					return _elm_lang$core$String$isEmpty(
-						_elm_lang$core$String$trim(_p28));
+						_elm_lang$core$String$trim(_p29));
 				};
 				var dateEvent = function () {
-					var text = A2(_elm_community$elm_datepicker$DatePicker_ops['?>'], _p33.inputText, '');
+					var text = A2(_elm_community$elm_datepicker$DatePicker_ops['?>'], _p34.inputText, '');
 					return isWhitespace(text) ? _elm_community$elm_datepicker$DatePicker$Changed(_elm_lang$core$Maybe$Nothing) : A2(
 						_elm_lang$core$Result$withDefault,
 						_elm_community$elm_datepicker$DatePicker$NoChange,
 						A2(
 							_elm_lang$core$Result$map,
-							function (_p29) {
+							function (_p30) {
 								return _elm_community$elm_datepicker$DatePicker$Changed(
 									function (date) {
 										return settings.isDisabled(date) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(date);
-									}(_p29));
+									}(_p30));
 							},
 							settings.parser(text)));
 				}();
@@ -10179,27 +10180,27 @@ var _elm_community$elm_datepicker$DatePicker$update = F3(
 					ctor: '_Tuple3',
 					_0: _elm_community$elm_datepicker$DatePicker$DatePicker(
 						_elm_lang$core$Native_Utils.update(
-							_p33,
+							_p34,
 							{
 								inputText: function () {
-									var _p30 = dateEvent;
-									if (_p30.ctor === 'Changed') {
+									var _p31 = dateEvent;
+									if (_p31.ctor === 'Changed') {
 										return _elm_lang$core$Maybe$Nothing;
 									} else {
-										return _p33.inputText;
+										return _p34.inputText;
 									}
 								}(),
 								focused: function () {
-									var _p31 = dateEvent;
-									if (_p31.ctor === 'Changed') {
-										var _p32 = _p31._0;
-										if (_p32.ctor === 'Just') {
-											return _elm_lang$core$Maybe$Just(_p32._0);
+									var _p32 = dateEvent;
+									if (_p32.ctor === 'Changed') {
+										var _p33 = _p32._0;
+										if (_p33.ctor === 'Just') {
+											return _elm_lang$core$Maybe$Just(_p33._0);
 										} else {
 											return _elm_lang$core$Maybe$Nothing;
 										}
 									} else {
-										return _p33.focused;
+										return _p34.focused;
 									}
 								}()
 							})),
@@ -10210,28 +10211,28 @@ var _elm_community$elm_datepicker$DatePicker$update = F3(
 				return A2(
 					_elm_community$elm_datepicker$DatePicker_ops['!'],
 					_elm_lang$core$Native_Utils.update(
-						_p33,
+						_p34,
 						{open: true, forceOpen: false}),
 					{ctor: '[]'});
 			case 'Blur':
 				return A2(
 					_elm_community$elm_datepicker$DatePicker_ops['!'],
 					_elm_lang$core$Native_Utils.update(
-						_p33,
-						{open: _p25._0.forceOpen}),
+						_p34,
+						{open: _p26._0.forceOpen}),
 					{ctor: '[]'});
 			case 'MouseDown':
 				return A2(
 					_elm_community$elm_datepicker$DatePicker_ops['!'],
 					_elm_lang$core$Native_Utils.update(
-						_p33,
+						_p34,
 						{forceOpen: true}),
 					{ctor: '[]'});
 			default:
 				return A2(
 					_elm_community$elm_datepicker$DatePicker_ops['!'],
 					_elm_lang$core$Native_Utils.update(
-						_p33,
+						_p34,
 						{forceOpen: false}),
 					{ctor: '[]'});
 		}
@@ -10368,6 +10369,32 @@ var _elm_lang$core$Set$partition = F2(
 		};
 	});
 
+var _elm_community$json_extra$Json_Decode_Extra$combine = A2(
+	_elm_lang$core$List$foldr,
+	_elm_lang$core$Json_Decode$map2(
+		F2(
+			function (x, y) {
+				return {ctor: '::', _0: x, _1: y};
+			})),
+	_elm_lang$core$Json_Decode$succeed(
+		{ctor: '[]'}));
+var _elm_community$json_extra$Json_Decode_Extra$collection = function (decoder) {
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (length) {
+			return _elm_community$json_extra$Json_Decode_Extra$combine(
+				A2(
+					_elm_lang$core$List$map,
+					function (index) {
+						return A2(
+							_elm_lang$core$Json_Decode$field,
+							_elm_lang$core$Basics$toString(index),
+							decoder);
+					},
+					A2(_elm_lang$core$List$range, 0, length - 1)));
+		},
+		A2(_elm_lang$core$Json_Decode$field, 'length', _elm_lang$core$Json_Decode$int));
+};
 var _elm_community$json_extra$Json_Decode_Extra$fromResult = function (result) {
 	var _p0 = result;
 	if (_p0.ctor === 'Ok') {
@@ -10376,6 +10403,42 @@ var _elm_community$json_extra$Json_Decode_Extra$fromResult = function (result) {
 		return _elm_lang$core$Json_Decode$fail(_p0._0);
 	}
 };
+var _elm_community$json_extra$Json_Decode_Extra$parseInt = A2(
+	_elm_lang$core$Json_Decode$andThen,
+	function (_p1) {
+		return _elm_community$json_extra$Json_Decode_Extra$fromResult(
+			_elm_lang$core$String$toInt(_p1));
+	},
+	_elm_lang$core$Json_Decode$string);
+var _elm_community$json_extra$Json_Decode_Extra$parseFloat = A2(
+	_elm_lang$core$Json_Decode$andThen,
+	function (_p2) {
+		return _elm_community$json_extra$Json_Decode_Extra$fromResult(
+			_elm_lang$core$String$toFloat(_p2));
+	},
+	_elm_lang$core$Json_Decode$string);
+var _elm_community$json_extra$Json_Decode_Extra$doubleEncoded = function (decoder) {
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (_p3) {
+			return _elm_community$json_extra$Json_Decode_Extra$fromResult(
+				A2(_elm_lang$core$Json_Decode$decodeString, decoder, _p3));
+		},
+		_elm_lang$core$Json_Decode$string);
+};
+var _elm_community$json_extra$Json_Decode_Extra$keys = A2(
+	_elm_lang$core$Json_Decode$map,
+	A2(
+		_elm_lang$core$List$foldl,
+		F2(
+			function (_p4, acc) {
+				var _p5 = _p4;
+				return {ctor: '::', _0: _p5._0, _1: acc};
+			}),
+		{ctor: '[]'}),
+	_elm_lang$core$Json_Decode$keyValuePairs(
+		_elm_lang$core$Json_Decode$succeed(
+			{ctor: '_Tuple0'})));
 var _elm_community$json_extra$Json_Decode_Extra$sequenceHelp = F2(
 	function (decoders, jsonValues) {
 		return (!_elm_lang$core$Native_Utils.eq(
@@ -10398,15 +10461,33 @@ var _elm_community$json_extra$Json_Decode_Extra$sequence = function (decoders) {
 		_elm_community$json_extra$Json_Decode_Extra$sequenceHelp(decoders),
 		_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$value));
 };
+var _elm_community$json_extra$Json_Decode_Extra$indexedList = function (indexedDecoder) {
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (values) {
+			return _elm_community$json_extra$Json_Decode_Extra$sequence(
+				A2(
+					_elm_lang$core$List$map,
+					indexedDecoder,
+					A2(
+						_elm_lang$core$List$range,
+						0,
+						_elm_lang$core$List$length(values) - 1)));
+		},
+		_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$value));
+};
 var _elm_community$json_extra$Json_Decode_Extra$optionalField = F2(
 	function (fieldName, decoder) {
 		var finishDecoding = function (json) {
-			var _p1 = A2(
+			var _p6 = A2(
 				_elm_lang$core$Json_Decode$decodeValue,
 				A2(_elm_lang$core$Json_Decode$field, fieldName, _elm_lang$core$Json_Decode$value),
 				json);
-			if (_p1.ctor === 'Ok') {
-				return A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Maybe$Just, decoder);
+			if (_p6.ctor === 'Ok') {
+				return A2(
+					_elm_lang$core$Json_Decode$map,
+					_elm_lang$core$Maybe$Just,
+					A2(_elm_lang$core$Json_Decode$field, fieldName, decoder));
 			} else {
 				return _elm_lang$core$Json_Decode$succeed(_elm_lang$core$Maybe$Nothing);
 			}
@@ -10416,30 +10497,27 @@ var _elm_community$json_extra$Json_Decode_Extra$optionalField = F2(
 var _elm_community$json_extra$Json_Decode_Extra$withDefault = F2(
 	function (fallback, decoder) {
 		return A2(
-			_elm_lang$core$Json_Decode$andThen,
-			function (_p2) {
-				return _elm_lang$core$Json_Decode$succeed(
-					A2(_elm_lang$core$Maybe$withDefault, fallback, _p2));
-			},
+			_elm_lang$core$Json_Decode$map,
+			_elm_lang$core$Maybe$withDefault(fallback),
 			_elm_lang$core$Json_Decode$maybe(decoder));
 	});
 var _elm_community$json_extra$Json_Decode_Extra$decodeDictFromTuples = F2(
 	function (keyDecoder, tuples) {
-		var _p3 = tuples;
-		if (_p3.ctor === '[]') {
+		var _p7 = tuples;
+		if (_p7.ctor === '[]') {
 			return _elm_lang$core$Json_Decode$succeed(_elm_lang$core$Dict$empty);
 		} else {
-			var _p4 = A2(_elm_lang$core$Json_Decode$decodeString, keyDecoder, _p3._0._0);
-			if (_p4.ctor === 'Ok') {
+			var _p8 = A2(_elm_lang$core$Json_Decode$decodeString, keyDecoder, _p7._0._0);
+			if (_p8.ctor === 'Ok') {
 				return A2(
 					_elm_lang$core$Json_Decode$andThen,
-					function (_p5) {
+					function (_p9) {
 						return _elm_lang$core$Json_Decode$succeed(
-							A3(_elm_lang$core$Dict$insert, _p4._0, _p3._0._1, _p5));
+							A3(_elm_lang$core$Dict$insert, _p8._0, _p7._0._1, _p9));
 					},
-					A2(_elm_community$json_extra$Json_Decode_Extra$decodeDictFromTuples, keyDecoder, _p3._1));
+					A2(_elm_community$json_extra$Json_Decode_Extra$decodeDictFromTuples, keyDecoder, _p7._1));
 			} else {
-				return _elm_lang$core$Json_Decode$fail(_p4._0);
+				return _elm_lang$core$Json_Decode$fail(_p8._0);
 			}
 		}
 	});
@@ -10447,28 +10525,20 @@ var _elm_community$json_extra$Json_Decode_Extra$dict2 = F2(
 	function (keyDecoder, valueDecoder) {
 		return A2(
 			_elm_lang$core$Json_Decode$andThen,
-			function (_p6) {
-				return A2(
-					_elm_community$json_extra$Json_Decode_Extra$decodeDictFromTuples,
-					keyDecoder,
-					_elm_lang$core$Dict$toList(_p6));
-			},
-			_elm_lang$core$Json_Decode$dict(valueDecoder));
+			_elm_community$json_extra$Json_Decode_Extra$decodeDictFromTuples(keyDecoder),
+			_elm_lang$core$Json_Decode$keyValuePairs(valueDecoder));
 	});
 var _elm_community$json_extra$Json_Decode_Extra$set = function (decoder) {
 	return A2(
-		_elm_lang$core$Json_Decode$andThen,
-		function (_p7) {
-			return _elm_lang$core$Json_Decode$succeed(
-				_elm_lang$core$Set$fromList(_p7));
-		},
+		_elm_lang$core$Json_Decode$map,
+		_elm_lang$core$Set$fromList,
 		_elm_lang$core$Json_Decode$list(decoder));
 };
 var _elm_community$json_extra$Json_Decode_Extra$date = A2(
 	_elm_lang$core$Json_Decode$andThen,
-	function (_p8) {
+	function (_p10) {
 		return _elm_community$json_extra$Json_Decode_Extra$fromResult(
-			_elm_lang$core$Date$fromString(_p8));
+			_elm_lang$core$Date$fromString(_p10));
 	},
 	_elm_lang$core$Json_Decode$string);
 var _elm_community$json_extra$Json_Decode_Extra$andMap = _elm_lang$core$Json_Decode$map2(
@@ -10478,6 +10548,28 @@ var _elm_community$json_extra$Json_Decode_Extra$andMap = _elm_lang$core$Json_Dec
 		}));
 var _elm_community$json_extra$Json_Decode_Extra_ops = _elm_community$json_extra$Json_Decode_Extra_ops || {};
 _elm_community$json_extra$Json_Decode_Extra_ops['|:'] = _elm_lang$core$Basics$flip(_elm_community$json_extra$Json_Decode_Extra$andMap);
+
+var _elm_lang$core$Native_Bitwise = function() {
+
+return {
+	and: F2(function and(a, b) { return a & b; }),
+	or: F2(function or(a, b) { return a | b; }),
+	xor: F2(function xor(a, b) { return a ^ b; }),
+	complement: function complement(a) { return ~a; },
+	shiftLeftBy: F2(function(offset, a) { return a << offset; }),
+	shiftRightBy: F2(function(offset, a) { return a >> offset; }),
+	shiftRightZfBy: F2(function(offset, a) { return a >>> offset; })
+};
+
+}();
+
+var _elm_lang$core$Bitwise$shiftRightZfBy = _elm_lang$core$Native_Bitwise.shiftRightZfBy;
+var _elm_lang$core$Bitwise$shiftRightBy = _elm_lang$core$Native_Bitwise.shiftRightBy;
+var _elm_lang$core$Bitwise$shiftLeftBy = _elm_lang$core$Native_Bitwise.shiftLeftBy;
+var _elm_lang$core$Bitwise$complement = _elm_lang$core$Native_Bitwise.complement;
+var _elm_lang$core$Bitwise$xor = _elm_lang$core$Native_Bitwise.xor;
+var _elm_lang$core$Bitwise$or = _elm_lang$core$Native_Bitwise.or;
+var _elm_lang$core$Bitwise$and = _elm_lang$core$Native_Bitwise.and;
 
 //import Maybe, Native.List //
 
@@ -12045,42 +12137,6 @@ var _justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth = F2(
 		}
 	});
 
-var _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime = function (rd) {
-	return (rd - 719163) * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay;
-};
-var _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber = function (rd) {
-	var _p0 = A2(_elm_lang$core$Basics_ops['%'], rd, 7);
-	if (_p0 === 0) {
-		return 7;
-	} else {
-		return _p0;
-	}
-};
-var _justinmimbs$elm_date_extra$Date_Internal_RataDie$leapYearsInCommonEra = function (y) {
-	return (((y / 4) | 0) - ((y / 100) | 0)) + ((y / 400) | 0);
-};
-var _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear = function (y) {
-	return (365 * (y - 1)) + _justinmimbs$elm_date_extra$Date_Internal_RataDie$leapYearsInCommonEra(y - 1);
-};
-var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate = F2(
-	function (y, d) {
-		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear(y) + d;
-	});
-var _justinmimbs$elm_date_extra$Date_Internal_RataDie$week1Day1OfWeekYear = function (y) {
-	var jan4RD = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate, y, 4);
-	return (jan4RD - _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber(jan4RD)) + 1;
-};
-var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromWeekDate = F3(
-	function (y, w, d) {
-		var week1Day0RD = _justinmimbs$elm_date_extra$Date_Internal_RataDie$week1Day1OfWeekYear(y) - 1;
-		return (week1Day0RD + ((w - 1) * 7)) + d;
-	});
-var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate = F3(
-	function (y, m, d) {
-		var md = A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth, y, m);
-		var yd = _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear(y);
-		return (yd + md) + d;
-	});
 var _justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt = F2(
 	function (a, b) {
 		return {
@@ -12090,77 +12146,86 @@ var _justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt = F2(
 		};
 	});
 var _justinmimbs$elm_date_extra$Date_Internal_RataDie$year = function (rd) {
-	var _p1 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt, rd, 146097);
-	var q400 = _p1._0;
-	var r400 = _p1._1;
-	var _p2 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt, r400, 36524);
-	var q100 = _p2._0;
-	var r100 = _p2._1;
-	var _p3 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt, r100, 1461);
-	var q4 = _p3._0;
-	var r4 = _p3._1;
-	var _p4 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt, r4, 365);
-	var q1 = _p4._0;
-	var r1 = _p4._1;
+	var _p0 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt, rd, 146097);
+	var n400 = _p0._0;
+	var r400 = _p0._1;
+	var _p1 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt, r400, 36524);
+	var n100 = _p1._0;
+	var r100 = _p1._1;
+	var _p2 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt, r100, 1461);
+	var n4 = _p2._0;
+	var r4 = _p2._1;
+	var _p3 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt, r4, 365);
+	var n1 = _p3._0;
+	var r1 = _p3._1;
 	var n = _elm_lang$core$Native_Utils.eq(r1, 0) ? 0 : 1;
-	return ((((q400 * 400) + (q100 * 100)) + (q4 * 4)) + q1) + n;
+	return ((((n400 * 400) + (n100 * 100)) + (n4 * 4)) + n1) + n;
 };
-var _justinmimbs$elm_date_extra$Date_Internal_RataDie$ordinalDay = function (rd) {
-	return rd - _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear(
-		_justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd));
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber = function (rd) {
+	var _p4 = A2(_elm_lang$core$Basics_ops['%'], rd, 7);
+	if (_p4 === 0) {
+		return 7;
+	} else {
+		return _p4;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$daysBeforeYear = function (y1) {
+	var y = y1 - 1;
+	var leapYears = (((y / 4) | 0) - ((y / 100) | 0)) + ((y / 400) | 0);
+	return (365 * y) + leapYears;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$daysBeforeWeekYear = function (y) {
+	var jan4 = _justinmimbs$elm_date_extra$Date_Internal_RataDie$daysBeforeYear(y) + 4;
+	return jan4 - _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber(jan4);
 };
 var _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekYear = function (rd) {
-	var daysToThursday = 4 - _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber(rd);
-	return _justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd + daysToThursday);
+	return _justinmimbs$elm_date_extra$Date_Internal_RataDie$year(
+		rd + (4 - _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber(rd)));
 };
 var _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekNumber = function (rd) {
-	var week1Day1RD = _justinmimbs$elm_date_extra$Date_Internal_RataDie$week1Day1OfWeekYear(
-		_justinmimbs$elm_date_extra$Date_Internal_RataDie$weekYear(rd));
-	return (((rd - week1Day1RD) / 7) | 0) + 1;
+	var week1Day1 = _justinmimbs$elm_date_extra$Date_Internal_RataDie$daysBeforeWeekYear(
+		_justinmimbs$elm_date_extra$Date_Internal_RataDie$weekYear(rd)) + 1;
+	return (((rd - week1Day1) / 7) | 0) + 1;
 };
-var _justinmimbs$elm_date_extra$Date_Internal_RataDie$find = F2(
-	function (pred, list) {
-		find:
-		while (true) {
-			var _p5 = list;
-			if (_p5.ctor === '[]') {
-				return _elm_lang$core$Maybe$Nothing;
-			} else {
-				var _p6 = _p5._0;
-				if (pred(_p6)) {
-					return _elm_lang$core$Maybe$Just(_p6);
-				} else {
-					var _v2 = pred,
-						_v3 = _p5._1;
-					pred = _v2;
-					list = _v3;
-					continue find;
-				}
-			}
-		}
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromWeekDate = F3(
+	function (wy, wn, wdn) {
+		return (_justinmimbs$elm_date_extra$Date_Internal_RataDie$daysBeforeWeekYear(wy) + ((wn - 1) * 7)) + wdn;
 	});
-var _justinmimbs$elm_date_extra$Date_Internal_RataDie$month = function (rd) {
-	var od = _justinmimbs$elm_date_extra$Date_Internal_RataDie$ordinalDay(rd);
-	var y = _justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd);
-	return A2(
-		_elm_lang$core$Maybe$withDefault,
-		_elm_lang$core$Date$Jan,
-		A2(
-			_justinmimbs$elm_date_extra$Date_Internal_RataDie$find,
-			function (m) {
-				return _elm_lang$core$Native_Utils.cmp(
-					A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth, y, m),
-					od) < 0;
-			},
-			_elm_lang$core$List$reverse(_justinmimbs$elm_date_extra$Date_Extra_Facts$months)));
-};
-var _justinmimbs$elm_date_extra$Date_Internal_RataDie$day = function (rd) {
-	var od = _justinmimbs$elm_date_extra$Date_Internal_RataDie$ordinalDay(rd);
-	var m = _justinmimbs$elm_date_extra$Date_Internal_RataDie$month(rd);
-	var y = _justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd);
-	return od - A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth, y, m);
-};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate = F3(
+	function (y, m, d) {
+		return (_justinmimbs$elm_date_extra$Date_Internal_RataDie$daysBeforeYear(y) + A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth, y, m)) + d;
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate = F2(
+	function (y, od) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$daysBeforeYear(y) + od;
+	});
 
+var _justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts = F4(
+	function (hh, mm, ss, ms) {
+		return (((_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour * hh) + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * mm)) + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond * ss)) + ms;
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromRataDie = function (rd) {
+	return (rd - 719163) * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromOrdinalDate = F2(
+	function (y, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromRataDie(
+			A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate, y, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromRataDie(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromParts = F7(
+	function (y, m, d, hh, mm, ss, ms) {
+		return A3(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate, y, m, d) + A4(_justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts, hh, mm, ss, ms);
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromWeekDate = F3(
+	function (y, w, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromRataDie(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromWeekDate, y, w, d));
+	});
 var _justinmimbs$elm_date_extra$Date_Internal_Core$weekNumberFromCalendarDate = F3(
 	function (y, m, d) {
 		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekNumber(
@@ -12170,30 +12235,6 @@ var _justinmimbs$elm_date_extra$Date_Internal_Core$weekYearFromCalendarDate = F3
 	function (y, m, d) {
 		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekYear(
 			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d));
-	});
-var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromOrdinalDate = F2(
-	function (y, d) {
-		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
-			A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate, y, d));
-	});
-var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromWeekDate = F3(
-	function (y, w, d) {
-		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
-			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromWeekDate, y, w, d));
-	});
-var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate = F3(
-	function (y, m, d) {
-		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
-			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d));
-	});
-var _justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts = F4(
-	function (hh, mm, ss, ms) {
-		return ((ms + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond * ss)) + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * mm)) + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour * hh);
-	});
-var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromParts = F7(
-	function (y, m, d, hh, mm, ss, ms) {
-		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
-			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d)) + A4(_justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts, hh, mm, ss, ms);
 	});
 
 var _justinmimbs$elm_date_extra$Date_Internal_Extract$msOffsetFromUtc = function (date) {
@@ -13043,6 +13084,13 @@ var _justinmimbs$elm_date_extra$Date_Internal_Parse$offsetTimeFromIsoString = fu
 					s))));
 };
 
+var _justinmimbs$elm_date_extra$Date_Extra$toRataDie = function (date) {
+	return A3(
+		_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date),
+		_elm_lang$core$Date$day(date));
+};
 var _justinmimbs$elm_date_extra$Date_Extra$toParts = function (date) {
 	return {
 		ctor: '_Tuple7',
@@ -13229,25 +13277,25 @@ var _justinmimbs$elm_date_extra$Date_Extra$add = F3(
 		}
 	});
 var _justinmimbs$elm_date_extra$Date_Extra$rangeHelp = F5(
-	function (result, interval, step, start, date) {
+	function (interval, step, end, revList, date) {
 		rangeHelp:
 		while (true) {
 			if (_elm_lang$core$Native_Utils.cmp(
 				_elm_lang$core$Date$toTime(date),
-				_elm_lang$core$Date$toTime(start)) < 0) {
-				return result;
-			} else {
-				var _v4 = {ctor: '::', _0: date, _1: result},
-					_v5 = interval,
-					_v6 = step,
-					_v7 = start,
+				_elm_lang$core$Date$toTime(end)) < 0) {
+				var _v4 = interval,
+					_v5 = step,
+					_v6 = end,
+					_v7 = {ctor: '::', _0: date, _1: revList},
 					_v8 = A3(_justinmimbs$elm_date_extra$Date_Extra$add, interval, step, date);
-				result = _v4;
-				interval = _v5;
-				step = _v6;
-				start = _v7;
+				interval = _v4;
+				step = _v5;
+				end = _v6;
+				revList = _v7;
 				date = _v8;
 				continue rangeHelp;
+			} else {
+				return _elm_lang$core$List$reverse(revList);
 			}
 		}
 	});
@@ -13351,18 +13399,16 @@ var _justinmimbs$elm_date_extra$Date_Extra$ceiling = F2(
 	});
 var _justinmimbs$elm_date_extra$Date_Extra$range = F4(
 	function (interval, step, start, end) {
-		var stepBack = _elm_lang$core$Basics$negate(
-			A2(_elm_lang$core$Basics$max, 1, step));
-		return A5(
+		var first = A2(_justinmimbs$elm_date_extra$Date_Extra$ceiling, interval, start);
+		return (_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Date$toTime(first),
+			_elm_lang$core$Date$toTime(end)) < 0) ? A5(
 			_justinmimbs$elm_date_extra$Date_Extra$rangeHelp,
-			{ctor: '[]'},
 			interval,
-			stepBack,
-			start,
-			A2(
-				_justinmimbs$elm_date_extra$Date_Extra$ceiling,
-				interval,
-				A3(_justinmimbs$elm_date_extra$Date_Extra$add, interval, stepBack, end)));
+			A2(_elm_lang$core$Basics$max, 1, step),
+			end,
+			{ctor: '[]'},
+			first) : {ctor: '[]'};
 	});
 var _justinmimbs$elm_date_extra$Date_Extra$fromIsoString = function (_p11) {
 	return A2(
@@ -13460,6 +13506,13 @@ var _justinmimbs$elm_date_extra$Date_Extra$diff = F3(
 					A2(_justinmimbs$elm_date_extra$Date_Extra$floor, _p19, date2)) / 7) | 0;
 		}
 	});
+var _justinmimbs$elm_date_extra$Date_Extra$fromRataDie = function (rd) {
+	return A3(
+		_justinmimbs$elm_date_extra$Date_Extra$add,
+		_justinmimbs$elm_date_extra$Date_Extra$Day,
+		rd - 719163,
+		A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 1970, _elm_lang$core$Date$Jan, 1));
+};
 var _justinmimbs$elm_date_extra$Date_Extra$Hour = {ctor: 'Hour'};
 var _justinmimbs$elm_date_extra$Date_Extra$Minute = {ctor: 'Minute'};
 var _justinmimbs$elm_date_extra$Date_Extra$equalBy = F3(
@@ -13521,7 +13574,7 @@ var _justinmimbs$elm_date_extra$Date_Extra$equalBy = F3(
 var _justinmimbs$elm_date_extra$Date_Extra$Second = {ctor: 'Second'};
 var _justinmimbs$elm_date_extra$Date_Extra$Millisecond = {ctor: 'Millisecond'};
 
-var _rluiten$elm_date_extra$Date_Extra_Core$prevMonth = function (month) {
+var _rluiten$elm_date_extra$Date_Extra_Internal2$prevMonth = function (month) {
 	var _p0 = month;
 	switch (_p0.ctor) {
 		case 'Jan':
@@ -13550,7 +13603,7 @@ var _rluiten$elm_date_extra$Date_Extra_Core$prevMonth = function (month) {
 			return _elm_lang$core$Date$Nov;
 	}
 };
-var _rluiten$elm_date_extra$Date_Extra_Core$nextMonth = function (month) {
+var _rluiten$elm_date_extra$Date_Extra_Internal2$nextMonth = function (month) {
 	var _p1 = month;
 	switch (_p1.ctor) {
 		case 'Jan':
@@ -13579,10 +13632,10 @@ var _rluiten$elm_date_extra$Date_Extra_Core$nextMonth = function (month) {
 			return _elm_lang$core$Date$Jan;
 	}
 };
-var _rluiten$elm_date_extra$Date_Extra_Core$intToMonth = function (month) {
+var _rluiten$elm_date_extra$Date_Extra_Internal2$intToMonth = function (month) {
 	return (_elm_lang$core$Native_Utils.cmp(month, 1) < 1) ? _elm_lang$core$Date$Jan : (_elm_lang$core$Native_Utils.eq(month, 2) ? _elm_lang$core$Date$Feb : (_elm_lang$core$Native_Utils.eq(month, 3) ? _elm_lang$core$Date$Mar : (_elm_lang$core$Native_Utils.eq(month, 4) ? _elm_lang$core$Date$Apr : (_elm_lang$core$Native_Utils.eq(month, 5) ? _elm_lang$core$Date$May : (_elm_lang$core$Native_Utils.eq(month, 6) ? _elm_lang$core$Date$Jun : (_elm_lang$core$Native_Utils.eq(month, 7) ? _elm_lang$core$Date$Jul : (_elm_lang$core$Native_Utils.eq(month, 8) ? _elm_lang$core$Date$Aug : (_elm_lang$core$Native_Utils.eq(month, 9) ? _elm_lang$core$Date$Sep : (_elm_lang$core$Native_Utils.eq(month, 10) ? _elm_lang$core$Date$Oct : (_elm_lang$core$Native_Utils.eq(month, 11) ? _elm_lang$core$Date$Nov : _elm_lang$core$Date$Dec))))))))));
 };
-var _rluiten$elm_date_extra$Date_Extra_Core$monthToInt = function (month) {
+var _rluiten$elm_date_extra$Date_Extra_Internal2$monthToInt = function (month) {
 	var _p2 = month;
 	switch (_p2.ctor) {
 		case 'Jan':
@@ -13611,7 +13664,7 @@ var _rluiten$elm_date_extra$Date_Extra_Core$monthToInt = function (month) {
 			return 12;
 	}
 };
-var _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear = function (year) {
+var _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYear = function (year) {
 	return (_elm_lang$core$Native_Utils.eq(
 		A2(_elm_lang$core$Basics_ops['%'], year, 4),
 		0) && (!_elm_lang$core$Native_Utils.eq(
@@ -13620,21 +13673,21 @@ var _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear = function (year) {
 		A2(_elm_lang$core$Basics_ops['%'], year, 400),
 		0);
 };
-var _rluiten$elm_date_extra$Date_Extra_Core$isLeapYearDate = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear(
+var _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYearDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYear(
 		_elm_lang$core$Date$year(date));
 };
-var _rluiten$elm_date_extra$Date_Extra_Core$yearToDayLength = function (year) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear(year) ? 366 : 365;
+var _rluiten$elm_date_extra$Date_Extra_Internal2$yearToDayLength = function (year) {
+	return _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYear(year) ? 366 : 365;
 };
-var _rluiten$elm_date_extra$Date_Extra_Core$daysInMonth = F2(
+var _rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonth = F2(
 	function (year, month) {
 		var _p3 = month;
 		switch (_p3.ctor) {
 			case 'Jan':
 				return 31;
 			case 'Feb':
-				return _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear(year) ? 29 : 28;
+				return _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYear(year) ? 29 : 28;
 			case 'Mar':
 				return 31;
 			case 'Apr':
@@ -13657,13 +13710,13 @@ var _rluiten$elm_date_extra$Date_Extra_Core$daysInMonth = F2(
 				return 31;
 		}
 	});
-var _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate = function (date) {
+var _rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonthDate = function (date) {
 	return A2(
-		_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth,
+		_rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonth,
 		_elm_lang$core$Date$year(date),
 		_elm_lang$core$Date$month(date));
 };
-var _rluiten$elm_date_extra$Date_Extra_Core$monthList = {
+var _rluiten$elm_date_extra$Date_Extra_Internal2$monthList = {
 	ctor: '::',
 	_0: _elm_lang$core$Date$Jan,
 	_1: {
@@ -13712,15 +13765,15 @@ var _rluiten$elm_date_extra$Date_Extra_Core$monthList = {
 		}
 	}
 };
-var _rluiten$elm_date_extra$Date_Extra_Core$toTime = function (_p4) {
+var _rluiten$elm_date_extra$Date_Extra_Internal2$toTime = function (_p4) {
 	return _elm_lang$core$Basics$floor(
 		_elm_lang$core$Date$toTime(_p4));
 };
-var _rluiten$elm_date_extra$Date_Extra_Core$fromTime = function (_p5) {
+var _rluiten$elm_date_extra$Date_Extra_Internal2$fromTime = function (_p5) {
 	return _elm_lang$core$Date$fromTime(
 		_elm_lang$core$Basics$toFloat(_p5));
 };
-var _rluiten$elm_date_extra$Date_Extra_Core$prevDay = function (day) {
+var _rluiten$elm_date_extra$Date_Extra_Internal2$prevDay = function (day) {
 	var _p6 = day;
 	switch (_p6.ctor) {
 		case 'Mon':
@@ -13739,7 +13792,7 @@ var _rluiten$elm_date_extra$Date_Extra_Core$prevDay = function (day) {
 			return _elm_lang$core$Date$Sat;
 	}
 };
-var _rluiten$elm_date_extra$Date_Extra_Core$nextDay = function (day) {
+var _rluiten$elm_date_extra$Date_Extra_Internal2$nextDay = function (day) {
 	var _p7 = day;
 	switch (_p7.ctor) {
 		case 'Mon':
@@ -13758,7 +13811,7 @@ var _rluiten$elm_date_extra$Date_Extra_Core$nextDay = function (day) {
 			return _elm_lang$core$Date$Mon;
 	}
 };
-var _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek = function (day) {
+var _rluiten$elm_date_extra$Date_Extra_Internal2$isoDayOfWeek = function (day) {
 	var _p8 = day;
 	switch (_p8.ctor) {
 		case 'Mon':
@@ -13777,57 +13830,253 @@ var _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek = function (day) {
 			return 7;
 	}
 };
+var _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMillisecond = _elm_lang$core$Basics$floor(_elm_lang$core$Time$millisecond);
+var _rluiten$elm_date_extra$Date_Extra_Internal2$ticksASecond = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMillisecond * 1000;
+var _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksASecond * 60;
+var _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute * 60;
+var _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour * 24;
+var _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAWeek = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay * 7;
+var _rluiten$elm_date_extra$Date_Extra_Internal2$lastOfMonthTicks = function (date) {
+	var dateTicks = _rluiten$elm_date_extra$Date_Extra_Internal2$toTime(date);
+	var day = _elm_lang$core$Date$day(date);
+	var month = _elm_lang$core$Date$month(date);
+	var year = _elm_lang$core$Date$year(date);
+	var daysInMonthVal = A2(_rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonth, year, month);
+	var addDays = daysInMonthVal - day;
+	return dateTicks + (addDays * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$firstOfNextMonthDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Internal2$fromTime(
+		_rluiten$elm_date_extra$Date_Extra_Internal2$lastOfMonthTicks(date) + _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$daysInNextMonth = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonthDate(
+		_rluiten$elm_date_extra$Date_Extra_Internal2$firstOfNextMonthDate(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$firstOfMonthTicks = function (date) {
+	var dateTicks = _rluiten$elm_date_extra$Date_Extra_Internal2$toTime(date);
+	var day = _elm_lang$core$Date$day(date);
+	return dateTicks + ((1 - day) * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$lastOfPrevMonthDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Internal2$fromTime(
+		_rluiten$elm_date_extra$Date_Extra_Internal2$firstOfMonthTicks(date) - _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$daysInPrevMonth = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonthDate(
+		_rluiten$elm_date_extra$Date_Extra_Internal2$lastOfPrevMonthDate(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$epochDateStr = '1970-01-01T00:00:00Z';
+
+var _rluiten$elm_date_extra$Date_Extra_Period$diff = F2(
+	function (date1, date2) {
+		var millisecondDiff = _elm_lang$core$Date$millisecond(date1) - _elm_lang$core$Date$millisecond(date2);
+		var secondDiff = _elm_lang$core$Date$second(date1) - _elm_lang$core$Date$second(date2);
+		var minuteDiff = _elm_lang$core$Date$minute(date1) - _elm_lang$core$Date$minute(date2);
+		var hourDiff = _elm_lang$core$Date$hour(date1) - _elm_lang$core$Date$hour(date2);
+		var ticksDiff = _rluiten$elm_date_extra$Date_Extra_Internal2$toTime(date1) - _rluiten$elm_date_extra$Date_Extra_Internal2$toTime(date2);
+		var ticksDayDiff = (((ticksDiff - (hourDiff * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour)) - (minuteDiff * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute)) - (secondDiff * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksASecond)) - (millisecondDiff * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMillisecond);
+		var onlyDaysDiff = (ticksDayDiff / _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay) | 0;
+		var _p0 = function () {
+			if (_elm_lang$core$Native_Utils.cmp(onlyDaysDiff, 0) < 0) {
+				var absDayDiff = _elm_lang$core$Basics$abs(onlyDaysDiff);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Basics$negate((absDayDiff / 7) | 0),
+					_1: _elm_lang$core$Basics$negate(
+						A2(_elm_lang$core$Basics_ops['%'], absDayDiff, 7))
+				};
+			} else {
+				return {
+					ctor: '_Tuple2',
+					_0: (onlyDaysDiff / 7) | 0,
+					_1: A2(_elm_lang$core$Basics_ops['%'], onlyDaysDiff, 7)
+				};
+			}
+		}();
+		var weekDiff = _p0._0;
+		var dayDiff = _p0._1;
+		return {week: weekDiff, day: dayDiff, hour: hourDiff, minute: minuteDiff, second: secondDiff, millisecond: millisecondDiff};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Period$addTimeUnit = F3(
+	function (unit, addend, date) {
+		return _rluiten$elm_date_extra$Date_Extra_Internal2$fromTime(
+			A2(
+				F2(
+					function (x, y) {
+						return x + y;
+					}),
+				addend * unit,
+				_rluiten$elm_date_extra$Date_Extra_Internal2$toTime(date)));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Period$toTicks = function (period) {
+	var _p1 = period;
+	switch (_p1.ctor) {
+		case 'Millisecond':
+			return _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMillisecond;
+		case 'Second':
+			return _rluiten$elm_date_extra$Date_Extra_Internal2$ticksASecond;
+		case 'Minute':
+			return _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute;
+		case 'Hour':
+			return _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour;
+		case 'Day':
+			return _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay;
+		case 'Week':
+			return _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAWeek;
+		default:
+			var _p2 = _p1._0;
+			return (((((_rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMillisecond * _p2.millisecond) + (_rluiten$elm_date_extra$Date_Extra_Internal2$ticksASecond * _p2.second)) + (_rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute * _p2.minute)) + (_rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour * _p2.hour)) + (_rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay * _p2.day)) + (_rluiten$elm_date_extra$Date_Extra_Internal2$ticksAWeek * _p2.week);
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Period$add = function (period) {
+	return _rluiten$elm_date_extra$Date_Extra_Period$addTimeUnit(
+		_rluiten$elm_date_extra$Date_Extra_Period$toTicks(period));
+};
+var _rluiten$elm_date_extra$Date_Extra_Period$zeroDelta = {week: 0, day: 0, hour: 0, minute: 0, second: 0, millisecond: 0};
+var _rluiten$elm_date_extra$Date_Extra_Period$DeltaRecord = F6(
+	function (a, b, c, d, e, f) {
+		return {week: a, day: b, hour: c, minute: d, second: e, millisecond: f};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Period$Delta = function (a) {
+	return {ctor: 'Delta', _0: a};
+};
+var _rluiten$elm_date_extra$Date_Extra_Period$Week = {ctor: 'Week'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Day = {ctor: 'Day'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Hour = {ctor: 'Hour'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Minute = {ctor: 'Minute'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Second = {ctor: 'Second'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Millisecond = {ctor: 'Millisecond'};
+
+var _rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil = F3(
+	function (year, month, day) {
+		var doy = (((((153 * (month + ((_elm_lang$core$Native_Utils.cmp(month, 2) > 0) ? -3 : 9))) + 2) / 5) | 0) + day) - 1;
+		var y = year - ((_elm_lang$core$Native_Utils.cmp(month, 2) < 1) ? 1 : 0);
+		var era = (((_elm_lang$core$Native_Utils.cmp(y, 0) > -1) ? y : (y - 399)) / 400) | 0;
+		var yoe = y - (era * 400);
+		var doe = (((yoe * 365) + ((yoe / 4) | 0)) - ((yoe / 100) | 0)) + doy;
+		return ((era * 146097) + doe) - 719468;
+	});
+var _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields = F7(
+	function (year, month, day, hour, minute, second, millisecond) {
+		var monthInt = _rluiten$elm_date_extra$Date_Extra_Internal2$monthToInt(month);
+		var clampYear = (_elm_lang$core$Native_Utils.cmp(year, 0) < 0) ? 0 : year;
+		var clampDay = A3(
+			_elm_lang$core$Basics$clamp,
+			1,
+			A2(_rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonth, clampYear, month),
+			day);
+		var dayCount = A3(_rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil, clampYear, monthInt, clampDay);
+		return _rluiten$elm_date_extra$Date_Extra_Period$toTicks(
+			_rluiten$elm_date_extra$Date_Extra_Period$Delta(
+				{
+					millisecond: A3(_elm_lang$core$Basics$clamp, 0, 999, millisecond),
+					second: A3(_elm_lang$core$Basics$clamp, 0, 59, second),
+					minute: A3(_elm_lang$core$Basics$clamp, 0, 59, minute),
+					hour: A3(_elm_lang$core$Basics$clamp, 0, 23, hour),
+					day: dayCount,
+					week: 0
+				}));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromDateFields = function (date) {
+	return A7(
+		_rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date),
+		_elm_lang$core$Date$day(date),
+		_elm_lang$core$Date$hour(date),
+		_elm_lang$core$Date$minute(date),
+		_elm_lang$core$Date$second(date),
+		_elm_lang$core$Date$millisecond(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset = function (date) {
+	var v1Ticks = _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromDateFields(date);
+	var dateTicks = _elm_lang$core$Basics$floor(
+		_elm_lang$core$Date$toTime(date));
+	return ((dateTicks - v1Ticks) / _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute) | 0;
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset = F2(
+	function (offsetMinutes, date) {
+		return _rluiten$elm_date_extra$Date_Extra_Internal2$fromTime(
+			A2(
+				F2(
+					function (x, y) {
+						return x + y;
+					}),
+				offsetMinutes * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute,
+				_rluiten$elm_date_extra$Date_Extra_Internal2$toTime(date)));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsUtc = function (date) {
+	var offset = _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset(date);
+	var oHours = (offset / _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour) | 0;
+	var oMinutes = ((offset - (oHours * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour)) / _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute) | 0;
+	return A2(_rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset, offset, date);
+};
+
+var _rluiten$elm_date_extra$Date_Extra_Core$compensateZoneOffset = F2(
+	function (date1, date2) {
+		return A3(
+			_rluiten$elm_date_extra$Date_Extra_Period$add,
+			_rluiten$elm_date_extra$Date_Extra_Period$Minute,
+			_rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset(date2) - _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset(date1),
+			date2);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthDate = function (date) {
+	return A2(
+		_rluiten$elm_date_extra$Date_Extra_Core$compensateZoneOffset,
+		date,
+		_rluiten$elm_date_extra$Date_Extra_Internal2$fromTime(
+			_rluiten$elm_date_extra$Date_Extra_Internal2$lastOfMonthTicks(date)));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$toFirstOfMonth = function (date) {
+	return A2(
+		_rluiten$elm_date_extra$Date_Extra_Core$compensateZoneOffset,
+		date,
+		_rluiten$elm_date_extra$Date_Extra_Internal2$fromTime(
+			_rluiten$elm_date_extra$Date_Extra_Internal2$firstOfMonthTicks(date)));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$lastOfPrevMonthDate = function (date) {
+	return A2(
+		_rluiten$elm_date_extra$Date_Extra_Core$compensateZoneOffset,
+		date,
+		_rluiten$elm_date_extra$Date_Extra_Internal2$lastOfPrevMonthDate(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$firstOfNextMonthDate = function (date) {
+	return A2(
+		_rluiten$elm_date_extra$Date_Extra_Core$compensateZoneOffset,
+		date,
+		_rluiten$elm_date_extra$Date_Extra_Internal2$firstOfNextMonthDate(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$yearToDayLength = _rluiten$elm_date_extra$Date_Extra_Internal2$yearToDayLength;
+var _rluiten$elm_date_extra$Date_Extra_Core$toTime = _rluiten$elm_date_extra$Date_Extra_Internal2$toTime;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAWeek;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksASecond;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMillisecond;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksADay = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour;
+var _rluiten$elm_date_extra$Date_Extra_Core$prevMonth = _rluiten$elm_date_extra$Date_Extra_Internal2$prevMonth;
+var _rluiten$elm_date_extra$Date_Extra_Core$prevDay = _rluiten$elm_date_extra$Date_Extra_Internal2$prevDay;
+var _rluiten$elm_date_extra$Date_Extra_Core$nextMonth = _rluiten$elm_date_extra$Date_Extra_Internal2$nextMonth;
+var _rluiten$elm_date_extra$Date_Extra_Core$nextDay = _rluiten$elm_date_extra$Date_Extra_Internal2$nextDay;
+var _rluiten$elm_date_extra$Date_Extra_Core$monthToInt = _rluiten$elm_date_extra$Date_Extra_Internal2$monthToInt;
+var _rluiten$elm_date_extra$Date_Extra_Core$monthList = _rluiten$elm_date_extra$Date_Extra_Internal2$monthList;
+var _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek = _rluiten$elm_date_extra$Date_Extra_Internal2$isoDayOfWeek;
 var _rluiten$elm_date_extra$Date_Extra_Core$daysBackToStartOfWeek = F2(
 	function (dateDay, startOfWeekDay) {
 		var startOfWeekDayIndex = _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek(startOfWeekDay);
 		var dateDayIndex = _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek(dateDay);
 		return (_elm_lang$core$Native_Utils.cmp(dateDayIndex, startOfWeekDayIndex) < 0) ? ((7 + dateDayIndex) - startOfWeekDayIndex) : (dateDayIndex - startOfWeekDayIndex);
 	});
-var _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond = _elm_lang$core$Basics$floor(_elm_lang$core$Time$millisecond);
-var _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond = _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond * 1000;
-var _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute = _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond * 60;
-var _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour = _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute * 60;
-var _rluiten$elm_date_extra$Date_Extra_Core$ticksADay = _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour * 24;
-var _rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek = _rluiten$elm_date_extra$Date_Extra_Core$ticksADay * 7;
-var _rluiten$elm_date_extra$Date_Extra_Core$firstOfMonthTicks = function (date) {
-	var dateTicks = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date);
-	var day = _elm_lang$core$Date$day(date);
-	return dateTicks + ((1 - day) * _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$lastOfPrevMonthDate = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
-		_rluiten$elm_date_extra$Date_Extra_Core$firstOfMonthTicks(date) - _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$daysInPrevMonth = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate(
-		_rluiten$elm_date_extra$Date_Extra_Core$lastOfPrevMonthDate(date));
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$toFirstOfMonth = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
-		_rluiten$elm_date_extra$Date_Extra_Core$firstOfMonthTicks(date));
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthTicks = function (date) {
-	var dateTicks = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date);
-	var day = _elm_lang$core$Date$day(date);
-	var month = _elm_lang$core$Date$month(date);
-	var year = _elm_lang$core$Date$year(date);
-	var daysInMonthVal = A2(_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth, year, month);
-	var addDays = daysInMonthVal - day;
-	return dateTicks + (addDays * _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$firstOfNextMonthDate = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
-		_rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthTicks(date) + _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$daysInNextMonth = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate(
-		_rluiten$elm_date_extra$Date_Extra_Core$firstOfNextMonthDate(date));
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthDate = function (date) {
-	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
-		_rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthTicks(date));
-};
-var _rluiten$elm_date_extra$Date_Extra_Core$epochDateStr = '1970-01-01T00:00:00Z';
+var _rluiten$elm_date_extra$Date_Extra_Core$isLeapYearDate = _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYearDate;
+var _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear = _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYear;
+var _rluiten$elm_date_extra$Date_Extra_Core$intToMonth = _rluiten$elm_date_extra$Date_Extra_Internal2$intToMonth;
+var _rluiten$elm_date_extra$Date_Extra_Core$fromTime = _rluiten$elm_date_extra$Date_Extra_Internal2$fromTime;
+var _rluiten$elm_date_extra$Date_Extra_Core$epochDateStr = _rluiten$elm_date_extra$Date_Extra_Internal2$epochDateStr;
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate = _rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonthDate;
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInPrevMonth = _rluiten$elm_date_extra$Date_Extra_Internal2$daysInPrevMonth;
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInNextMonth = _rluiten$elm_date_extra$Date_Extra_Internal2$daysInNextMonth;
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInMonth = _rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonth;
 
 var _rluiten$elm_date_extra$Date_Extra_Config$Config = F2(
 	function (a, b) {
@@ -14070,152 +14319,7 @@ var _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayShort = function (day) {
 
 var _rluiten$elm_date_extra$Date_Extra_Config_Config_nl_nl$config = {
 	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_nl_nl$dayOfMonthWithSuffix},
-	format: {date: '%-m/%-d/%Y', longDate: '%A, %B %d, %Y', time: '%H:%M', longTime: '%-H:%M:%S %p', dateTime: '%-m/%-d/%Y %-I:%M %p', firstDayOfWeek: _elm_lang$core$Date$Mon}
-};
-
-var _rluiten$elm_date_extra$Date_Extra_Period$diff = F2(
-	function (date1, date2) {
-		var millisecondDiff = _elm_lang$core$Date$millisecond(date1) - _elm_lang$core$Date$millisecond(date2);
-		var secondDiff = _elm_lang$core$Date$second(date1) - _elm_lang$core$Date$second(date2);
-		var minuteDiff = _elm_lang$core$Date$minute(date1) - _elm_lang$core$Date$minute(date2);
-		var hourDiff = _elm_lang$core$Date$hour(date1) - _elm_lang$core$Date$hour(date2);
-		var ticksDiff = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date1) - _rluiten$elm_date_extra$Date_Extra_Core$toTime(date2);
-		var ticksDayDiff = (((ticksDiff - (hourDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour)) - (minuteDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute)) - (secondDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond)) - (millisecondDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond);
-		var onlyDaysDiff = (ticksDayDiff / _rluiten$elm_date_extra$Date_Extra_Core$ticksADay) | 0;
-		var _p0 = function () {
-			if (_elm_lang$core$Native_Utils.cmp(onlyDaysDiff, 0) < 0) {
-				var absDayDiff = _elm_lang$core$Basics$abs(onlyDaysDiff);
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Basics$negate((absDayDiff / 7) | 0),
-					_1: _elm_lang$core$Basics$negate(
-						A2(_elm_lang$core$Basics_ops['%'], absDayDiff, 7))
-				};
-			} else {
-				return {
-					ctor: '_Tuple2',
-					_0: (onlyDaysDiff / 7) | 0,
-					_1: A2(_elm_lang$core$Basics_ops['%'], onlyDaysDiff, 7)
-				};
-			}
-		}();
-		var weekDiff = _p0._0;
-		var dayDiff = _p0._1;
-		return {week: weekDiff, day: dayDiff, hour: hourDiff, minute: minuteDiff, second: secondDiff, millisecond: millisecondDiff};
-	});
-var _rluiten$elm_date_extra$Date_Extra_Period$addTimeUnit = F3(
-	function (unit, addend, date) {
-		return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
-			A2(
-				F2(
-					function (x, y) {
-						return x + y;
-					}),
-				addend * unit,
-				_rluiten$elm_date_extra$Date_Extra_Core$toTime(date)));
-	});
-var _rluiten$elm_date_extra$Date_Extra_Period$toTicks = function (period) {
-	var _p1 = period;
-	switch (_p1.ctor) {
-		case 'Millisecond':
-			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond;
-		case 'Second':
-			return _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond;
-		case 'Minute':
-			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute;
-		case 'Hour':
-			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour;
-		case 'Day':
-			return _rluiten$elm_date_extra$Date_Extra_Core$ticksADay;
-		case 'Week':
-			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek;
-		default:
-			var _p2 = _p1._0;
-			return (((((_rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond * _p2.millisecond) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksASecond * _p2.second)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute * _p2.minute)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour * _p2.hour)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksADay * _p2.day)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek * _p2.week);
-	}
-};
-var _rluiten$elm_date_extra$Date_Extra_Period$add = function (period) {
-	return _rluiten$elm_date_extra$Date_Extra_Period$addTimeUnit(
-		_rluiten$elm_date_extra$Date_Extra_Period$toTicks(period));
-};
-var _rluiten$elm_date_extra$Date_Extra_Period$zeroDelta = {week: 0, day: 0, hour: 0, minute: 0, second: 0, millisecond: 0};
-var _rluiten$elm_date_extra$Date_Extra_Period$DeltaRecord = F6(
-	function (a, b, c, d, e, f) {
-		return {week: a, day: b, hour: c, minute: d, second: e, millisecond: f};
-	});
-var _rluiten$elm_date_extra$Date_Extra_Period$Delta = function (a) {
-	return {ctor: 'Delta', _0: a};
-};
-var _rluiten$elm_date_extra$Date_Extra_Period$Week = {ctor: 'Week'};
-var _rluiten$elm_date_extra$Date_Extra_Period$Day = {ctor: 'Day'};
-var _rluiten$elm_date_extra$Date_Extra_Period$Hour = {ctor: 'Hour'};
-var _rluiten$elm_date_extra$Date_Extra_Period$Minute = {ctor: 'Minute'};
-var _rluiten$elm_date_extra$Date_Extra_Period$Second = {ctor: 'Second'};
-var _rluiten$elm_date_extra$Date_Extra_Period$Millisecond = {ctor: 'Millisecond'};
-
-var _rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil = F3(
-	function (year, month, day) {
-		var doy = (((((153 * (month + ((_elm_lang$core$Native_Utils.cmp(month, 2) > 0) ? -3 : 9))) + 2) / 5) | 0) + day) - 1;
-		var y = year - ((_elm_lang$core$Native_Utils.cmp(month, 2) < 1) ? 1 : 0);
-		var era = (((_elm_lang$core$Native_Utils.cmp(y, 0) > -1) ? y : (y - 399)) / 400) | 0;
-		var yoe = y - (era * 400);
-		var doe = (((yoe * 365) + ((yoe / 4) | 0)) - ((yoe / 100) | 0)) + doy;
-		return ((era * 146097) + doe) - 719468;
-	});
-var _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields = F7(
-	function (year, month, day, hour, minute, second, millisecond) {
-		var monthInt = _rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month);
-		var c_year = (_elm_lang$core$Native_Utils.cmp(year, 0) < 0) ? 0 : year;
-		var c_day = A3(
-			_elm_lang$core$Basics$clamp,
-			1,
-			A2(_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth, c_year, month),
-			day);
-		var dayCount = A3(_rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil, c_year, monthInt, c_day);
-		return _rluiten$elm_date_extra$Date_Extra_Period$toTicks(
-			_rluiten$elm_date_extra$Date_Extra_Period$Delta(
-				{
-					millisecond: A3(_elm_lang$core$Basics$clamp, 0, 999, millisecond),
-					second: A3(_elm_lang$core$Basics$clamp, 0, 59, second),
-					minute: A3(_elm_lang$core$Basics$clamp, 0, 59, minute),
-					hour: A3(_elm_lang$core$Basics$clamp, 0, 23, hour),
-					day: dayCount,
-					week: 0
-				}));
-	});
-var _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromDateFields = function (date) {
-	return A7(
-		_rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields,
-		_elm_lang$core$Date$year(date),
-		_elm_lang$core$Date$month(date),
-		_elm_lang$core$Date$day(date),
-		_elm_lang$core$Date$hour(date),
-		_elm_lang$core$Date$minute(date),
-		_elm_lang$core$Date$second(date),
-		_elm_lang$core$Date$millisecond(date));
-};
-var _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset = function (date) {
-	var v1Ticks = _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromDateFields(date);
-	var dateTicks = _elm_lang$core$Basics$floor(
-		_elm_lang$core$Date$toTime(date));
-	return ((dateTicks - v1Ticks) / _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute) | 0;
-};
-var _rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset = F2(
-	function (offsetMinutes, date) {
-		return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
-			A2(
-				F2(
-					function (x, y) {
-						return x + y;
-					}),
-				offsetMinutes * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute,
-				_rluiten$elm_date_extra$Date_Extra_Core$toTime(date)));
-	});
-var _rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsUtc = function (date) {
-	var offset = _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset(date);
-	var oHours = (offset / _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour) | 0;
-	var oMinutes = ((offset - (oHours * _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour)) / _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute) | 0;
-	return A2(_rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset, offset, date);
+	format: {date: '%d-%m-%Y', longDate: '%A, %B %d, %Y', time: '%H:%M', longTime: '%-H:%M:%S %p', dateTime: '%d-%m-%Y %H:%M', firstDayOfWeek: _elm_lang$core$Date$Mon}
 };
 
 var _rluiten$elm_date_extra$Date_Extra_Create$epochDate = _elm_lang$core$Date$fromTime(0);
@@ -14560,21 +14664,826 @@ var _rluiten$elm_date_extra$Date_Extra_Format$utcIsoString = function (date) {
 };
 var _rluiten$elm_date_extra$Date_Extra_Format$isoFormat = '%Y-%m-%dT%H:%M:%S';
 
-var _user$project$Data_Licence$licenceToString = function (maybeLicence) {
-	var _p0 = maybeLicence;
-	if (_p0.ctor === 'Just') {
-		switch (_p0._0.ctor) {
-			case 'Elite':
-				return 'elite';
-			case 'Amateurs':
-				return 'amateurs';
-			case 'Basislidmaatschap':
-				return 'basislidmaatschap';
-			default:
-				return 'other';
-		}
+var _truqu$elm_base64$Base64_Decode$charToInt = function ($char) {
+	var _p0 = $char;
+	switch (_p0.valueOf()) {
+		case 'A':
+			return 0;
+		case 'B':
+			return 1;
+		case 'C':
+			return 2;
+		case 'D':
+			return 3;
+		case 'E':
+			return 4;
+		case 'F':
+			return 5;
+		case 'G':
+			return 6;
+		case 'H':
+			return 7;
+		case 'I':
+			return 8;
+		case 'J':
+			return 9;
+		case 'K':
+			return 10;
+		case 'L':
+			return 11;
+		case 'M':
+			return 12;
+		case 'N':
+			return 13;
+		case 'O':
+			return 14;
+		case 'P':
+			return 15;
+		case 'Q':
+			return 16;
+		case 'R':
+			return 17;
+		case 'S':
+			return 18;
+		case 'T':
+			return 19;
+		case 'U':
+			return 20;
+		case 'V':
+			return 21;
+		case 'W':
+			return 22;
+		case 'X':
+			return 23;
+		case 'Y':
+			return 24;
+		case 'Z':
+			return 25;
+		case 'a':
+			return 26;
+		case 'b':
+			return 27;
+		case 'c':
+			return 28;
+		case 'd':
+			return 29;
+		case 'e':
+			return 30;
+		case 'f':
+			return 31;
+		case 'g':
+			return 32;
+		case 'h':
+			return 33;
+		case 'i':
+			return 34;
+		case 'j':
+			return 35;
+		case 'k':
+			return 36;
+		case 'l':
+			return 37;
+		case 'm':
+			return 38;
+		case 'n':
+			return 39;
+		case 'o':
+			return 40;
+		case 'p':
+			return 41;
+		case 'q':
+			return 42;
+		case 'r':
+			return 43;
+		case 's':
+			return 44;
+		case 't':
+			return 45;
+		case 'u':
+			return 46;
+		case 'v':
+			return 47;
+		case 'w':
+			return 48;
+		case 'x':
+			return 49;
+		case 'y':
+			return 50;
+		case 'z':
+			return 51;
+		case '0':
+			return 52;
+		case '1':
+			return 53;
+		case '2':
+			return 54;
+		case '3':
+			return 55;
+		case '4':
+			return 56;
+		case '5':
+			return 57;
+		case '6':
+			return 58;
+		case '7':
+			return 59;
+		case '8':
+			return 60;
+		case '9':
+			return 61;
+		case '+':
+			return 62;
+		case '/':
+			return 63;
+		default:
+			return 0;
+	}
+};
+var _truqu$elm_base64$Base64_Decode$intToString = function ($int) {
+	if (_elm_lang$core$Native_Utils.cmp($int, 65536) < 1) {
+		return _elm_lang$core$String$fromChar(
+			_elm_lang$core$Char$fromCode($int));
 	} else {
-		return 'other';
+		var c = $int - 65536;
+		return _elm_lang$core$String$fromList(
+			{
+				ctor: '::',
+				_0: _elm_lang$core$Char$fromCode(55296 | (c >>> 10)),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Char$fromCode(56320 | (1023 & c)),
+					_1: {ctor: '[]'}
+				}
+			});
+	}
+};
+var _truqu$elm_base64$Base64_Decode$add = F2(
+	function ($char, _p1) {
+		var _p2 = _p1;
+		var _p4 = _p2._2;
+		var _p3 = _p2._1;
+		var shiftAndAdd = function ($int) {
+			return (63 & $int) | (_p2._0 << 6);
+		};
+		return _elm_lang$core$Native_Utils.eq(_p3, 0) ? (_elm_lang$core$Native_Utils.eq(128 & $char, 0) ? {
+			ctor: '_Tuple3',
+			_0: 0,
+			_1: 0,
+			_2: A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p4,
+				_truqu$elm_base64$Base64_Decode$intToString($char))
+		} : (_elm_lang$core$Native_Utils.eq(224 & $char, 192) ? {ctor: '_Tuple3', _0: 31 & $char, _1: 1, _2: _p4} : (_elm_lang$core$Native_Utils.eq(240 & $char, 224) ? {ctor: '_Tuple3', _0: 15 & $char, _1: 2, _2: _p4} : {ctor: '_Tuple3', _0: 7 & $char, _1: 3, _2: _p4}))) : (_elm_lang$core$Native_Utils.eq(_p3, 1) ? {
+			ctor: '_Tuple3',
+			_0: 0,
+			_1: 0,
+			_2: A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p4,
+				_truqu$elm_base64$Base64_Decode$intToString(
+					shiftAndAdd($char)))
+		} : {
+			ctor: '_Tuple3',
+			_0: shiftAndAdd($char),
+			_1: _p3 - 1,
+			_2: _p4
+		});
+	});
+var _truqu$elm_base64$Base64_Decode$toUTF16 = F2(
+	function ($char, acc) {
+		return {
+			ctor: '_Tuple3',
+			_0: 0,
+			_1: 0,
+			_2: A2(
+				_truqu$elm_base64$Base64_Decode$add,
+				255 & ($char >>> 0),
+				A2(
+					_truqu$elm_base64$Base64_Decode$add,
+					255 & ($char >>> 8),
+					A2(_truqu$elm_base64$Base64_Decode$add, 255 & ($char >>> 16), acc)))
+		};
+	});
+var _truqu$elm_base64$Base64_Decode$chomp = F2(
+	function (char_, _p5) {
+		var _p6 = _p5;
+		var _p10 = _p6._2;
+		var _p9 = _p6._0;
+		var _p8 = _p6._1;
+		var $char = _truqu$elm_base64$Base64_Decode$charToInt(char_);
+		var _p7 = _p8;
+		if (_p7 === 3) {
+			return A2(_truqu$elm_base64$Base64_Decode$toUTF16, _p9 | $char, _p10);
+		} else {
+			return {ctor: '_Tuple3', _0: ($char << ((3 - _p8) * 6)) | _p9, _1: _p8 + 1, _2: _p10};
+		}
+	});
+var _truqu$elm_base64$Base64_Decode$initial = {
+	ctor: '_Tuple3',
+	_0: 0,
+	_1: 0,
+	_2: {ctor: '_Tuple3', _0: 0, _1: 0, _2: ''}
+};
+var _truqu$elm_base64$Base64_Decode$wrapUp = function (_p11) {
+	var _p12 = _p11;
+	return (_elm_lang$core$Native_Utils.cmp(_p12._2._1, 0) > 0) ? _elm_lang$core$Result$Err('Invalid UTF-16') : _elm_lang$core$Result$Ok(_p12._2._2);
+};
+var _truqu$elm_base64$Base64_Decode$stripNulls = F2(
+	function (input, output) {
+		return A2(_elm_lang$core$String$endsWith, '==', input) ? A2(_elm_lang$core$String$dropRight, 2, output) : (A2(_elm_lang$core$String$endsWith, '=', input) ? A2(_elm_lang$core$String$dropRight, 1, output) : output);
+	});
+var _truqu$elm_base64$Base64_Decode$validBase64Regex = _elm_lang$core$Regex$regex('^([A-Za-z0-9\\/+]{4})*([A-Za-z0-9\\/+]{2}[A-Za-z0-9\\/+=]{2})?$');
+var _truqu$elm_base64$Base64_Decode$validate = function (input) {
+	return A2(_elm_lang$core$Regex$contains, _truqu$elm_base64$Base64_Decode$validBase64Regex, input) ? _elm_lang$core$Result$Ok(input) : _elm_lang$core$Result$Err('Invalid base64');
+};
+var _truqu$elm_base64$Base64_Decode$pad = function (input) {
+	var _p13 = A2(
+		_elm_lang$core$Basics$rem,
+		_elm_lang$core$String$length(input),
+		4);
+	switch (_p13) {
+		case 3:
+			return A2(_elm_lang$core$Basics_ops['++'], input, '=');
+		case 2:
+			return A2(_elm_lang$core$Basics_ops['++'], input, '==');
+		default:
+			return input;
+	}
+};
+var _truqu$elm_base64$Base64_Decode$validateAndDecode = function (input) {
+	return A2(
+		_elm_lang$core$Result$map,
+		_truqu$elm_base64$Base64_Decode$stripNulls(input),
+		A2(
+			_elm_lang$core$Result$andThen,
+			function (_p14) {
+				return _truqu$elm_base64$Base64_Decode$wrapUp(
+					A3(_elm_lang$core$String$foldl, _truqu$elm_base64$Base64_Decode$chomp, _truqu$elm_base64$Base64_Decode$initial, _p14));
+			},
+			_truqu$elm_base64$Base64_Decode$validate(input)));
+};
+var _truqu$elm_base64$Base64_Decode$decode = function (_p15) {
+	return _truqu$elm_base64$Base64_Decode$validateAndDecode(
+		_truqu$elm_base64$Base64_Decode$pad(_p15));
+};
+
+var _truqu$elm_base64$Base64_Encode$intToBase64 = function (i) {
+	var _p0 = i;
+	switch (_p0) {
+		case 0:
+			return 'A';
+		case 1:
+			return 'B';
+		case 2:
+			return 'C';
+		case 3:
+			return 'D';
+		case 4:
+			return 'E';
+		case 5:
+			return 'F';
+		case 6:
+			return 'G';
+		case 7:
+			return 'H';
+		case 8:
+			return 'I';
+		case 9:
+			return 'J';
+		case 10:
+			return 'K';
+		case 11:
+			return 'L';
+		case 12:
+			return 'M';
+		case 13:
+			return 'N';
+		case 14:
+			return 'O';
+		case 15:
+			return 'P';
+		case 16:
+			return 'Q';
+		case 17:
+			return 'R';
+		case 18:
+			return 'S';
+		case 19:
+			return 'T';
+		case 20:
+			return 'U';
+		case 21:
+			return 'V';
+		case 22:
+			return 'W';
+		case 23:
+			return 'X';
+		case 24:
+			return 'Y';
+		case 25:
+			return 'Z';
+		case 26:
+			return 'a';
+		case 27:
+			return 'b';
+		case 28:
+			return 'c';
+		case 29:
+			return 'd';
+		case 30:
+			return 'e';
+		case 31:
+			return 'f';
+		case 32:
+			return 'g';
+		case 33:
+			return 'h';
+		case 34:
+			return 'i';
+		case 35:
+			return 'j';
+		case 36:
+			return 'k';
+		case 37:
+			return 'l';
+		case 38:
+			return 'm';
+		case 39:
+			return 'n';
+		case 40:
+			return 'o';
+		case 41:
+			return 'p';
+		case 42:
+			return 'q';
+		case 43:
+			return 'r';
+		case 44:
+			return 's';
+		case 45:
+			return 't';
+		case 46:
+			return 'u';
+		case 47:
+			return 'v';
+		case 48:
+			return 'w';
+		case 49:
+			return 'x';
+		case 50:
+			return 'y';
+		case 51:
+			return 'z';
+		case 52:
+			return '0';
+		case 53:
+			return '1';
+		case 54:
+			return '2';
+		case 55:
+			return '3';
+		case 56:
+			return '4';
+		case 57:
+			return '5';
+		case 58:
+			return '6';
+		case 59:
+			return '7';
+		case 60:
+			return '8';
+		case 61:
+			return '9';
+		case 62:
+			return '+';
+		default:
+			return '/';
+	}
+};
+var _truqu$elm_base64$Base64_Encode$toBase64 = function ($int) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_truqu$elm_base64$Base64_Encode$intToBase64(63 & ($int >>> 18)),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_truqu$elm_base64$Base64_Encode$intToBase64(63 & ($int >>> 12)),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_truqu$elm_base64$Base64_Encode$intToBase64(63 & ($int >>> 6)),
+				_truqu$elm_base64$Base64_Encode$intToBase64(63 & ($int >>> 0)))));
+};
+var _truqu$elm_base64$Base64_Encode$add = F2(
+	function ($char, _p1) {
+		var _p2 = _p1;
+		var _p5 = _p2._0;
+		var _p4 = _p2._1;
+		var current = (_p2._2 << 8) | $char;
+		var _p3 = _p4;
+		if (_p3 === 2) {
+			return {
+				ctor: '_Tuple3',
+				_0: A2(
+					_elm_lang$core$Basics_ops['++'],
+					_p5,
+					_truqu$elm_base64$Base64_Encode$toBase64(current)),
+				_1: 0,
+				_2: 0
+			};
+		} else {
+			return {ctor: '_Tuple3', _0: _p5, _1: _p4 + 1, _2: current};
+		}
+	});
+var _truqu$elm_base64$Base64_Encode$chomp = F2(
+	function (char_, _p6) {
+		var _p7 = _p6;
+		var _p9 = _p7._1;
+		var $char = _elm_lang$core$Char$toCode(char_);
+		var _p8 = _p7._0;
+		if (_p8.ctor === 'Nothing') {
+			return (_elm_lang$core$Native_Utils.cmp($char, 128) < 0) ? {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A2(_truqu$elm_base64$Base64_Encode$add, $char, _p9)
+			} : ((_elm_lang$core$Native_Utils.cmp($char, 2048) < 0) ? {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A2(
+					_truqu$elm_base64$Base64_Encode$add,
+					128 | (63 & $char),
+					A2(_truqu$elm_base64$Base64_Encode$add, 192 | ($char >>> 6), _p9))
+			} : (((_elm_lang$core$Native_Utils.cmp($char, 55296) < 0) || (_elm_lang$core$Native_Utils.cmp($char, 57344) > -1)) ? {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A2(
+					_truqu$elm_base64$Base64_Encode$add,
+					128 | (63 & $char),
+					A2(
+						_truqu$elm_base64$Base64_Encode$add,
+						128 | (63 & ($char >>> 6)),
+						A2(_truqu$elm_base64$Base64_Encode$add, 224 | ($char >>> 12), _p9)))
+			} : {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Just($char),
+				_1: _p9
+			}));
+		} else {
+			var combined = A2(
+				F2(
+					function (x, y) {
+						return x + y;
+					}),
+				65536,
+				(1023 & $char) | ((1023 & _p8._0) << 10));
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A2(
+					_truqu$elm_base64$Base64_Encode$add,
+					128 | (63 & combined),
+					A2(
+						_truqu$elm_base64$Base64_Encode$add,
+						128 | (63 & (combined >>> 6)),
+						A2(
+							_truqu$elm_base64$Base64_Encode$add,
+							128 | (63 & (combined >>> 12)),
+							A2(_truqu$elm_base64$Base64_Encode$add, 240 | (combined >>> 18), _p9))))
+			};
+		}
+	});
+var _truqu$elm_base64$Base64_Encode$wrapUp = function (_p10) {
+	var _p11 = _p10;
+	var _p14 = _p11._1._0;
+	var _p13 = _p11._1._2;
+	var _p12 = _p11._1._1;
+	switch (_p12) {
+		case 1:
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p14,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_truqu$elm_base64$Base64_Encode$intToBase64(63 & (_p13 >>> 2)),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_truqu$elm_base64$Base64_Encode$intToBase64(63 & (_p13 << 4)),
+						'==')));
+		case 2:
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p14,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_truqu$elm_base64$Base64_Encode$intToBase64(63 & (_p13 >>> 10)),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_truqu$elm_base64$Base64_Encode$intToBase64(63 & (_p13 >>> 4)),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_truqu$elm_base64$Base64_Encode$intToBase64(63 & (_p13 << 2)),
+							'='))));
+		default:
+			return _p14;
+	}
+};
+var _truqu$elm_base64$Base64_Encode$initial = {
+	ctor: '_Tuple2',
+	_0: _elm_lang$core$Maybe$Nothing,
+	_1: {ctor: '_Tuple3', _0: '', _1: 0, _2: 0}
+};
+var _truqu$elm_base64$Base64_Encode$encode = function (input) {
+	return _truqu$elm_base64$Base64_Encode$wrapUp(
+		A3(_elm_lang$core$String$foldl, _truqu$elm_base64$Base64_Encode$chomp, _truqu$elm_base64$Base64_Encode$initial, input));
+};
+
+var _truqu$elm_base64$Base64$decode = _truqu$elm_base64$Base64_Decode$decode;
+var _truqu$elm_base64$Base64$encode = _truqu$elm_base64$Base64_Encode$encode;
+
+var _simonh1000$elm_jwt$Jwt$authenticate = F3(
+	function (url, dec, credentials) {
+		return A3(
+			_elm_lang$http$Http$post,
+			url,
+			_elm_lang$http$Http$jsonBody(credentials),
+			dec);
+	});
+var _simonh1000$elm_jwt$Jwt$createRequestObject = F5(
+	function (method, token, url, body, dec) {
+		return {
+			method: method,
+			headers: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$http$Http$header,
+					'Authorization',
+					A2(_elm_lang$core$Basics_ops['++'], 'Bearer ', token)),
+				_1: {ctor: '[]'}
+			},
+			url: url,
+			body: body,
+			expect: _elm_lang$http$Http$expectJson(dec),
+			timeout: _elm_lang$core$Maybe$Nothing,
+			withCredentials: false
+		};
+	});
+var _simonh1000$elm_jwt$Jwt$createRequest = F4(
+	function (method, token, url, body) {
+		return function (_p0) {
+			return _elm_lang$http$Http$request(
+				A5(_simonh1000$elm_jwt$Jwt$createRequestObject, method, token, url, body, _p0));
+		};
+	});
+var _simonh1000$elm_jwt$Jwt$get = F3(
+	function (token, url, dec) {
+		return A5(_simonh1000$elm_jwt$Jwt$createRequest, 'GET', token, url, _elm_lang$http$Http$emptyBody, dec);
+	});
+var _simonh1000$elm_jwt$Jwt$post = _simonh1000$elm_jwt$Jwt$createRequest('POST');
+var _simonh1000$elm_jwt$Jwt$put = _simonh1000$elm_jwt$Jwt$createRequest('PUT');
+var _simonh1000$elm_jwt$Jwt$delete = F3(
+	function (token, url, dec) {
+		return A5(_simonh1000$elm_jwt$Jwt$createRequest, 'DELETE', token, url, _elm_lang$http$Http$emptyBody, dec);
+	});
+var _simonh1000$elm_jwt$Jwt$unurl = function () {
+	var fix = function (c) {
+		var _p1 = c;
+		switch (_p1.valueOf()) {
+			case '-':
+				return _elm_lang$core$Native_Utils.chr('+');
+			case '_':
+				return _elm_lang$core$Native_Utils.chr('/');
+			default:
+				return c;
+		}
+	};
+	return _elm_lang$core$String$map(fix);
+}();
+var _simonh1000$elm_jwt$Jwt$TokenDecodeError = function (a) {
+	return {ctor: 'TokenDecodeError', _0: a};
+};
+var _simonh1000$elm_jwt$Jwt$TokenProcessingError = function (a) {
+	return {ctor: 'TokenProcessingError', _0: a};
+};
+var _simonh1000$elm_jwt$Jwt$fixlength = function (s) {
+	var _p2 = A2(
+		_elm_lang$core$Basics_ops['%'],
+		_elm_lang$core$String$length(s),
+		4);
+	switch (_p2) {
+		case 0:
+			return _elm_lang$core$Result$Ok(s);
+		case 2:
+			return _elm_lang$core$Result$Ok(
+				_elm_lang$core$String$concat(
+					{
+						ctor: '::',
+						_0: s,
+						_1: {
+							ctor: '::',
+							_0: '==',
+							_1: {ctor: '[]'}
+						}
+					}));
+		case 3:
+			return _elm_lang$core$Result$Ok(
+				_elm_lang$core$String$concat(
+					{
+						ctor: '::',
+						_0: s,
+						_1: {
+							ctor: '::',
+							_0: '=',
+							_1: {ctor: '[]'}
+						}
+					}));
+		default:
+			return _elm_lang$core$Result$Err(
+				_simonh1000$elm_jwt$Jwt$TokenProcessingError('Wrong length'));
+	}
+};
+var _simonh1000$elm_jwt$Jwt$getTokenBody = function (token) {
+	var processor = function (_p3) {
+		return A2(
+			_elm_lang$core$List$map,
+			_simonh1000$elm_jwt$Jwt$fixlength,
+			A2(
+				_elm_lang$core$String$split,
+				'.',
+				_simonh1000$elm_jwt$Jwt$unurl(_p3)));
+	};
+	var _p4 = processor(token);
+	_v2_2:
+	do {
+		if ((_p4.ctor === '::') && (_p4._1.ctor === '::')) {
+			if (_p4._1._0.ctor === 'Err') {
+				if ((_p4._1._1.ctor === '::') && (_p4._1._1._1.ctor === '[]')) {
+					return _elm_lang$core$Result$Err(_p4._1._0._0);
+				} else {
+					break _v2_2;
+				}
+			} else {
+				if ((_p4._1._1.ctor === '::') && (_p4._1._1._1.ctor === '[]')) {
+					return _elm_lang$core$Result$Ok(_p4._1._0._0);
+				} else {
+					break _v2_2;
+				}
+			}
+		} else {
+			break _v2_2;
+		}
+	} while(false);
+	return _elm_lang$core$Result$Err(
+		_simonh1000$elm_jwt$Jwt$TokenProcessingError('Token has invalid shape'));
+};
+var _simonh1000$elm_jwt$Jwt$decodeToken = function (dec) {
+	return function (_p5) {
+		return A2(
+			_elm_lang$core$Result$andThen,
+			function (_p6) {
+				return A2(
+					_elm_lang$core$Result$mapError,
+					_simonh1000$elm_jwt$Jwt$TokenDecodeError,
+					A2(_elm_lang$core$Json_Decode$decodeString, dec, _p6));
+			},
+			A2(
+				_elm_lang$core$Result$andThen,
+				function (_p7) {
+					return A2(
+						_elm_lang$core$Result$mapError,
+						_simonh1000$elm_jwt$Jwt$TokenDecodeError,
+						_truqu$elm_base64$Base64$decode(_p7));
+				},
+				_simonh1000$elm_jwt$Jwt$getTokenBody(_p5)));
+	};
+};
+var _simonh1000$elm_jwt$Jwt$isExpired = F2(
+	function (now, token) {
+		return A2(
+			_elm_lang$core$Result$map,
+			function (exp) {
+				return _elm_lang$core$Native_Utils.cmp(now, exp * 1000) > 0;
+			},
+			A2(
+				_simonh1000$elm_jwt$Jwt$decodeToken,
+				A2(_elm_lang$core$Json_Decode$field, 'exp', _elm_lang$core$Json_Decode$float),
+				token));
+	});
+var _simonh1000$elm_jwt$Jwt$tokenDecoder = function (inner) {
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (tokenStr) {
+			var transformedToken = A2(
+				_elm_lang$core$Result$andThen,
+				_elm_lang$core$Json_Decode$decodeString(inner),
+				A2(
+					_elm_lang$core$Result$mapError,
+					F2(
+						function (x, y) {
+							return A2(_elm_lang$core$Basics_ops['++'], x, y);
+						})('base64 error: '),
+					A2(
+						_elm_lang$core$Result$andThen,
+						_truqu$elm_base64$Base64$decode,
+						A2(
+							_elm_lang$core$Result$mapError,
+							_elm_lang$core$Basics$toString,
+							_simonh1000$elm_jwt$Jwt$getTokenBody(tokenStr)))));
+			var _p8 = transformedToken;
+			if (_p8.ctor === 'Ok') {
+				return _elm_lang$core$Json_Decode$succeed(_p8._0);
+			} else {
+				return _elm_lang$core$Json_Decode$fail(_p8._0);
+			}
+		},
+		_elm_lang$core$Json_Decode$string);
+};
+var _simonh1000$elm_jwt$Jwt$TokenNotExpired = {ctor: 'TokenNotExpired'};
+var _simonh1000$elm_jwt$Jwt$TokenExpired = {ctor: 'TokenExpired'};
+var _simonh1000$elm_jwt$Jwt$checkUnacceptedToken = F2(
+	function (token, now) {
+		var _p9 = A2(_simonh1000$elm_jwt$Jwt$isExpired, now, token);
+		if (_p9.ctor === 'Ok') {
+			if (_p9._0 === true) {
+				return _simonh1000$elm_jwt$Jwt$TokenExpired;
+			} else {
+				return _simonh1000$elm_jwt$Jwt$TokenNotExpired;
+			}
+		} else {
+			return _p9._0;
+		}
+	});
+var _simonh1000$elm_jwt$Jwt$checkTokenExpiry = function (token) {
+	return A2(
+		_elm_lang$core$Task$andThen,
+		function (_p10) {
+			return _elm_lang$core$Task$succeed(
+				A2(_simonh1000$elm_jwt$Jwt$checkUnacceptedToken, token, _p10));
+		},
+		_elm_lang$core$Time$now);
+};
+var _simonh1000$elm_jwt$Jwt$Unauthorized = {ctor: 'Unauthorized'};
+var _simonh1000$elm_jwt$Jwt$HttpError = function (a) {
+	return {ctor: 'HttpError', _0: a};
+};
+var _simonh1000$elm_jwt$Jwt$promote401 = function (err) {
+	var _p11 = err;
+	if (_p11.ctor === 'BadStatus') {
+		return _elm_lang$core$Native_Utils.eq(_p11._0.status.code, 401) ? _simonh1000$elm_jwt$Jwt$Unauthorized : _simonh1000$elm_jwt$Jwt$HttpError(err);
+	} else {
+		return _simonh1000$elm_jwt$Jwt$HttpError(err);
+	}
+};
+var _simonh1000$elm_jwt$Jwt$send = F2(
+	function (msgCreator, req) {
+		var conv = function (fn) {
+			return function (_p12) {
+				return fn(
+					A2(_elm_lang$core$Result$mapError, _simonh1000$elm_jwt$Jwt$promote401, _p12));
+			};
+		};
+		return A2(
+			_elm_lang$http$Http$send,
+			conv(msgCreator),
+			req);
+	});
+var _simonh1000$elm_jwt$Jwt$handleError = F2(
+	function (token, err) {
+		var _p13 = _simonh1000$elm_jwt$Jwt$promote401(err);
+		if (_p13.ctor === 'Unauthorized') {
+			return _simonh1000$elm_jwt$Jwt$checkTokenExpiry(token);
+		} else {
+			return _elm_lang$core$Task$succeed(
+				_simonh1000$elm_jwt$Jwt$HttpError(err));
+		}
+	});
+var _simonh1000$elm_jwt$Jwt$sendCheckExpired = F3(
+	function (token, msgCreator, req) {
+		return A2(
+			_elm_lang$core$Task$perform,
+			msgCreator,
+			A2(
+				_elm_lang$core$Task$onError,
+				function (_p14) {
+					return A2(
+						_elm_lang$core$Task$map,
+						_elm_lang$core$Result$Err,
+						A2(_simonh1000$elm_jwt$Jwt$handleError, token, _p14));
+				},
+				A2(
+					_elm_lang$core$Task$map,
+					_elm_lang$core$Result$Ok,
+					_elm_lang$http$Http$toTask(req))));
+	});
+
+var _user$project$Data_Licence$licenceToString = function (licence) {
+	var _p0 = licence;
+	switch (_p0.ctor) {
+		case 'Elite':
+			return 'elite';
+		case 'Amateurs':
+			return 'amateurs';
+		case 'Basislidmaatschap':
+			return 'basislidmaatschap';
+		default:
+			return 'other';
 	}
 };
 var _user$project$Data_Licence$Other = {ctor: 'Other'};
@@ -14639,21 +15548,21 @@ var _user$project$Data_RaceType$raceTypeReadable = function (category) {
 	var _p1 = category;
 	switch (_p1.ctor) {
 		case 'Trainingskoers':
-			return 'trainingskoers';
+			return 'Trainingskoers';
 		case 'Criterium':
-			return 'criterium';
+			return 'Criterium';
 		case 'Zomoco':
 			return 'ZoMoCo';
 		case 'Classic':
-			return 'klassieker';
+			return 'Klassieker';
 		case 'Cross':
-			return 'cross';
+			return 'Cross';
 		case 'Beach':
-			return 'beachrace';
+			return 'Beachrace';
 		case 'Omloop':
-			return 'omloop';
+			return 'Omloop';
 		case 'Studentscup':
-			return 'studentencup';
+			return 'Studentencup';
 		case 'CK':
 			return 'Clubkampioenschap';
 		case 'NK':
@@ -14661,7 +15570,7 @@ var _user$project$Data_RaceType$raceTypeReadable = function (category) {
 		case 'Cyclosportive':
 			return 'Cyclosportive';
 		default:
-			return 'other';
+			return 'Other';
 	}
 };
 var _user$project$Data_RaceType$raceTypeToString = function (category) {
@@ -14831,25 +15740,25 @@ var _user$project$Data_ResultCategory$categoryReadable = function (category) {
 	var _p0 = category;
 	switch (_p0.ctor) {
 		case 'Amateurs':
-			return 'amateurs';
+			return 'Amateurs';
 		case 'Elite':
-			return 'elite';
+			return 'Elite';
 		case 'CatA':
-			return 'cat. a';
+			return 'Cat. a';
 		case 'Basislidmaatschap':
-			return 'basislidmaatschap';
+			return 'Basislidmaatschap';
 		case 'EliteAmateurs':
-			return 'elite/amateurs';
+			return 'Elite/amateurs';
 		case 'CatB':
-			return 'cat. b';
+			return 'Cat. b';
 		case 'CatC':
-			return 'cat. c';
+			return 'Cat. c';
 		case 'CatD':
-			return 'cat. d';
+			return 'Cat. d';
 		case 'Other':
-			return 'other';
+			return 'Other';
 		default:
-			return 'unknown';
+			return 'Unknown';
 	}
 };
 var _user$project$Data_ResultCategory$categoryToString = function (category) {
@@ -14959,6 +15868,142 @@ var _user$project$Page_Result_Add_Model$Model = F6(
 		return {raceKey: a, riderKey: b, result: c, category: d, outfit: e, strava: f};
 	});
 
+var _user$project$Data_Race$getRace = F2(
+	function (raceKey, races) {
+		return _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$filter,
+				function (race) {
+					return _elm_lang$core$Native_Utils.eq(race.key, raceKey);
+				},
+				races));
+	});
+var _user$project$Data_Race$lastRaces = function (races) {
+	return A2(
+		_elm_lang$core$List$take,
+		5,
+		_elm_lang$core$List$reverse(
+			A2(
+				_elm_lang$core$List$sortWith,
+				F2(
+					function (a, b) {
+						return A2(_justinmimbs$elm_date_extra$Date_Extra$compare, a.date, b.date);
+					}),
+				races)));
+};
+var _user$project$Data_Race$Race = F4(
+	function (a, b, c, d) {
+		return {key: a, name: b, date: c, raceType: d};
+	});
+var _user$project$Data_Race$race = A5(
+	_elm_lang$core$Json_Decode$map4,
+	_user$project$Data_Race$Race,
+	A2(_elm_lang$core$Json_Decode$field, 'key', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'date', _elm_community$json_extra$Json_Decode_Extra$date),
+	A2(
+		_elm_lang$core$Json_Decode$field,
+		'category',
+		A2(_elm_lang$core$Json_Decode$andThen, _user$project$Data_RaceType$raceTypeDecoder, _elm_lang$core$Json_Decode$string)));
+var _user$project$Data_Race$racesDecoder = _elm_lang$core$Json_Decode$list(_user$project$Data_Race$race);
+
+var _user$project$Data_RaceResult$getPointsByResult = F2(
+	function (result, races) {
+		if (_elm_lang$core$Native_Utils.eq(result.outfit, _user$project$Data_Outfit$WTOS)) {
+			var _p0 = A2(_user$project$Data_Race$getRace, result.raceKey, races);
+			if (_p0.ctor === 'Just') {
+				return _user$project$Data_RaceType$getPointsByRaceType(_p0._0.raceType);
+			} else {
+				return 0;
+			}
+		} else {
+			return 0;
+		}
+	});
+var _user$project$Data_RaceResult$getPointsByResults = F2(
+	function (results, races) {
+		return _elm_lang$core$List$sum(
+			A2(
+				_elm_lang$core$List$map,
+				function (result) {
+					return A2(_user$project$Data_RaceResult$getPointsByResult, result, races);
+				},
+				results));
+	});
+var _user$project$Data_RaceResult$resultExists = F2(
+	function (result, results) {
+		return !_elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$List$length(
+				A2(
+					_elm_lang$core$List$filter,
+					function (r) {
+						return _elm_lang$core$Native_Utils.eq(r.raceKey, result.raceKey) && _elm_lang$core$Native_Utils.eq(r.riderKey, result.riderKey);
+					},
+					results)),
+			0);
+	});
+var _user$project$Data_RaceResult$RaceResult = F6(
+	function (a, b, c, d, e, f) {
+		return {key: a, riderKey: b, raceKey: c, result: d, category: e, outfit: f};
+	});
+var _user$project$Data_RaceResult$resultDecoder = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'outfit',
+	A2(_elm_lang$core$Json_Decode$andThen, _user$project$Data_Outfit$outfitDecoder, _elm_lang$core$Json_Decode$string),
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'category',
+		A2(_elm_lang$core$Json_Decode$andThen, _user$project$Data_ResultCategory$resultCategoryDecoder, _elm_lang$core$Json_Decode$string),
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'result',
+			_elm_lang$core$Json_Decode$string,
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'raceKey',
+				_elm_lang$core$Json_Decode$string,
+				A3(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+					'riderKey',
+					_elm_lang$core$Json_Decode$string,
+					A3(
+						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+						'key',
+						_elm_lang$core$Json_Decode$string,
+						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_RaceResult$RaceResult)))))));
+var _user$project$Data_RaceResult$resultsDecoder = _elm_lang$core$Json_Decode$list(_user$project$Data_RaceResult$resultDecoder);
+
+var _user$project$Page_Result_Edit_Model$initial = F2(
+	function (resultKey, maybeResults) {
+		var _p0 = A2(_elm_lang$core$Debug$log, 'maybeResults', maybeResults);
+		if (_p0.ctor === 'Just') {
+			var maybeResult = _elm_lang$core$List$head(
+				A2(
+					_elm_lang$core$List$filter,
+					function (r) {
+						return _elm_lang$core$Native_Utils.eq(r.key, resultKey);
+					},
+					_p0._0));
+			var _p1 = maybeResult;
+			if (_p1.ctor === 'Just') {
+				var _p3 = _p1._0;
+				var _p2 = A2(_elm_lang$core$Debug$log, 'hoi', _p3);
+				return {result: _p3.result, resultKey: resultKey, raceKey: _p3.raceKey};
+			} else {
+				return {result: 'asdf', resultKey: resultKey, raceKey: '1234'};
+			}
+		} else {
+			return {result: '1234', resultKey: resultKey, raceKey: '1234'};
+		}
+	});
+var _user$project$Page_Result_Edit_Model$Model = F3(
+	function (a, b, c) {
+		return {result: a, resultKey: b, raceKey: c};
+	});
+
+var _user$project$App_Page$ResultEdit = function (a) {
+	return {ctor: 'ResultEdit', _0: a};
+};
 var _user$project$App_Page$ResultAdd = function (a) {
 	return {ctor: 'ResultAdd', _0: a};
 };
@@ -14992,12 +16037,20 @@ var _user$project$App_Routing$url = function (page) {
 			return A2(_elm_lang$core$Basics_ops['++'], '#races/', _p0._0);
 		case 'RaceAdd':
 			return '#races/add';
-		default:
+		case 'ResultAdd':
 			return A2(
 				_elm_lang$core$Basics_ops['++'],
 				'#races/',
 				A2(_elm_lang$core$Basics_ops['++'], _p0._0.raceKey, '/add'));
+		default:
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'#results/',
+				A2(_elm_lang$core$Basics_ops['++'], _p0._0.resultKey, '/edit'));
 	}
+};
+var _user$project$App_Routing$ResultEdit = function (a) {
+	return {ctor: 'ResultEdit', _0: a};
 };
 var _user$project$App_Routing$ResultAdd = function (a) {
 	return {ctor: 'ResultAdd', _0: a};
@@ -15066,33 +16119,46 @@ var _user$project$App_Routing$matchers = _evancz$url_parser$UrlParser$oneOf(
 								ctor: '::',
 								_0: A2(
 									_evancz$url_parser$UrlParser$map,
-									_user$project$App_Routing$RaceAdd,
+									_user$project$App_Routing$ResultEdit,
 									A2(
 										_evancz$url_parser$UrlParser_ops['</>'],
-										_evancz$url_parser$UrlParser$s('races'),
-										_evancz$url_parser$UrlParser$s('add'))),
+										_evancz$url_parser$UrlParser$s('results'),
+										A2(
+											_evancz$url_parser$UrlParser_ops['</>'],
+											_evancz$url_parser$UrlParser$string,
+											_evancz$url_parser$UrlParser$s('edit')))),
 								_1: {
 									ctor: '::',
 									_0: A2(
 										_evancz$url_parser$UrlParser$map,
-										_user$project$App_Routing$RaceDetails,
+										_user$project$App_Routing$RaceAdd,
 										A2(
 											_evancz$url_parser$UrlParser_ops['</>'],
 											_evancz$url_parser$UrlParser$s('races'),
-											_evancz$url_parser$UrlParser$string)),
+											_evancz$url_parser$UrlParser$s('add'))),
 									_1: {
 										ctor: '::',
 										_0: A2(
 											_evancz$url_parser$UrlParser$map,
-											_user$project$App_Routing$Races,
-											_evancz$url_parser$UrlParser$s('races')),
+											_user$project$App_Routing$RaceDetails,
+											A2(
+												_evancz$url_parser$UrlParser_ops['</>'],
+												_evancz$url_parser$UrlParser$s('races'),
+												_evancz$url_parser$UrlParser$string)),
 										_1: {
 											ctor: '::',
 											_0: A2(
 												_evancz$url_parser$UrlParser$map,
-												_user$project$App_Routing$Results,
-												_evancz$url_parser$UrlParser$s('results')),
-											_1: {ctor: '[]'}
+												_user$project$App_Routing$Races,
+												_evancz$url_parser$UrlParser$s('races')),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_evancz$url_parser$UrlParser$map,
+													_user$project$App_Routing$Results,
+													_evancz$url_parser$UrlParser$s('results')),
+												_1: {ctor: '[]'}
+											}
 										}
 									}
 								}
@@ -15109,121 +16175,6 @@ var _user$project$App_Routing$routeParser = function (location) {
 		_user$project$App_Routing$Races,
 		A2(_evancz$url_parser$UrlParser$parseHash, _user$project$App_Routing$matchers, location));
 };
-
-var _user$project$Data_Race$getRaceByKey = F2(
-	function (raceKey, races) {
-		return _elm_lang$core$List$head(
-			A2(
-				_elm_lang$core$List$filter,
-				function (race) {
-					return _elm_lang$core$Native_Utils.eq(race.key, raceKey);
-				},
-				races));
-	});
-var _user$project$Data_Race$getRace = F2(
-	function (raceKey, races) {
-		return _elm_lang$core$List$head(
-			A2(
-				_elm_lang$core$List$filter,
-				function (race) {
-					return _elm_lang$core$Native_Utils.eq(race.key, raceKey);
-				},
-				races));
-	});
-var _user$project$Data_Race$lastRaces = function (races) {
-	return A2(
-		_elm_lang$core$List$take,
-		5,
-		_elm_lang$core$List$reverse(
-			A2(
-				_elm_lang$core$List$sortWith,
-				F2(
-					function (a, b) {
-						return A2(_justinmimbs$elm_date_extra$Date_Extra$compare, a.date, b.date);
-					}),
-				races)));
-};
-var _user$project$Data_Race$Race = F4(
-	function (a, b, c, d) {
-		return {key: a, name: b, date: c, raceType: d};
-	});
-var _user$project$Data_Race$race = A5(
-	_elm_lang$core$Json_Decode$map4,
-	_user$project$Data_Race$Race,
-	A2(_elm_lang$core$Json_Decode$field, 'key', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'date', _elm_community$json_extra$Json_Decode_Extra$date),
-	A2(
-		_elm_lang$core$Json_Decode$field,
-		'category',
-		A2(_elm_lang$core$Json_Decode$andThen, _user$project$Data_RaceType$raceTypeDecoder, _elm_lang$core$Json_Decode$string)));
-var _user$project$Data_Race$racesDecoder = _elm_lang$core$Json_Decode$list(_user$project$Data_Race$race);
-
-var _user$project$Data_RaceResult$getPointsByResult = F2(
-	function (result, races) {
-		if (_elm_lang$core$Native_Utils.eq(result.outfit, _user$project$Data_Outfit$WTOS)) {
-			var _p0 = A2(_user$project$Data_Race$getRaceByKey, result.raceKey, races);
-			if (_p0.ctor === 'Just') {
-				return _user$project$Data_RaceType$getPointsByRaceType(_p0._0.raceType);
-			} else {
-				return 0;
-			}
-		} else {
-			return 0;
-		}
-	});
-var _user$project$Data_RaceResult$getPointsByResults = F2(
-	function (results, races) {
-		return _elm_lang$core$List$sum(
-			A2(
-				_elm_lang$core$List$map,
-				function (result) {
-					return A2(_user$project$Data_RaceResult$getPointsByResult, result, races);
-				},
-				results));
-	});
-var _user$project$Data_RaceResult$resultExists = F2(
-	function (result, results) {
-		return !_elm_lang$core$Native_Utils.eq(
-			_elm_lang$core$List$length(
-				A2(
-					_elm_lang$core$List$filter,
-					function (r) {
-						return _elm_lang$core$Native_Utils.eq(r.raceKey, result.raceKey) && _elm_lang$core$Native_Utils.eq(r.riderKey, result.riderKey);
-					},
-					results)),
-			0);
-	});
-var _user$project$Data_RaceResult$RaceResult = F6(
-	function (a, b, c, d, e, f) {
-		return {key: a, riderKey: b, raceKey: c, result: d, category: e, outfit: f};
-	});
-var _user$project$Data_RaceResult$resultDecoder = A3(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-	'outfit',
-	A2(_elm_lang$core$Json_Decode$andThen, _user$project$Data_Outfit$outfitDecoder, _elm_lang$core$Json_Decode$string),
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'category',
-		A2(_elm_lang$core$Json_Decode$andThen, _user$project$Data_ResultCategory$resultCategoryDecoder, _elm_lang$core$Json_Decode$string),
-		A3(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'result',
-			_elm_lang$core$Json_Decode$string,
-			A3(
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'raceKey',
-				_elm_lang$core$Json_Decode$string,
-				A3(
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-					'riderKey',
-					_elm_lang$core$Json_Decode$string,
-					A3(
-						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-						'key',
-						_elm_lang$core$Json_Decode$string,
-						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_RaceResult$RaceResult)))))));
-var _user$project$Data_RaceResult$resultsDecoder = _elm_lang$core$Json_Decode$list(_user$project$Data_RaceResult$resultDecoder);
 
 var _user$project$Data_Rider$getPointsByRiderId = F3(
 	function (riderKey, results, races) {
@@ -15262,6 +16213,14 @@ var _user$project$Data_Rider$rider = A4(
 		A2(_elm_lang$core$Json_Decode$andThen, _user$project$Data_Licence$licenceDecoder, _elm_lang$core$Json_Decode$string)));
 var _user$project$Data_Rider$ridersDecoder = _elm_lang$core$Json_Decode$list(_user$project$Data_Rider$rider);
 
+var _user$project$Data_User$User = function (a) {
+	return {email: a};
+};
+var _user$project$Data_User$userDecoder = A2(
+	_elm_lang$core$Json_Decode$map,
+	_user$project$Data_User$User,
+	A2(_elm_lang$core$Json_Decode$field, 'email', _elm_lang$core$Json_Decode$string));
+
 var _user$project$App_OutsideInfo$infoForOutside = _elm_lang$core$Native_Platform.outgoingPort(
 	'infoForOutside',
 	function (v) {
@@ -15279,6 +16238,15 @@ var _user$project$App_OutsideInfo$sendInfoOutside = function (info) {
 		case 'ResultAdd':
 			return _user$project$App_OutsideInfo$infoForOutside(
 				{tag: 'ResultAdd', data: _p0._0});
+		case 'ResultEdit':
+			return _user$project$App_OutsideInfo$infoForOutside(
+				{tag: 'ResultEdit', data: _p0._0});
+		case 'UserSignOut':
+			return _user$project$App_OutsideInfo$infoForOutside(
+				{
+					tag: 'UserSignOut',
+					data: _elm_lang$core$Json_Encode$bool(true)
+				});
 		default:
 			return _user$project$App_OutsideInfo$infoForOutside(
 				{
@@ -15308,6 +16276,10 @@ var _user$project$App_OutsideInfo$GenericOutsideData = F2(
 var _user$project$App_OutsideInfo$LogError = function (a) {
 	return {ctor: 'LogError', _0: a};
 };
+var _user$project$App_OutsideInfo$UserSignOut = {ctor: 'UserSignOut'};
+var _user$project$App_OutsideInfo$ResultEdit = function (a) {
+	return {ctor: 'ResultEdit', _0: a};
+};
 var _user$project$App_OutsideInfo$ResultAdd = function (a) {
 	return {ctor: 'ResultAdd', _0: a};
 };
@@ -15316,6 +16288,13 @@ var _user$project$App_OutsideInfo$RiderAdd = function (a) {
 };
 var _user$project$App_OutsideInfo$RaceAdd = function (a) {
 	return {ctor: 'RaceAdd', _0: a};
+};
+var _user$project$App_OutsideInfo$UserSignedOut = {ctor: 'UserSignedOut'};
+var _user$project$App_OutsideInfo$UserLoaded = function (a) {
+	return {ctor: 'UserLoaded', _0: a};
+};
+var _user$project$App_OutsideInfo$ResultEdited = function (a) {
+	return {ctor: 'ResultEdited', _0: a};
 };
 var _user$project$App_OutsideInfo$ResultAdded = function (a) {
 	return {ctor: 'ResultAdded', _0: a};
@@ -15389,6 +16368,24 @@ var _user$project$App_OutsideInfo$getInfoFromOutside = F2(
 						} else {
 							return onError(_p7._0);
 						}
+					case 'ResultEdited':
+						var _p8 = A2(_elm_lang$core$Json_Decode$decodeValue, _elm_lang$core$Json_Decode$string, outsideInfo.data);
+						if (_p8.ctor === 'Ok') {
+							return tagger(
+								_user$project$App_OutsideInfo$ResultEdited(_p8._0));
+						} else {
+							return onError(_p8._0);
+						}
+					case 'UserLoaded':
+						var _p9 = A2(_elm_lang$core$Json_Decode$decodeValue, _user$project$Data_User$userDecoder, outsideInfo.data);
+						if (_p9.ctor === 'Ok') {
+							return tagger(
+								_user$project$App_OutsideInfo$UserLoaded(_p9._0.email));
+						} else {
+							return onError(_p9._0);
+						}
+					case 'UserSignedOut':
+						return tagger(_user$project$App_OutsideInfo$UserSignedOut);
 					default:
 						return onError(
 							A2(
@@ -15413,6 +16410,11 @@ var _user$project$Page_Result_Add_Msg$Category = function (a) {
 };
 var _user$project$Page_Result_Add_Msg$Submit = {ctor: 'Submit'};
 
+var _user$project$Page_Result_Edit_Msg$Result = function (a) {
+	return {ctor: 'Result', _0: a};
+};
+var _user$project$Page_Result_Edit_Msg$Submit = {ctor: 'Submit'};
+
 var _user$project$Page_Rider_Add_Msg$Name = function (a) {
 	return {ctor: 'Name', _0: a};
 };
@@ -15432,6 +16434,10 @@ var _user$project$Page_Race_Add_Msg$Name = function (a) {
 };
 var _user$project$Page_Race_Add_Msg$Submit = {ctor: 'Submit'};
 
+var _user$project$App_Msg$UserSignOut = {ctor: 'UserSignOut'};
+var _user$project$App_Msg$ResultEdit = function (a) {
+	return {ctor: 'ResultEdit', _0: a};
+};
 var _user$project$App_Msg$ResultAdd = function (a) {
 	return {ctor: 'ResultAdd', _0: a};
 };
@@ -15525,11 +16531,24 @@ var _user$project$App_Helpers$navigate = function (page) {
 		_user$project$App_Routing$url(page));
 };
 
-var _user$project$App_Model$App = F4(
-	function (a, b, c, d) {
-		return {page: a, riders: b, races: c, results: d};
+var _user$project$Data_Flags$Flags = function (a) {
+	return {wtosLoginUrl: a};
+};
+
+var _user$project$App_Model$DecodedToken = function (a) {
+	return {email: a};
+};
+var _user$project$App_Model$tokenDecoder = A2(
+	_elm_lang$core$Json_Decode$map,
+	_user$project$App_Model$DecodedToken,
+	A2(_elm_lang$core$Json_Decode$field, 'email', _elm_lang$core$Json_Decode$string));
+var _user$project$App_Model$App = F7(
+	function (a, b, c, d, e, f, g) {
+		return {page: a, riders: b, races: c, results: d, token: e, user: f, wtosLoginUrl: g};
 	});
-var _user$project$App_Model$initial = A4(_user$project$App_Model$App, _user$project$App_Page$Races, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing);
+var _user$project$App_Model$initial = function (flags) {
+	return A7(_user$project$App_Model$App, _user$project$App_Page$Races, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, flags.wtosLoginUrl);
+};
 
 var _user$project$App_UrlUpdate$routeToPage = function (route) {
 	var routePages = {
@@ -15561,6 +16580,20 @@ var _user$project$App_UrlUpdate$urlUpdate = F2(
 	function (route, app) {
 		var _p1 = route;
 		switch (_p1.ctor) {
+			case 'ResultEdit':
+				var resultEdit = A2(_user$project$Page_Result_Edit_Model$initial, _p1._0, app.results);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						app,
+						{
+							page: _user$project$App_Page$ResultEdit(resultEdit)
+						}),
+					_1: A2(
+						_elm_lang$core$Task$attempt,
+						_elm_lang$core$Basics$always(_user$project$App_Msg$Noop),
+						_elm_lang$dom$Dom$focus('result'))
+				};
 			case 'ResultAdd':
 				var resultAdd = _user$project$Page_Result_Add_Model$initial;
 				var resultAddWithRaceKey = _elm_lang$core$Native_Utils.update(
@@ -15658,20 +16691,19 @@ var _user$project$App_UrlUpdate$urlUpdate = F2(
 	});
 
 var _user$project$Page_Rider_Add_Update$update = F2(
-	function (msg, app) {
-		var _p0 = app.page;
-		if (_p0.ctor === 'RiderAdd') {
-			var _p2 = _p0._0;
-			var _p1 = msg;
-			switch (_p1.ctor) {
-				case 'Submit':
+	function (msg, page) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'Submit':
+				var _p1 = page.licence;
+				if (_p1.ctor === 'Just') {
 					var payload = _elm_lang$core$Json_Encode$object(
 						{
 							ctor: '::',
 							_0: {
 								ctor: '_Tuple2',
 								_0: 'name',
-								_1: _elm_lang$core$Json_Encode$string(_p2.name)
+								_1: _elm_lang$core$Json_Encode$string(page.name)
 							},
 							_1: {
 								ctor: '::',
@@ -15679,46 +16711,38 @@ var _user$project$Page_Rider_Add_Update$update = F2(
 									ctor: '_Tuple2',
 									_0: 'licence',
 									_1: _elm_lang$core$Json_Encode$string(
-										_user$project$Data_Licence$licenceToString(_p2.licence))
+										_user$project$Data_Licence$licenceToString(_p1._0))
 								},
 								_1: {ctor: '[]'}
 							}
 						});
 					return {
 						ctor: '_Tuple2',
-						_0: app,
+						_0: page,
 						_1: _user$project$App_OutsideInfo$sendInfoOutside(
 							_user$project$App_OutsideInfo$RiderAdd(payload))
 					};
-				case 'Name':
-					var nextPage = _user$project$App_Page$RiderAdd(
-						_elm_lang$core$Native_Utils.update(
-							_p2,
-							{name: _p1._0}));
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{page: nextPage}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				default:
-					var nextPage = _user$project$App_Page$RiderAdd(
-						_elm_lang$core$Native_Utils.update(
-							_p2,
-							{
-								licence: _elm_lang$core$Maybe$Just(_p1._0)
-							}));
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{page: nextPage}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-			}
-		} else {
-			return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
+				} else {
+					return {ctor: '_Tuple2', _0: page, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'Name':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						page,
+						{name: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						page,
+						{
+							licence: _elm_lang$core$Maybe$Just(_p0._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 		}
 	});
 
@@ -15727,136 +16751,106 @@ var _user$project$Page_Race_Add_Update$dateFormat = function (date) {
 };
 var _user$project$Page_Race_Add_Update$settings = _elm_community$elm_datepicker$DatePicker$defaultSettings;
 var _user$project$Page_Race_Add_Update$update = F2(
-	function (msg, app) {
-		var _p0 = app.page;
-		if (_p0.ctor === 'RaceAdd') {
-			var _p5 = _p0._0;
-			var _p1 = msg;
-			switch (_p1.ctor) {
-				case 'Submit':
-					var _p2 = _p5.date;
-					if (_p2.ctor === 'Just') {
-						var payload = _elm_lang$core$Json_Encode$object(
-							{
+	function (msg, page) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'Submit':
+				var _p1 = page.date;
+				if (_p1.ctor === 'Just') {
+					var payload = _elm_lang$core$Json_Encode$object(
+						{
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'name',
+								_1: _elm_lang$core$Json_Encode$string(page.name)
+							},
+							_1: {
 								ctor: '::',
 								_0: {
 									ctor: '_Tuple2',
-									_0: 'name',
-									_1: _elm_lang$core$Json_Encode$string(_p5.name)
+									_0: 'date',
+									_1: _elm_lang$core$Json_Encode$string(
+										_user$project$Page_Race_Add_Update$dateFormat(_p1._0))
 								},
 								_1: {
 									ctor: '::',
 									_0: {
 										ctor: '_Tuple2',
-										_0: 'date',
+										_0: 'category',
 										_1: _elm_lang$core$Json_Encode$string(
-											_user$project$Page_Race_Add_Update$dateFormat(_p2._0))
+											_user$project$Data_RaceType$raceTypeToString(page.raceType))
 									},
-									_1: {
-										ctor: '::',
-										_0: {
-											ctor: '_Tuple2',
-											_0: 'category',
-											_1: _elm_lang$core$Json_Encode$string(
-												_user$project$Data_RaceType$raceTypeToString(_p5.raceType))
-										},
-										_1: {ctor: '[]'}
-									}
+									_1: {ctor: '[]'}
 								}
-							});
-						return {
-							ctor: '_Tuple2',
-							_0: app,
-							_1: _user$project$App_OutsideInfo$sendInfoOutside(
-								_user$project$App_OutsideInfo$RaceAdd(payload))
-						};
+							}
+						});
+					return {
+						ctor: '_Tuple2',
+						_0: page,
+						_1: _user$project$App_OutsideInfo$sendInfoOutside(
+							_user$project$App_OutsideInfo$RaceAdd(payload))
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: page, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'Name':
+				var nextPage = _elm_lang$core$Native_Utils.update(
+					page,
+					{name: _p0._0});
+				return {ctor: '_Tuple2', _0: nextPage, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'RaceType':
+				var nextPage = _elm_lang$core$Native_Utils.update(
+					page,
+					{raceType: _p0._0});
+				return {ctor: '_Tuple2', _0: nextPage, _1: _elm_lang$core$Platform_Cmd$none};
+			default:
+				var _p2 = A3(_elm_community$elm_datepicker$DatePicker$update, _user$project$Page_Race_Add_Update$settings, _p0._0, page.datePicker);
+				var newDatePicker = _p2._0;
+				var dateEvent = _p2._2;
+				var newDate = function () {
+					var _p3 = dateEvent;
+					if (_p3.ctor === 'Changed') {
+						return _p3._0;
 					} else {
-						return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
+						return page.date;
 					}
-				case 'Name':
-					var nextPage = _user$project$App_Page$RaceAdd(
-						_elm_lang$core$Native_Utils.update(
-							_p5,
-							{name: _p1._0}));
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{page: nextPage}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				case 'RaceType':
-					var nextPage = _user$project$App_Page$RaceAdd(
-						_elm_lang$core$Native_Utils.update(
-							_p5,
-							{raceType: _p1._0}));
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{page: nextPage}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				default:
-					var _p3 = A3(_elm_community$elm_datepicker$DatePicker$update, _user$project$Page_Race_Add_Update$settings, _p1._0, _p5.datePicker);
-					var newDatePicker = _p3._0;
-					var datePickerFx = _p3._1;
-					var dateEvent = _p3._2;
-					var newDate = function () {
-						var _p4 = dateEvent;
-						if (_p4.ctor === 'Changed') {
-							return _p4._0;
-						} else {
-							return _p5.date;
-						}
-					}();
-					var nextPage = _user$project$App_Page$RaceAdd(
-						_elm_lang$core$Native_Utils.update(
-							_p5,
-							{date: newDate, datePicker: newDatePicker}));
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{page: nextPage}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-			}
-		} else {
-			return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
+				}();
+				var nextPage = _elm_lang$core$Native_Utils.update(
+					page,
+					{date: newDate, datePicker: newDatePicker});
+				return {ctor: '_Tuple2', _0: nextPage, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 
 var _user$project$Page_Result_Add_Update$update = F2(
-	function (msg, app) {
-		var _p0 = app.page;
-		if (_p0.ctor === 'ResultAdd') {
-			var _p3 = _p0._0;
-			var _p1 = msg;
-			switch (_p1.ctor) {
-				case 'Submit':
+	function (msg, page) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'Submit':
+				var _p1 = page.riderKey;
+				if (_p1.ctor === 'Just') {
 					var payload = _elm_lang$core$Json_Encode$object(
 						{
 							ctor: '::',
 							_0: {
 								ctor: '_Tuple2',
 								_0: 'raceKey',
-								_1: _elm_lang$core$Json_Encode$string(_p3.raceKey)
+								_1: _elm_lang$core$Json_Encode$string(page.raceKey)
 							},
 							_1: {
 								ctor: '::',
 								_0: {
 									ctor: '_Tuple2',
 									_0: 'riderKey',
-									_1: _elm_lang$core$Json_Encode$string(
-										A2(_elm_lang$core$Maybe$withDefault, '', _p3.riderKey))
+									_1: _elm_lang$core$Json_Encode$string(_p1._0)
 								},
 								_1: {
 									ctor: '::',
 									_0: {
 										ctor: '_Tuple2',
 										_0: 'result',
-										_1: _elm_lang$core$Json_Encode$string(_p3.result)
+										_1: _elm_lang$core$Json_Encode$string(page.result)
 									},
 									_1: {
 										ctor: '::',
@@ -15864,7 +16858,7 @@ var _user$project$Page_Result_Add_Update$update = F2(
 											ctor: '_Tuple2',
 											_0: 'category',
 											_1: _elm_lang$core$Json_Encode$string(
-												_user$project$Data_ResultCategory$categoryToString(_p3.category))
+												_user$project$Data_ResultCategory$categoryToString(page.category))
 										},
 										_1: {
 											ctor: '::',
@@ -15872,7 +16866,7 @@ var _user$project$Page_Result_Add_Update$update = F2(
 												ctor: '_Tuple2',
 												_0: 'outfit',
 												_1: _elm_lang$core$Json_Encode$string(
-													_user$project$Data_Outfit$outfitToString(_p3.outfit))
+													_user$project$Data_Outfit$outfitToString(page.outfit))
 											},
 											_1: {ctor: '[]'}
 										}
@@ -15882,67 +16876,82 @@ var _user$project$Page_Result_Add_Update$update = F2(
 						});
 					return {
 						ctor: '_Tuple2',
-						_0: app,
+						_0: page,
 						_1: _user$project$App_OutsideInfo$sendInfoOutside(
 							_user$project$App_OutsideInfo$ResultAdd(payload))
 					};
-				case 'Outfit':
-					var nextPage = _user$project$App_Page$ResultAdd(
-						_elm_lang$core$Native_Utils.update(
-							_p3,
-							{outfit: _p1._0}));
-					return {
+				} else {
+					return {ctor: '_Tuple2', _0: page, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'Outfit':
+				var nextPage = _elm_lang$core$Native_Utils.update(
+					page,
+					{outfit: _p0._0});
+				return {ctor: '_Tuple2', _0: nextPage, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'Category':
+				var nextPage = _elm_lang$core$Native_Utils.update(
+					page,
+					{category: _p0._0});
+				return {ctor: '_Tuple2', _0: nextPage, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'Result':
+				var nextPage = _elm_lang$core$Native_Utils.update(
+					page,
+					{result: _p0._0});
+				return {ctor: '_Tuple2', _0: nextPage, _1: _elm_lang$core$Platform_Cmd$none};
+			default:
+				var _p2 = _p0._0;
+				var nextPage = _elm_lang$core$String$isEmpty(_p2) ? _elm_lang$core$Native_Utils.update(
+					page,
+					{riderKey: _elm_lang$core$Maybe$Nothing}) : _elm_lang$core$Native_Utils.update(
+					page,
+					{
+						riderKey: _elm_lang$core$Maybe$Just(_p2)
+					});
+				return {ctor: '_Tuple2', _0: nextPage, _1: _elm_lang$core$Platform_Cmd$none};
+		}
+	});
+
+var _user$project$Page_Result_Edit_Update$update = F2(
+	function (msg, page) {
+		var _p0 = msg;
+		if (_p0.ctor === 'Submit') {
+			var payload = _elm_lang$core$Json_Encode$object(
+				{
+					ctor: '::',
+					_0: {
 						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{page: nextPage}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				case 'Category':
-					var nextPage = _user$project$App_Page$ResultAdd(
-						_elm_lang$core$Native_Utils.update(
-							_p3,
-							{category: _p1._0}));
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{page: nextPage}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				case 'Result':
-					var nextPage = _user$project$App_Page$ResultAdd(
-						_elm_lang$core$Native_Utils.update(
-							_p3,
-							{result: _p1._0}));
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{page: nextPage}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				default:
-					var _p2 = _p1._0;
-					var nextPage = _elm_lang$core$String$isEmpty(_p2) ? _user$project$App_Page$ResultAdd(
-						_elm_lang$core$Native_Utils.update(
-							_p3,
-							{riderKey: _elm_lang$core$Maybe$Nothing})) : _user$project$App_Page$ResultAdd(
-						_elm_lang$core$Native_Utils.update(
-							_p3,
-							{
-								riderKey: _elm_lang$core$Maybe$Just(_p2)
-							}));
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							app,
-							{page: nextPage}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-			}
+						_0: 'key',
+						_1: _elm_lang$core$Json_Encode$string(page.resultKey)
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'raceKey',
+							_1: _elm_lang$core$Json_Encode$string(page.raceKey)
+						},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'result',
+								_1: _elm_lang$core$Json_Encode$string(page.result)
+							},
+							_1: {ctor: '[]'}
+						}
+					}
+				});
+			return {
+				ctor: '_Tuple2',
+				_0: page,
+				_1: _user$project$App_OutsideInfo$sendInfoOutside(
+					_user$project$App_OutsideInfo$ResultEdit(payload))
+			};
 		} else {
-			return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
+			var nextPage = _elm_lang$core$Native_Utils.update(
+				page,
+				{result: _p0._0});
+			return {ctor: '_Tuple2', _0: nextPage, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 
@@ -16007,12 +17016,38 @@ var _user$project$App_Update$update = F2(
 							_1: _user$project$App_Helpers$navigate(
 								_user$project$App_Page$RiderDetails(_p1._0))
 						};
-					default:
+					case 'ResultAdded':
 						return {
 							ctor: '_Tuple2',
 							_0: app,
 							_1: _user$project$App_Helpers$navigate(
 								_user$project$App_Page$RaceDetails(_p1._0))
+						};
+					case 'ResultEdited':
+						return {
+							ctor: '_Tuple2',
+							_0: app,
+							_1: _user$project$App_Helpers$navigate(
+								_user$project$App_Page$RaceDetails(_p1._0))
+						};
+					case 'UserLoaded':
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								app,
+								{
+									user: _elm_lang$core$Maybe$Just(
+										{email: _p1._0})
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					default:
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								app,
+								{user: _elm_lang$core$Maybe$Nothing}),
+							_1: _elm_lang$core$Platform_Cmd$none
 						};
 				}
 			case 'LogErr':
@@ -16023,31 +17058,82 @@ var _user$project$App_Update$update = F2(
 						_user$project$App_OutsideInfo$LogError(_p0._0))
 				};
 			case 'RaceAdd':
-				var _p2 = A2(_user$project$Page_Race_Add_Update$update, _p0._0, app);
-				var nextApp = _p2._0;
-				var nextCmd = _p2._1;
-				return {
-					ctor: '_Tuple2',
-					_0: nextApp,
-					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$RaceAdd, nextCmd)
-				};
+				var _p2 = app.page;
+				if (_p2.ctor === 'RaceAdd') {
+					var _p3 = A2(_user$project$Page_Race_Add_Update$update, _p0._0, _p2._0);
+					var nextPage = _p3._0;
+					var nextCmd = _p3._1;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							app,
+							{
+								page: _user$project$App_Page$RaceAdd(nextPage)
+							}),
+						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$RaceAdd, nextCmd)
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
+				}
 			case 'RiderAdd':
-				var _p3 = A2(_user$project$Page_Rider_Add_Update$update, _p0._0, app);
-				var nextApp = _p3._0;
-				var nextCmd = _p3._1;
-				return {
-					ctor: '_Tuple2',
-					_0: nextApp,
-					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$RiderAdd, nextCmd)
-				};
+				var _p4 = app.page;
+				if (_p4.ctor === 'RiderAdd') {
+					var _p5 = A2(_user$project$Page_Rider_Add_Update$update, _p0._0, _p4._0);
+					var nextPage = _p5._0;
+					var nextCmd = _p5._1;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							app,
+							{
+								page: _user$project$App_Page$RiderAdd(nextPage)
+							}),
+						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$RiderAdd, nextCmd)
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'ResultAdd':
+				var _p6 = app.page;
+				if (_p6.ctor === 'ResultAdd') {
+					var _p7 = A2(_user$project$Page_Result_Add_Update$update, _p0._0, _p6._0);
+					var nextPage = _p7._0;
+					var nextCmd = _p7._1;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							app,
+							{
+								page: _user$project$App_Page$ResultAdd(nextPage)
+							}),
+						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$ResultAdd, nextCmd)
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'ResultEdit':
+				var _p8 = app.page;
+				if (_p8.ctor === 'ResultEdit') {
+					var _p9 = A2(_user$project$Page_Result_Edit_Update$update, _p0._0, _p8._0);
+					var nextPage = _p9._0;
+					var nextCmd = _p9._1;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							app,
+							{
+								page: _user$project$App_Page$ResultEdit(nextPage)
+							}),
+						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$ResultEdit, nextCmd)
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
+				}
 			default:
-				var _p4 = A2(_user$project$Page_Result_Add_Update$update, _p0._0, app);
-				var nextApp = _p4._0;
-				var nextCmd = _p4._1;
 				return {
 					ctor: '_Tuple2',
-					_0: nextApp,
-					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$App_Msg$ResultAdd, nextCmd)
+					_0: app,
+					_1: _user$project$App_OutsideInfo$sendInfoOutside(_user$project$App_OutsideInfo$UserSignOut)
 				};
 		}
 	});
@@ -16069,8 +17155,8 @@ var _user$project$Page_Race_Details$resultTd = function (result) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Page_Race_Details$resultRow = F2(
-	function (result, riders) {
+var _user$project$Page_Race_Details$resultRow = F3(
+	function (result, riders, signedIn) {
 		var maybeRider = _elm_lang$core$List$head(
 			A2(
 				_elm_lang$core$List$filter,
@@ -16134,13 +17220,70 @@ var _user$project$Page_Race_Details$resultRow = F2(
 					_1: {
 						ctor: '::',
 						_0: _user$project$Page_Race_Details$resultTd(result.result),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: signedIn ? A2(
+								_elm_lang$html$Html$td,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$a,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$href(
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													'#results/',
+													A2(_elm_lang$core$Basics_ops['++'], result.key, '/edit'))),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$style(
+													{
+														ctor: '::',
+														_0: {ctor: '_Tuple2', _0: 'display', _1: 'block'},
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$span,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('icon'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$i,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('fas fa-pencil-alt'),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text(''),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}) : _elm_lang$html$Html$text(''),
+							_1: {ctor: '[]'}
+						}
 					}
 				});
 		}
 	});
-var _user$project$Page_Race_Details$resultsByCategory = F3(
-	function (category, results, riders) {
+var _user$project$Page_Race_Details$resultsByCategory = F4(
+	function (category, results, riders, signedIn) {
 		var catResults = A2(
 			_elm_lang$core$List$sortBy,
 			function (_) {
@@ -16216,7 +17359,18 @@ var _user$project$Page_Race_Details$resultsByCategory = F3(
 															_0: _elm_lang$html$Html$text('Result'),
 															_1: {ctor: '[]'}
 														}),
-													_1: {ctor: '[]'}
+													_1: {
+														ctor: '::',
+														_0: signedIn ? A2(
+															_elm_lang$html$Html$th,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('Edit'),
+																_1: {ctor: '[]'}
+															}) : _elm_lang$html$Html$text(''),
+														_1: {ctor: '[]'}
+													}
 												}
 											}),
 										_1: {ctor: '[]'}
@@ -16229,7 +17383,7 @@ var _user$project$Page_Race_Details$resultsByCategory = F3(
 										A2(
 											_elm_lang$core$List$map,
 											function (result) {
-												return A2(_user$project$Page_Race_Details$resultRow, result, riders);
+												return A3(_user$project$Page_Race_Details$resultRow, result, riders, signedIn);
 											},
 											catResults)),
 									_1: {ctor: '[]'}
@@ -16240,47 +17394,17 @@ var _user$project$Page_Race_Details$resultsByCategory = F3(
 				});
 		}
 	});
-var _user$project$Page_Race_Details$resultsTable = F2(
-	function (results, riders) {
+var _user$project$Page_Race_Details$resultsTable = F3(
+	function (results, riders, signedIn) {
 		return A2(
 			_elm_lang$html$Html$div,
 			{ctor: '[]'},
 			A2(
 				_elm_lang$core$List$map,
 				function (category) {
-					return A3(_user$project$Page_Race_Details$resultsByCategory, category, results, riders);
+					return A4(_user$project$Page_Race_Details$resultsByCategory, category, results, riders, signedIn);
 				},
 				_user$project$Data_ResultCategory$resultCategories));
-	});
-var _user$project$Page_Race_Details$infoLi = F2(
-	function (label, spanText) {
-		return A2(
-			_elm_lang$html$Html$li,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('collection-item'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text(label),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$span,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('secondary-content'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(spanText),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
-			});
 	});
 var _user$project$Page_Race_Details$addResultButton = function (race) {
 	var initialAdd = _user$project$Page_Result_Add_Model$initial;
@@ -16445,7 +17569,8 @@ var _user$project$Page_Race_Details$info = function (race) {
 		});
 };
 var _user$project$Page_Race_Details$view = F5(
-	function (_p3, raceKey, races, riders, results) {
+	function (app, raceKey, races, riders, results) {
+		var signedIn = !_elm_lang$core$Native_Utils.eq(app.user, _elm_lang$core$Maybe$Nothing);
 		var maybeRace = _elm_lang$core$List$head(
 			A2(
 				_elm_lang$core$List$filter,
@@ -16453,8 +17578,8 @@ var _user$project$Page_Race_Details$view = F5(
 					return _elm_lang$core$Native_Utils.eq(race.key, raceKey);
 				},
 				races));
-		var _p4 = maybeRace;
-		if (_p4.ctor === 'Nothing') {
+		var _p3 = maybeRace;
+		if (_p3.ctor === 'Nothing') {
 			return A2(
 				_elm_lang$html$Html$div,
 				{ctor: '[]'},
@@ -16464,11 +17589,11 @@ var _user$project$Page_Race_Details$view = F5(
 					_1: {ctor: '[]'}
 				});
 		} else {
-			var _p5 = _p4._0;
+			var _p4 = _p3._0;
 			var raceResults = A2(
 				_elm_lang$core$List$filter,
 				function (result) {
-					return _elm_lang$core$Native_Utils.eq(result.raceKey, _p5.key);
+					return _elm_lang$core$Native_Utils.eq(result.raceKey, _p4.key);
 				},
 				results);
 			return A2(
@@ -16490,12 +17615,12 @@ var _user$project$Page_Race_Details$view = F5(
 								},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text(_p5.name),
+									_0: _elm_lang$html$Html$text(_p4.name),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
 								ctor: '::',
-								_0: _user$project$Page_Race_Details$info(_p5),
+								_0: _user$project$Page_Race_Details$info(_p4),
 								_1: {ctor: '[]'}
 							}
 						}),
@@ -16520,13 +17645,13 @@ var _user$project$Page_Race_Details$view = F5(
 									}),
 								_1: {
 									ctor: '::',
-									_0: _user$project$Page_Race_Details$addResultButton(_p5),
+									_0: _user$project$Page_Race_Details$addResultButton(_p4),
 									_1: {ctor: '[]'}
 								}
 							}),
 						_1: {
 							ctor: '::',
-							_0: A2(_user$project$Page_Race_Details$resultsTable, raceResults, riders),
+							_0: A3(_user$project$Page_Race_Details$resultsTable, raceResults, riders, signedIn),
 							_1: {ctor: '[]'}
 						}
 					}
@@ -17649,7 +18774,7 @@ var _user$project$Page_Rider_Add_View$licenceButtonCheck = F4(
 						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(categoryName),
+							_0: _elm_lang$html$Html$text(categoryText),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
@@ -18221,17 +19346,13 @@ var _user$project$Page_Result_Add_View$view = F4(
 																			_0: _elm_lang$html$Html_Events$onInput(_user$project$Page_Result_Add_Msg$Rider),
 																			_1: {ctor: '[]'}
 																		},
-																		A2(
-																			_elm_lang$core$Basics_ops['++'],
-																			{
-																				ctor: '::',
-																				_0: A2(
-																					_elm_lang$html$Html$option,
-																					{ctor: '[]'},
-																					{ctor: '[]'}),
-																				_1: {ctor: '[]'}
-																			},
-																			A2(
+																		{
+																			ctor: '::',
+																			_0: A2(
+																				_elm_lang$html$Html$option,
+																				{ctor: '[]'},
+																				{ctor: '[]'}),
+																			_1: A2(
 																				_elm_lang$core$List$map,
 																				function (item) {
 																					return A2(
@@ -18247,7 +19368,8 @@ var _user$project$Page_Result_Add_View$view = F4(
 																							_1: {ctor: '[]'}
 																						});
 																				},
-																				items))),
+																				items)
+																		}),
 																	_1: {ctor: '[]'}
 																}),
 															_1: {ctor: '[]'}
@@ -18507,6 +19629,242 @@ var _user$project$Page_Result_Add_View$view = F4(
 			});
 	});
 
+var _user$project$Page_Result_Edit_View$view = function (resultEdit) {
+	var submitDisabled = _elm_lang$core$String$isEmpty(resultEdit.result);
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h2,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('title is-2'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Edit result'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('field is-horizontal'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('field-label'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$label,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('label'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$for('result'),
+											_1: {ctor: '[]'}
+										}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Result'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('field-body'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('field'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$p,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('control has-icons-left'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$input,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$id('result'),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('input'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$type_('text'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Events$onInput(_user$project$Page_Result_Edit_Msg$Result),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$autofocus(true),
+																			_1: {
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$value(resultEdit.result),
+																				_1: {ctor: '[]'}
+																			}
+																		}
+																	}
+																}
+															}
+														},
+														{ctor: '[]'}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$span,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('icon is-small is-left'),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$i,
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$class('fa fa-trophy'),
+																		_1: {ctor: '[]'}
+																	},
+																	{ctor: '[]'}),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('field is-horizontal'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('field-label'),
+									_1: {ctor: '[]'}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('field-body'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('field'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$p,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('control'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$button,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('button is-primary'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$type_('submit'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Events$onClick(_user$project$Page_Result_Edit_Msg$Submit),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$name('action'),
+																			_1: {
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
+																				_1: {ctor: '[]'}
+																			}
+																		}
+																	}
+																}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('Edit result'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+
 var _user$project$App_View$raceLi = function (race) {
 	return A2(
 		_elm_lang$html$Html$li,
@@ -18529,44 +19887,126 @@ var _user$project$App_View$raceLi = function (race) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$App_View$sidebar = function (races) {
-	return A2(
-		_elm_lang$html$Html$aside,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('menu'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$p,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('menu-label'),
-					_1: {ctor: '[]'}
-				},
-				{
+var _user$project$App_View$userUl = F2(
+	function (maybeUser, wtosLoginUrl) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$p,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('menu-label'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('User'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$a,
+						_elm_lang$html$Html$ul,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$href('https://wtos.nl'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$target('_blank'),
-								_1: {ctor: '[]'}
-							}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('WTOS.nl'),
+							_0: _elm_lang$html$Html_Attributes$class('menu-list'),
 							_1: {ctor: '[]'}
-						}),
+						},
+						function () {
+							var _p0 = maybeUser;
+							if (_p0.ctor === 'Just') {
+								return {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$li,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$a,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$href('#'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text(_p0._0.email),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$li,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$button,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('button'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Events$onClick(_user$project$App_Msg$UserSignOut),
+															_1: {ctor: '[]'}
+														}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Sign out'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								};
+							} else {
+								return {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$li,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$a,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$href(wtosLoginUrl),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Sign in'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								};
+							}
+						}()),
 					_1: {ctor: '[]'}
-				}),
-			_1: {
+				}
+			});
+	});
+var _user$project$App_View$sidebar = F3(
+	function (races, maybeUser, wtosLoginUrl) {
+		return A2(
+			_elm_lang$html$Html$aside,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('menu'),
+				_1: {ctor: '[]'}
+			},
+			{
 				ctor: '::',
 				_0: A2(
 					_elm_lang$html$Html$p,
@@ -18581,12 +20021,16 @@ var _user$project$App_View$sidebar = function (races) {
 							_elm_lang$html$Html$a,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$href('#races'),
-								_1: {ctor: '[]'}
+								_0: _elm_lang$html$Html_Attributes$href('https://wtos.nl'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$target('_blank'),
+									_1: {ctor: '[]'}
+								}
 							},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text('Races'),
+								_0: _elm_lang$html$Html$text('WTOS.nl'),
 								_1: {ctor: '[]'}
 							}),
 						_1: {ctor: '[]'}
@@ -18594,47 +20038,76 @@ var _user$project$App_View$sidebar = function (races) {
 				_1: {
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$ul,
+						_elm_lang$html$Html$p,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('menu-list'),
+							_0: _elm_lang$html$Html_Attributes$class('menu-label'),
 							_1: {ctor: '[]'}
 						},
-						A2(
-							_elm_lang$core$List$map,
-							_user$project$App_View$raceLi,
-							_user$project$Data_Race$lastRaces(races))),
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$a,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$href('#races'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Races'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}),
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$p,
+							_elm_lang$html$Html$ul,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('menu-label'),
+								_0: _elm_lang$html$Html_Attributes$class('menu-list'),
 								_1: {ctor: '[]'}
 							},
-							{
+							A2(
+								_elm_lang$core$List$map,
+								_user$project$App_View$raceLi,
+								_user$project$Data_Race$lastRaces(races))),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$p,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('menu-label'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$a,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$href('#riders'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Riders'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
 								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$a,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$href('#riders'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Riders'),
-										_1: {ctor: '[]'}
-									}),
+								_0: A2(_user$project$App_View$userUl, maybeUser, wtosLoginUrl),
 								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
+							}
+						}
 					}
 				}
-			}
-		});
-};
+			});
+	});
 var _user$project$App_View$spinner = A2(
 	_elm_lang$html$Html$div,
 	{
@@ -18678,35 +20151,35 @@ var _user$project$App_View$spinner = A2(
 	});
 var _user$project$App_View$viewPage = F4(
 	function (app, races, riders, results) {
-		var _p0 = app.page;
-		switch (_p0.ctor) {
+		var _p1 = app.page;
+		switch (_p1.ctor) {
 			case 'RiderDetails':
-				return A5(_user$project$Page_Rider_Details$view, app, _p0._0, races, riders, results);
+				return A5(_user$project$Page_Rider_Details$view, app, _p1._0, races, riders, results);
 			case 'Riders':
 				return A3(_user$project$Page_Rider_List$view, riders, races, results);
 			case 'RiderAdd':
 				return A2(
 					_elm_lang$html$Html$map,
 					_user$project$App_Msg$RiderAdd,
-					_user$project$Page_Rider_Add_View$view(_p0._0));
+					_user$project$Page_Rider_Add_View$view(_p1._0));
 			case 'RaceDetails':
-				return A5(_user$project$Page_Race_Details$view, app, _p0._0, races, riders, results);
+				return A5(_user$project$Page_Race_Details$view, app, _p1._0, races, riders, results);
 			case 'Races':
 				return A2(_user$project$Page_Race_List$view, races, results);
 			case 'RaceAdd':
 				return A2(
 					_elm_lang$html$Html$map,
 					_user$project$App_Msg$RaceAdd,
-					_user$project$Page_Race_Add_View$view(_p0._0));
-			default:
-				var _p2 = _p0._0;
-				var maybeRace = A2(_user$project$Data_Race$getRace, _p2.raceKey, races);
-				var _p1 = maybeRace;
-				if (_p1.ctor === 'Just') {
+					_user$project$Page_Race_Add_View$view(_p1._0));
+			case 'ResultAdd':
+				var _p3 = _p1._0;
+				var maybeRace = A2(_user$project$Data_Race$getRace, _p3.raceKey, races);
+				var _p2 = maybeRace;
+				if (_p2.ctor === 'Just') {
 					return A2(
 						_elm_lang$html$Html$map,
 						_user$project$App_Msg$ResultAdd,
-						A4(_user$project$Page_Result_Add_View$view, _p1._0, _p2, riders, results));
+						A4(_user$project$Page_Result_Add_View$view, _p2._0, _p3, riders, results));
 				} else {
 					return A2(
 						_elm_lang$html$Html$div,
@@ -18717,10 +20190,15 @@ var _user$project$App_View$viewPage = F4(
 							_1: {ctor: '[]'}
 						});
 				}
+			default:
+				return A2(
+					_elm_lang$html$Html$map,
+					_user$project$App_Msg$ResultEdit,
+					_user$project$Page_Result_Edit_View$view(_p1._0));
 		}
 	});
-var _user$project$App_View$mainView = F4(
-	function (app, races, riders, results) {
+var _user$project$App_View$mainView = F6(
+	function (app, races, riders, results, maybeUser, wtosLoginUrl) {
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -18747,7 +20225,7 @@ var _user$project$App_View$mainView = F4(
 					},
 					{
 						ctor: '::',
-						_0: _user$project$App_View$sidebar(races),
+						_0: A3(_user$project$App_View$sidebar, races, maybeUser, wtosLoginUrl),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -18773,9 +20251,9 @@ var _user$project$App_View$mainView = F4(
 			});
 	});
 var _user$project$App_View$loadingPage = function (app) {
-	var _p3 = {ctor: '_Tuple3', _0: app.races, _1: app.riders, _2: app.results};
-	if (((_p3._0.ctor === 'Just') && (_p3._1.ctor === 'Just')) && (_p3._2.ctor === 'Just')) {
-		return A4(_user$project$App_View$mainView, app, _p3._0._0, _p3._1._0, _p3._2._0);
+	var _p4 = {ctor: '_Tuple3', _0: app.races, _1: app.riders, _2: app.results};
+	if (((_p4._0.ctor === 'Just') && (_p4._1.ctor === 'Just')) && (_p4._2.ctor === 'Just')) {
+		return A6(_user$project$App_View$mainView, app, _p4._0._0, _p4._1._0, _p4._2._0, app.user, app.wtosLoginUrl);
 	} else {
 		return A2(
 			_elm_lang$html$Html$div,
@@ -18829,22 +20307,30 @@ var _user$project$Main$subscriptions = function (_p0) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Main$init = function (location) {
-	var initialApp = _user$project$App_Model$initial;
-	var route = _user$project$App_Routing$routeParser(location);
-	var _p1 = A2(_user$project$App_UrlUpdate$urlUpdate, route, initialApp);
-	var app = _p1._0;
-	var cmd = _p1._1;
-	return {ctor: '_Tuple2', _0: app, _1: cmd};
-};
+var _user$project$Main$init = F2(
+	function (flags, location) {
+		var initialApp = _user$project$App_Model$initial(flags);
+		var route = _user$project$App_Routing$routeParser(location);
+		var _p1 = A2(_user$project$App_UrlUpdate$urlUpdate, route, initialApp);
+		var app = _p1._0;
+		var cmd = _p1._1;
+		return {ctor: '_Tuple2', _0: app, _1: cmd};
+	});
 var _user$project$Main$parser = function (location) {
 	return _user$project$App_Msg$UrlUpdate(
 		_user$project$App_Routing$routeParser(location));
 };
 var _user$project$Main$main = A2(
-	_elm_lang$navigation$Navigation$program,
+	_elm_lang$navigation$Navigation$programWithFlags,
 	_user$project$Main$parser,
-	{init: _user$project$Main$init, update: _user$project$App_Update$update, subscriptions: _user$project$Main$subscriptions, view: _user$project$App_View$view})();
+	{init: _user$project$Main$init, update: _user$project$App_Update$update, subscriptions: _user$project$Main$subscriptions, view: _user$project$App_View$view})(
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (wtosLoginUrl) {
+			return _elm_lang$core$Json_Decode$succeed(
+				{wtosLoginUrl: wtosLoginUrl});
+		},
+		A2(_elm_lang$core$Json_Decode$field, 'wtosLoginUrl', _elm_lang$core$Json_Decode$string)));
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
