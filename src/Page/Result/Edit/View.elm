@@ -45,6 +45,16 @@ view resultEdit =
                     ]
                 ]
             , div [ class "field is-horizontal" ]
+                [ div [ class "field-label" ]
+                    [ label [ class "label", for "result" ] [ text "Category" ]
+                    ]
+                , div [ class "field-body" ]
+                    [ div [ class "field" ]
+                        [ p [ class "control" ] [ resultCategoryButtons resultEdit.category ]
+                        ]
+                    ]
+                ]
+            , div [ class "field is-horizontal" ]
                 [ div [ class "field-label" ] []
                 , div [ class "field-body" ]
                     [ div [ class "field" ]
@@ -62,3 +72,25 @@ view resultEdit =
                     ]
                 ]
             ]
+
+resultCategoryButton : ResultCategory -> ResultCategory -> Html Msg
+resultCategoryButton category current =
+    let
+        isChecked =
+            category == current
+
+        resultCategoryName =
+            categoryToString category
+
+        resultCategoryText =
+            categoryReadable category
+    in
+        p []
+            [ input [ checked isChecked, name "resultCategory", type_ "radio", id resultCategoryName, onClick (Msg.Category category) ] []
+            , label [ for resultCategoryName ] [ text resultCategoryText ]
+            ]
+
+resultCategoryButtons : ResultCategory -> Html Msg
+resultCategoryButtons current =
+    div [] <|
+        List.map (\resultCategory -> resultCategoryButton resultCategory current) resultCategories

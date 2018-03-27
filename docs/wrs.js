@@ -15482,11 +15482,14 @@ var _user$project$Data_Licence$licenceToString = function (licence) {
 			return 'amateurs';
 		case 'Basislidmaatschap':
 			return 'basislidmaatschap';
+		case 'Sportklasse':
+			return 'sportklasse';
 		default:
 			return 'other';
 	}
 };
 var _user$project$Data_Licence$Other = {ctor: 'Other'};
+var _user$project$Data_Licence$Sportklasse = {ctor: 'Sportklasse'};
 var _user$project$Data_Licence$Basislidmaatschap = {ctor: 'Basislidmaatschap'};
 var _user$project$Data_Licence$Amateurs = {ctor: 'Amateurs'};
 var _user$project$Data_Licence$Elite = {ctor: 'Elite'};
@@ -15499,6 +15502,8 @@ var _user$project$Data_Licence$licence = function (string) {
 			return _user$project$Data_Licence$Amateurs;
 		case 'basislidmaatschap':
 			return _user$project$Data_Licence$Basislidmaatschap;
+		case 'sportklasse':
+			return _user$project$Data_Licence$Sportklasse;
 		default:
 			return _user$project$Data_Licence$Other;
 	}
@@ -15532,12 +15537,18 @@ var _user$project$Data_RaceType$getPointsByRaceType = function (category) {
 			return 4;
 		case 'Studentscup':
 			return 3;
+		case 'MTB':
+			return 4;
 		case 'CK':
 			return 2;
 		case 'NK':
 			return 5;
 		case 'Cyclosportive':
 			return 4;
+		case 'TimeTrial':
+			return 3;
+		case 'Toertocht':
+			return 2;
 		case 'Other':
 			return 0;
 		default:
@@ -15563,12 +15574,18 @@ var _user$project$Data_RaceType$raceTypeReadable = function (category) {
 			return 'Omloop';
 		case 'Studentscup':
 			return 'Studentencup';
+		case 'MTB':
+			return 'Mountainbike';
 		case 'CK':
 			return 'Clubkampioenschap';
 		case 'NK':
 			return 'Nederlands kampioenschap';
 		case 'Cyclosportive':
 			return 'Cyclosportive';
+		case 'TimeTrial':
+			return 'Time trial';
+		case 'Toertocht':
+			return 'Toertocht';
 		default:
 			return 'Other';
 	}
@@ -15592,21 +15609,30 @@ var _user$project$Data_RaceType$raceTypeToString = function (category) {
 			return 'omloop';
 		case 'Studentscup':
 			return 'studentencup';
+		case 'MTB':
+			return 'MTB';
 		case 'CK':
 			return 'CK';
 		case 'NK':
 			return 'NK';
 		case 'Cyclosportive':
 			return 'cyclosportive';
+		case 'TimeTrial':
+			return 'timetrial';
+		case 'Toertocht':
+			return 'toertocht';
 		default:
 			return 'other';
 	}
 };
 var _user$project$Data_RaceType$Unknown = {ctor: 'Unknown'};
 var _user$project$Data_RaceType$Other = {ctor: 'Other'};
+var _user$project$Data_RaceType$Toertocht = {ctor: 'Toertocht'};
+var _user$project$Data_RaceType$TimeTrial = {ctor: 'TimeTrial'};
 var _user$project$Data_RaceType$Cyclosportive = {ctor: 'Cyclosportive'};
 var _user$project$Data_RaceType$NK = {ctor: 'NK'};
 var _user$project$Data_RaceType$CK = {ctor: 'CK'};
+var _user$project$Data_RaceType$MTB = {ctor: 'MTB'};
 var _user$project$Data_RaceType$Studentscup = {ctor: 'Studentscup'};
 var _user$project$Data_RaceType$Omloop = {ctor: 'Omloop'};
 var _user$project$Data_RaceType$Beach = {ctor: 'Beach'};
@@ -15641,17 +15667,29 @@ var _user$project$Data_RaceType$raceTypes = {
 								_0: _user$project$Data_RaceType$Studentscup,
 								_1: {
 									ctor: '::',
-									_0: _user$project$Data_RaceType$CK,
+									_0: _user$project$Data_RaceType$MTB,
 									_1: {
 										ctor: '::',
-										_0: _user$project$Data_RaceType$NK,
+										_0: _user$project$Data_RaceType$CK,
 										_1: {
 											ctor: '::',
-											_0: _user$project$Data_RaceType$Cyclosportive,
+											_0: _user$project$Data_RaceType$NK,
 											_1: {
 												ctor: '::',
-												_0: _user$project$Data_RaceType$Other,
-												_1: {ctor: '[]'}
+												_0: _user$project$Data_RaceType$Cyclosportive,
+												_1: {
+													ctor: '::',
+													_0: _user$project$Data_RaceType$TimeTrial,
+													_1: {
+														ctor: '::',
+														_0: _user$project$Data_RaceType$Toertocht,
+														_1: {
+															ctor: '::',
+															_0: _user$project$Data_RaceType$Other,
+															_1: {ctor: '[]'}
+														}
+													}
+												}
 											}
 										}
 									}
@@ -15683,12 +15721,18 @@ var _user$project$Data_RaceType$raceType = function (string) {
 			return _user$project$Data_RaceType$Omloop;
 		case 'studentencup':
 			return _user$project$Data_RaceType$Studentscup;
+		case 'MTB':
+			return _user$project$Data_RaceType$MTB;
 		case 'CK':
 			return _user$project$Data_RaceType$CK;
 		case 'NK':
 			return _user$project$Data_RaceType$NK;
 		case 'cyclosportive':
 			return _user$project$Data_RaceType$Cyclosportive;
+		case 'timetrial':
+			return _user$project$Data_RaceType$TimeTrial;
+		case 'toertocht':
+			return _user$project$Data_RaceType$Toertocht;
 		case 'other':
 			return _user$project$Data_RaceType$Other;
 		default:
@@ -15749,6 +15793,10 @@ var _user$project$Data_ResultCategory$categoryReadable = function (category) {
 			return 'Basislidmaatschap';
 		case 'EliteAmateurs':
 			return 'Elite/amateurs';
+		case 'AmateursSportklasse':
+			return 'Amateurs/sportklasse';
+		case 'Sportklasse':
+			return 'Sportklasse';
 		case 'CatB':
 			return 'Cat. b';
 		case 'CatC':
@@ -15774,6 +15822,10 @@ var _user$project$Data_ResultCategory$categoryToString = function (category) {
 			return 'basislidmaatschap';
 		case 'EliteAmateurs':
 			return 'elite_amateurs';
+		case 'AmateursSportklasse':
+			return 'amateurs_sportklasse';
+		case 'Sportklasse':
+			return 'sportklasse';
 		case 'CatB':
 			return 'catb';
 		case 'CatC':
@@ -15791,8 +15843,10 @@ var _user$project$Data_ResultCategory$Other = {ctor: 'Other'};
 var _user$project$Data_ResultCategory$CatD = {ctor: 'CatD'};
 var _user$project$Data_ResultCategory$CatC = {ctor: 'CatC'};
 var _user$project$Data_ResultCategory$CatB = {ctor: 'CatB'};
-var _user$project$Data_ResultCategory$Basislidmaatschap = {ctor: 'Basislidmaatschap'};
+var _user$project$Data_ResultCategory$Sportklasse = {ctor: 'Sportklasse'};
+var _user$project$Data_ResultCategory$AmateursSportklasse = {ctor: 'AmateursSportklasse'};
 var _user$project$Data_ResultCategory$EliteAmateurs = {ctor: 'EliteAmateurs'};
+var _user$project$Data_ResultCategory$Basislidmaatschap = {ctor: 'Basislidmaatschap'};
 var _user$project$Data_ResultCategory$CatA = {ctor: 'CatA'};
 var _user$project$Data_ResultCategory$Elite = {ctor: 'Elite'};
 var _user$project$Data_ResultCategory$Amateurs = {ctor: 'Amateurs'};
@@ -15813,17 +15867,25 @@ var _user$project$Data_ResultCategory$resultCategories = {
 					_0: _user$project$Data_ResultCategory$EliteAmateurs,
 					_1: {
 						ctor: '::',
-						_0: _user$project$Data_ResultCategory$CatB,
+						_0: _user$project$Data_ResultCategory$AmateursSportklasse,
 						_1: {
 							ctor: '::',
-							_0: _user$project$Data_ResultCategory$CatC,
+							_0: _user$project$Data_ResultCategory$Sportklasse,
 							_1: {
 								ctor: '::',
-								_0: _user$project$Data_ResultCategory$CatD,
+								_0: _user$project$Data_ResultCategory$CatB,
 								_1: {
 									ctor: '::',
-									_0: _user$project$Data_ResultCategory$Other,
-									_1: {ctor: '[]'}
+									_0: _user$project$Data_ResultCategory$CatC,
+									_1: {
+										ctor: '::',
+										_0: _user$project$Data_ResultCategory$CatD,
+										_1: {
+											ctor: '::',
+											_0: _user$project$Data_ResultCategory$Other,
+											_1: {ctor: '[]'}
+										}
+									}
 								}
 							}
 						}
@@ -15846,8 +15908,12 @@ var _user$project$Data_ResultCategory$resultCategoryDecoder = function (string) 
 					return _user$project$Data_ResultCategory$CatA;
 				case 'basislidmaatschap':
 					return _user$project$Data_ResultCategory$Basislidmaatschap;
-				case 'elite/amateurs':
+				case 'elite_amateurs':
 					return _user$project$Data_ResultCategory$EliteAmateurs;
+				case 'amateurs_sportklasse':
+					return _user$project$Data_ResultCategory$AmateursSportklasse;
+				case 'sportklasse':
+					return _user$project$Data_ResultCategory$Sportklasse;
 				case 'catb':
 					return _user$project$Data_ResultCategory$CatB;
 				case 'catc':
@@ -15975,7 +16041,7 @@ var _user$project$Data_RaceResult$resultsDecoder = _elm_lang$core$Json_Decode$li
 
 var _user$project$Page_Result_Edit_Model$initial = F2(
 	function (resultKey, maybeResults) {
-		var _p0 = A2(_elm_lang$core$Debug$log, 'maybeResults', maybeResults);
+		var _p0 = maybeResults;
 		if (_p0.ctor === 'Just') {
 			var maybeResult = _elm_lang$core$List$head(
 				A2(
@@ -15986,19 +16052,19 @@ var _user$project$Page_Result_Edit_Model$initial = F2(
 					_p0._0));
 			var _p1 = maybeResult;
 			if (_p1.ctor === 'Just') {
-				var _p3 = _p1._0;
-				var _p2 = A2(_elm_lang$core$Debug$log, 'hoi', _p3);
-				return {result: _p3.result, resultKey: resultKey, raceKey: _p3.raceKey};
+				var _p2 = _p1._0;
+				return _elm_lang$core$Maybe$Just(
+					{result: _p2.result, category: _p2.category, resultKey: resultKey, raceKey: _p2.raceKey});
 			} else {
-				return {result: 'asdf', resultKey: resultKey, raceKey: '1234'};
+				return _elm_lang$core$Maybe$Nothing;
 			}
 		} else {
-			return {result: '1234', resultKey: resultKey, raceKey: '1234'};
+			return _elm_lang$core$Maybe$Nothing;
 		}
 	});
-var _user$project$Page_Result_Edit_Model$Model = F3(
-	function (a, b, c) {
-		return {result: a, resultKey: b, raceKey: c};
+var _user$project$Page_Result_Edit_Model$Model = F4(
+	function (a, b, c, d) {
+		return {result: a, category: b, resultKey: c, raceKey: d};
 	});
 
 var _user$project$App_Page$ResultEdit = function (a) {
@@ -16410,6 +16476,9 @@ var _user$project$Page_Result_Add_Msg$Category = function (a) {
 };
 var _user$project$Page_Result_Add_Msg$Submit = {ctor: 'Submit'};
 
+var _user$project$Page_Result_Edit_Msg$Category = function (a) {
+	return {ctor: 'Category', _0: a};
+};
 var _user$project$Page_Result_Edit_Msg$Result = function (a) {
 	return {ctor: 'Result', _0: a};
 };
@@ -16581,19 +16650,24 @@ var _user$project$App_UrlUpdate$urlUpdate = F2(
 		var _p1 = route;
 		switch (_p1.ctor) {
 			case 'ResultEdit':
-				var resultEdit = A2(_user$project$Page_Result_Edit_Model$initial, _p1._0, app.results);
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						app,
-						{
-							page: _user$project$App_Page$ResultEdit(resultEdit)
-						}),
-					_1: A2(
-						_elm_lang$core$Task$attempt,
-						_elm_lang$core$Basics$always(_user$project$App_Msg$Noop),
-						_elm_lang$dom$Dom$focus('result'))
-				};
+				var maybeResultEdit = A2(_user$project$Page_Result_Edit_Model$initial, _p1._0, app.results);
+				var _p2 = maybeResultEdit;
+				if (_p2.ctor === 'Just') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							app,
+							{
+								page: _user$project$App_Page$ResultEdit(_p2._0)
+							}),
+						_1: A2(
+							_elm_lang$core$Task$attempt,
+							_elm_lang$core$Basics$always(_user$project$App_Msg$Noop),
+							_elm_lang$dom$Dom$focus('result'))
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: app, _1: _elm_lang$core$Platform_Cmd$none};
+				}
 			case 'ResultAdd':
 				var resultAdd = _user$project$Page_Result_Add_Model$initial;
 				var resultAddWithRaceKey = _elm_lang$core$Native_Utils.update(
@@ -16612,9 +16686,9 @@ var _user$project$App_UrlUpdate$urlUpdate = F2(
 						_elm_lang$dom$Dom$focus('result'))
 				};
 			case 'RaceAdd':
-				var _p2 = _elm_community$elm_datepicker$DatePicker$init;
-				var datePicker = _p2._0;
-				var datePickerFx = _p2._1;
+				var _p3 = _elm_community$elm_datepicker$DatePicker$init;
+				var datePicker = _p3._0;
+				var datePickerFx = _p3._1;
 				var raceAdd = A4(_user$project$Page_Race_Add_Model$Model, '', _user$project$Data_RaceType$Trainingskoers, _elm_lang$core$Maybe$Nothing, datePicker);
 				return {
 					ctor: '_Tuple2',
@@ -16675,13 +16749,13 @@ var _user$project$App_UrlUpdate$urlUpdate = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
-				var _p3 = _user$project$App_UrlUpdate$routeToPage(route);
-				if (_p3.ctor === 'Just') {
+				var _p4 = _user$project$App_UrlUpdate$routeToPage(route);
+				if (_p4.ctor === 'Just') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							app,
-							{page: _p3._0}),
+							{page: _p4._0}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
@@ -16914,44 +16988,59 @@ var _user$project$Page_Result_Add_Update$update = F2(
 var _user$project$Page_Result_Edit_Update$update = F2(
 	function (msg, page) {
 		var _p0 = msg;
-		if (_p0.ctor === 'Submit') {
-			var payload = _elm_lang$core$Json_Encode$object(
-				{
-					ctor: '::',
-					_0: {
-						ctor: '_Tuple2',
-						_0: 'key',
-						_1: _elm_lang$core$Json_Encode$string(page.resultKey)
-					},
-					_1: {
+		switch (_p0.ctor) {
+			case 'Submit':
+				var payload = _elm_lang$core$Json_Encode$object(
+					{
 						ctor: '::',
 						_0: {
 							ctor: '_Tuple2',
-							_0: 'raceKey',
-							_1: _elm_lang$core$Json_Encode$string(page.raceKey)
+							_0: 'key',
+							_1: _elm_lang$core$Json_Encode$string(page.resultKey)
 						},
 						_1: {
 							ctor: '::',
 							_0: {
 								ctor: '_Tuple2',
-								_0: 'result',
-								_1: _elm_lang$core$Json_Encode$string(page.result)
+								_0: 'raceKey',
+								_1: _elm_lang$core$Json_Encode$string(page.raceKey)
 							},
-							_1: {ctor: '[]'}
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'result',
+									_1: _elm_lang$core$Json_Encode$string(page.result)
+								},
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple2',
+										_0: 'category',
+										_1: _elm_lang$core$Json_Encode$string(
+											_user$project$Data_ResultCategory$categoryToString(page.category))
+									},
+									_1: {ctor: '[]'}
+								}
+							}
 						}
-					}
-				});
-			return {
-				ctor: '_Tuple2',
-				_0: page,
-				_1: _user$project$App_OutsideInfo$sendInfoOutside(
-					_user$project$App_OutsideInfo$ResultEdit(payload))
-			};
-		} else {
-			var nextPage = _elm_lang$core$Native_Utils.update(
-				page,
-				{result: _p0._0});
-			return {ctor: '_Tuple2', _0: nextPage, _1: _elm_lang$core$Platform_Cmd$none};
+					});
+				return {
+					ctor: '_Tuple2',
+					_0: page,
+					_1: _user$project$App_OutsideInfo$sendInfoOutside(
+						_user$project$App_OutsideInfo$ResultEdit(payload))
+				};
+			case 'Result':
+				var nextPage = _elm_lang$core$Native_Utils.update(
+					page,
+					{result: _p0._0});
+				return {ctor: '_Tuple2', _0: nextPage, _1: _elm_lang$core$Platform_Cmd$none};
+			default:
+				var nextPage = _elm_lang$core$Native_Utils.update(
+					page,
+					{category: _p0._0});
+				return {ctor: '_Tuple2', _0: nextPage, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 
@@ -18800,8 +18889,12 @@ var _user$project$Page_Rider_Add_View$licenceButtons = function (maybeCurrent) {
 					_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'basislidmaatschap', 'Basislidmaatschap', _user$project$Data_Licence$Basislidmaatschap, maybeCurrent),
 					_1: {
 						ctor: '::',
-						_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'other', 'Other', _user$project$Data_Licence$Other, maybeCurrent),
-						_1: {ctor: '[]'}
+						_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'sportklasse', 'Sportklasse', _user$project$Data_Licence$Sportklasse, maybeCurrent),
+						_1: {
+							ctor: '::',
+							_0: A4(_user$project$Page_Rider_Add_View$licenceButtonCheck, 'other', 'Other', _user$project$Data_Licence$Other, maybeCurrent),
+							_1: {ctor: '[]'}
+						}
 					}
 				}
 			}
@@ -19629,6 +19722,70 @@ var _user$project$Page_Result_Add_View$view = F4(
 			});
 	});
 
+var _user$project$Page_Result_Edit_View$resultCategoryButton = F2(
+	function (category, current) {
+		var resultCategoryText = _user$project$Data_ResultCategory$categoryReadable(category);
+		var resultCategoryName = _user$project$Data_ResultCategory$categoryToString(category);
+		var isChecked = _elm_lang$core$Native_Utils.eq(category, current);
+		return A2(
+			_elm_lang$html$Html$p,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$input,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$checked(isChecked),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$name('resultCategory'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$type_('radio'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$id(resultCategoryName),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(
+											_user$project$Page_Result_Edit_Msg$Category(category)),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$label,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$for(resultCategoryName),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(resultCategoryText),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Page_Result_Edit_View$resultCategoryButtons = function (current) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		A2(
+			_elm_lang$core$List$map,
+			function (resultCategory) {
+				return A2(_user$project$Page_Result_Edit_View$resultCategoryButton, resultCategory, current);
+			},
+			_user$project$Data_ResultCategory$resultCategories));
+};
 var _user$project$Page_Result_Edit_View$view = function (resultEdit) {
 	var submitDisabled = _elm_lang$core$String$isEmpty(resultEdit.result);
 	return A2(
@@ -19792,7 +19949,26 @@ var _user$project$Page_Result_Edit_View$view = function (resultEdit) {
 									_0: _elm_lang$html$Html_Attributes$class('field-label'),
 									_1: {ctor: '[]'}
 								},
-								{ctor: '[]'}),
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$label,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('label'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$for('result'),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Category'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
 							_1: {
 								ctor: '::',
 								_0: A2(
@@ -19822,34 +19998,7 @@ var _user$project$Page_Result_Edit_View$view = function (resultEdit) {
 													},
 													{
 														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$button,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$class('button is-primary'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$type_('submit'),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Events$onClick(_user$project$Page_Result_Edit_Msg$Submit),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$name('action'),
-																			_1: {
-																				ctor: '::',
-																				_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
-																				_1: {ctor: '[]'}
-																			}
-																		}
-																	}
-																}
-															},
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html$text('Edit result'),
-																_1: {ctor: '[]'}
-															}),
+														_0: _user$project$Page_Result_Edit_View$resultCategoryButtons(resultEdit.category),
 														_1: {ctor: '[]'}
 													}),
 												_1: {ctor: '[]'}
@@ -19859,7 +20008,93 @@ var _user$project$Page_Result_Edit_View$view = function (resultEdit) {
 								_1: {ctor: '[]'}
 							}
 						}),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('field is-horizontal'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('field-label'),
+										_1: {ctor: '[]'}
+									},
+									{ctor: '[]'}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('field-body'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$div,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('field'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$p,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('control'),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$button,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$class('button is-primary'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$type_('submit'),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Events$onClick(_user$project$Page_Result_Edit_Msg$Submit),
+																			_1: {
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$name('action'),
+																				_1: {
+																					ctor: '::',
+																					_0: _elm_lang$html$Html_Attributes$disabled(submitDisabled),
+																					_1: {ctor: '[]'}
+																				}
+																			}
+																		}
+																	}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('Edit result'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}
 				}
 			}
 		});

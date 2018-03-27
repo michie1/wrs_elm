@@ -1,17 +1,19 @@
 module Page.Result.Edit.Model exposing (Model, initial)
 
 import Data.RaceResult exposing (RaceResult)
+import Data.ResultCategory as ResultCategory exposing (ResultCategory)
 
 type alias Model =
     { result : String
+    , category : ResultCategory
     , resultKey : String
     , raceKey : String
     }
 
 
-initial : String -> Maybe (List RaceResult) -> Model
+initial : String -> Maybe (List RaceResult) -> Maybe Model
 initial resultKey maybeResults =
-    case (Debug.log "maybeResults" maybeResults) of
+    case maybeResults of
         Just results ->
             let
                 maybeResult = List.head <|
@@ -21,22 +23,14 @@ initial resultKey maybeResults =
             in
                 case maybeResult of
                     Just result ->
-                        let
-                            _ = Debug.log "hoi" result
-                        in
-                            { result = result.result
-                            , resultKey = resultKey
-                            , raceKey = result.raceKey
-                            }
-
-                    Nothing ->
-                        { result = "asdf"
+                        Just { result = result.result
+                        , category = result.category
                         , resultKey = resultKey
-                        , raceKey = "1234"
+                        , raceKey = result.raceKey
                         }
 
+                    Nothing ->
+                        Nothing
+
         Nothing ->
-            { result = "1234"
-            , resultKey = resultKey
-            , raceKey = "1234"
-            }
+            Nothing

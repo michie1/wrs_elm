@@ -40,12 +40,16 @@ urlUpdate route app =
     case route of
         App.Routing.ResultEdit resultKey ->
             let
-                resultEdit =
+                maybeResultEdit =
                     ResultEdit.initial resultKey app.results
             in
-                ( { app | page = App.Page.ResultEdit resultEdit }
-                , Task.attempt (always Msg.Noop) (Dom.focus "result")
-                )
+                case maybeResultEdit of
+                    Just resultEdit ->
+                        ( { app | page = App.Page.ResultEdit resultEdit }
+                        , Task.attempt (always Msg.Noop) (Dom.focus "result")
+                        )
+                    Nothing ->
+                        ( app, Cmd.none )
 
         App.Routing.ResultAdd raceKey ->
             let

@@ -18,17 +18,24 @@ update msg page =
                         [ ( "key", Json.Encode.string page.resultKey )
                         , ( "raceKey", Json.Encode.string page.raceKey )
                         , ( "result", Json.Encode.string page.result )
+                        , ( "category", Json.Encode.string <| categoryToString page.category )
                         ]
             in
                 ( page, sendInfoOutside <| App.OutsideInfo.ResultEdit payload )
-
-
-
 
         Msg.Result result ->
             let
                 nextPage =
                     { page | result = result }
+            in
+                ( nextPage
+                , Cmd.none
+                )
+
+        Msg.Category category ->
+            let
+                nextPage =
+                    { page | category = category }
             in
                 ( nextPage
                 , Cmd.none

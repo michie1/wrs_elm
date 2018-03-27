@@ -142,6 +142,7 @@ function addResult(result) {
 function editResult(result) {
   firebase.database().ref('results/' + result.key).update({
     result: result.result,
+    category: result.category
   }).then(function () {
     app.ports.infoForElm.send({
       tag: 'ResultEdited',
