@@ -225,7 +225,7 @@ getPointsByRaceType category =
             3
 
         MTB ->
-            4
+            3
 
         CK ->
             2
@@ -240,7 +240,7 @@ getPointsByRaceType category =
             3
 
         Toertocht ->
-            2
+            1
 
         Other ->
             0
