@@ -15538,7 +15538,7 @@ var _user$project$Data_RaceType$getPointsByRaceType = function (category) {
 		case 'Studentscup':
 			return 3;
 		case 'MTB':
-			return 4;
+			return 3;
 		case 'CK':
 			return 2;
 		case 'NK':
@@ -15548,7 +15548,7 @@ var _user$project$Data_RaceType$getPointsByRaceType = function (category) {
 		case 'TimeTrial':
 			return 3;
 		case 'Toertocht':
-			return 2;
+			return 1;
 		case 'Other':
 			return 0;
 		default:
