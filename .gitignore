@@ -7,3 +7,4 @@ tags
 build
 icon?family=Material+Icons
 dist/
+.vscode
