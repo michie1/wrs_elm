@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --hot --inline",
-    "build": "elm-make src/Main.elm --output dist/wrs.js"
+    "build": "npm run make && npm run uglify",
+    "make": "elm-make src/Main.elm --output dist/wrs.js",
+    "uglify": "uglifyjs -mc 'pure_funcs=\"F2,F3,F4,F5,F6,F7,F8,F9\" pure_getters=true keep_fargs=true' -o dist/wrs.js dist/wrs.js"
   },
   "author": "",
   "license": "ISC",
@@ -18,11 +20,12 @@
   },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.8",
+    "elm-hot-loader": "^0.5.4",
     "elm-webpack-loader": "^4.4.0",
     "file-loader": "^1.1.5",
     "style-loader": "^0.19.0",
+    "uglify-js": "^3.3.23",
     "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4",
-    "elm-hot-loader": "^0.5.4"
+    "webpack-dev-server": "^2.9.4"
   }
 }
