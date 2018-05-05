@@ -111,7 +111,9 @@ sidebar races maybeUser wtosLoginUrl =
         , ul [ class "menu-list" ] (List.map raceLi <| lastRaces races)
         , p [ class "menu-label" ] [ a [ href "#riders" ] [ text "Riders" ] ]
         , userUl maybeUser wtosLoginUrl
+        , p [ class "menu-label" ] [ a [ href "https://github.com/michie1/wrs_elm", target "_blank" ] [ text "WRS on GitHub" ] ]
         ]
+
 
 userUl : Maybe User -> String -> Html App.Msg.Msg
 userUl maybeUser wtosLoginUrl =
