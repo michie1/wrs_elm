@@ -20,6 +20,8 @@
   },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.8",
+    "elm": "^0.18.0",
+    "elm-format": "^0.6.1-alpha",
     "elm-hot-loader": "^0.5.4",
     "elm-webpack-loader": "^4.4.0",
     "file-loader": "^1.1.5",
