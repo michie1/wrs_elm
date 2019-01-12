@@ -4,12 +4,6 @@ Prerequisites:
  * Node LTS
  * Npm LTS
 
-Install elm:
-
-```sh
-sudo npm install -g elm
-```
-
 Get code:
 
 ```sh
