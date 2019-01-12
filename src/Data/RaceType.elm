@@ -189,7 +189,7 @@ raceTypeReadable category =
             "Toertocht"
 
         _ ->
-            "Other"
+            "Other (e.g. WTOS time trial)"
 
 
 raceTypeDecoder : String -> Json.Decode.Decoder RaceType

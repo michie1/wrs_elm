@@ -4,12 +4,12 @@ import Html exposing (Html, p, button, div, input, h2)
 import Html.Attributes exposing (value, autofocus, class, name, type_, id, for, checked, disabled)
 import Html.Events exposing (onClick, onInput)
 import Date
-import Date.Extra.Format
 import Date.Extra.Config.Config_nl_nl exposing (config)
 import DatePicker
 import Data.RaceType exposing (RaceType, raceTypes, raceTypeReadable, raceTypeToString)
 import Page.Race.Add.Model exposing (Model)
 import Page.Race.Add.Msg as Msg exposing (Msg)
+import Date.Extra.Format
 
 
 label : String -> Html Msg
