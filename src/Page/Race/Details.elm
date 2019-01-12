@@ -108,16 +108,30 @@ resultsTable results riders signedIn =
             resultCategories
 
 
+resultToInt : RaceResult -> RaceResult -> Order
+resultToInt a b =
+    let
+        aNumber =
+            String.toInt a.result
+
+        bNumber =
+            String.toInt b.result
+    in
+        case Result.map2 compare aNumber bNumber of
+            Ok orderFromInts ->
+                orderFromInts
+
+            Err _ ->
+                compare (String.toLower a.result) (String.toLower b.result)
+
+
 resultsByCategory : ResultCategory -> List RaceResult -> List Rider -> Bool -> Html msg
 resultsByCategory category results riders signedIn =
     let
         catResults =
-            List.sortBy
-                .result
-            <|
-                List.filter
-                    (\result -> result.category == category)
-                    results
+            results
+                |> List.filter (\result -> result.category == category)
+                |> List.sortWith resultToInt
     in
         case List.length catResults of
             0 ->
@@ -168,8 +182,9 @@ resultRow result riders signedIn =
                         ]
                     , resultTd result.result
                     , if signedIn then
-                        td [] [ a [ href ("#results/" ++ result.key ++ "/edit"), style [ ( "display", "block" ) ] ]
-                            [ span [ class "icon" ] [ i [ class "fas fa-pencil-alt" ] [ text "" ] ] ]
+                        td []
+                            [ a [ href ("#results/" ++ result.key ++ "/edit"), style [ ( "display", "block" ) ] ]
+                                [ span [ class "icon" ] [ i [ class "fas fa-pencil-alt" ] [ text "" ] ] ]
                             ]
                       else
                         text ""
