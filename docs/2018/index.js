@@ -52,50 +52,44 @@ const app = Elm.Main.embed(document.getElementById('main'), {
 setup(firebase, app);
 
 function loadRiders() {
-  firebase.database().ref('/riders/').orderByChild('id').on('value', function(snapshot) {
-    const val = snapshot.val();
-    const arr = val ? Object.keys(val).
-      map(function (key) {
-        return Object.assign({
-            key: key
-          }, val[key]);
-      }) : [];
-    app.ports.infoForElm.send({
-      tag: 'RidersLoaded',
-      data: arr
-    });
+  const val = require('./riders.json');
+  const arr = val ? Object.keys(val).
+    map(function (key) {
+      return Object.assign({
+        key: key
+      }, val[key]);
+    }) : [];
+  app.ports.infoForElm.send({
+    tag: 'RidersLoaded',
+    data: arr
   });
 }
 
 function loadRaces() {
-  firebase.database().ref('/races/').on('value', function(snapshot) {
-    const val = snapshot.val();
-    const arr = val ? Object.keys(val).
-      map(function (key) {
-        return Object.assign({
-            key: key
-          }, val[key]);
-      }) : [];
-    app.ports.infoForElm.send({
-      tag: 'RacesLoaded',
-      data: arr
-    });
+  const val = require('./races.json');
+  const arr = val ? Object.keys(val).
+    map(function (key) {
+      return Object.assign({
+        key: key
+      }, val[key]);
+    }) : [];
+  app.ports.infoForElm.send({
+    tag: 'RacesLoaded',
+    data: arr
   });
 }
 
 function loadResults() {
-  firebase.database().ref('/results/').on('value', function(snapshot) {
-    const val = snapshot.val();
-    const arr = val ? Object.keys(val).
-      map(function (key) {
-        return Object.assign({
-            key: key
-          }, val[key]);
-      }) : [];
-    app.ports.infoForElm.send({
-      tag: 'ResultsLoaded',
-      data: arr
-    });
+  const val = require('./results.json');
+  const arr = val ? Object.keys(val).
+    map(function (key) {
+      return Object.assign({
+        key: key
+      }, val[key]);
+    }) : [];
+  app.ports.infoForElm.send({
+    tag: 'ResultsLoaded',
+    data: arr
   });
 }
 
@@ -171,6 +165,7 @@ function userSignOut() {
 }
 
 app.ports.infoForOutside.subscribe(function (msg) {
+  /*
   if (msg.tag === 'RiderAdd') {
     addRider(msg.data);
   } else if (msg.tag === 'RaceAdd') {
@@ -182,7 +177,8 @@ app.ports.infoForOutside.subscribe(function (msg) {
   } else if (msg.tag === 'UserSignOut') {
     userSignOut();
   } else {
+  */
     console.log('msg', msg);
-    document.getElementsByTagName('body')[0].innerHTML = 'Something went wrong. Please try again in Chrome or see console for detailed error message.';
-  }
+    document.getElementsByTagName('body')[0].innerHTML = 'Something went wrong. Please try again in Chrome or see console for detailed error message. Mind this is a read only version.';
+  // }
 });
