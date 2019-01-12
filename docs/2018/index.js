@@ -51,45 +51,61 @@ const app = Elm.Main.embed(document.getElementById('main'), {
 
 setup(firebase, app);
 
+
+function loadJSON(filename, callback) {
+  var xobj = new XMLHttpRequest();
+  xobj.overrideMimeType('application/json');
+  xobj.open('GET', filename, true);
+  xobj.onreadystatechange = function () {
+    if (xobj.readyState == 4 && xobj.status == '200') {
+      callback(JSON.parse(xobj.responseText));
+    }
+  };
+  xobj.send(null);
+}
+
 function loadRiders() {
-  const val = require('./riders.json');
-  const arr = val ? Object.keys(val).
+  loadJSON('./riders.json', function (val) {
+    const arr = val ? Object.keys(val).
     map(function (key) {
       return Object.assign({
         key: key
       }, val[key]);
     }) : [];
-  app.ports.infoForElm.send({
-    tag: 'RidersLoaded',
-    data: arr
+    app.ports.infoForElm.send({
+      tag: 'RidersLoaded',
+      data: arr
+    });
   });
 }
 
 function loadRaces() {
-  const val = require('./races.json');
-  const arr = val ? Object.keys(val).
-    map(function (key) {
-      return Object.assign({
-        key: key
-      }, val[key]);
-    }) : [];
-  app.ports.infoForElm.send({
-    tag: 'RacesLoaded',
-    data: arr
+  loadJSON('./riders.json', function (val) {
+    const arr = val ? Object.keys(val).
+      map(function (key) {
+        return Object.assign({
+          key: key
+        }, val[key]);
+      }) : [];
+    app.ports.infoForElm.send({
+      tag: 'RacesLoaded',
+      data: arr
+    });
   });
 }
 
 function loadResults() {
-  const val = require('./results.json');
-  const arr = val ? Object.keys(val).
-    map(function (key) {
-      return Object.assign({
-        key: key
-      }, val[key]);
-    }) : [];
-  app.ports.infoForElm.send({
-    tag: 'ResultsLoaded',
-    data: arr
+  loadJSON('./riders.json', function (val) {
+    const arr = val ? Object.keys(val).
+      map(function (key) {
+        return Object.assign({
+          key: key
+        }, val[key]);
+      }) : [];
+    app.ports.infoForElm.send({
+      tag: 'ResultsLoaded',
+      data: arr
+    });
   });
 }
 
