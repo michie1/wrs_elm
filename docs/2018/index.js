@@ -80,7 +80,7 @@ function loadRiders() {
 }
 
 function loadRaces() {
-  loadJSON('./riders.json', function (val) {
+  loadJSON('./races.json', function (val) {
     const arr = val ? Object.keys(val).
       map(function (key) {
         return Object.assign({
@@ -95,7 +95,7 @@ function loadRaces() {
 }
 
 function loadResults() {
-  loadJSON('./riders.json', function (val) {
+  loadJSON('./results.json', function (val) {
     const arr = val ? Object.keys(val).
       map(function (key) {
         return Object.assign({
