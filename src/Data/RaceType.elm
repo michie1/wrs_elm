@@ -8,12 +8,11 @@ type RaceType
     | Criterium
     | Zomoco
     | Classic
-    | Cross
-    | Beach
+    | OffRoadRegional
+    | OffRoadNational
     | Omloop
     | Studentscup
-    | MTB
-    | CK
+    | WTOS
     | NK
     | Cyclosportive
     | TimeTrial
@@ -28,12 +27,11 @@ raceTypes =
     , Criterium
     , Zomoco
     , Classic
-    , Cross
-    , Beach
+    , OffRoadRegional
+    , OffRoadNational
     , Omloop
     , Studentscup
-    , MTB
-    , CK
+    , WTOS
     , NK
     , Cyclosportive
     , TimeTrial
@@ -57,11 +55,11 @@ raceType string =
         "classic" ->
             Classic
 
-        "cross" ->
-            Cross
+        "offRoadRegional" ->
+            OffRoadRegional
 
-        "beach" ->
-            Beach
+        "offRoadNational" ->
+            OffRoadNational
 
         "omloop" ->
             Omloop
@@ -69,11 +67,8 @@ raceType string =
         "studentencup" ->
             Studentscup
 
-        "MTB" ->
-            MTB
-
-        "CK" ->
-            CK
+        "wtos" ->
+            WTOS
 
         "NK" ->
             NK
@@ -109,11 +104,11 @@ raceTypeToString category =
         Classic ->
             "classic"
 
-        Cross ->
-            "cross"
+        OffRoadRegional ->
+            "offRoadRegional"
 
-        Beach ->
-            "beach"
+        OffRoadNational ->
+            "offRoadNational"
 
         Omloop ->
             "omloop"
@@ -121,11 +116,8 @@ raceTypeToString category =
         Studentscup ->
             "studentencup"
 
-        MTB ->
-            "MTB"
-
-        CK ->
-            "CK"
+        WTOS ->
+            "wtos"
 
         NK ->
             "NK"
@@ -158,11 +150,11 @@ raceTypeReadable category =
         Classic ->
             "Klassieker"
 
-        Cross ->
-            "Cross"
+        OffRoadRegional ->
+            "Off-road Regionaal (regiocross, regionale MTB (ZH-cup), beach niet-topcompetitie)"
 
-        Beach ->
-            "Beachrace"
+        OffRoadNational ->
+            "Off-road Nationaal (nationale corss, nationale MTB, beach topcompetitie)"
 
         Omloop ->
             "Omloop"
@@ -170,23 +162,20 @@ raceTypeReadable category =
         Studentscup ->
             "Studentencup"
 
-        MTB ->
-            "Mountainbike"
-
-        CK ->
-            "Clubkampioenschap"
+        WTOS ->
+            "Interne WTOS-wedstrijd (La Ultimo, La Duo, La Una, CK’s, maandelijkse 10k)"
 
         NK ->
-            "Nederlands kampioenschap"
+            "NK/NCK/NSK"
 
         Cyclosportive ->
-            "Cyclosportive"
+            "Cyclosportive / Marathon"
 
         TimeTrial ->
             "Time trial"
 
         Toertocht ->
-            "Toertocht"
+            "(veld)Toertocht"
 
         _ ->
             "Other (e.g. WTOS time trial)"
@@ -212,10 +201,10 @@ getPointsByRaceType category =
         Classic ->
             4
 
-        Cross ->
+        OffRoadRegional ->
             2
 
-        Beach ->
+        OffRoadNational ->
             3
 
         Omloop ->
@@ -224,11 +213,8 @@ getPointsByRaceType category =
         Studentscup ->
             3
 
-        MTB ->
-            3
-
-        CK ->
-            2
+        WTOS ->
+            1
 
         NK ->
             5
@@ -240,7 +226,7 @@ getPointsByRaceType category =
             3
 
         Toertocht ->
-            1
+            2
 
         Other ->
             0
