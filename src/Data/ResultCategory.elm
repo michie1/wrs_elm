@@ -9,6 +9,7 @@ type ResultCategory
     | CatA
     | Basislidmaatschap
     | EliteAmateurs
+    | EliteAmateurVrouwen
     | AmateursSportklasse
     | Sportklasse
     | CatB
@@ -25,6 +26,7 @@ resultCategories =
     , CatA
     , Basislidmaatschap
     , EliteAmateurs
+    , EliteAmateurVrouwen
     , AmateursSportklasse
     , Sportklasse
     , CatB
@@ -51,6 +53,9 @@ categoryToString category =
 
         EliteAmateurs ->
             "elite_amateurs"
+
+        EliteAmateurVrouwen ->
+            "elite_amateur_vrouwen"
 
         AmateursSportklasse ->
             "amateurs_sportklasse"
@@ -92,6 +97,9 @@ categoryReadable category =
         EliteAmateurs ->
             "Elite/amateurs"
 
+        EliteAmateurVrouwen ->
+            "Elite/amateur vrouwen"
+
         AmateursSportklasse ->
             "Amateurs/sportklasse"
 
@@ -132,6 +140,9 @@ resultCategoryDecoder string =
 
             "elite_amateurs" ->
                 EliteAmateurs
+
+            "elite_amateur_vrouwen" ->
+                EliteAmateurVrouwen
 
             "amateurs_sportklasse" ->
                 AmateursSportklasse
