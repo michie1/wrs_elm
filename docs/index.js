@@ -53,15 +53,21 @@ setup(firebase, app);
 function loadRiders() {
   firebase.database().ref('/riders/').orderByChild('id').on('value', function(snapshot) {
     const val = snapshot.val();
-    const arr = val ? Object.keys(val).
+    const races = (val ? Object.keys(val).
       map(function (key) {
         return Object.assign({
           key: key
         }, val[key]);
-      }) : [];
+      }) : []
+    )
+      .map((race) => {
+        race.date = new Date(race.date.split(' ')[0]).toISOString();
+        return race;
+      });
+
     app.ports.infoForElm.send({
       tag: 'RidersLoaded',
-      data: arr
+      data: races,
     });
   });
 }
