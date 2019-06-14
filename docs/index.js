@@ -70,7 +70,7 @@ function loadRiders() {
 function loadRaces() {
   firebase.database().ref('/races/').on('value', function(snapshot) {
     const val = snapshot.val();
-    const arr = (val ? Object.keys(val).
+    const races = (val ? Object.keys(val).
       map(function (key) {
         return Object.assign({
           key: key
