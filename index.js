@@ -64,15 +64,21 @@
   function loadRaces() {
     firebase.database().ref('/races/').on('value', function(snapshot) {
       const val = snapshot.val();
-      const arr = val ? Object.keys(val).
-        map(function (key) {
-          return Object.assign({
-              key: key
-            }, val[key]);
-        }) : [];
+      const races = (val ? Object.keys(val).
+          map(function (key) {
+            return Object.assign({
+                key: key
+              }, val[key]);
+          }) : []
+        )
+        .map((race) => {
+          race.date = new Date(race.date.split(' ')[0]).toISOString();
+          return race;
+        });
+
       app.ports.infoForElm.send({
         tag: 'RacesLoaded',
-        data: arr
+        data: races
       });
     });
   }
