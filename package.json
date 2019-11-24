@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --hot --inline",
-    "build": "rm -r dist/* && yarn make && yarn uglify && cp -r css dist && cp docs/index.* dist && cp docs/config.js dist && cp -r docs/2018 dist",
+    "build": "(rm -r dist || true) && yarn make && yarn uglify && cp -r css dist && cp docs/index.* dist && cp docs/config.js dist && cp -r docs/2018 dist",
     "make": "elm-make src/Main.elm --output dist/wrs.js",
     "uglify": "uglifyjs -mc 'pure_funcs=\"F2,F3,F4,F5,F6,F7,F8,F9\" pure_getters=true keep_fargs=true' -o dist/wrs.js dist/wrs.js",
     "deploy": "tar -zcvf build.tar.gz dist && scp build.tar.gz hetzner:/tmp/ && rm build.tar.gz && ssh hetzner 'cd /home/michiel/vps/web/www/uitslagen.wtos.nl/ && rm -r * && tar -xvf /tmp/build.tar.gz && mv dist/* . && rm -r dist'",
