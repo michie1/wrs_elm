@@ -16,7 +16,7 @@ suite =
                 Expect.equal "criterium" (raceTypeToString Criterium)
         , test "raceTypeReadable" <|
             \_ ->
-                Expect.equal "Nederlands kampioenschap" (raceTypeReadable NK)
+                Expect.equal "NK/NCK/NSK" (raceTypeReadable NK)
         , test "getPointsByRaceType" <|
             \_ ->
                 Expect.equal 1 (getPointsByRaceType Trainingskoers)

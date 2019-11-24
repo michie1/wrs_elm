@@ -25,4 +25,10 @@ Run dev mode:
 yarn dev
 ```
 
+Test:
+
+```sh
+yarn test
+```
+
 Check [http://localhost:8080](http://localhost:8080)

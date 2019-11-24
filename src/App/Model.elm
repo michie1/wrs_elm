@@ -7,7 +7,6 @@ import Data.User exposing (User)
 import App.Page exposing (Page)
 import Data.Flags exposing (Flags)
 import Json.Decode
-import Jwt exposing (decodeToken)
 
 
 type alias DecodedToken =
