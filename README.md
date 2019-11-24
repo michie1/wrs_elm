@@ -2,7 +2,7 @@
 
 Prerequisites:
  * Node LTS
- * Npm LTS
+ * Yarn LTS
 
 Get code:
 
@@ -14,7 +14,7 @@ cd wrs_elm
 Install dependencies:
 
 ```sh
-npm install &&
+yarn &&
 elm install
 
 ```
@@ -22,7 +22,7 @@ elm install
 Run dev mode:
 
 ```sh
-npm run dev
+yarn dev
 ```
 
 Check [http://localhost:8080](http://localhost:8080)
