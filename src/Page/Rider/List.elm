@@ -19,27 +19,24 @@ view riders races results =
                     [ th [] [ text "Name" ]
                     , th [] [ text "Licence" ]
                     , th [] [ text "Points" ]
-
-                    --, th [] [ text "Races" ]
                     ]
                 ]
             , tbody []
-                (List.map
-                    (\rider ->
-                        tr []
-                            [ td []
-                                [ a [ href ("#riders/" ++ rider.key), style [ ( "display", "block" ) ] ]
-                                    [ text rider.name ]
+                (riders
+                    |> List.map (\rider -> { key = rider.key, name = rider.name, licence = rider.licence, points = getPointsByRiderId rider.key results races })
+                    |> List.sortBy .points
+                    |> List.reverse
+                    |> List.map
+                        (\rider ->
+                            tr []
+                                [ td []
+                                    [ a [ href ("#riders/" ++ rider.key), style [ ( "display", "block" ) ] ]
+                                        [ text rider.name ]
+                                    ]
+                                , td [] [ text (toString rider.licence) ]
+                                , td [] [ text <| toString <| rider.points ]
                                 ]
-                            , td [] [ text (toString rider.licence) ]
-                            , td [] [ text <| toString <| getPointsByRiderId rider.key results races ]
-
-                            --, td [] [ text <| toString <| countResultsByRiderId rider.id results ]
-                            --, td [] [ text "points" ]
-                            --, td [] [ text "races" ]
-                            ]
-                    )
-                    riders
+                        )
                 )
             ]
         ]
