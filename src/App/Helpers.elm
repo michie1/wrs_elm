@@ -1,10 +1,10 @@
-module App.Helpers exposing (navigate, numMonth, leadingZero, formatTime, formatDate)
+module App.Helpers exposing (formatDate, formatTime, leadingZero, navigate, numMonth)
 
+import App.Msg
+import App.Page
+import App.Routing
 import Date
 import Navigation
-import App.Msg
-import App.Routing
-import App.Page
 
 
 navigate : App.Page.Page -> Cmd App.Msg.Msg
@@ -56,6 +56,7 @@ leadingZero : Int -> String
 leadingZero value =
     if value < 10 then
         "0" ++ toString value
+
     else
         toString value
 

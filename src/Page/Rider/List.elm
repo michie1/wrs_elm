@@ -1,11 +1,11 @@
 module Page.Rider.List exposing (view)
 
-import Html exposing (Html, h2, a, div, text, table, td, tr, th, thead, tbody)
-import Html.Attributes exposing (href, class, style)
 import App.Msg
 import Data.Race exposing (Race)
-import Data.Rider exposing (Rider, getPointsByRiderId)
 import Data.RaceResult exposing (RaceResult)
+import Data.Rider exposing (Rider, getPointsByRiderId)
+import Html exposing (Html, a, div, h2, table, tbody, td, text, th, thead, tr)
+import Html.Attributes exposing (class, href, style)
 
 
 view : List Rider -> List Race -> List RaceResult -> Html App.Msg.Msg
@@ -19,7 +19,8 @@ view riders races results =
                     [ th [] [ text "Name" ]
                     , th [] [ text "Licence" ]
                     , th [] [ text "Points" ]
-                      --, th [] [ text "Races" ]
+
+                    --, th [] [ text "Races" ]
                     ]
                 ]
             , tbody []
@@ -32,9 +33,10 @@ view riders races results =
                                 ]
                             , td [] [ text (toString rider.licence) ]
                             , td [] [ text <| toString <| getPointsByRiderId rider.key results races ]
-                              --, td [] [ text <| toString <| countResultsByRiderId rider.id results ]
-                              --, td [] [ text "points" ]
-                              --, td [] [ text "races" ]
+
+                            --, td [] [ text <| toString <| countResultsByRiderId rider.id results ]
+                            --, td [] [ text "points" ]
+                            --, td [] [ text "races" ]
                             ]
                     )
                     riders

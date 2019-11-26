@@ -1,8 +1,8 @@
 module Tests.Data.Outfit exposing (..)
 
+import Data.Outfit exposing (Outfit(WTOS), outfitToString)
 import Expect exposing (Expectation)
 import Test exposing (..)
-import Data.Outfit exposing (Outfit(WTOS), outfitToString)
 
 
 suite : Test

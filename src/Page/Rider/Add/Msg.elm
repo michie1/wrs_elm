@@ -1,4 +1,4 @@
-module Page.Rider.Add.Msg exposing (Msg, Msg(..))
+module Page.Rider.Add.Msg exposing (Msg(..))
 
 import Data.Licence exposing (Licence)
 

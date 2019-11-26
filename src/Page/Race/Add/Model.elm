@@ -1,7 +1,7 @@
 module Page.Race.Add.Model exposing (Model)
 
-import Date
 import Data.RaceType exposing (RaceType)
+import Date
 import DatePicker
 
 

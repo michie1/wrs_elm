@@ -1,9 +1,9 @@
 module Tests.App.Helpers exposing (..)
 
+import App.Helpers exposing (leadingZero, numMonth)
+import Date
 import Expect exposing (Expectation)
 import Test exposing (..)
-import Date
-import App.Helpers exposing (numMonth, leadingZero)
 
 
 suite : Test

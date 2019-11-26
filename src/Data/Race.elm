@@ -1,10 +1,10 @@
-module Data.Race exposing (Race, lastRaces, getRace, racesDecoder)
+module Data.Race exposing (Race, getRace, lastRaces, racesDecoder)
 
+import Data.RaceType exposing (RaceType, raceTypeDecoder)
 import Date exposing (Date)
 import Date.Extra
 import Json.Decode
 import Json.Decode.Extra
-import Data.RaceType exposing (RaceType, raceTypeDecoder)
 
 
 type alias Race =

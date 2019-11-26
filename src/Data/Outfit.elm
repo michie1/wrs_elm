@@ -1,4 +1,4 @@
-module Data.Outfit exposing (Outfit, Outfit(..), outfitToString, outfitDecoder)
+module Data.Outfit exposing (Outfit(..), outfitDecoder, outfitToString)
 
 import Json.Decode
 

@@ -1,12 +1,12 @@
-module App.Msg exposing (Msg, Msg(..))
+module App.Msg exposing (Msg(..))
 
+import App.OutsideInfo exposing (InfoForElm)
 import App.Page exposing (Page)
 import App.Routing exposing (Route)
-import App.OutsideInfo exposing (InfoForElm)
+import Page.Race.Add.Msg as RaceAdd
 import Page.Result.Add.Msg as ResultAdd
 import Page.Result.Edit.Msg as ResultEdit
 import Page.Rider.Add.Msg as RiderAdd
-import Page.Race.Add.Msg as RaceAdd
 
 
 type Msg

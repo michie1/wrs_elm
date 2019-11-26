@@ -1,14 +1,15 @@
 module Main exposing (main)
 
-import Navigation
 import App.Model exposing (App)
-import App.Routing
 import App.Msg as Msg exposing (Msg)
+import App.OutsideInfo
+import App.Routing
 import App.Update
 import App.UrlUpdate
 import App.View
-import App.OutsideInfo
 import Data.Flags exposing (Flags)
+import Navigation
+
 
 main : Program Flags App Msg
 main =
@@ -38,7 +39,7 @@ init flags location =
         ( app, cmd ) =
             App.UrlUpdate.urlUpdate route initialApp
     in
-        ( app, cmd )
+    ( app, cmd )
 
 
 subscriptions : App -> Sub Msg

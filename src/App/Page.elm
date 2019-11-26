@@ -1,9 +1,9 @@
-module App.Page exposing (Page, Page(..))
+module App.Page exposing (Page(..))
 
-import Page.Rider.Add.Model as RiderAdd
 import Page.Race.Add.Model as RaceAdd
 import Page.Result.Add.Model as ResultAdd
 import Page.Result.Edit.Model as ResultEdit
+import Page.Rider.Add.Model as RiderAdd
 
 
 type Page

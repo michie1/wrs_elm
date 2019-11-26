@@ -1,11 +1,11 @@
 module App.Model exposing (App, initial)
 
-import Data.Race exposing (Race)
-import Data.Rider exposing (Rider)
-import Data.RaceResult exposing (RaceResult)
-import Data.User exposing (User)
 import App.Page exposing (Page)
 import Data.Flags exposing (Flags)
+import Data.Race exposing (Race)
+import Data.RaceResult exposing (RaceResult)
+import Data.Rider exposing (Rider)
+import Data.User exposing (User)
 import Json.Decode
 
 
@@ -28,7 +28,7 @@ type alias App =
     , results : Maybe (List RaceResult)
     , token : Maybe String
     , user : Maybe User
-    , wtosLoginUrl: String
+    , wtosLoginUrl : String
     }
 
 

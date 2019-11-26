@@ -1,9 +1,9 @@
-module Data.Rider exposing (Rider, getRiderById, ridersDecoder, getPointsByRiderId)
+module Data.Rider exposing (Rider, getPointsByRiderId, getRiderById, ridersDecoder)
 
-import Json.Decode
 import Data.Licence exposing (Licence, licenceDecoder)
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult, getPointsByResults)
+import Json.Decode
 
 
 type alias Rider =
@@ -41,9 +41,8 @@ ridersDecoder =
 getPointsByRiderId : String -> List RaceResult -> List Race -> Int
 getPointsByRiderId riderKey results races =
     getPointsByResults
-        ((List.filter
+        (List.filter
             (\result -> result.riderKey == riderKey)
             results
-         )
         )
         races

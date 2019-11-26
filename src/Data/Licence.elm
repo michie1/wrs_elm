@@ -1,4 +1,4 @@
-module Data.Licence exposing (Licence, Licence(..), licenceToString, licence, licenceDecoder)
+module Data.Licence exposing (Licence(..), licence, licenceDecoder, licenceToString)
 
 import Json.Decode
 

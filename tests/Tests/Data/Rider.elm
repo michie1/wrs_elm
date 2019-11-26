@@ -1,15 +1,15 @@
 module Tests.Data.Rider exposing (..)
 
+import Data.Outfit exposing (Outfit(..))
+import Data.Race exposing (Race, getRace, lastRaces)
+import Data.RaceResult exposing (RaceResult, getPointsByResults)
+import Data.RaceType exposing (RaceType(Criterium))
+import Data.ResultCategory exposing (ResultCategory(..))
+import Data.Rider exposing (getPointsByRiderId)
+import Date
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
 import Test exposing (..)
-import Date
-import Data.Race exposing (Race, lastRaces, getRace)
-import Data.RaceType exposing (RaceType(Criterium))
-import Data.RaceResult exposing (RaceResult, getPointsByResults)
-import Data.Rider exposing (getPointsByRiderId)
-import Data.ResultCategory exposing (ResultCategory(..))
-import Data.Outfit exposing (Outfit(..))
 
 
 suite : Test
@@ -42,7 +42,7 @@ suite =
                     last5 =
                         lastRaces [ race1, race2, race3, race4, race5, race6, race7 ]
                 in
-                    Expect.equal last5 [ race7, race6, race5, race4, race3 ]
+                Expect.equal last5 [ race7, race6, race5, race4, race3 ]
         , test "getPointsByRiderId" <|
             \_ ->
                 let
@@ -61,5 +61,5 @@ suite =
                         , Race "raceKey3" "name" (Date.fromTime 8) Data.RaceType.Classic
                         ]
                 in
-                    Expect.equal 7 (getPointsByRiderId riderKey results races)
+                Expect.equal 7 (getPointsByRiderId riderKey results races)
         ]

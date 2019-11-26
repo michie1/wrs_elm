@@ -1,4 +1,4 @@
-module Page.Result.Add.Msg exposing (Msg, Msg(..))
+module Page.Result.Add.Msg exposing (Msg(..))
 
 import Data.Outfit exposing (Outfit)
 import Data.ResultCategory exposing (ResultCategory)

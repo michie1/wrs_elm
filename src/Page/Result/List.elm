@@ -1,8 +1,8 @@
 module Page.Result.List exposing (view)
 
-import Html exposing (Html, div, text, table, tr, td, tbody, th, thead)
 import App.Msg
 import Data.RaceResult exposing (RaceResult)
+import Html exposing (Html, div, table, tbody, td, text, th, thead, tr)
 
 
 view : Maybe (List RaceResult) -> Html App.Msg.Msg

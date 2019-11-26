@@ -1,15 +1,16 @@
 module Tests.Page.Rider.Add.Update exposing (..)
 
-import Expect exposing (Expectation)
-import Test exposing (..)
 import App.Model
-import App.Page
-import Page.Rider.Add.Update exposing (update)
-import Page.Rider.Add.Msg as Msg exposing (Msg)
-import Page.Rider.Add.Model exposing (Model)
-import Data.Licence exposing (Licence(Elite, Amateurs))
 import App.OutsideInfo exposing (sendInfoOutside)
+import App.Page
+import Data.Licence exposing (Licence(Amateurs, Elite))
+import Expect exposing (Expectation)
 import Json.Encode
+import Page.Rider.Add.Model exposing (Model)
+import Page.Rider.Add.Msg as Msg exposing (Msg)
+import Page.Rider.Add.Update exposing (update)
+import Test exposing (..)
+
 
 suite : Test
 suite =
@@ -17,38 +18,47 @@ suite =
         [ test "name" <|
             \_ ->
                 let
-                    before = Model "before" Nothing
+                    before =
+                        Model "before" Nothing
+
                     ( nextPage, cmd ) =
-                       update (Msg.Name "after") before
+                        update (Msg.Name "after") before
                 in
-                    Expect.equal nextPage.name "after"
+                Expect.equal nextPage.name "after"
         , test "licence" <|
             \_ ->
                 let
-                    before = Model "before" Nothing
+                    before =
+                        Model "before" Nothing
+
                     ( nextPage, cmd ) =
-                       update (Msg.Licence Elite) before
+                        update (Msg.Licence Elite) before
                 in
-                    Expect.equal nextPage.licence (Just Elite)
+                Expect.equal nextPage.licence (Just Elite)
         , test "submit no licence" <|
             \_ ->
                 let
-                    before = Model "before" Nothing
+                    before =
+                        Model "before" Nothing
+
                     ( nextPage, cmd ) =
-                       update (Msg.Submit) before
+                        update Msg.Submit before
                 in
-                    Expect.equal cmd Cmd.none
+                Expect.equal cmd Cmd.none
         , test "submit with licence" <|
             \_ ->
                 let
-                    before = Model "before" (Just Amateurs)
+                    before =
+                        Model "before" (Just Amateurs)
+
                     ( nextPage, cmd ) =
-                        update (Msg.Submit) before
+                        update Msg.Submit before
+
                     payload =
                         Json.Encode.object
                             [ ( "name", Json.Encode.string "before" )
                             , ( "licence", Json.Encode.string "amateurs" )
                             ]
                 in
-                    Expect.equal cmd (sendInfoOutside <| App.OutsideInfo.RiderAdd payload)
+                Expect.equal cmd (sendInfoOutside <| App.OutsideInfo.RiderAdd payload)
         ]
