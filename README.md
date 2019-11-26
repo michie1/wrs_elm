@@ -14,8 +14,7 @@ cd wrs_elm
 Install dependencies:
 
 ```sh
-yarn &&
-elm install
+yarn
 
 ```
 
