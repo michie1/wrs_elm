@@ -1,14 +1,14 @@
 module Page.Race.Add.Update exposing (update)
 
-import Date
-import Date.Extra.Format
-import Date.Extra.Config.Config_nl_nl exposing (config)
-import Json.Encode
-import DatePicker
 import App.OutsideInfo exposing (sendInfoOutside)
-import Page.Race.Add.Msg as Msg exposing (Msg)
-import Page.Race.Add.Model exposing (Model)
 import Data.RaceType exposing (raceTypeToString)
+import Date
+import Date.Extra.Config.Config_nl_nl exposing (config)
+import Date.Extra.Format
+import DatePicker
+import Json.Encode
+import Page.Race.Add.Model exposing (Model)
+import Page.Race.Add.Msg as Msg exposing (Msg)
 
 
 settings : DatePicker.Settings
@@ -30,7 +30,7 @@ update msg page =
                                 , ( "category", Json.Encode.string <| raceTypeToString page.raceType )
                                 ]
                     in
-                        ( page, sendInfoOutside <| App.OutsideInfo.RaceAdd payload )
+                    ( page, sendInfoOutside <| App.OutsideInfo.RaceAdd payload )
 
                 Nothing ->
                     ( page, Cmd.none )
@@ -40,14 +40,14 @@ update msg page =
                 nextPage =
                     { page | name = name }
             in
-                ( nextPage, Cmd.none )
+            ( nextPage, Cmd.none )
 
         Msg.RaceType raceType ->
             let
                 nextPage =
                     { page | raceType = raceType }
             in
-                ( nextPage, Cmd.none )
+            ( nextPage, Cmd.none )
 
         Msg.ToDatePicker subMsg ->
             let
@@ -65,9 +65,9 @@ update msg page =
                 nextPage =
                     { page | date = newDate, datePicker = newDatePicker }
             in
-                ( nextPage
-                , Cmd.none
-                )
+            ( nextPage
+            , Cmd.none
+            )
 
 
 dateFormat : Date.Date -> String

@@ -1,19 +1,13 @@
 module Page.Race.List exposing (view)
 
-import Html exposing (Html, h2, div, text, a, table, tr, td, th, thead, tbody)
-import Html.Attributes exposing (href, class, style)
-import Date
-import Date.Extra.Format
-import Date.Extra.Config.Config_nl_nl exposing (config)
-import Date.Extra
+import App.Helpers exposing (formatDate)
 import App.Msg
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
-
-
-dateFormat : Date.Date -> String
-dateFormat date =
-    Date.Extra.Format.format config "%d-%m-%Y" date
+import Date
+import Date.Extra
+import Html exposing (Html, a, div, h2, table, tbody, td, text, th, thead, tr)
+import Html.Attributes exposing (class, href, style)
 
 
 view : List Race -> List RaceResult -> Html App.Msg.Msg
@@ -36,36 +30,36 @@ raceTable unsortedRaces results =
         races =
             unsortedRaces |> List.sortWith (\ra rb -> Date.Extra.compare ra.date rb.date) |> List.reverse
     in
-        table [ class "table" ]
-            [ thead []
-                [ tr []
-                    [ th [] [ text "Name" ]
-                    , th [] [ text "Date" ]
-                    , th [] [ text "Category" ]
-                    , th [] [ text "Riders" ]
-                    ]
+    table [ class "table" ]
+        [ thead []
+            [ tr []
+                [ th [] [ text "Name" ]
+                , th [] [ text "Date" ]
+                , th [] [ text "Category" ]
+                , th [] [ text "Riders" ]
                 ]
-            , tbody []
-                (List.map
-                    (\race ->
-                        let
-                            dateString =
-                                dateFormat race.date
-                        in
-                            tr []
-                                [ td []
-                                    [ a
-                                        [ href ("#races/" ++ race.key), style [ ( "display", "block" ) ] ]
-                                        [ text race.name ]
-                                    ]
-                                , td [] [ text <| dateString ]
-                                , td [] [ text (toString race.raceType) ]
-                                , td [] [ text (toString (countParticipants race.key results)) ]
-                                ]
-                    )
-                    races
-                )
             ]
+        , tbody []
+            (List.map
+                (\race ->
+                    let
+                        dateString =
+                            formatDate race.date
+                    in
+                    tr []
+                        [ td []
+                            [ a
+                                [ href ("#races/" ++ race.key), style [ ( "display", "block" ) ] ]
+                                [ text race.name ]
+                            ]
+                        , td [] [ text <| dateString ]
+                        , td [] [ text (toString race.raceType) ]
+                        , td [] [ text (toString (countParticipants race.key results)) ]
+                        ]
+                )
+                races
+            )
+        ]
 
 
 countParticipants : String -> List RaceResult -> Int

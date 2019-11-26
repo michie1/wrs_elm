@@ -1,4 +1,4 @@
-module Page.Race.Add.Msg exposing (Msg, Msg(..))
+module Page.Race.Add.Msg exposing (Msg(..))
 
 import Data.RaceType exposing (RaceType)
 import DatePicker

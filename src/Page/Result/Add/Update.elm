@@ -1,11 +1,11 @@
 module Page.Result.Add.Update exposing (update)
 
-import Json.Encode
 import App.OutsideInfo exposing (sendInfoOutside)
-import Page.Result.Add.Msg as Msg exposing (Msg)
-import Page.Result.Add.Model exposing (Model)
 import Data.Outfit exposing (outfitToString)
 import Data.ResultCategory exposing (categoryToString)
+import Json.Encode
+import Page.Result.Add.Model exposing (Model)
+import Page.Result.Add.Msg as Msg exposing (Msg)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -24,7 +24,7 @@ update msg page =
                                 , ( "outfit", Json.Encode.string <| outfitToString page.outfit )
                                 ]
                     in
-                        ( page, sendInfoOutside <| App.OutsideInfo.ResultAdd payload )
+                    ( page, sendInfoOutside <| App.OutsideInfo.ResultAdd payload )
 
                 Nothing ->
                     ( page, Cmd.none )
@@ -34,36 +34,37 @@ update msg page =
                 nextPage =
                     { page | outfit = outfit }
             in
-                ( nextPage
-                , Cmd.none
-                )
+            ( nextPage
+            , Cmd.none
+            )
 
         Msg.Category category ->
             let
                 nextPage =
                     { page | category = category }
             in
-                ( nextPage
-                , Cmd.none
-                )
+            ( nextPage
+            , Cmd.none
+            )
 
         Msg.Result result ->
             let
                 nextPage =
                     { page | result = result }
             in
-                ( nextPage
-                , Cmd.none
-                )
+            ( nextPage
+            , Cmd.none
+            )
 
         Msg.Rider riderKey ->
             let
                 nextPage =
                     if String.isEmpty riderKey then
                         { page | riderKey = Nothing }
+
                     else
                         { page | riderKey = Just riderKey }
             in
-                ( nextPage
-                , Cmd.none
-                )
+            ( nextPage
+            , Cmd.none
+            )

@@ -1,8 +1,8 @@
 module Tests.Data.Licence exposing (..)
 
+import Data.Licence exposing (Licence(Amateurs, Elite), licence, licenceToString)
 import Expect exposing (Expectation)
 import Test exposing (..)
-import Data.Licence exposing (Licence(Elite, Amateurs), licence, licenceToString)
 
 
 suite : Test

@@ -19,6 +19,7 @@
     "clean-webpack-plugin": "^0.1.8",
     "copy-webpack-plugin": "^5.0.5",
     "elm": "^0.18.0",
+    "elm-format": "^0.8.2",
     "elm-hot-loader": "^0.3.7",
     "elm-test": "0.18.13-beta4",
     "elm-webpack-loader": "^3.1.0",

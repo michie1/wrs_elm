@@ -1,15 +1,15 @@
 module Page.Rider.Details exposing (view)
 
-import Html exposing (Html, a, div, text, table, tr, td, th, thead, tbody, h2, p, dd, dl, dt)
-import Html.Attributes exposing (class, href)
-import Date
-import Date.Extra.Format
-import Date.Extra.Config.Config_nl_nl exposing (config)
 import App.Model
 import App.Msg
 import Data.Race exposing (Race)
-import Data.Rider exposing (Rider)
 import Data.RaceResult exposing (RaceResult, getPointsByResult, getPointsByResults)
+import Data.Rider exposing (Rider)
+import Date
+import Date.Extra.Config.Config_nl_nl exposing (config)
+import Date.Extra.Format
+import Html exposing (Html, a, dd, div, dl, dt, h2, p, table, tbody, td, text, th, thead, tr)
+import Html.Attributes exposing (class, href)
 
 
 dateFormat : Date.Date -> String
@@ -27,28 +27,28 @@ view _ riderKey races riders results =
                     riders
                 )
     in
-        case maybeRider of
-            Nothing ->
-                div []
-                    [ h2 [ class "title is-2" ] [ text "Rider" ]
-                    , p [] [ text "Rider does not exist." ]
-                    ]
+    case maybeRider of
+        Nothing ->
+            div []
+                [ h2 [ class "title is-2" ] [ text "Rider" ]
+                , p [] [ text "Rider does not exist." ]
+                ]
 
-            Just rider ->
-                let
-                    riderResults =
-                        List.filter
-                            (\result -> result.riderKey == rider.key)
-                            results
+        Just rider ->
+            let
+                riderResults =
+                    List.filter
+                        (\result -> result.riderKey == rider.key)
+                        results
 
-                    points =
-                        getPointsByResults riderResults races
-                in
-                    div [ class "col s12" ]
-                        [ h2 [ class "title is-2" ] [ text rider.name ]
-                        , info rider points
-                        , resultsTable riderResults races
-                        ]
+                points =
+                    getPointsByResults riderResults races
+            in
+            div [ class "col s12" ]
+                [ h2 [ class "title is-2" ] [ text rider.name ]
+                , info rider points
+                , resultsTable riderResults races
+                ]
 
 
 info : Rider -> Int -> Html App.Msg.Msg
@@ -96,25 +96,25 @@ raceRow races result =
                     races
                 )
     in
-        case maybeRace of
-            Nothing ->
-                tr []
-                    [ td [] [ text "RaceId does not exist" ]
-                    ]
+    case maybeRace of
+        Nothing ->
+            tr []
+                [ td [] [ text "RaceId does not exist" ]
+                ]
 
-            Just race ->
-                let
-                    dateString =
-                        dateFormat race.date
-                in
-                    tr []
-                        [ td []
-                            [ a
-                                [ href ("#races/" ++ race.key) ]
-                                [ text race.name ]
-                            ]
-                        , td [] [ text <| dateString ]
-                        , td [] [ text <| toString <| getPointsByResult result races ]
-                        , td [] [ text result.result ]
-                        , td [] [ text <| toString result.outfit ]
-                        ]
+        Just race ->
+            let
+                dateString =
+                    dateFormat race.date
+            in
+            tr []
+                [ td []
+                    [ a
+                        [ href ("#races/" ++ race.key) ]
+                        [ text race.name ]
+                    ]
+                , td [] [ text <| dateString ]
+                , td [] [ text <| toString <| getPointsByResult result races ]
+                , td [] [ text result.result ]
+                , td [] [ text <| toString result.outfit ]
+                ]

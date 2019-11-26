@@ -1,15 +1,15 @@
 module Page.Race.Add.View exposing (view)
 
-import Html exposing (Html, p, button, div, input, h2)
-import Html.Attributes exposing (value, autofocus, class, name, type_, id, for, checked, disabled)
-import Html.Events exposing (onClick, onInput)
+import Data.RaceType exposing (RaceType, raceTypeReadable, raceTypeToString, raceTypes)
 import Date
 import Date.Extra.Config.Config_nl_nl exposing (config)
+import Date.Extra.Format
 import DatePicker
-import Data.RaceType exposing (RaceType, raceTypes, raceTypeReadable, raceTypeToString)
+import Html exposing (Html, button, div, h2, input, p)
+import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
+import Html.Events exposing (onClick, onInput)
 import Page.Race.Add.Model exposing (Model)
 import Page.Race.Add.Msg as Msg exposing (Msg)
-import Date.Extra.Format
 
 
 label : String -> Html Msg
@@ -39,10 +39,10 @@ settings =
         defaultSettings =
             DatePicker.defaultSettings
     in
-        { defaultSettings
-            | dateFormatter = dateFormat
-            , firstDayOfWeek = Date.Mon
-        }
+    { defaultSettings
+        | dateFormatter = dateFormat
+        , firstDayOfWeek = Date.Mon
+    }
 
 
 view : Model -> Html Msg
@@ -54,34 +54,34 @@ view raceAdd =
         submitDisabled =
             raceName == "" || String.length raceName > 100
     in
-        div []
-            [ h2 [ class "title is-2" ] [ Html.text "Add Race" ]
-            , horizontal
-                [ label "Name"
-                , field [ input [ id "name", type_ "text", onInput Msg.Name, autofocus True, value raceName ] [] ]
-                ]
-            , horizontal
-                [ label "Category"
-                , field [ raceTypeButtons raceAdd.raceType ]
-                ]
-            , horizontal
-                [ label "Date"
-                , field [ DatePicker.view raceAdd.date settings raceAdd.datePicker |> Html.map Msg.ToDatePicker ]
-                ]
-            , horizontal
-                [ label ""
-                , field
-                    [ button
-                        [ class "button"
-                        , type_ "submit"
-                        , onClick Msg.Submit
-                        , Html.Attributes.name "action"
-                        , disabled submitDisabled
-                        ]
-                        [ Html.text "Add Race" ]
+    div []
+        [ h2 [ class "title is-2" ] [ Html.text "Add Race" ]
+        , horizontal
+            [ label "Name"
+            , field [ input [ id "name", type_ "text", onInput Msg.Name, autofocus True, value raceName ] [] ]
+            ]
+        , horizontal
+            [ label "Category"
+            , field [ raceTypeButtons raceAdd.raceType ]
+            ]
+        , horizontal
+            [ label "Date"
+            , field [ DatePicker.view raceAdd.date settings raceAdd.datePicker |> Html.map Msg.ToDatePicker ]
+            ]
+        , horizontal
+            [ label ""
+            , field
+                [ button
+                    [ class "button"
+                    , type_ "submit"
+                    , onClick Msg.Submit
+                    , Html.Attributes.name "action"
+                    , disabled submitDisabled
                     ]
+                    [ Html.text "Add Race" ]
                 ]
             ]
+        ]
 
 
 raceTypeButtonCheck : RaceType -> RaceType -> Html Msg
@@ -96,10 +96,10 @@ raceTypeButtonCheck raceType current =
         raceTypeText =
             raceTypeReadable raceType
     in
-        p []
-            [ input [ checked isChecked, name "type", type_ "radio", id raceTypeName, onClick (Msg.RaceType raceType) ] []
-            , Html.label [ for raceTypeName ] [ Html.text raceTypeText ]
-            ]
+    p []
+        [ input [ checked isChecked, name "type", type_ "radio", id raceTypeName, onClick (Msg.RaceType raceType) ] []
+        , Html.label [ for raceTypeName ] [ Html.text raceTypeText ]
+        ]
 
 
 raceTypeButtons : RaceType -> Html Msg

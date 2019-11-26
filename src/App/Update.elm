@@ -1,15 +1,15 @@
 module App.Update exposing (update)
 
+import App.Helpers
 import App.Model exposing (App)
 import App.Msg as Msg exposing (Msg)
+import App.OutsideInfo
 import App.Page
 import App.UrlUpdate
-import App.Helpers
-import App.OutsideInfo
-import Page.Rider.Add.Update as RiderAdd
 import Page.Race.Add.Update as RaceAdd
 import Page.Result.Add.Update as ResultAdd
 import Page.Result.Edit.Update as ResultEdit
+import Page.Rider.Add.Update as RiderAdd
 
 
 update : Msg -> App -> ( App, Cmd Msg )
@@ -46,10 +46,12 @@ update msg app =
 
                 App.OutsideInfo.ResultEdited raceKey ->
                     ( app, App.Helpers.navigate <| App.Page.RaceDetails raceKey )
+
                 App.OutsideInfo.UserLoaded email ->
                     ( { app | user = Just { email = email } }, Cmd.none )
+
                 App.OutsideInfo.UserSignedOut ->
-                    ( { app | user = Nothing }, Cmd.none ) 
+                    ( { app | user = Nothing }, Cmd.none )
 
         Msg.LogErr err ->
             ( app, App.OutsideInfo.sendInfoOutside <| App.OutsideInfo.LogError err )
@@ -61,7 +63,7 @@ update msg app =
                         ( nextPage, nextCmd ) =
                             RaceAdd.update subMsg page
                     in
-                        ( { app | page = App.Page.RaceAdd nextPage }, Cmd.map Msg.RaceAdd nextCmd )
+                    ( { app | page = App.Page.RaceAdd nextPage }, Cmd.map Msg.RaceAdd nextCmd )
 
                 _ ->
                     ( app, Cmd.none )
@@ -73,7 +75,7 @@ update msg app =
                         ( nextPage, nextCmd ) =
                             RiderAdd.update subMsg page
                     in
-                        ( { app | page = App.Page.RiderAdd nextPage }, Cmd.map Msg.RiderAdd nextCmd )
+                    ( { app | page = App.Page.RiderAdd nextPage }, Cmd.map Msg.RiderAdd nextCmd )
 
                 _ ->
                     ( app, Cmd.none )
@@ -85,9 +87,9 @@ update msg app =
                         ( nextPage, nextCmd ) =
                             ResultAdd.update subMsg page
                     in
-                        ( { app | page = App.Page.ResultAdd nextPage }
-                        , Cmd.map Msg.ResultAdd nextCmd
-                        )
+                    ( { app | page = App.Page.ResultAdd nextPage }
+                    , Cmd.map Msg.ResultAdd nextCmd
+                    )
 
                 _ ->
                     ( app, Cmd.none )
@@ -99,13 +101,12 @@ update msg app =
                         ( nextPage, nextCmd ) =
                             ResultEdit.update subMsg page
                     in
-                        ( { app | page = App.Page.ResultEdit nextPage }
-                        , Cmd.map Msg.ResultEdit nextCmd
-                        )
+                    ( { app | page = App.Page.ResultEdit nextPage }
+                    , Cmd.map Msg.ResultEdit nextCmd
+                    )
 
                 _ ->
                     ( app, Cmd.none )
 
         Msg.UserSignOut ->
             ( app, App.OutsideInfo.sendInfoOutside <| App.OutsideInfo.UserSignOut )
-

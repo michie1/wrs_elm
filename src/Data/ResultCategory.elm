@@ -1,4 +1,4 @@
-module Data.ResultCategory exposing (ResultCategory, ResultCategory(..), resultCategories, categoryToString, resultCategoryDecoder, categoryReadable)
+module Data.ResultCategory exposing (ResultCategory(..), categoryReadable, categoryToString, resultCategories, resultCategoryDecoder)
 
 import Json.Decode
 

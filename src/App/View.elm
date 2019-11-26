@@ -1,24 +1,23 @@
 module App.View exposing (view)
 
-import Html exposing (Html, button, h2, div, text, a, ul, li, aside, p, section)
-import Html.Attributes exposing (href, class, target)
-import Html.Events exposing (onClick)
-import App.Msg
 import App.Model exposing (App)
+import App.Msg
 import App.Page
-import Data.Race exposing (Race, lastRaces, getRace)
+import Data.Race exposing (Race, getRace, lastRaces)
+import Data.RaceResult exposing (RaceResult)
 import Data.Rider exposing (Rider)
 import Data.User exposing (User)
-import Data.RaceResult exposing (RaceResult)
+import Html exposing (Html, a, aside, button, div, h2, li, p, section, text, ul)
+import Html.Attributes exposing (class, href, target)
+import Html.Events exposing (onClick)
+import Page.Race.Add.View
 import Page.Race.Details
 import Page.Race.List
-import Page.Race.Add.View
-import Page.Rider.Details
-import Page.Rider.List
-import Page.Rider.Add.View
 import Page.Result.Add.View
 import Page.Result.Edit.View
-import App.OutsideInfo exposing (sendInfoOutside)
+import Page.Rider.Add.View
+import Page.Rider.Details
+import Page.Rider.List
 
 
 view : App -> Html App.Msg.Msg
@@ -64,13 +63,13 @@ viewPage app races riders results =
                 maybeRace =
                     getRace add.raceKey races
             in
-                case maybeRace of
-                    Just race ->
-                        Page.Result.Add.View.view race add riders results
-                            |> Html.map App.Msg.ResultAdd
+            case maybeRace of
+                Just race ->
+                    Page.Result.Add.View.view race add riders results
+                        |> Html.map App.Msg.ResultAdd
 
-                    Nothing ->
-                        div [] [ text "Race does not exist." ]
+                Nothing ->
+                    div [] [ text "Race does not exist." ]
 
         App.Page.ResultEdit edit ->
             Page.Result.Edit.View.view edit

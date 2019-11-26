@@ -1,11 +1,11 @@
-module Data.RaceResult exposing (RaceResult, resultExists, resultDecoder, resultsDecoder, getPointsByResults, getPointsByResult)
+module Data.RaceResult exposing (RaceResult, getPointsByResult, getPointsByResults, resultDecoder, resultExists, resultsDecoder)
 
-import Json.Decode
-import Json.Decode.Pipeline
-import Data.ResultCategory exposing (ResultCategory, resultCategoryDecoder)
 import Data.Outfit as Outfit exposing (Outfit, outfitDecoder)
 import Data.Race exposing (Race, getRace)
 import Data.RaceType exposing (getPointsByRaceType)
+import Data.ResultCategory exposing (ResultCategory, resultCategoryDecoder)
+import Json.Decode
+import Json.Decode.Pipeline
 
 
 type alias RaceResult =
@@ -67,5 +67,6 @@ getPointsByResult result races =
 
             Nothing ->
                 0
+
     else
         0

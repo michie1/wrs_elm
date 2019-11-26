@@ -1,9 +1,9 @@
 module Page.Rider.Add.View exposing (view)
 
-import Html exposing (Html, button, div, text, input, h2, label, span)
-import Html.Attributes exposing (value, autofocus, class, name, type_, id, for, checked, disabled)
-import Html.Events exposing (onClick, onInput)
 import Data.Licence as Licence exposing (Licence)
+import Html exposing (Html, button, div, h2, input, label, span, text)
+import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
+import Html.Events exposing (onClick, onInput)
 import Page.Rider.Add.Model exposing (Model)
 import Page.Rider.Add.Msg as Msg exposing (Msg)
 
@@ -17,37 +17,37 @@ view add =
         submitDisabled =
             riderName == "" || add.licence == Nothing || String.length riderName > 100
     in
-        div []
-            [ h2 [ class "title is-2" ] [ text "Add rider" ]
-            , div [ class "field" ]
-                [ label [ class "label", for "name" ] [ text "Name" ]
-                , div [ class "control" ]
-                    [ input
-                        [ id "name"
-                        , class "input"
-                        , type_ "text"
-                        , onInput Msg.Name
-                        , autofocus True
-                        , value riderName
-                        ]
-                        []
+    div []
+        [ h2 [ class "title is-2" ] [ text "Add rider" ]
+        , div [ class "field" ]
+            [ label [ class "label", for "name" ] [ text "Name" ]
+            , div [ class "control" ]
+                [ input
+                    [ id "name"
+                    , class "input"
+                    , type_ "text"
+                    , onInput Msg.Name
+                    , autofocus True
+                    , value riderName
                     ]
-                ]
-            , licenceButtons add.licence
-            , div [ class "field" ]
-                [ div [ class "control" ]
-                    [ button
-                        [ class "button"
-                        , class "is-primary"
-                        , type_ "submit"
-                        , onClick Msg.Submit
-                        , Html.Attributes.name "action"
-                        , disabled submitDisabled
-                        ]
-                        [ text "Add rider" ]
-                    ]
+                    []
                 ]
             ]
+        , licenceButtons add.licence
+        , div [ class "field" ]
+            [ div [ class "control" ]
+                [ button
+                    [ class "button"
+                    , class "is-primary"
+                    , type_ "submit"
+                    , onClick Msg.Submit
+                    , Html.Attributes.name "action"
+                    , disabled submitDisabled
+                    ]
+                    [ text "Add rider" ]
+                ]
+            ]
+        ]
 
 
 licenceButtonCheck : String -> String -> Licence -> Maybe Licence -> Html Msg
@@ -61,10 +61,10 @@ licenceButtonCheck categoryName categoryText categoryModel maybeCurrent =
                 Nothing ->
                     False
     in
-        label []
-            [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (Msg.Licence categoryModel) ] []
-            , span [] [ text categoryText ]
-            ]
+    label []
+        [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (Msg.Licence categoryModel) ] []
+        , span [] [ text categoryText ]
+        ]
 
 
 licenceButtons : Maybe Licence -> Html Msg

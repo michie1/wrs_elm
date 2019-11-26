@@ -1,8 +1,8 @@
 module App.Routing exposing (Route(..), routeParser, url)
 
-import Navigation
-import UrlParser exposing (parseHash, Parser, s, map, string, (</>), oneOf)
 import App.Page
+import Navigation
+import UrlParser exposing ((</>), Parser, map, oneOf, parseHash, s, string)
 
 
 type Route

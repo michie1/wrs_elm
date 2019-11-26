@@ -1,11 +1,11 @@
-port module App.OutsideInfo exposing (sendInfoOutside, InfoForOutside, InfoForOutside(..), InfoForElm, InfoForElm(..), getInfoFromOutside)
+port module App.OutsideInfo exposing (InfoForElm(..), InfoForOutside(..), getInfoFromOutside, sendInfoOutside)
 
-import Json.Encode
-import Json.Decode exposing (decodeValue)
-import Data.Rider exposing (Rider, ridersDecoder)
 import Data.Race exposing (Race, racesDecoder)
-import Data.RaceResult exposing (RaceResult, resultsDecoder, resultDecoder)
+import Data.RaceResult exposing (RaceResult, resultDecoder, resultsDecoder)
+import Data.Rider exposing (Rider, ridersDecoder)
 import Data.User exposing (userDecoder)
+import Json.Decode exposing (decodeValue)
+import Json.Encode
 
 
 port infoForOutside : GenericOutsideData -> Cmd msg
@@ -30,7 +30,7 @@ sendInfoOutside info =
             infoForOutside { tag = "ResultEdit", data = payload }
 
         UserSignOut ->
-            infoForOutside { tag = "UserSignOut", data = (Json.Encode.bool True) }
+            infoForOutside { tag = "UserSignOut", data = Json.Encode.bool True }
 
         LogError err ->
             infoForOutside { tag = "LogError", data = Json.Encode.string err }
@@ -107,7 +107,6 @@ getInfoFromOutside tagger onError =
 
                 "UserSignedOut" ->
                     tagger <| UserSignedOut
-
 
                 _ ->
                     onError <| "Unexpected info from outside: " ++ toString outsideInfo

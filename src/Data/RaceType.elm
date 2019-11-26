@@ -1,4 +1,4 @@
-module Data.RaceType exposing (RaceType, RaceType(..), raceType, raceTypeToString, raceTypeDecoder, getPointsByRaceType, raceTypeReadable, raceTypes)
+module Data.RaceType exposing (RaceType(..), getPointsByRaceType, raceType, raceTypeDecoder, raceTypeReadable, raceTypeToString, raceTypes)
 
 import Json.Decode
 
