@@ -45,12 +45,14 @@ var commonConfig = {
       options: {
         postcss: [autoprefixer()]
       }
-    }),
+    })
+    /*
     new HtmlWebpackPlugin({
       template: "src/index.html",
-      inject: "body",
+      inject: "head",
       filename: "index.html"
     })
+    */
   ]
 };
 
