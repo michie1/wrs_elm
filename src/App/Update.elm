@@ -5,11 +5,15 @@ import App.Model exposing (App)
 import App.Msg as Msg exposing (Msg)
 import App.OutsideInfo
 import App.Page
+import App.Routing
 import App.UrlUpdate
+import Browser
+import Browser.Navigation
 import Page.Race.Add.Update as RaceAdd
 import Page.Result.Add.Update as ResultAdd
 import Page.Result.Edit.Update as ResultEdit
 import Page.Rider.Add.Update as RiderAdd
+import Url
 
 
 update : Msg -> App -> ( App, Cmd Msg )
@@ -110,3 +114,18 @@ update msg app =
 
         Msg.UserSignOut ->
             ( app, App.OutsideInfo.sendInfoOutside <| App.OutsideInfo.UserSignOut )
+
+        Msg.OnUrlRequest urlRequest ->
+            case urlRequest of
+                Browser.Internal url ->
+                    ( app
+                    , Browser.Navigation.pushUrl app.navKey (Url.toString url)
+                    )
+
+                Browser.External url ->
+                    ( app
+                    , Browser.Navigation.load url
+                    )
+
+        Msg.OnUrlChange url ->
+            App.UrlUpdate.urlUpdate (App.Routing.parseUrl url) app

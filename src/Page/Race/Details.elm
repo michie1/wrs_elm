@@ -188,13 +188,13 @@ resultRow result riders signedIn =
             tr []
                 [ td []
                     [ a
-                        [ href ("#riders/" ++ rider.key), style "display" "block" ]
+                        [ href ("/riders/" ++ rider.key), style "display" "block" ]
                         [ text rider.name ]
                     ]
                 , resultTd result.result
                 , if signedIn then
                     td []
-                        [ a [ href ("#results/" ++ result.key ++ "/edit"), style "display" "block" ]
+                        [ a [ href ("/results/" ++ result.key ++ "/edit"), style "display" "block" ]
                             [ span [ class "icon" ] [ i [ class "fas fa-pencil-alt" ] [ text "" ] ] ]
                         ]
 

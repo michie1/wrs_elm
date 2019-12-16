@@ -19,7 +19,7 @@ view races results =
 
 addButton : Html App.Msg.Msg
 addButton =
-    a [ href "#races/add", class "button" ] [ text "Add race" ]
+    a [ href "/races/add", class "button" ] [ text "Add race" ]
 
 
 raceTable : List Race -> List RaceResult -> Html App.Msg.Msg
@@ -49,7 +49,7 @@ raceTable unsortedRaces results =
                     tr []
                         [ td []
                             [ a
-                                [ href ("#races/" ++ race.key), style "display" "block" ]
+                                [ href ("/races/" ++ race.key), style "display" "block" ]
                                 [ text race.name ]
                             ]
                         , td [] [ text <| dateString ]

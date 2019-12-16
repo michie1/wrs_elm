@@ -10,7 +10,7 @@ import Time exposing (Posix)
 
 navigate : App.Page.Page -> Cmd App.Msg.Msg
 navigate page =
-    Browser.Navigation.load <| App.Routing.url page
+    Browser.Navigation.load <| App.Routing.pathFor page
 
 
 numMonth : Date.Month -> Int

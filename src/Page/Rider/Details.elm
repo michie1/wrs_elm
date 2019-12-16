@@ -2,6 +2,7 @@ module Page.Rider.Details exposing (view)
 
 import App.Model
 import App.Msg
+import Browser exposing (Document)
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult, getPointsByResult, getPointsByResults)
 import Data.Rider exposing (Rider)
@@ -109,7 +110,7 @@ raceRow races result =
             tr []
                 [ td []
                     [ a
-                        [ href ("#races/" ++ race.key) ]
+                        [ href ("/races/" ++ race.key) ]
                         [ text race.name ]
                     ]
                 , td [] [ text <| dateString ]

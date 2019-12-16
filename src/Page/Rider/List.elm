@@ -30,7 +30,7 @@ view riders races results =
                         (\rider ->
                             tr []
                                 [ td []
-                                    [ a [ href ("#riders/" ++ rider.key), style "display" "block" ]
+                                    [ a [ href ("/riders/" ++ rider.key), style "display" "block" ]
                                         [ text rider.name ]
                                     ]
                                 , td [] [ text (Debug.toString rider.licence) ]
@@ -44,4 +44,4 @@ view riders races results =
 
 addButton : Html App.Msg.Msg
 addButton =
-    a [ href "#riders/add", class "button" ] [ text "Add rider" ]
+    a [ href "/riders/add", class "button" ] [ text "Add rider" ]
