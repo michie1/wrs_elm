@@ -30,11 +30,11 @@ view riders races results =
                         (\rider ->
                             tr []
                                 [ td []
-                                    [ a [ href ("#riders/" ++ rider.key), style [ ( "display", "block" ) ] ]
+                                    [ a [ href ("#riders/" ++ rider.key), style "display" "block" ]
                                         [ text rider.name ]
                                     ]
-                                , td [] [ text (toString rider.licence) ]
-                                , td [] [ text <| toString <| rider.points ]
+                                , td [] [ text (Debug.toString rider.licence) ]
+                                , td [] [ text <| String.fromInt <| rider.points ]
                                 ]
                         )
                 )

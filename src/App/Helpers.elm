@@ -3,75 +3,72 @@ module App.Helpers exposing (formatDate, formatTime, leadingZero, navigate, numM
 import App.Msg
 import App.Page
 import App.Routing
+import Browser.Navigation
 import Date
-import Navigation
+import Time exposing (Posix)
 
 
 navigate : App.Page.Page -> Cmd App.Msg.Msg
 navigate page =
-    Navigation.newUrl <| App.Routing.url page
+    Browser.Navigation.load <| App.Routing.url page
 
 
 numMonth : Date.Month -> Int
 numMonth month =
     case month of
-        Date.Jan ->
+        Time.Jan ->
             1
 
-        Date.Feb ->
+        Time.Feb ->
             2
 
-        Date.Mar ->
+        Time.Mar ->
             3
 
-        Date.Apr ->
+        Time.Apr ->
             4
 
-        Date.May ->
+        Time.May ->
             5
 
-        Date.Jun ->
+        Time.Jun ->
             6
 
-        Date.Jul ->
+        Time.Jul ->
             7
 
-        Date.Aug ->
+        Time.Aug ->
             8
 
-        Date.Sep ->
+        Time.Sep ->
             9
 
-        Date.Oct ->
+        Time.Oct ->
             10
 
-        Date.Nov ->
+        Time.Nov ->
             11
 
-        Date.Dec ->
+        Time.Dec ->
             12
 
 
 leadingZero : Int -> String
 leadingZero value =
     if value < 10 then
-        "0" ++ toString value
+        "0" ++ String.fromInt value
 
     else
-        toString value
+        String.fromInt value
 
 
 formatTime : Date.Date -> String
 formatTime datetime =
-    leadingZero (Date.hour datetime)
-        ++ ":"
-        ++ toString (Date.minute datetime)
+    -- TODO: format date
+    "format time"
 
 
-formatDate : Date.Date -> String
+formatDate : Posix -> String
 formatDate date =
-    toString (Date.year date)
-        ++ "-"
-        ++ toString (numMonth (Date.month date))
-        ++ "-"
-        ++ leadingZero (Date.day date)
+    -- TODO: format date
+    "format date"

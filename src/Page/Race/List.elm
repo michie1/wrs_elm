@@ -4,8 +4,6 @@ import App.Helpers exposing (formatDate)
 import App.Msg
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
-import Date
-import Date.Extra
 import Html exposing (Html, a, div, h2, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, href, style)
 
@@ -28,7 +26,9 @@ raceTable : List Race -> List RaceResult -> Html App.Msg.Msg
 raceTable unsortedRaces results =
     let
         races =
-            unsortedRaces |> List.sortWith (\ra rb -> Date.Extra.compare ra.date rb.date) |> List.reverse
+            unsortedRaces
+
+        -- TODO: sort race |> List.sortWith (\ra rb -> Date.Extra.compare ra.date rb.date) |> List.reverse
     in
     table [ class "table" ]
         [ thead []
@@ -49,12 +49,12 @@ raceTable unsortedRaces results =
                     tr []
                         [ td []
                             [ a
-                                [ href ("#races/" ++ race.key), style [ ( "display", "block" ) ] ]
+                                [ href ("#races/" ++ race.key), style "display" "block" ]
                                 [ text race.name ]
                             ]
                         , td [] [ text <| dateString ]
-                        , td [] [ text (toString race.raceType) ]
-                        , td [] [ text (toString (countParticipants race.key results)) ]
+                        , td [] [ text (Debug.toString race.raceType) ]
+                        , td [] [ text (String.fromInt (countParticipants race.key results)) ]
                         ]
                 )
                 races

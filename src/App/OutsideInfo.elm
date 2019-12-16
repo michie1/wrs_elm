@@ -47,7 +47,7 @@ getInfoFromOutside tagger onError =
                             tagger <| RidersLoaded riders
 
                         Err e ->
-                            onError e
+                            onError <| Debug.toString e
 
                 "RacesLoaded" ->
                     case decodeValue racesDecoder outsideInfo.data of
@@ -55,7 +55,7 @@ getInfoFromOutside tagger onError =
                             tagger <| RacesLoaded races
 
                         Err e ->
-                            onError e
+                            onError <| Debug.toString e
 
                 "ResultsLoaded" ->
                     case decodeValue resultsDecoder outsideInfo.data of
@@ -63,7 +63,7 @@ getInfoFromOutside tagger onError =
                             tagger <| ResultsLoaded results
 
                         Err e ->
-                            onError e
+                            onError <| Debug.toString e
 
                 "RaceAdded" ->
                     case decodeValue Json.Decode.string outsideInfo.data of
@@ -71,7 +71,7 @@ getInfoFromOutside tagger onError =
                             tagger <| RaceAdded key
 
                         Err e ->
-                            onError e
+                            onError <| Debug.toString e
 
                 "RiderAdded" ->
                     case decodeValue Json.Decode.string outsideInfo.data of
@@ -79,7 +79,7 @@ getInfoFromOutside tagger onError =
                             tagger <| RiderAdded key
 
                         Err e ->
-                            onError e
+                            onError <| Debug.toString e
 
                 "ResultAdded" ->
                     case decodeValue resultDecoder outsideInfo.data of
@@ -87,7 +87,7 @@ getInfoFromOutside tagger onError =
                             tagger <| ResultAdded response.raceKey
 
                         Err e ->
-                            onError e
+                            onError <| Debug.toString e
 
                 "ResultEdited" ->
                     case decodeValue Json.Decode.string outsideInfo.data of
@@ -95,7 +95,7 @@ getInfoFromOutside tagger onError =
                             tagger <| ResultEdited raceKey
 
                         Err e ->
-                            onError e
+                            onError <| Debug.toString e
 
                 "UserLoaded" ->
                     case decodeValue userDecoder outsideInfo.data of
@@ -103,13 +103,13 @@ getInfoFromOutside tagger onError =
                             tagger <| UserLoaded response.email
 
                         Err e ->
-                            onError e
+                            onError <| Debug.toString e
 
                 "UserSignedOut" ->
                     tagger <| UserSignedOut
 
                 _ ->
-                    onError <| "Unexpected info from outside: " ++ toString outsideInfo
+                    onError <| "Unexpected info from outside: " ++ Debug.toString outsideInfo
         )
 
 

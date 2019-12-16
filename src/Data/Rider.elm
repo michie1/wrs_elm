@@ -22,8 +22,8 @@ getRiderById key riders =
         )
 
 
-rider : Json.Decode.Decoder Rider
-rider =
+riderDecoder : Json.Decode.Decoder Rider
+riderDecoder =
     Json.Decode.map3
         Rider
         (Json.Decode.field "key" Json.Decode.string)
@@ -35,7 +35,7 @@ rider =
 
 ridersDecoder : Json.Decode.Decoder (List Rider)
 ridersDecoder =
-    Json.Decode.list rider
+    Json.Decode.list riderDecoder
 
 
 getPointsByRiderId : String -> List RaceResult -> List Race -> Int

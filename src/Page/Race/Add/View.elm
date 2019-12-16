@@ -1,15 +1,13 @@
 module Page.Race.Add.View exposing (view)
 
 import Data.RaceType exposing (RaceType, raceTypeReadable, raceTypeToString, raceTypes)
-import Date
-import Date.Extra.Config.Config_nl_nl exposing (config)
-import Date.Extra.Format
 import DatePicker
 import Html exposing (Html, button, div, h2, input, p)
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Page.Race.Add.Model exposing (Model)
 import Page.Race.Add.Msg as Msg exposing (Msg)
+import Time exposing (Posix)
 
 
 label : String -> Html Msg
@@ -28,21 +26,16 @@ horizontal body =
     div [ class "field is-horizontal" ] body
 
 
-dateFormat : Date.Date -> String
+dateFormat : Posix -> String
 dateFormat date =
-    Date.Extra.Format.format config "%Y-%m-%d" date
+    -- TODO: format date
+    "date format"
 
 
 settings : DatePicker.Settings
 settings =
-    let
-        defaultSettings =
-            DatePicker.defaultSettings
-    in
-    { defaultSettings
-        | dateFormatter = dateFormat
-        , firstDayOfWeek = Date.Mon
-    }
+    -- TODO: check format
+    DatePicker.defaultSettings
 
 
 view : Model -> Html Msg

@@ -2,23 +2,24 @@ module Data.Race exposing (Race, getRace, lastRaces, racesDecoder)
 
 import Data.RaceType exposing (RaceType, raceTypeDecoder)
 import Date exposing (Date)
-import Date.Extra
+import Iso8601
 import Json.Decode
-import Json.Decode.Extra
+import Json.Decode.Pipeline
+import Time exposing (Posix)
 
 
 type alias Race =
     { key : String
     , name : String
-    , date : Date
+    , date : Posix
     , raceType : RaceType
     }
 
 
 lastRaces : List Race -> List Race
 lastRaces races =
+    -- TODO: compare by date |> List.sortWith (\a b -> Date.Extra.compare a.date b.date)
     races
-        |> List.sortWith (\a b -> Date.Extra.compare a.date b.date)
         |> List.reverse
         |> List.take 5
 
@@ -32,13 +33,13 @@ getRace raceKey races =
         )
 
 
-race : Json.Decode.Decoder Race
-race =
+raceDecoder : Json.Decode.Decoder Race
+raceDecoder =
     Json.Decode.map4
         Race
         (Json.Decode.field "key" Json.Decode.string)
         (Json.Decode.field "name" Json.Decode.string)
-        (Json.Decode.field "date" Json.Decode.Extra.date)
+        (Json.Decode.field "date" Iso8601.decoder)
         (Json.Decode.field "category"
             (Json.Decode.andThen raceTypeDecoder Json.Decode.string)
         )
@@ -46,4 +47,4 @@ race =
 
 racesDecoder : Json.Decode.Decoder (List Race)
 racesDecoder =
-    Json.Decode.list race
+    Json.Decode.list raceDecoder

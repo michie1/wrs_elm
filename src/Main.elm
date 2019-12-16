@@ -7,14 +7,14 @@ import App.Routing
 import App.Update
 import App.UrlUpdate
 import App.View
+import Browser
 import Data.Flags exposing (Flags)
-import Navigation
+import Url
 
 
 main : Program Flags App Msg
 main =
-    Navigation.programWithFlags
-        parser
+    Browser.element
         { init = init
         , update = App.Update.update
         , subscriptions = subscriptions
@@ -22,22 +22,22 @@ main =
         }
 
 
-parser : Navigation.Location -> Msg
+parser : Url.Url -> Msg
 parser location =
     Msg.UrlUpdate (App.Routing.routeParser location)
 
 
-init : Flags -> Navigation.Location -> ( App, Cmd Msg )
-init flags location =
+init : Flags -> ( App, Cmd Msg )
+init flags =
     let
-        route =
-            App.Routing.routeParser location
-
         initialApp =
             App.Model.initial flags
 
+        -- TODO: parse default location
+        -- App.UrlUpdate.urlUpdate
+        -- route
         ( app, cmd ) =
-            App.UrlUpdate.urlUpdate route initialApp
+            ( initialApp, Cmd.none )
     in
     ( app, cmd )
 

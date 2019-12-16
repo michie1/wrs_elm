@@ -30,7 +30,7 @@ resultExists result results =
 
 resultDecoder : Json.Decode.Decoder RaceResult
 resultDecoder =
-    Json.Decode.Pipeline.decode RaceResult
+    Json.Decode.succeed RaceResult
         |> Json.Decode.Pipeline.required "key" Json.Decode.string
         |> Json.Decode.Pipeline.required "riderKey" Json.Decode.string
         |> Json.Decode.Pipeline.required "raceKey" Json.Decode.string

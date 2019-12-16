@@ -1,4 +1,4 @@
-module Data.Licence exposing (Licence(..), licence, licenceDecoder, licenceToString)
+module Data.Licence exposing (Licence(..), licenceDecoder, licenceToString, parseLicence)
 
 import Json.Decode
 
@@ -30,8 +30,8 @@ licenceToString licence =
             "other"
 
 
-licence : String -> Licence
-licence string =
+parseLicence : String -> Licence
+parseLicence string =
     case string of
         "elite" ->
             Elite
@@ -51,4 +51,4 @@ licence string =
 
 licenceDecoder : String -> Json.Decode.Decoder Licence
 licenceDecoder string =
-    Json.Decode.succeed (licence string)
+    Json.Decode.succeed (parseLicence string)

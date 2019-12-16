@@ -1,8 +1,8 @@
 module App.Routing exposing (Route(..), routeParser, url)
 
 import App.Page
-import Navigation
-import UrlParser exposing ((</>), Parser, map, oneOf, parseHash, s, string)
+import Url
+import Url.Parser exposing ((</>), Parser, map, oneOf, parse, s, string)
 
 
 type Route
@@ -62,8 +62,8 @@ matchers =
         ]
 
 
-routeParser : Navigation.Location -> Route
+routeParser : Url.Url -> Route
 routeParser location =
     location
-        |> parseHash matchers
+        |> parse matchers
         |> Maybe.withDefault Races
