@@ -6,6 +6,7 @@ import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
 import Html exposing (Html, a, div, h2, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, href, style)
+import Time exposing (posixToMillis)
 
 
 view : List Race -> List RaceResult -> Html App.Msg.Msg
@@ -27,8 +28,18 @@ raceTable unsortedRaces results =
     let
         races =
             unsortedRaces
+                |> List.sortWith
+                    (\a b ->
+                        if posixToMillis a.date < posixToMillis b.date then
+                            LT
 
-        -- TODO: sort race |> List.sortWith (\ra rb -> Date.Extra.compare ra.date rb.date) |> List.reverse
+                        else if posixToMillis a.date > posixToMillis b.date then
+                            GT
+
+                        else
+                            EQ
+                    )
+                |> List.reverse
     in
     table [ class "table" ]
         [ thead []

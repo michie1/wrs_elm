@@ -20,7 +20,7 @@ update : Msg -> App -> ( App, Cmd Msg )
 update msg app =
     case msg of
         Msg.Navigate page ->
-            ( app, App.Helpers.navigate page )
+            ( app, App.Helpers.navigate app.navKey page )
 
         Msg.UrlUpdate route ->
             App.UrlUpdate.urlUpdate route app
@@ -40,16 +40,16 @@ update msg app =
                     ( { app | results = Just results }, Cmd.none )
 
                 App.OutsideInfo.RaceAdded key ->
-                    ( app, App.Helpers.navigate <| App.Page.RaceDetails key )
+                    ( app, App.Helpers.navigate app.navKey <| App.Page.RaceDetails key )
 
                 App.OutsideInfo.RiderAdded key ->
-                    ( app, App.Helpers.navigate <| App.Page.RiderDetails key )
+                    ( app, App.Helpers.navigate app.navKey <| App.Page.RiderDetails key )
 
                 App.OutsideInfo.ResultAdded raceKey ->
-                    ( app, App.Helpers.navigate <| App.Page.RaceDetails raceKey )
+                    ( app, App.Helpers.navigate app.navKey <| App.Page.RaceDetails raceKey )
 
                 App.OutsideInfo.ResultEdited raceKey ->
-                    ( app, App.Helpers.navigate <| App.Page.RaceDetails raceKey )
+                    ( app, App.Helpers.navigate app.navKey <| App.Page.RaceDetails raceKey )
 
                 App.OutsideInfo.UserLoaded email ->
                     ( { app | user = Just { email = email } }, Cmd.none )

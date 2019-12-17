@@ -3,7 +3,7 @@ module Tests.Page.Rider.Add.Update exposing (..)
 import App.Model
 import App.OutsideInfo exposing (sendInfoOutside)
 import App.Page
-import Data.Licence exposing (Licence(Amateurs, Elite))
+import Data.Licence exposing (Licence(..))
 import Expect exposing (Expectation)
 import Json.Encode
 import Page.Rider.Add.Model exposing (Model)

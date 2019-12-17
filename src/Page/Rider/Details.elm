@@ -1,20 +1,13 @@
 module Page.Rider.Details exposing (view)
 
+import App.Helpers exposing (formatDate)
 import App.Model
 import App.Msg
-import Browser exposing (Document)
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult, getPointsByResult, getPointsByResults)
 import Data.Rider exposing (Rider)
 import Html exposing (Html, a, dd, div, dl, dt, h2, p, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, href)
-import Time exposing (Posix)
-
-
-dateFormat : Posix -> String
-dateFormat date =
-    -- TODO: format date Date.Extra.Format.format config "%Y-%m-%d" date
-    "hoi"
 
 
 view : App.Model.App -> String -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
@@ -105,7 +98,7 @@ raceRow races result =
         Just race ->
             let
                 dateString =
-                    dateFormat race.date
+                    formatDate race.date
             in
             tr []
                 [ td []

@@ -14,7 +14,7 @@
     window.history.replaceState(null, null, window.location.href.split("?")[0]);
   }
 
-  function setup(firebase, app) {
+  function setup(firebase) {
     loadRiders();
     loadRaces();
     loadResults();

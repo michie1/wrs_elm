@@ -1,5 +1,6 @@
 module Page.Race.Details exposing (view)
 
+import App.Helpers exposing (formatDate)
 import App.Model
 import App.Msg
 import App.Page
@@ -8,28 +9,10 @@ import Data.RaceResult exposing (RaceResult)
 import Data.RaceType exposing (getPointsByRaceType)
 import Data.ResultCategory exposing (ResultCategory, resultCategories)
 import Data.Rider exposing (Rider)
-import DateFormat
 import Html exposing (Html, a, button, dd, div, dl, dt, h2, h3, h5, i, span, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, href, style)
 import Html.Events exposing (onClick)
 import Page.Result.Add.Model as ResultAdd
-import Time exposing (Posix, Zone, utc)
-
-
-ourFormatter : Zone -> Posix -> String
-ourFormatter =
-    DateFormat.format
-        [ DateFormat.monthNameFull
-        , DateFormat.text " "
-        , DateFormat.dayOfMonthSuffix
-        , DateFormat.text ", "
-        , DateFormat.yearNumber
-        ]
-
-
-dateFormat : Posix -> String
-dateFormat date =
-    ourFormatter utc date
 
 
 view : App.Model.App -> String -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
@@ -81,7 +64,6 @@ addResultButton race =
     button
         [ class "button"
         , onClick (App.Msg.Navigate (App.Page.ResultAdd resultAdd))
-        , Html.Attributes.name "action"
         ]
         [ text "Add result" ]
 
@@ -90,7 +72,7 @@ info : Race -> Html App.Msg.Msg
 info race =
     let
         dateString =
-            dateFormat race.date
+            formatDate race.date
     in
     div [ class "card" ]
         [ div [ class "card-content" ]

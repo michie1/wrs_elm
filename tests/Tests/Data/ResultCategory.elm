@@ -1,6 +1,6 @@
 module Tests.Data.ResultCategory exposing (..)
 
-import Data.ResultCategory exposing (ResultCategory(Amateurs, EliteAmateurs), categoryReadable, categoryToString)
+import Data.ResultCategory exposing (ResultCategory(..), categoryReadable, categoryToString)
 import Expect exposing (Expectation)
 import Test exposing (..)
 

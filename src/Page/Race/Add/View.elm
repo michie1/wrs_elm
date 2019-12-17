@@ -7,7 +7,6 @@ import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, n
 import Html.Events exposing (onClick, onInput)
 import Page.Race.Add.Model exposing (Model)
 import Page.Race.Add.Msg as Msg exposing (Msg)
-import Time exposing (Posix)
 
 
 label : String -> Html Msg
@@ -26,15 +25,8 @@ horizontal body =
     div [ class "field is-horizontal" ] body
 
 
-dateFormat : Posix -> String
-dateFormat date =
-    -- TODO: format date
-    "date format"
-
-
 settings : DatePicker.Settings
 settings =
-    -- TODO: check format
     DatePicker.defaultSettings
 
 
@@ -68,7 +60,6 @@ view raceAdd =
                     [ class "button"
                     , type_ "submit"
                     , onClick Msg.Submit
-                    , Html.Attributes.name "action"
                     , disabled submitDisabled
                     ]
                     [ Html.text "Add Race" ]

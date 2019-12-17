@@ -1,11 +1,9 @@
 module Data.Race exposing (Race, getRace, lastRaces, racesDecoder)
 
 import Data.RaceType exposing (RaceType, raceTypeDecoder)
-import Date exposing (Date)
 import Iso8601
 import Json.Decode
-import Json.Decode.Pipeline
-import Time exposing (Posix)
+import Time exposing (Posix, posixToMillis)
 
 
 type alias Race =
@@ -18,8 +16,18 @@ type alias Race =
 
 lastRaces : List Race -> List Race
 lastRaces races =
-    -- TODO: compare by date |> List.sortWith (\a b -> Date.Extra.compare a.date b.date)
     races
+        |> List.sortWith
+            (\a b ->
+                if posixToMillis a.date < posixToMillis b.date then
+                    LT
+
+                else if posixToMillis a.date > posixToMillis b.date then
+                    GT
+
+                else
+                    EQ
+            )
         |> List.reverse
         |> List.take 5
 
