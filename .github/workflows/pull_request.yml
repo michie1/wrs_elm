@@ -11,5 +11,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Install
       run: yarn
+    - name: Make
+      run: yarn make
     - name: Test
       run: yarn test
