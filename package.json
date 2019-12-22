@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "webpack-dev-server --hot --inline",
     "build": "yarn make && yarn uglify && cp -r src/static dist && cp src/_redirects dist && cp prod/index.* dist && cp prod/config.js dist && cp -r prod/2018 dist",
-    "make": "elm make src/Main.elm --output dist/wrs.js",
+    "make": "elm make src/Main.elm --optimize --output dist/wrs.js",
     "uglify": "uglifyjs -mc 'pure_funcs=\"F2,F3,F4,F5,F6,F7,F8,F9\" pure_getters=true keep_fargs=true' -o dist/wrs.js dist/wrs.js",
     "test": "yarn elm-test",
     "format": "yarn elm-format src"
