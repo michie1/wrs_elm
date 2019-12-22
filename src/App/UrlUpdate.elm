@@ -22,17 +22,11 @@ routeToPage route =
             [ ( App.Routing.Riders, App.Page.Riders )
             , ( App.Routing.Races, App.Page.Races )
             ]
-
-        maybeRoutePage =
-            List.filter (\f -> Tuple.first f == route) routePages
-                |> List.head
     in
-    case maybeRoutePage of
-        Just ( _, p ) ->
-            Just p
-
-        Nothing ->
-            Nothing
+    routePages
+        |> List.filter (\f -> Tuple.first f == route)
+        |> List.head
+        |> Maybe.map Tuple.second
 
 
 urlUpdate : App.Routing.Route -> App -> ( App, Cmd Msg )

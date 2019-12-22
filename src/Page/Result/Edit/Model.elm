@@ -14,26 +14,18 @@ type alias Model =
 
 initial : String -> Maybe (List RaceResult) -> Maybe Model
 initial resultKey maybeResults =
-    case maybeResults of
-        Just results ->
-            let
-                maybeResult =
-                    List.head <|
-                        List.filter
-                            (\r -> r.key == resultKey)
-                            results
-            in
-            case maybeResult of
-                Just result ->
-                    Just
-                        { result = result.result
-                        , category = result.category
-                        , resultKey = resultKey
-                        , raceKey = result.raceKey
-                        }
-
-                Nothing ->
-                    Nothing
-
-        Nothing ->
-            Nothing
+    maybeResults
+        |> Maybe.andThen
+            (\results ->
+                results
+                    |> List.filter (\r -> r.key == resultKey)
+                    |> List.head
+                    |> Maybe.map
+                        (\result ->
+                            { result = result.result
+                            , category = result.category
+                            , resultKey = resultKey
+                            , raceKey = result.raceKey
+                            }
+                        )
+            )
