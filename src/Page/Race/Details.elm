@@ -7,7 +7,7 @@ import App.Page
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
 import Data.RaceType exposing (getPointsByRaceType, raceTypeReadable)
-import Data.ResultCategory exposing (ResultCategory, categoryToString, resultCategories)
+import Data.ResultCategory exposing (ResultCategory, categoryReadable, resultCategories)
 import Data.Rider exposing (Rider)
 import Html exposing (Html, a, button, dd, div, dl, dt, h2, h3, h5, i, span, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, href, style)
@@ -131,7 +131,7 @@ resultsByCategory category results riders signedIn =
 
         _ ->
             div []
-                [ h5 [ class "title is-5" ] [ text <| categoryToString category ]
+                [ h5 [ class "title is-5" ] [ text <| categoryReadable category ]
                 , table [ class "table" ]
                     [ thead []
                         [ tr []

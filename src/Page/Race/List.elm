@@ -4,7 +4,7 @@ import App.Helpers exposing (formatDate)
 import App.Msg
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
-import Data.RaceType exposing (raceTypeToString)
+import Data.RaceType exposing (raceTypeReadable)
 import Html exposing (Html, a, div, h2, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, href, style)
 import Time exposing (posixToMillis)
@@ -65,7 +65,7 @@ raceTable unsortedRaces results =
                                 [ text race.name ]
                             ]
                         , td [] [ text <| dateString ]
-                        , td [] [ text <| raceTypeToString race.raceType ]
+                        , td [] [ text <| raceTypeReadable race.raceType ]
                         , td [] [ text <| String.fromInt <| countParticipants race.key results ]
                         ]
                 )
