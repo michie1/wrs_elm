@@ -6,8 +6,8 @@ import App.Msg
 import App.Page
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
-import Data.RaceType exposing (getPointsByRaceType)
-import Data.ResultCategory exposing (ResultCategory, resultCategories)
+import Data.RaceType exposing (getPointsByRaceType, raceTypeReadable)
+import Data.ResultCategory exposing (ResultCategory, categoryToString, resultCategories)
 import Data.Rider exposing (Rider)
 import Html exposing (Html, a, button, dd, div, dl, dt, h2, h3, h5, i, span, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, href, style)
@@ -83,7 +83,7 @@ info race =
                     , dt [] [ text "Date" ]
                     , dd [] [ text dateString ]
                     , dt [] [ text "Category" ]
-                    , dd [] [ text <| Debug.toString race.raceType ]
+                    , dd [] [ text <| raceTypeReadable race.raceType ]
                     , dt [] [ text "Points" ]
                     , dd [] [ text <| String.fromInt <| getPointsByRaceType race.raceType ]
                     ]
@@ -131,7 +131,7 @@ resultsByCategory category results riders signedIn =
 
         _ ->
             div []
-                [ h5 [ class "title is-5" ] [ text (Debug.toString category) ]
+                [ h5 [ class "title is-5" ] [ text <| categoryToString category ]
                 , table [ class "table" ]
                     [ thead []
                         [ tr []
