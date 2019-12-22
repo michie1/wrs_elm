@@ -115,6 +115,7 @@ sidebar races maybeUser wtosLoginUrl =
         , ul [ class "menu-list" ] (List.map raceLi <| lastRaces races)
         , p [ class "menu-label" ] [ a [ href "/riders" ] [ text "Riders" ] ]
         , userUl maybeUser wtosLoginUrl
+        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2018/", target "_blank" ] [ text "Uitslagen 2018" ] ]
         , p [ class "menu-label" ] [ a [ href "https://github.com/michie1/wrs_elm", target "_blank" ] [ text "WRS on GitHub" ] ]
         ]
 
