@@ -8,6 +8,7 @@ import Page.Race.Add.Msg as RaceAdd
 import Page.Result.Add.Msg as ResultAdd
 import Page.Result.Edit.Msg as ResultEdit
 import Page.Rider.Add.Msg as RiderAdd
+import Time exposing (Posix)
 import Url
 
 
@@ -24,3 +25,4 @@ type Msg
     | UserSignOut
     | OnUrlChange Url.Url
     | OnUrlRequest Browser.UrlRequest
+    | Now Posix

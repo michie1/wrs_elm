@@ -6,6 +6,7 @@ import App.Page
 import App.Routing
 import Browser.Dom
 import Data.RaceType as RaceType
+import Date exposing (fromPosix)
 import DatePicker
 import Page.Race.Add.Model as RaceAdd
 import Page.Race.Add.Msg as RaceAdd
@@ -13,6 +14,7 @@ import Page.Result.Add.Model as ResultAdd
 import Page.Result.Edit.Model as ResultEdit
 import Page.Rider.Add.Model as RiderAdd
 import Task
+import Time
 
 
 routeToPage : App.Routing.Route -> Maybe App.Page.Page
@@ -70,6 +72,7 @@ urlUpdate route app =
             , Cmd.batch
                 [ Cmd.map RaceAdd.ToDatePicker datePickerFx |> Cmd.map Msg.RaceAdd
                 , Task.attempt (always Msg.Noop) (Browser.Dom.focus "name")
+                , Task.perform Msg.Now Time.now
                 ]
             )
 

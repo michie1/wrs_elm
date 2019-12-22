@@ -60,7 +60,7 @@ viewPage app races riders results =
             Page.Race.List.view races results
 
         App.Page.RaceAdd raceAdd ->
-            Page.Race.Add.View.view raceAdd
+            Page.Race.Add.View.view raceAdd app.now
                 |> Html.map App.Msg.RaceAdd
 
         App.Page.ResultAdd add ->
@@ -101,10 +101,6 @@ spinner =
         , div [ class "bounce2" ] []
         , div [ class "bounce3" ] []
         ]
-
-
-
--- div [ class "loader" ] [ text "Loading..." ]
 
 
 sidebar : List Race -> Maybe User -> String -> Html App.Msg.Msg

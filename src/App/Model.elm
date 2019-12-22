@@ -7,6 +7,7 @@ import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
 import Data.Rider exposing (Rider)
 import Data.User exposing (User)
+import Time exposing (Posix)
 
 
 type alias App =
@@ -18,9 +19,10 @@ type alias App =
     , token : Maybe String
     , user : Maybe User
     , wtosLoginUrl : String
+    , now : Posix
     }
 
 
 initial : Flags -> Browser.Navigation.Key -> App
 initial flags navKey =
-    App navKey App.Page.Races Nothing Nothing Nothing Nothing Nothing flags.wtosLoginUrl
+    App navKey App.Page.Races Nothing Nothing Nothing Nothing Nothing flags.wtosLoginUrl (Time.millisToPosix 0)

@@ -7,6 +7,7 @@ import DatePicker
 import Json.Encode
 import Page.Race.Add.Model exposing (Model)
 import Page.Race.Add.Msg as Msg exposing (Msg)
+import Time
 
 
 settings : DatePicker.Settings
@@ -14,24 +15,22 @@ settings =
     DatePicker.defaultSettings
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg page =
+update : Msg -> Model -> Time.Posix -> ( Model, Cmd Msg )
+update msg page now =
     case msg of
         Msg.Submit ->
-            case page.date of
-                Just date ->
-                    let
-                        payload =
-                            Json.Encode.object
-                                [ ( "name", Json.Encode.string page.name )
-                                , ( "date", Json.Encode.string <| toIsoString date )
-                                , ( "category", Json.Encode.string <| raceTypeToString page.raceType )
-                                ]
-                    in
-                    ( page, sendInfoOutside <| App.OutsideInfo.RaceAdd payload )
+            let
+                raceDate =
+                    Maybe.withDefault (Date.fromPosix Time.utc now) page.date
 
-                Nothing ->
-                    ( page, Cmd.none )
+                payload =
+                    Json.Encode.object
+                        [ ( "name", Json.Encode.string page.name )
+                        , ( "date", Json.Encode.string <| toIsoString raceDate )
+                        , ( "category", Json.Encode.string <| raceTypeToString page.raceType )
+                        ]
+            in
+            ( page, sendInfoOutside <| App.OutsideInfo.RaceAdd payload )
 
         Msg.Name name ->
             let

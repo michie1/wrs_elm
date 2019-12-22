@@ -1,12 +1,14 @@
 module Page.Race.Add.View exposing (view)
 
 import Data.RaceType exposing (RaceType, raceTypeDescription, raceTypeReadable, raceTypeToString, raceTypes)
+import Date
 import DatePicker
 import Html exposing (Html, button, div, h2, input, p)
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Page.Race.Add.Model exposing (Model)
 import Page.Race.Add.Msg as Msg exposing (Msg)
+import Time
 
 
 label : String -> Html Msg
@@ -30,8 +32,8 @@ settings =
     DatePicker.defaultSettings
 
 
-view : Model -> Html Msg
-view raceAdd =
+view : Model -> Time.Posix -> Html Msg
+view raceAdd now =
     let
         raceName =
             raceAdd.name
@@ -51,7 +53,7 @@ view raceAdd =
             ]
         , horizontal
             [ label "Date"
-            , field [ DatePicker.view raceAdd.date settings raceAdd.datePicker |> Html.map Msg.ToDatePicker ]
+            , field [ DatePicker.view (Just (Maybe.withDefault (Date.fromPosix Time.utc now) raceAdd.date)) settings raceAdd.datePicker |> Html.map Msg.ToDatePicker ]
             ]
         , horizontal
             [ label ""

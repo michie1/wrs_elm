@@ -65,7 +65,7 @@ update msg app =
                 App.Page.RaceAdd page ->
                     let
                         ( nextPage, nextCmd ) =
-                            RaceAdd.update subMsg page
+                            RaceAdd.update subMsg page app.now
                     in
                     ( { app | page = App.Page.RaceAdd nextPage }, Cmd.map Msg.RaceAdd nextCmd )
 
@@ -129,3 +129,6 @@ update msg app =
 
         Msg.OnUrlChange url ->
             App.UrlUpdate.urlUpdate (App.Routing.parseUrl url) app
+
+        Msg.Now now ->
+            ( { app | now = now }, Cmd.none )
