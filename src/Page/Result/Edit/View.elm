@@ -1,11 +1,7 @@
 module Page.Result.Edit.View exposing (view)
 
-import Data.Outfit as Outfit exposing (Outfit)
-import Data.Race exposing (Race)
-import Data.RaceResult exposing (RaceResult)
 import Data.ResultCategory exposing (ResultCategory, categoryReadable, categoryToString, resultCategories)
-import Data.Rider exposing (Rider)
-import Html exposing (Html, button, div, h2, i, input, label, option, p, select, span, text)
+import Html exposing (Html, button, div, h2, i, input, label, p, span, text)
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Page.Result.Edit.Model exposing (Model)

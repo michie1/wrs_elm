@@ -1,7 +1,7 @@
 module Page.Result.Edit.Model exposing (Model, initial)
 
 import Data.RaceResult exposing (RaceResult)
-import Data.ResultCategory as ResultCategory exposing (ResultCategory)
+import Data.ResultCategory exposing (ResultCategory)
 
 
 type alias Model =

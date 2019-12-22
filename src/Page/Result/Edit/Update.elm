@@ -1,7 +1,6 @@
 module Page.Result.Edit.Update exposing (update)
 
 import App.OutsideInfo exposing (sendInfoOutside)
-import Data.Outfit exposing (outfitToString)
 import Data.ResultCategory exposing (categoryToString)
 import Json.Encode
 import Page.Result.Edit.Model exposing (Model)
