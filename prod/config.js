@@ -17,9 +17,3 @@ const testConfig = {
   messagingSenderId: "863333663162",
   wtosLoginUrl: "https://wtos.nl/wrslogin.php"
 };
-
-function hasParam(name) {
-  var regex = new RegExp('[\\?&]' + name );
-  var results = regex.exec(location.search);
-  return results !== null;
-};
