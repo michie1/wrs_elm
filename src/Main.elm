@@ -7,34 +7,32 @@ import App.Routing
 import App.Update
 import App.UrlUpdate
 import App.View
+import Browser
+import Browser.Navigation
 import Data.Flags exposing (Flags)
-import Navigation
+import Url
 
 
 main : Program Flags App Msg
 main =
-    Navigation.programWithFlags
-        parser
+    Browser.application
         { init = init
+        , onUrlChange = Msg.OnUrlChange
+        , onUrlRequest = Msg.OnUrlRequest
         , update = App.Update.update
         , subscriptions = subscriptions
         , view = App.View.view
         }
 
 
-parser : Navigation.Location -> Msg
-parser location =
-    Msg.UrlUpdate (App.Routing.routeParser location)
-
-
-init : Flags -> Navigation.Location -> ( App, Cmd Msg )
-init flags location =
+init : Flags -> Url.Url -> Browser.Navigation.Key -> ( App, Cmd Msg )
+init flags url navKey =
     let
         route =
-            App.Routing.routeParser location
+            App.Routing.parseUrl url
 
         initialApp =
-            App.Model.initial flags
+            App.Model.initial flags navKey
 
         ( app, cmd ) =
             App.UrlUpdate.urlUpdate route initialApp

@@ -1,5 +1,6 @@
 module Page.Race.Details exposing (view)
 
+import App.Helpers exposing (formatDate)
 import App.Model
 import App.Msg
 import App.Page
@@ -8,18 +9,10 @@ import Data.RaceResult exposing (RaceResult)
 import Data.RaceType exposing (getPointsByRaceType)
 import Data.ResultCategory exposing (ResultCategory, resultCategories)
 import Data.Rider exposing (Rider)
-import Date
-import Date.Extra.Config.Config_nl_nl exposing (config)
-import Date.Extra.Format
 import Html exposing (Html, a, button, dd, div, dl, dt, h2, h3, h5, i, span, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, href, style)
 import Html.Events exposing (onClick)
 import Page.Result.Add.Model as ResultAdd
-
-
-dateFormat : Date.Date -> String
-dateFormat date =
-    Date.Extra.Format.format config "%Y-%m-%d" date
 
 
 view : App.Model.App -> String -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
@@ -71,7 +64,6 @@ addResultButton race =
     button
         [ class "button"
         , onClick (App.Msg.Navigate (App.Page.ResultAdd resultAdd))
-        , Html.Attributes.name "action"
         ]
         [ text "Add result" ]
 
@@ -80,7 +72,7 @@ info : Race -> Html App.Msg.Msg
 info race =
     let
         dateString =
-            dateFormat race.date
+            formatDate race.date
     in
     div [ class "card" ]
         [ div [ class "card-content" ]
@@ -91,9 +83,9 @@ info race =
                     , dt [] [ text "Date" ]
                     , dd [] [ text dateString ]
                     , dt [] [ text "Category" ]
-                    , dd [] [ text <| toString race.raceType ]
+                    , dd [] [ text <| Debug.toString race.raceType ]
                     , dt [] [ text "Points" ]
-                    , dd [] [ text <| toString <| getPointsByRaceType race.raceType ]
+                    , dd [] [ text <| String.fromInt <| getPointsByRaceType race.raceType ]
                     ]
                 ]
             ]
@@ -117,11 +109,11 @@ resultToInt a b =
         bNumber =
             String.toInt b.result
     in
-    case Result.map2 compare aNumber bNumber of
-        Ok orderFromInts ->
+    case Maybe.map2 compare aNumber bNumber of
+        Just orderFromInts ->
             orderFromInts
 
-        Err _ ->
+        Nothing ->
             compare (String.toLower a.result) (String.toLower b.result)
 
 
@@ -139,7 +131,7 @@ resultsByCategory category results riders signedIn =
 
         _ ->
             div []
-                [ h5 [ class "title is-5" ] [ text (toString category) ]
+                [ h5 [ class "title is-5" ] [ text (Debug.toString category) ]
                 , table [ class "table" ]
                     [ thead []
                         [ tr []
@@ -178,13 +170,13 @@ resultRow result riders signedIn =
             tr []
                 [ td []
                     [ a
-                        [ href ("#riders/" ++ rider.key), style [ ( "display", "block" ) ] ]
+                        [ href ("/riders/" ++ rider.key), style "display" "block" ]
                         [ text rider.name ]
                     ]
                 , resultTd result.result
                 , if signedIn then
                     td []
-                        [ a [ href ("#results/" ++ result.key ++ "/edit"), style [ ( "display", "block" ) ] ]
+                        [ a [ href ("/results/" ++ result.key ++ "/edit"), style "display" "block" ]
                             [ span [ class "icon" ] [ i [ class "fas fa-pencil-alt" ] [ text "" ] ] ]
                         ]
 

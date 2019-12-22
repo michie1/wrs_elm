@@ -10,15 +10,7 @@
   var url = new URL(window.location.href);
   var token = url.searchParams.get("token");
 
-  if (token !== null) {
-    window.history.replaceState(null, null, window.location.href.split("?")[0]);
-  }
-
-  function setup(firebase, app) {
-    loadRiders();
-    loadRaces();
-    loadResults();
-
+  function trySignIn(firebase) {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user !== null) {
         if (user.isAnonymous === false) {
@@ -31,18 +23,29 @@
 
     if (token !== null) {
       firebase.auth().signInWithCustomToken(token);
+      window.history.replaceState(
+        null,
+        null,
+        window.location.href.split("?")[0]
+      );
     }
   }
 
   const config = require("../config");
   firebase.initializeApp(config);
 
-  const Elm = require("./Main");
-  const app = Elm.Main.embed(document.getElementById("main"), {
-    wtosLoginUrl: config.wtosLoginUrl
+  const { Elm } = require("./Main");
+  const app = Elm.Main.init({
+    node: document.getElementById("main"),
+    flags: {
+      wtosLoginUrl: config.wtosLoginUrl
+    }
   });
 
-  setup(firebase, app);
+  trySignIn(firebase, app);
+  loadRiders();
+  loadRaces();
+  loadResults();
 
   function loadRiders() {
     firebase

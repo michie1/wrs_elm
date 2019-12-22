@@ -1,6 +1,6 @@
 module Tests.Data.RaceType exposing (..)
 
-import Data.RaceType exposing (RaceType(Criterium, NK, Trainingskoers), getPointsByRaceType, raceType, raceTypeReadable, raceTypeToString)
+import Data.RaceType exposing (RaceType(..), getPointsByRaceType, raceType, raceTypeReadable, raceTypeToString)
 import Expect exposing (Expectation)
 import Test exposing (..)
 

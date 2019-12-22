@@ -3,8 +3,8 @@ module Tests.Page.Result.Add.Update exposing (..)
 import App.Model
 import App.OutsideInfo exposing (sendInfoOutside)
 import App.Page
-import Data.Outfit exposing (Outfit(WASP, WTOS))
-import Data.ResultCategory exposing (ResultCategory(Amateurs, Elite))
+import Data.Outfit exposing (Outfit(..))
+import Data.ResultCategory exposing (ResultCategory(..))
 import Expect exposing (Expectation)
 import Json.Encode
 import Page.Result.Add.Model exposing (Model)

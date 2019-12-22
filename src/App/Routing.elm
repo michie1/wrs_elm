@@ -1,8 +1,8 @@
-module App.Routing exposing (Route(..), routeParser, url)
+module App.Routing exposing (Route(..), parseUrl, pathFor)
 
 import App.Page
-import Navigation
-import UrlParser exposing ((</>), Parser, map, oneOf, parseHash, s, string)
+import Url
+import Url.Parser exposing ((</>), Parser, map, oneOf, parse, s, string)
 
 
 type Route
@@ -17,32 +17,32 @@ type Route
     | ResultEdit String
 
 
-url : App.Page.Page -> String
-url page =
+pathFor : App.Page.Page -> String
+pathFor page =
     case page of
         App.Page.Riders ->
-            "#riders"
+            "/riders"
 
         App.Page.RiderDetails key ->
-            "#riders/" ++ key
+            "/riders/" ++ key
 
         App.Page.RiderAdd _ ->
-            "#riders/add"
+            "/riders/add"
 
         App.Page.Races ->
-            "#races"
+            "/races"
 
         App.Page.RaceDetails key ->
-            "#races/" ++ key
+            "/races/" ++ key
 
         App.Page.RaceAdd _ ->
-            "#races/add"
+            "/races/add"
 
         App.Page.ResultAdd add ->
-            "#races/" ++ add.raceKey ++ "/add"
+            "/races/" ++ add.raceKey ++ "/add"
 
         App.Page.ResultEdit edit ->
-            "#results/" ++ edit.resultKey ++ "/edit"
+            "/results/" ++ edit.resultKey ++ "/edit"
 
 
 matchers : Parser (Route -> a) a
@@ -62,8 +62,8 @@ matchers =
         ]
 
 
-routeParser : Navigation.Location -> Route
-routeParser location =
-    location
-        |> parseHash matchers
+parseUrl : Url.Url -> Route
+parseUrl url =
+    url
+        |> parse matchers
         |> Maybe.withDefault Races

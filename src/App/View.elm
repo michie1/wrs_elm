@@ -3,6 +3,7 @@ module App.View exposing (view)
 import App.Model exposing (App)
 import App.Msg
 import App.Page
+import Browser exposing (Document)
 import Data.Race exposing (Race, getRace, lastRaces)
 import Data.RaceResult exposing (RaceResult)
 import Data.Rider exposing (Rider)
@@ -20,11 +21,15 @@ import Page.Rider.Details
 import Page.Rider.List
 
 
-view : App -> Html App.Msg.Msg
+view : App -> Document App.Msg.Msg
 view app =
-    div [ class "container" ]
-        [ loadingPage app
+    { title = "WTOS Uitslagen"
+    , body =
+        [ div [ class "container" ]
+            [ loadingPage app
+            ]
         ]
+    }
 
 
 mainView : App -> List Race -> List Rider -> List RaceResult -> Maybe User -> String -> Html App.Msg.Msg
@@ -106,9 +111,9 @@ sidebar : List Race -> Maybe User -> String -> Html App.Msg.Msg
 sidebar races maybeUser wtosLoginUrl =
     aside [ class "menu" ]
         [ p [ class "menu-label" ] [ a [ href "https://wtos.nl", target "_blank" ] [ text "WTOS.nl" ] ]
-        , p [ class "menu-label" ] [ a [ href "#races" ] [ text "Races" ] ]
+        , p [ class "menu-label" ] [ a [ href "/races" ] [ text "Races" ] ]
         , ul [ class "menu-list" ] (List.map raceLi <| lastRaces races)
-        , p [ class "menu-label" ] [ a [ href "#riders" ] [ text "Riders" ] ]
+        , p [ class "menu-label" ] [ a [ href "/riders" ] [ text "Riders" ] ]
         , userUl maybeUser wtosLoginUrl
         , p [ class "menu-label" ] [ a [ href "https://github.com/michie1/wrs_elm", target "_blank" ] [ text "WRS on GitHub" ] ]
         ]
@@ -121,7 +126,7 @@ userUl maybeUser wtosLoginUrl =
         , ul [ class "menu-list" ] <|
             case maybeUser of
                 Just user ->
-                    [ li [] [ a [ href "#" ] [ text user.email ] ]
+                    [ li [] [ a [ href "/" ] [ text user.email ] ]
                     , li [] [ button [ class "button", onClick App.Msg.UserSignOut ] [ text "Sign out" ] ]
                     ]
 
@@ -132,4 +137,4 @@ userUl maybeUser wtosLoginUrl =
 
 raceLi : Race -> Html App.Msg.Msg
 raceLi race =
-    li [] [ a [ href ("#races/" ++ race.key) ] [ text race.name ] ]
+    li [] [ a [ href ("/races/" ++ race.key) ] [ text race.name ] ]

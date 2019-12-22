@@ -3,7 +3,7 @@ module Tests.Page.Race.Add.Update exposing (..)
 import App.Model
 import App.OutsideInfo exposing (sendInfoOutside)
 import App.Page
-import Data.RaceType exposing (RaceType(Classic, Criterium))
+import Data.RaceType exposing (RaceType(..))
 import Date
 import DatePicker
 import Expect exposing (Expectation)
@@ -12,6 +12,7 @@ import Page.Race.Add.Model exposing (Model)
 import Page.Race.Add.Msg as Msg exposing (Msg)
 import Page.Race.Add.Update exposing (update)
 import Test exposing (..)
+import Time exposing (Month(..))
 
 
 suite : Test
@@ -63,7 +64,7 @@ suite =
                         DatePicker.init
 
                     before =
-                        Model "before" Classic (Just (Date.fromTime 0)) datePicker
+                        Model "before" Classic (Just (Date.fromCalendarDate 1970 Jan 1)) datePicker
 
                     ( nextPage, cmd ) =
                         update Msg.Submit before
@@ -71,7 +72,7 @@ suite =
                     payload =
                         Json.Encode.object
                             [ ( "name", Json.Encode.string "before" )
-                            , ( "date", Json.Encode.string "1970-01-01 00:00:00" )
+                            , ( "date", Json.Encode.string "1970-01-01" )
                             , ( "category", Json.Encode.string "classic" )
                             ]
                 in

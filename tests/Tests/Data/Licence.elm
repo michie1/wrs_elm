@@ -1,6 +1,6 @@
 module Tests.Data.Licence exposing (..)
 
-import Data.Licence exposing (Licence(Amateurs, Elite), licence, licenceToString)
+import Data.Licence exposing (Licence(..), licenceToString, parseLicence)
 import Expect exposing (Expectation)
 import Test exposing (..)
 
@@ -13,5 +13,5 @@ suite =
                 Expect.equal "elite" (licenceToString Elite)
         , test "licence" <|
             \_ ->
-                Expect.equal Amateurs (licence "amateurs")
+                Expect.equal Amateurs (parseLicence "amateurs")
         ]

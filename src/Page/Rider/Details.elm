@@ -1,20 +1,13 @@
 module Page.Rider.Details exposing (view)
 
+import App.Helpers exposing (formatDate)
 import App.Model
 import App.Msg
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult, getPointsByResult, getPointsByResults)
 import Data.Rider exposing (Rider)
-import Date
-import Date.Extra.Config.Config_nl_nl exposing (config)
-import Date.Extra.Format
 import Html exposing (Html, a, dd, div, dl, dt, h2, p, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, href)
-
-
-dateFormat : Date.Date -> String
-dateFormat date =
-    Date.Extra.Format.format config "%Y-%m-%d" date
 
 
 view : App.Model.App -> String -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
@@ -60,9 +53,9 @@ info rider points =
                     [ dt [] [ text "Name" ]
                     , dd [] [ text rider.name ]
                     , dt [] [ text "Licence" ]
-                    , dd [] [ text (toString rider.licence) ]
+                    , dd [] [ text (Debug.toString rider.licence) ]
                     , dt [] [ text "Points" ]
-                    , dd [] [ text <| toString <| points ]
+                    , dd [] [ text <| String.fromInt <| points ]
                     ]
                 ]
             ]
@@ -105,16 +98,16 @@ raceRow races result =
         Just race ->
             let
                 dateString =
-                    dateFormat race.date
+                    formatDate race.date
             in
             tr []
                 [ td []
                     [ a
-                        [ href ("#races/" ++ race.key) ]
+                        [ href ("/races/" ++ race.key) ]
                         [ text race.name ]
                     ]
                 , td [] [ text <| dateString ]
-                , td [] [ text <| toString <| getPointsByResult result races ]
+                , td [] [ text <| String.fromInt <| getPointsByResult result races ]
                 , td [] [ text result.result ]
-                , td [] [ text <| toString result.outfit ]
+                , td [] [ text <| Debug.toString result.outfit ]
                 ]

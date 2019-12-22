@@ -2,9 +2,7 @@ module Page.Race.Add.Update exposing (update)
 
 import App.OutsideInfo exposing (sendInfoOutside)
 import Data.RaceType exposing (raceTypeToString)
-import Date
-import Date.Extra.Config.Config_nl_nl exposing (config)
-import Date.Extra.Format
+import Date exposing (toIsoString)
 import DatePicker
 import Json.Encode
 import Page.Race.Add.Model exposing (Model)
@@ -26,7 +24,7 @@ update msg page =
                         payload =
                             Json.Encode.object
                                 [ ( "name", Json.Encode.string page.name )
-                                , ( "date", Json.Encode.string <| dateFormat date )
+                                , ( "date", Json.Encode.string <| toIsoString date )
                                 , ( "category", Json.Encode.string <| raceTypeToString page.raceType )
                                 ]
                     in
@@ -51,13 +49,13 @@ update msg page =
 
         Msg.ToDatePicker subMsg ->
             let
-                ( newDatePicker, _, dateEvent ) =
+                ( newDatePicker, dateEvent ) =
                     DatePicker.update settings subMsg page.datePicker
 
                 newDate =
                     case dateEvent of
-                        DatePicker.Changed date ->
-                            date
+                        DatePicker.Picked date ->
+                            Just date
 
                         _ ->
                             page.date
@@ -68,8 +66,3 @@ update msg page =
             ( nextPage
             , Cmd.none
             )
-
-
-dateFormat : Date.Date -> String
-dateFormat date =
-    Date.Extra.Format.format config "%Y-%m-%d 00:00:00" date

@@ -4,9 +4,9 @@ import App.Model exposing (App)
 import App.Msg as Msg exposing (Msg)
 import App.Page
 import App.Routing
+import Browser.Dom
 import Data.RaceType as RaceType
 import DatePicker
-import Dom
 import Page.Race.Add.Model as RaceAdd
 import Page.Race.Add.Msg as RaceAdd
 import Page.Result.Add.Model as ResultAdd
@@ -46,7 +46,7 @@ urlUpdate route app =
             case maybeResultEdit of
                 Just resultEdit ->
                     ( { app | page = App.Page.ResultEdit resultEdit }
-                    , Task.attempt (always Msg.Noop) (Dom.focus "result")
+                    , Task.attempt (always Msg.Noop) (Browser.Dom.focus "result")
                     )
 
                 Nothing ->
@@ -61,7 +61,7 @@ urlUpdate route app =
                     { resultAdd | raceKey = raceKey }
             in
             ( { app | page = App.Page.ResultAdd resultAddWithRaceKey }
-            , Task.attempt (always Msg.Noop) (Dom.focus "result")
+            , Task.attempt (always Msg.Noop) (Browser.Dom.focus "result")
             )
 
         App.Routing.RaceAdd ->
@@ -75,7 +75,7 @@ urlUpdate route app =
             ( { app | page = App.Page.RaceAdd raceAdd }
             , Cmd.batch
                 [ Cmd.map RaceAdd.ToDatePicker datePickerFx |> Cmd.map Msg.RaceAdd
-                , Task.attempt (always Msg.Noop) (Dom.focus "name")
+                , Task.attempt (always Msg.Noop) (Browser.Dom.focus "name")
                 ]
             )
 
@@ -85,7 +85,7 @@ urlUpdate route app =
                     RiderAdd.Model "" Nothing
             in
             ( { app | page = App.Page.RiderAdd add }
-            , Task.attempt (always Msg.Noop) (Dom.focus "name")
+            , Task.attempt (always Msg.Noop) (Browser.Dom.focus "name")
             )
 
         App.Routing.RiderDetails key ->

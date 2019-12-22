@@ -1,8 +1,8 @@
 module Tests.Data.RaceResult exposing (..)
 
-import Data.Outfit exposing (Outfit(WTOS))
+import Data.Outfit exposing (Outfit(..))
 import Data.RaceResult exposing (RaceResult, getPointsByResult, getPointsByResults, resultExists)
-import Data.ResultCategory exposing (ResultCategory(Elite))
+import Data.ResultCategory exposing (ResultCategory(..))
 import Expect exposing (Expectation)
 import Test exposing (..)
 
