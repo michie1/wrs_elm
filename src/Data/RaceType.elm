@@ -1,4 +1,4 @@
-module Data.RaceType exposing (RaceType(..), getPointsByRaceType, raceType, raceTypeDecoder, raceTypeReadable, raceTypeToString, raceTypes)
+module Data.RaceType exposing (RaceType(..), getPointsByRaceType, raceType, raceTypeDecoder, raceTypeDescription, raceTypeReadable, raceTypeToString, raceTypes)
 
 import Json.Decode
 
@@ -151,10 +151,10 @@ raceTypeReadable category =
             "Klassieker"
 
         OffRoadRegional ->
-            "Off-road Regionaal (regiocross, regionale MTB (ZH-cup), beach niet-topcompetitie)"
+            "Off-road Regionaal"
 
         OffRoadNational ->
-            "Off-road Nationaal (nationale corss, nationale MTB, beach topcompetitie)"
+            "Off-road Nationaal"
 
         Omloop ->
             "Omloop"
@@ -163,13 +163,13 @@ raceTypeReadable category =
             "Studentencup"
 
         WTOS ->
-            "Interne WTOS-wedstrijd (La Ultimo, La Duo, La Una, CK’s, maandelijkse 10k)"
+            "Interne WTOS-wedstrijd"
 
         NK ->
             "NK/NCK/NSK"
 
         Cyclosportive ->
-            "Cyclosportive / Marathon"
+            "Cyclosportive/Marathon"
 
         TimeTrial ->
             "Time trial"
@@ -178,7 +178,26 @@ raceTypeReadable category =
             "(veld)Toertocht"
 
         _ ->
-            "Other (e.g. WTOS time trial)"
+            "Other"
+
+
+raceTypeDescription : RaceType -> Maybe String
+raceTypeDescription category =
+    case category of
+        OffRoadRegional ->
+            Just "regiocross, regionale MTB, beach niet-topcompetitie"
+
+        OffRoadNational ->
+            Just "nationale cross, nationale MTB, beach topcompetitie"
+
+        WTOS ->
+            Just "La Ultimo, La Duo, La Una, CK’s, maandelijkse 10k"
+
+        Other ->
+            Just "e.g. WTOS time trial"
+
+        _ ->
+            Nothing
 
 
 raceTypeDecoder : String -> Json.Decode.Decoder RaceType

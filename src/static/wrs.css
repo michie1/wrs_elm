@@ -38,3 +38,7 @@
     transform: scale(1.0);
   }
 }
+
+label {
+  padding-left: 5px;
+}

@@ -1,6 +1,6 @@
 module Page.Race.Add.View exposing (view)
 
-import Data.RaceType exposing (RaceType, raceTypeReadable, raceTypeToString, raceTypes)
+import Data.RaceType exposing (RaceType, raceTypeDescription, raceTypeReadable, raceTypeToString, raceTypes)
 import DatePicker
 import Html exposing (Html, button, div, h2, input, p)
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
@@ -79,6 +79,13 @@ raceTypeButtonCheck raceType current =
 
         raceTypeText =
             raceTypeReadable raceType
+                ++ (case raceTypeDescription raceType of
+                        Just description ->
+                            " (" ++ description ++ ")"
+
+                        Nothing ->
+                            ""
+                   )
     in
     p []
         [ input [ checked isChecked, name "type", type_ "radio", id raceTypeName, onClick (Msg.RaceType raceType) ] []
