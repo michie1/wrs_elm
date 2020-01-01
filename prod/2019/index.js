@@ -32,7 +32,7 @@ function loadRiders() {
       {
         key: key
       },
-      val[key]
+      riders[key]
     );
   });
 
@@ -49,7 +49,7 @@ function loadRaces() {
         {
           key: key
         },
-        val[key]
+        races[key]
       );
     })
     .map(race => {
@@ -64,12 +64,12 @@ function loadRaces() {
 }
 
 function loadResults() {
-  const arr = Object.keys(result).map(function(key) {
+  const arr = Object.keys(results).map(function(key) {
     return Object.assign(
       {
         key: key
       },
-      val[key]
+      results[key]
     );
   });
   app.ports.infoForElm.send({
