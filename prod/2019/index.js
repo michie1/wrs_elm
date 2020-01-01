@@ -22,78 +22,55 @@ const app = Elm.Main.init({
   }
 });
 
-function loadJSON(filename, callback) {
-  var xobj = new XMLHttpRequest();
-  xobj.overrideMimeType("application/json");
-  xobj.open("GET", filename, true);
-  xobj.onreadystatechange = function() {
-    if (xobj.readyState == 4 && xobj.status == "200") {
-      callback(JSON.parse(xobj.responseText));
-    }
-  };
-  xobj.send(null);
-}
-
 function loadRiders() {
-  loadJSON("riders.json", function(val) {
-    const arr = val
-      ? Object.keys(val).map(function(key) {
-          return Object.assign(
-            {
-              key: key
-            },
-            val[key]
-          );
-        })
-      : [];
+  const arr = Object.keys(riders).map(function(key) {
+    return Object.assign(
+      {
+        key: key
+      },
+      val[key]
+    );
+  });
 
-    app.ports.infoForElm.send({
-      tag: "RidersLoaded",
-      data: arr
-    });
+  app.ports.infoForElm.send({
+    tag: "RidersLoaded",
+    data: arr
   });
 }
 
 function loadRaces() {
-  loadJSON("races.json", function(val) {
-    const races = (val
-      ? Object.keys(val).map(function(key) {
-          return Object.assign(
-            {
-              key: key
-            },
-            val[key]
-          );
-        })
-      : []
-    ).map(race => {
+  const arr = Object.keys(races)
+    .map(function(key) {
+      return Object.assign(
+        {
+          key: key
+        },
+        val[key]
+      );
+    })
+    .map(race => {
       race.date = new Date(race.date.split(" ")[0]).toISOString();
       return race;
     });
 
-    app.ports.infoForElm.send({
-      tag: "RacesLoaded",
-      data: races
-    });
+  app.ports.infoForElm.send({
+    tag: "RacesLoaded",
+    data: arr
   });
 }
 
 function loadResults() {
-  loadJSON("results.json", function(val) {
-    const arr = val
-      ? Object.keys(val).map(function(key) {
-          return Object.assign(
-            {
-              key: key
-            },
-            val[key]
-          );
-        })
-      : [];
-    app.ports.infoForElm.send({
-      tag: "ResultsLoaded",
-      data: arr
-    });
+  const arr = Object.keys(result).map(function(key) {
+    return Object.assign(
+      {
+        key: key
+      },
+      val[key]
+    );
+  });
+  app.ports.infoForElm.send({
+    tag: "ResultsLoaded",
+    data: arr
   });
 }
 
