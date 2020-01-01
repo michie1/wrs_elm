@@ -22,6 +22,10 @@ const app = Elm.Main.init({
   }
 });
 
+loadRiders();
+loadRaces();
+loadResults();
+
 function loadRiders() {
   const arr = Object.keys(riders).map(function(key) {
     return Object.assign(
