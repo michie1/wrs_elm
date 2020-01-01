@@ -35,7 +35,7 @@ function loadJSON(filename, callback) {
 }
 
 function loadRiders() {
-  loadJSON("./riders.json", function(val) {
+  loadJSON("riders.json", function(val) {
     const arr = val
       ? Object.keys(val).map(function(key) {
           return Object.assign(
@@ -55,7 +55,7 @@ function loadRiders() {
 }
 
 function loadRaces() {
-  loadJSON("./races.json", function(val) {
+  loadJSON("races.json", function(val) {
     const races = (val
       ? Object.keys(val).map(function(key) {
           return Object.assign(
@@ -79,7 +79,7 @@ function loadRaces() {
 }
 
 function loadResults() {
-  loadJSON("./results.json", function(val) {
+  loadJSON("results.json", function(val) {
     const arr = val
       ? Object.keys(val).map(function(key) {
           return Object.assign(
