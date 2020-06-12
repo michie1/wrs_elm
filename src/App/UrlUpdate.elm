@@ -6,7 +6,6 @@ import App.Page
 import App.Routing
 import Browser.Dom
 import Data.RaceType as RaceType
-import Date exposing (fromPosix)
 import DatePicker
 import Page.Race.Add.Model as RaceAdd
 import Page.Race.Add.Msg as RaceAdd
