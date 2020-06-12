@@ -193,9 +193,6 @@ raceTypeDescription category =
         WTOS ->
             Just "La Ultimo, La Duo, La Una, CK’s, maandelijkse 10k"
 
-        Other ->
-            Just "e.g. WTOS time trial"
-
         _ ->
             Nothing
 
