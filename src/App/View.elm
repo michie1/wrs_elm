@@ -113,7 +113,9 @@ sidebar races maybeUser wtosLoginUrl =
         , userUl maybeUser wtosLoginUrl
         , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2019/", target "_blank" ] [ text "Uitslagen 2019" ] ]
         , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2018/", target "_blank" ] [ text "Uitslagen 2018" ] ]
-        , p [ class "menu-label" ] [ a [ href "https://github.com/michie1/wrs_elm", target "_blank" ] [ text "WRS on GitHub" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://github.com/michie1/wrs_elm", target "_blank" ] [ text "GitHub" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://msvos.nl", target "_blank" ] [ text "App nodig?" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://msvos.nl", target "_blank" ] [ text "© msvos" ] ]
         ]
 
 
