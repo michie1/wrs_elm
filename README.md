@@ -43,4 +43,8 @@ Check [http://localhost:8080](http://localhost:8080)
 6. Copy the arrays to `races.js`, `results.js` and `riders.js`.
 7. Remove the console logs and revert `config.js`.
 8. In `package.json` extent the `build` script for the newly added year.
+9. In de `sidebar`, add link to the newly added year.
 9. `npm run build`.
+10. Commit & push.
+11. Export firebase database as backup. Clear the firebase database.
+12. Add a test rider, race & result. Verify if it works. Clear those test rows when real data is created.
