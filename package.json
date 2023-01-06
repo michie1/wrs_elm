@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --hot --inline",
-    "build": "yarn make && yarn uglify && cp -r src/static dist && cp src/_redirects dist && cp prod/index.* dist && cp prod/config.js dist && cp -r prod/2018 dist && cp -r prod/2019 dist && cp -r prod/2020 dist && cp -r prod/2021 dist",
+    "build": "yarn make && yarn uglify && cp -r src/static dist && cp src/_redirects dist && cp prod/index.* dist && cp prod/config.js dist && cp -r prod/2018 dist && cp -r prod/2019 dist && cp -r prod/2020 dist && cp -r prod/2021 dist && cp -r prod/2022 dist",
     "make": "elm make src/Main.elm --optimize --output dist/wrs.js",
     "uglify": "uglifyjs dist/wrs.js --compress 'pure_funcs=[F2,F3,F4,F5,F6,F7,F8,F9,A2,A3,A4,A5,A6,A7,A8,A9],pure_getters,keep_fargs=false,unsafe_comps,unsafe' | uglifyjs --mangle --output=dist/wrs.js",
     "test": "yarn elm-test",
