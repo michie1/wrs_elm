@@ -54,7 +54,7 @@
       .orderByChild("id")
       .on("value", function(snapshot) {
         const val = snapshot.val();
-        const arr = val
+        const riders = val
           ? Object.keys(val).map(function(key) {
               return Object.assign(
                 {
@@ -66,7 +66,7 @@
           : [];
         app.ports.infoForElm.send({
           tag: "RidersLoaded",
-          data: arr
+          data: riders
         });
       });
   }
@@ -105,7 +105,7 @@
       .ref("/results/")
       .on("value", function(snapshot) {
         const val = snapshot.val();
-        const arr = val
+        const results = val
           ? Object.keys(val).map(function(key) {
               return Object.assign(
                 {
@@ -117,7 +117,7 @@
           : [];
         app.ports.infoForElm.send({
           tag: "ResultsLoaded",
-          data: arr
+          data: results
         });
       });
   }
