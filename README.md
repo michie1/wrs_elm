@@ -37,13 +37,13 @@ Check [http://localhost:8080](http://localhost:8080)
 1. Copy previous year:
 `cd prod && cp -r 2020 2021`
 2. Remove `wrs.js` and download latest from `https://uitslagen.wtos.nl/wrs.js`.
-3. Increment year in `index.html`.
+3. Increment year in title in `index.html`.
 4. Use `prod/config.js` and paste the values into `config.js` temporarily.
-5. Add a console.log with JSON.stringify for the races, results and riders.
-6. Copy the arrays to `races.js`, `results.js` and `riders.js`.
+5. Add a console.log with JSON.stringify for the races, results and riders in `src/index.js`.
+6. Copy the arrays to `prod/year/`/`races.js`, `results.js` and `riders.js`.
 7. Remove the console logs and revert `config.js`.
 8. In `package.json` extent the `build` script for the newly added year.
-9. In de `sidebar` (`App/View.elm`), add link to the newly added year.
+9. In de `sidebar` (`App/View.elm`), add link to the newly added year around line 114.
 10. `npm run build`.
 11. Commit & push.
 12. Export firebase database as backup. Clear the firebase database.
