@@ -27,7 +27,7 @@ loadRaces();
 loadResults();
 
 function loadRiders() {
-  const riders = Object.keys(riders).map(function(key) {
+  const data = Object.keys(riders).map(function(key) {
     return Object.assign(
       {
         key: key
@@ -38,12 +38,12 @@ function loadRiders() {
 
   app.ports.infoForElm.send({
     tag: "RidersLoaded",
-    data: riders
+    data: data
   });
 }
 
 function loadRaces() {
-  const races = Object.keys(races)
+  const data = Object.keys(races)
     .map(function(key) {
       return Object.assign(
         {
@@ -59,12 +59,12 @@ function loadRaces() {
 
   app.ports.infoForElm.send({
     tag: "RacesLoaded",
-    data: races
+    data: data
   });
 }
 
 function loadResults() {
-  const results = Object.keys(results).map(function(key) {
+  const data = Object.keys(results).map(function(key) {
     return Object.assign(
       {
         key: key
@@ -74,7 +74,7 @@ function loadResults() {
   });
   app.ports.infoForElm.send({
     tag: "ResultsLoaded",
-    data: results
+    data: data
   });
 }
 
