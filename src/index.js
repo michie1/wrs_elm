@@ -1,3 +1,6 @@
+import config from "../config";
+import { Elm } from "./Main";
+
 (function() {
   "use strict";
 
@@ -31,10 +34,8 @@
     }
   }
 
-  const config = require("../config");
   firebase.initializeApp(config);
 
-  const { Elm } = require("./Main");
   const app = Elm.Main.init({
     node: document.getElementById("main"),
     flags: {
