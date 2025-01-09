@@ -52,10 +52,11 @@ var commonConfig = {
 
 module.exports = merge(commonConfig, {
   entry: ["webpack-dev-server/client?http://localhost:8080", entryPath],
+  mode: 'development',
   devServer: {
     // serve index.html in place of 404 responses
     historyApiFallback: true,
-    contentBase: "./src",
+    static: "./src",
     hot: true
   },
   module: {
