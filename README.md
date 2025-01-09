@@ -48,5 +48,4 @@ Check [http://localhost:8080](http://localhost:8080)
 11. `npm run build`.
 11. Commit & push.
 12. Export [firebase](https://console.firebase.google.com/u/0/project/cycling-results/database/cycling-results/data) database as backup. Clear the firebase database.
-13. Put `{ "races": { }, "results": { }, "riders": { } }` in `empty.json` and import it into the database.
 14. Add a test rider, race & result. Verify if it works. Clear those test rows when real data is created.
