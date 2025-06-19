@@ -14,20 +14,21 @@ cd wrs_elm
 Install dependencies:
 
 ```sh
-yarn
-
+npm install --legacy-peer-deps
+npm install -g elm
+npm run make
 ```
 
 Run dev mode:
 
 ```sh
-yarn dev
+npm run dev
 ```
 
 Test:
 
 ```sh
-yarn test
+npm run test
 ```
 
 Check [http://localhost:8080](http://localhost:8080)
