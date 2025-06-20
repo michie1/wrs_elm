@@ -132,20 +132,22 @@ resultsByCategory category results riders signedIn =
         _ ->
             div []
                 [ h5 [ class "title is-5" ] [ text <| categoryReadable category ]
-                , table [ class "table" ]
-                    [ thead []
-                        [ tr []
-                            [ th [] [ text "Rider" ]
-                            , th [] [ text "Result" ]
-                            , if signedIn then
-                                th [] [ text "Edit" ]
+                , div [ class "table-container" ]
+                    [ table [ class "table" ]
+                        [ thead []
+                            [ tr []
+                                [ th [] [ text "Rider" ]
+                                , th [] [ text "Result" ]
+                                , if signedIn then
+                                    th [] [ text "Edit" ]
 
-                              else
-                                text ""
+                                  else
+                                    text ""
+                                ]
                             ]
+                        , tbody [] <|
+                            List.map (\result -> resultRow result riders signedIn) catResults
                         ]
-                    , tbody [] <|
-                        List.map (\result -> resultRow result riders signedIn) catResults
                     ]
                 ]
 

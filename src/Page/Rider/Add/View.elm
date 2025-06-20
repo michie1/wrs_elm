@@ -33,12 +33,14 @@ view add =
                     []
                 ]
             ]
-        , licenceButtons add.licence
+        , div [ class "field" ]
+            [ label [ class "label" ] [ text "Licence" ]
+            , licenceButtons add.licence
+            ]
         , div [ class "field" ]
             [ div [ class "control" ]
                 [ button
-                    [ class "button"
-                    , class "is-primary"
+                    [ class "button is-primary"
                     , type_ "submit"
                     , onClick Msg.Submit
                     , Html.Attributes.name "action"
@@ -61,7 +63,7 @@ licenceButtonCheck categoryName categoryText categoryModel maybeCurrent =
                 Nothing ->
                     False
     in
-    label []
+    label [ class "radio", for categoryName ]
         [ input [ checked isChecked, name "category", type_ "radio", id categoryName, onClick (Msg.Licence categoryModel) ] []
         , span [] [ text categoryText ]
         ]
@@ -69,7 +71,7 @@ licenceButtonCheck categoryName categoryText categoryModel maybeCurrent =
 
 licenceButtons : Maybe Licence -> Html Msg
 licenceButtons maybeCurrent =
-    div [ class "control" ]
+    div []
         [ licenceButtonCheck "elite" "Elite" Licence.Elite maybeCurrent
         , licenceButtonCheck "amateurs" "Amateurs" Licence.Amateurs maybeCurrent
         , licenceButtonCheck "basislidmaatschap" "Basislidmaatschap" Licence.Basislidmaatschap maybeCurrent

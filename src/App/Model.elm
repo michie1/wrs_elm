@@ -20,9 +20,10 @@ type alias App =
     , user : Maybe User
     , wtosLoginUrl : String
     , now : Posix
+    , mobileMenuOpen : Bool
     }
 
 
 initial : Flags -> Browser.Navigation.Key -> App
 initial flags navKey =
-    App navKey App.Page.Races Nothing Nothing Nothing Nothing Nothing flags.wtosLoginUrl (Time.millisToPosix 0)
+    App navKey App.Page.Races Nothing Nothing Nothing Nothing Nothing flags.wtosLoginUrl (Time.millisToPosix 0) False

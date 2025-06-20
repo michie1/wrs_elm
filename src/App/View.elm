@@ -8,8 +8,8 @@ import Data.Race exposing (Race, getRace, lastRaces)
 import Data.RaceResult exposing (RaceResult)
 import Data.Rider exposing (Rider)
 import Data.User exposing (User)
-import Html exposing (Html, a, aside, button, div, h2, li, p, section, text, ul)
-import Html.Attributes exposing (class, href, target)
+import Html exposing (Html, a, aside, button, div, h2, li, p, section, text, ul, span)
+import Html.Attributes exposing (class, href, target, classList)
 import Html.Events exposing (onClick)
 import Page.Race.Add.View
 import Page.Race.Details
@@ -34,9 +34,24 @@ view app =
 
 mainView : App -> List Race -> List Rider -> List RaceResult -> Maybe User -> String -> Html App.Msg.Msg
 mainView app races riders results maybeUser wtosLoginUrl =
-    div [ class "columns" ]
-        [ section [ class "section", class "column", class "is-one-fifth" ] [ sidebar races maybeUser wtosLoginUrl ]
-        , section [ class "section", class "column" ] [ viewPage app races riders results ]
+    div []
+        [ mobileNavToggle app.mobileMenuOpen
+        , mobileOverlay app.mobileMenuOpen
+        , div [ class "columns" ]
+            [ section 
+                [ classList 
+                    [ ( "section", True )
+                    , ( "column", True )
+                    , ( "is-one-fifth", True )
+                    , ( "is-active", app.mobileMenuOpen )
+                    ]
+                ] 
+                [ sidebar races maybeUser wtosLoginUrl app.mobileMenuOpen ]
+            , section [ class "section", class "column", class "is-four-fifths" ] 
+                [ backButton app.page
+                , viewPage app races riders results 
+                ]
+            ]
         ]
 
 
@@ -103,24 +118,24 @@ spinner =
         ]
 
 
-sidebar : List Race -> Maybe User -> String -> Html App.Msg.Msg
-sidebar races maybeUser wtosLoginUrl =
+sidebar : List Race -> Maybe User -> String -> Bool -> Html App.Msg.Msg
+sidebar races maybeUser wtosLoginUrl mobileMenuOpen =
     aside [ class "menu" ]
-        [ p [ class "menu-label" ] [ a [ href "https://wtos.nl", target "_blank" ] [ text "WTOS.nl" ] ]
-        , p [ class "menu-label" ] [ a [ href "/races" ] [ text "Races" ] ]
+        [ p [ class "menu-label" ] [ a [ href "https://wtos.nl", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "WTOS.nl" ] ]
+        , p [ class "menu-label" ] [ a [ href "/races", onClick App.Msg.CloseMobileMenu ] [ text "Races" ] ]
         , ul [ class "menu-list" ] (List.map raceLi <| lastRaces races)
-        , p [ class "menu-label" ] [ a [ href "/riders" ] [ text "Riders" ] ]
+        , p [ class "menu-label" ] [ a [ href "/riders", onClick App.Msg.CloseMobileMenu ] [ text "Riders" ] ]
         , userUl maybeUser wtosLoginUrl
-        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2024/", target "_blank" ] [ text "Uitslagen 2024" ] ]
-        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2023/", target "_blank" ] [ text "Uitslagen 2023" ] ]
-        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2022/", target "_blank" ] [ text "Uitslagen 2022" ] ]
-        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2021/", target "_blank" ] [ text "Uitslagen 2021" ] ]
-        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2020/", target "_blank" ] [ text "Uitslagen 2020" ] ]
-        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2019/", target "_blank" ] [ text "Uitslagen 2019" ] ]
-        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2018/", target "_blank" ] [ text "Uitslagen 2018" ] ]
-        , p [ class "menu-label" ] [ a [ href "https://github.com/michie1/wrs_elm", target "_blank" ] [ text "GitHub" ] ]
-        , p [ class "menu-label" ] [ a [ href "https://msvos.nl", target "_blank" ] [ text "App nodig?" ] ]
-        , p [ class "menu-label" ] [ a [ href "https://msvos.nl", target "_blank" ] [ text "© msvos" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2024/", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "Uitslagen 2024" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2023/", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "Uitslagen 2023" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2022/", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "Uitslagen 2022" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2021/", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "Uitslagen 2021" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2020/", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "Uitslagen 2020" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2019/", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "Uitslagen 2019" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2018/", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "Uitslagen 2018" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://github.com/michie1/wrs_elm", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "GitHub" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://msvos.nl", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "App nodig?" ] ]
+        , p [ class "menu-label" ] [ a [ href "https://msvos.nl", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "© msvos" ] ]
         ]
 
 
@@ -140,6 +155,44 @@ userUl maybeUser wtosLoginUrl =
         ]
 
 
+mobileNavToggle : Bool -> Html App.Msg.Msg
+mobileNavToggle isOpen =
+    button 
+        [ classList 
+            [ ( "mobile-nav-toggle", True )
+            , ( "is-active", isOpen )
+            ]
+        , onClick App.Msg.ToggleMobileMenu
+        ]
+        [ text (if isOpen then "×" else "☰") ]
+
+mobileOverlay : Bool -> Html App.Msg.Msg
+mobileOverlay isOpen =
+    if isOpen then
+        div 
+            [ class "mobile-overlay"
+            , onClick App.Msg.CloseMobileMenu
+            ] 
+            []
+    else
+        text ""
+
+backButton : App.Page.Page -> Html App.Msg.Msg
+backButton currentPage =
+    case currentPage of
+        App.Page.Races ->
+            text ""
+        
+        App.Page.Riders ->
+            text ""
+            
+        _ ->
+            button 
+                [ class "back-button"
+                , onClick App.Msg.GoBack
+                ]
+                [ text "← Back" ]
+
 raceLi : Race -> Html App.Msg.Msg
 raceLi race =
-    li [] [ a [ href ("/races/" ++ race.key) ] [ text race.name ] ]
+    li [] [ a [ href ("/races/" ++ race.key), onClick App.Msg.CloseMobileMenu ] [ text race.name ] ]

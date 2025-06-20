@@ -14,31 +14,33 @@ view riders races results =
     div []
         [ h2 [ class "title is-2" ] [ text "Riders" ]
         , addButton
-        , table [ class "table" ]
-            [ thead []
-                [ tr []
-                    [ th [] [ text "Name" ]
-                    , th [] [ text "Licence" ]
-                    , th [] [ text "Points" ]
+        , div [ class "table-container" ]
+            [ table [ class "table" ]
+                [ thead []
+                    [ tr []
+                        [ th [] [ text "Name" ]
+                        , th [] [ text "Licence" ]
+                        , th [] [ text "Points" ]
+                        ]
                     ]
-                ]
-            , tbody []
-                (riders
-                    |> List.map (\rider -> { key = rider.key, name = rider.name, licence = rider.licence, points = getPointsByRiderId rider.key results races })
-                    |> List.sortBy .points
-                    |> List.reverse
-                    |> List.map
-                        (\rider ->
-                            tr []
-                                [ td []
-                                    [ a [ href ("/riders/" ++ rider.key), style "display" "block" ]
-                                        [ text rider.name ]
+                , tbody []
+                    (riders
+                        |> List.map (\rider -> { key = rider.key, name = rider.name, licence = rider.licence, points = getPointsByRiderId rider.key results races })
+                        |> List.sortBy .points
+                        |> List.reverse
+                        |> List.map
+                            (\rider ->
+                                tr []
+                                    [ td []
+                                        [ a [ href ("/riders/" ++ rider.key), style "display" "block" ]
+                                            [ text rider.name ]
+                                        ]
+                                    , td [] [ text <| licenceToString rider.licence ]
+                                    , td [] [ text <| String.fromInt <| rider.points ]
                                     ]
-                                , td [] [ text <| licenceToString rider.licence ]
-                                , td [] [ text <| String.fromInt <| rider.points ]
-                                ]
-                        )
-                )
+                            )
+                    )
+                ]
             ]
         ]
 

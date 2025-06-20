@@ -3,7 +3,7 @@ module Page.Race.Add.View exposing (view)
 import Data.RaceType exposing (RaceType, raceTypeDescription, raceTypeReadable, raceTypeToString, raceTypes)
 import Date
 import DatePicker
-import Html exposing (Html, button, div, h2, input, p)
+import Html exposing (Html, button, div, h2, input, p, span)
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Page.Race.Add.Model exposing (Model)
@@ -59,7 +59,7 @@ view raceAdd now =
             [ label ""
             , field
                 [ button
-                    [ class "button"
+                    [ class "button is-primary"
                     , type_ "submit"
                     , onClick Msg.Submit
                     , disabled submitDisabled
@@ -89,13 +89,13 @@ raceTypeButtonCheck raceType current =
                             ""
                    )
     in
-    p []
+    Html.label [ for raceTypeName, class "radio" ]
         [ input [ checked isChecked, name "type", type_ "radio", id raceTypeName, onClick (Msg.RaceType raceType) ] []
-        , Html.label [ for raceTypeName ] [ Html.text raceTypeText ]
+        , Html.span [] [ Html.text raceTypeText ]
         ]
 
 
 raceTypeButtons : RaceType -> Html Msg
 raceTypeButtons current =
-    div [ class "col s6" ] <|
+    div [] <|
         List.map (\raceType -> raceTypeButtonCheck raceType current) raceTypes

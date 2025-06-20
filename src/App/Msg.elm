@@ -26,3 +26,6 @@ type Msg
     | OnUrlChange Url.Url
     | OnUrlRequest Browser.UrlRequest
     | Now Posix
+    | ToggleMobileMenu
+    | CloseMobileMenu
+    | GoBack

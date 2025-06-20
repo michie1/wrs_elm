@@ -81,9 +81,9 @@ resultCategoryButton category current =
         resultCategoryText =
             categoryReadable category
     in
-    p []
+    label [ class "radio", for resultCategoryName ]
         [ input [ checked isChecked, name "resultCategory", type_ "radio", id resultCategoryName, onClick (Msg.Category category) ] []
-        , label [ for resultCategoryName ] [ text resultCategoryText ]
+        , span [] [ text resultCategoryText ]
         ]
 
 
