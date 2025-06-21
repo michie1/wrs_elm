@@ -1,3 +1,17 @@
+/* Use Bulma 1.0 CSS Variables with light theme defaults */
+:root {
+  --primary-color: #3273dc;
+  --primary-hover: #2366d1;
+  --text-dark: #363636;
+  --text-light: #4a4a4a;
+  --border-light: #dbdbdb;
+  --border-dark: #b5b5b5;
+  --background-light: #fafafa;
+  --background-white: #ffffff;
+  --shadow-light: rgba(10, 10, 10, 0.1);
+  --shadow-dark: rgba(10, 10, 10, 0.5);
+}
+
 .spinner {
   width: 70px;
   text-align: center;
@@ -6,8 +20,7 @@
 .spinner > div {
   width: 18px;
   height: 18px;
-  background-color: #333;
-
+  background-color: var(--text-dark);
   border-radius: 100%;
   display: inline-block;
   -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
@@ -41,4 +54,481 @@
 
 label {
   padding-left: 5px;
+}
+
+/* Form improvements */
+/* Consistent styling for all input fields */
+.input, input[type="text"], input[type="email"], input[type="password"], 
+.textarea, textarea, .select select, select {
+  font-size: 1rem !important;
+  padding: 0.75rem 1rem !important;
+  height: auto !important;
+  min-height: 2.5rem;
+  font-weight: 400;
+  border: 1px solid var(--border-light) !important;
+  border-radius: 4px !important;
+  background: var(--background-white) !important;
+  color: var(--text-dark) !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Special styling for name inputs (larger) */
+#name.input, input#name, .input#name {
+  font-size: 1.25rem !important;
+  min-height: 3rem;
+  font-weight: 500;
+}
+
+.input:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus,
+.textarea:focus, textarea:focus, .select select:focus, select:focus,
+#name.input:focus, input#name:focus, .input#name:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(50, 115, 220, 0.25) !important;
+  outline: none !important;
+}
+
+/* Fix for inputs with left icons - text appears behind icon */
+.control.has-icons-left .input {
+  padding-left: 2.5rem !important;
+}
+
+/* Fix vertical alignment of icons in input fields */
+.control.has-icons-left .icon.is-left {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Better button styling and consistency */
+.button {
+  min-height: 44px;
+  min-width: 44px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* Ensure all buttons use consistent colors */
+.button:not(.is-danger):not(.is-warning):not(.is-info):not(.is-success),
+.button.is-primary {
+  background-color: var(--primary-color) !important;
+  color: var(--background-white) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.button:not(.is-danger):not(.is-warning):not(.is-info):not(.is-success):hover,
+.button:not(.is-danger):not(.is-warning):not(.is-info):not(.is-success):focus,
+.button.is-primary:hover,
+.button.is-primary:focus {
+  background-color: var(--primary-hover) !important;
+  border-color: var(--primary-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px var(--shadow-light);
+}
+
+.button:not(.is-danger):not(.is-warning):not(.is-info):not(.is-success):active,
+.button.is-primary:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Complete radio button reset and consistent styling */
+.radio, label.radio {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  margin: 0 0 0.75rem 0 !important;
+  padding: 0.5rem !important;
+  min-height: 44px !important;
+  cursor: pointer !important;
+  background: transparent !important;
+  border: none !important;
+  width: 100% !important;
+}
+
+/* No hover effects */
+.radio:hover, label.radio:hover {
+  background-color: transparent !important;
+}
+
+/* Universal radio button styling - override ALL other styles */
+.radio input[type="radio"], 
+label.radio input[type="radio"],
+label input[type="radio"] {
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 0.5rem 0 0 !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: 2px solid var(--border-dark) !important;
+  border-radius: 50% !important;
+  background: var(--background-white) !important;
+  position: relative !important;
+  vertical-align: middle !important;
+}
+
+.radio input[type="radio"]:checked,
+label.radio input[type="radio"]:checked,
+label input[type="radio"]:checked {
+  border-color: var(--primary-color) !important;
+  background: var(--background-white) !important;
+}
+
+.radio input[type="radio"]:focus,
+label.radio input[type="radio"]:focus,
+label input[type="radio"]:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(50, 115, 220, 0.25) !important;
+}
+
+.radio input[type="radio"]:checked::after,
+label.radio input[type="radio"]:checked::after,
+label input[type="radio"]:checked::after {
+  content: '' !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background: var(--primary-color) !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+/* Text positioning - right of radio button, vertically centered */
+.radio span,
+label.radio span,
+label span {
+  line-height: 18px !important;
+  vertical-align: middle !important;
+  flex: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 18px !important;
+}
+
+/* Reset ALL potential conflicting styles */
+.control, .field-body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.control .radio, .control label.radio, .control label {
+  margin: 0 0 0.75rem 0 !important;
+  padding: 0.5rem !important;
+}
+
+/* Ensure first and last radio buttons are consistent */
+.radio:first-child,
+label.radio:first-child,
+label:first-child {
+  margin-top: 0 !important;
+}
+
+.radio:last-child,
+label.radio:last-child, 
+label:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Mobile-first responsive design */
+@media screen and (max-width: 768px) {
+  /* Hide sidebar on mobile, show as overlay */
+  .columns {
+    margin: 0 !important;
+  }
+  
+  .column.is-one-fifth {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 65% !important;
+    height: 100vh;
+    background: var(--background-white);
+    z-index: 1000;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 10px var(--shadow-light);
+    overflow-y: auto;
+    padding: 4rem 1.5rem 2rem 1.5rem;
+  }
+  
+  /* Ensure menu items are properly spaced and visible */
+  .column.is-one-fifth .menu-label,
+  .column.is-one-fifth .menu-list {
+    margin-bottom: 1rem;
+  }
+  
+  .column.is-one-fifth .menu-label a,
+  .column.is-one-fifth .menu-list a {
+    padding: 0.75rem 0.5rem;
+    display: block;
+    min-height: 44px;
+    line-height: 1.4;
+  }
+  
+  .column.is-one-fifth.is-active {
+    left: 0;
+  }
+  
+  /* Main content takes full width on mobile */
+  .column.is-four-fifths {
+    width: 100% !important;
+    padding: 1rem;
+    padding-top: 1rem;
+  }
+  
+  /* Add extra padding when back button is present and move it to avoid toggle */
+  .column.is-four-fifths .back-button {
+    margin-top: 1rem;
+    margin-left: 4.5rem;
+  }
+  
+  /* Mobile navigation toggle - position in top left corner */
+  .mobile-nav-toggle {
+    display: block !important;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    background: var(--primary-color);
+    color: var(--background-white);
+    border: none;
+    padding: 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.25rem;
+    min-height: 44px;
+    min-width: 44px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px var(--shadow-light);
+  }
+  
+  .mobile-nav-toggle:hover,
+  .mobile-nav-toggle:focus {
+    background: var(--primary-hover);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px var(--shadow-light);
+  }
+  
+  .mobile-nav-toggle:active {
+    transform: scale(0.95);
+  }
+  
+  /* When menu is active, move button to top-right corner of menu */
+  .mobile-nav-toggle.is-active {
+    position: fixed;
+    top: 1rem;
+    left: calc(65% - 4rem);
+    background: var(--text-light);
+    font-size: 1.5rem;
+    line-height: 1;
+    z-index: 1002;
+  }
+  
+  .mobile-nav-toggle.is-active:hover,
+  .mobile-nav-toggle.is-active:focus {
+    background: var(--text-dark);
+  }
+  
+  /* Ensure page title has space for toggle button */
+  .title.is-2 {
+    margin-left: 4rem !important;
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Overlay for mobile menu */
+  .mobile-overlay {
+    display: block !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--shadow-dark);
+    z-index: 999;
+  }
+  
+  /* Table responsiveness */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .table {
+    min-width: 600px;
+    font-size: 0.875rem;
+  }
+  
+  .table th,
+  .table td {
+    white-space: nowrap;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  /* Form responsiveness */
+  .field.is-horizontal {
+    display: block !important;
+  }
+  
+  .field.is-horizontal .field-label {
+    flex-basis: auto !important;
+    margin-bottom: 0.5rem;
+  }
+  
+  .field.is-horizontal .field-body {
+    margin-left: 0 !important;
+  }
+  
+  /* Button improvements */
+  .button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .buttons {
+    flex-wrap: wrap;
+  }
+  
+  .buttons .button {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Card improvements */
+  .card {
+    margin-bottom: 1rem;
+  }
+  
+  .card-header-title {
+    font-size: 1.125rem;
+  }
+  
+  /* Input improvements */
+  .input,
+  .textarea,
+  .select select {
+    min-height: 44px;
+  }
+  
+  /* Mobile radio buttons - identical to desktop, just larger touch targets */
+  .radio, label.radio, label {
+    min-height: 48px !important;
+    padding: 0.75rem !important;
+  }
+}
+
+/* Desktop-specific styles */
+@media screen and (min-width: 769px) {
+  .mobile-nav-toggle {
+    display: none !important;
+  }
+  
+  .mobile-overlay {
+    display: none !important;
+  }
+}
+
+/* Tablet adjustments */
+@media screen and (min-width: 769px) and (max-width: 1023px) {
+  .table {
+    font-size: 0.875rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.5rem;
+  }
+  
+  .card-header-title {
+    font-size: 1rem;
+  }
+}
+
+/* Utility classes for mobile */
+.is-hidden-mobile {
+  display: none !important;
+}
+
+@media screen and (min-width: 769px) {
+  .is-hidden-mobile {
+    display: block !important;
+  }
+  
+  .is-hidden-desktop {
+    display: none !important;
+  }
+}
+
+.is-hidden-desktop {
+  display: block !important;
+}
+
+/* Back button styling */
+.back-button {
+  background: var(--background-light);
+  color: var(--text-dark);
+  border: 1px solid var(--border-light);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  min-height: 44px;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Desktop back button positioning */
+@media screen and (min-width: 769px) {
+  .back-button {
+    margin-top: 0;
+  }
+}
+
+
+.back-button:hover,
+.back-button:focus {
+  background: var(--border-light);
+  border-color: var(--border-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px var(--shadow-light);
+}
+
+.back-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Improve touch targets */
+a, button, .button, input[type="radio"], input[type="checkbox"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Better spacing for mobile */
+@media screen and (max-width: 768px) {
+  .section {
+    padding: 1.5rem 1rem;
+  }
+  
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .title {
+    margin-bottom: 1rem;
+  }
+  
+  .subtitle {
+    margin-bottom: 0.75rem;
+  }
 }

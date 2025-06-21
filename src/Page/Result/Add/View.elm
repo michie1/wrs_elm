@@ -1,5 +1,7 @@
 module Page.Result.Add.View exposing (view)
 
+import Component.SubmitButton
+import Component.TextInput
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
@@ -38,26 +40,15 @@ view race resultAdd riders results =
     in
     div []
         [ h2 [ class "title is-2" ] [ text ("Add result for " ++ race.name) ]
-        , div [ class "field is-horizontal" ]
-            [ div [ class "field-label" ]
-                [ label [ class "label", for "result" ] [ text "Result" ]
-                ]
-            , div [ class "field-body" ]
-                [ div [ class "field" ]
-                    [ p [ class "control has-icons-left" ]
-                        [ input
-                            [ id "result"
-                            , class "input"
-                            , type_ "text"
-                            , onInput Msg.Result
-                            , autofocus True
-                            ]
-                            []
-                        , span [ class "icon is-small is-left" ] [ i [ class "fa fa-trophy" ] [] ]
-                        ]
-                    ]
-                ]
-            ]
+        , Component.TextInput.view
+            { id = "result"
+            , label = "Result"
+            , value = resultAdd.result
+            , onInput = Msg.Result
+            , autofocus = True
+            , icon = Just "fa fa-trophy"
+            , isHorizontal = True
+            }
         , div [ class "field is-horizontal" ]
             [ div [ class "field-label" ]
                 [ label [ class "label", for "result" ] [ text "Rider" ]
@@ -98,14 +89,12 @@ view race resultAdd riders results =
             , div [ class "field-body" ]
                 [ div [ class "field" ]
                     [ p [ class "control" ]
-                        [ button
-                            [ class "button is-primary"
-                            , type_ "submit"
-                            , onClick Msg.Submit
-                            , Html.Attributes.name "action"
-                            , disabled submitDisabled
-                            ]
-                            [ text "Add result" ]
+                        [ Component.SubmitButton.view
+                            { text = "Add result"
+                            , onClick = Msg.Submit
+                            , isDisabled = submitDisabled
+                            , name = Just "action"
+                            }
                         ]
                     ]
                 ]
@@ -135,9 +124,9 @@ resultCategoryButton category current =
         resultCategoryText =
             categoryReadable category
     in
-    p []
+    label [ class "radio", for resultCategoryName ]
         [ input [ checked isChecked, name "resultCategory", type_ "radio", id resultCategoryName, onClick (Msg.Category category) ] []
-        , label [ for resultCategoryName ] [ text resultCategoryText ]
+        , span [] [ text resultCategoryText ]
         ]
 
 
@@ -149,9 +138,9 @@ resultCategoryButtons current =
 
 outfitButton : String -> String -> Outfit -> Bool -> Html Msg
 outfitButton outfitName outfitLabel outfit isChecked =
-    p []
+    label [ class "radio", for outfitName ]
         [ input [ checked isChecked, name "outfit", type_ "radio", id outfitName, onClick (Msg.Outfit outfit) ] []
-        , label [ for outfitName ] [ text outfitLabel ]
+        , span [] [ text outfitLabel ]
         ]
 
 

@@ -1,5 +1,7 @@
 module Page.Result.Edit.View exposing (view)
 
+import Component.SubmitButton
+import Component.TextInput
 import Data.ResultCategory exposing (ResultCategory, categoryReadable, categoryToString, resultCategories)
 import Html exposing (Html, button, div, h2, i, input, label, p, span, text)
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
@@ -18,27 +20,15 @@ view resultEdit =
     in
     div []
         [ h2 [ class "title is-2" ] [ text "Edit result" ]
-        , div [ class "field is-horizontal" ]
-            [ div [ class "field-label" ]
-                [ label [ class "label", for "result" ] [ text "Result" ]
-                ]
-            , div [ class "field-body" ]
-                [ div [ class "field" ]
-                    [ p [ class "control has-icons-left" ]
-                        [ input
-                            [ id "result"
-                            , class "input"
-                            , type_ "text"
-                            , onInput Msg.Result
-                            , autofocus True
-                            , value resultEdit.result
-                            ]
-                            []
-                        , span [ class "icon is-small is-left" ] [ i [ class "fa fa-trophy" ] [] ]
-                        ]
-                    ]
-                ]
-            ]
+        , Component.TextInput.view
+            { id = "result"
+            , label = "Result"
+            , value = resultEdit.result
+            , onInput = Msg.Result
+            , autofocus = True
+            , icon = Just "fa fa-trophy"
+            , isHorizontal = True
+            }
         , div [ class "field is-horizontal" ]
             [ div [ class "field-label" ]
                 [ label [ class "label", for "result" ] [ text "Category" ]
@@ -54,14 +44,12 @@ view resultEdit =
             , div [ class "field-body" ]
                 [ div [ class "field" ]
                     [ p [ class "control" ]
-                        [ button
-                            [ class "button is-primary"
-                            , type_ "submit"
-                            , onClick Msg.Submit
-                            , Html.Attributes.name "action"
-                            , disabled submitDisabled
-                            ]
-                            [ text "Edit result" ]
+                        [ Component.SubmitButton.view
+                            { text = "Edit result"
+                            , onClick = Msg.Submit
+                            , isDisabled = submitDisabled
+                            , name = Just "action"
+                            }
                         ]
                     ]
                 ]
@@ -81,9 +69,9 @@ resultCategoryButton category current =
         resultCategoryText =
             categoryReadable category
     in
-    p []
+    label [ class "radio", for resultCategoryName ]
         [ input [ checked isChecked, name "resultCategory", type_ "radio", id resultCategoryName, onClick (Msg.Category category) ] []
-        , label [ for resultCategoryName ] [ text resultCategoryText ]
+        , span [] [ text resultCategoryText ]
         ]
 
 

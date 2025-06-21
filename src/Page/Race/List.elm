@@ -42,35 +42,37 @@ raceTable unsortedRaces results =
                     )
                 |> List.reverse
     in
-    table [ class "table" ]
-        [ thead []
-            [ tr []
-                [ th [] [ text "Name" ]
-                , th [] [ text "Date" ]
-                , th [] [ text "Category" ]
-                , th [] [ text "Riders" ]
+    div [ class "table-container" ]
+        [ table [ class "table" ]
+            [ thead []
+                [ tr []
+                    [ th [] [ text "Name" ]
+                    , th [] [ text "Date" ]
+                    , th [] [ text "Category" ]
+                    , th [] [ text "Riders" ]
+                    ]
                 ]
-            ]
-        , tbody []
-            (List.map
-                (\race ->
-                    let
-                        dateString =
-                            formatDate race.date
-                    in
-                    tr []
-                        [ td []
-                            [ a
-                                [ href ("/races/" ++ race.key), style "display" "block" ]
-                                [ text race.name ]
+            , tbody []
+                (List.map
+                    (\race ->
+                        let
+                            dateString =
+                                formatDate race.date
+                        in
+                        tr []
+                            [ td []
+                                [ a
+                                    [ href ("/races/" ++ race.key), style "display" "block" ]
+                                    [ text race.name ]
+                                ]
+                            , td [] [ text <| dateString ]
+                            , td [] [ text <| raceTypeReadable race.raceType ]
+                            , td [] [ text <| String.fromInt <| countParticipants race.key results ]
                             ]
-                        , td [] [ text <| dateString ]
-                        , td [] [ text <| raceTypeReadable race.raceType ]
-                        , td [] [ text <| String.fromInt <| countParticipants race.key results ]
-                        ]
+                    )
+                    races
                 )
-                races
-            )
+            ]
         ]
 
 

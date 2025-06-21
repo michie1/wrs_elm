@@ -66,18 +66,20 @@ info rider points =
 
 resultsTable : List RaceResult -> List Race -> Html msg
 resultsTable results races =
-    table [ class "table" ]
-        [ thead []
-            [ tr []
-                [ th [] [ text "Race" ]
-                , th [] [ text "Date" ]
-                , th [] [ text "Points" ]
-                , th [] [ text "Result" ]
-                , th [] [ text "Outfit" ]
+    div [ class "table-container" ]
+        [ table [ class "table" ]
+            [ thead []
+                [ tr []
+                    [ th [] [ text "Race" ]
+                    , th [] [ text "Date" ]
+                    , th [] [ text "Points" ]
+                    , th [] [ text "Result" ]
+                    , th [] [ text "Outfit" ]
+                    ]
                 ]
+            , tbody []
+                (results |> List.map (raceRow races))
             ]
-        , tbody []
-            (results |> List.map (raceRow races))
         ]
 
 

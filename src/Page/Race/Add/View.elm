@@ -1,9 +1,11 @@
 module Page.Race.Add.View exposing (view)
 
+import Component.SubmitButton
+import Component.TextInput
 import Data.RaceType exposing (RaceType, raceTypeDescription, raceTypeReadable, raceTypeToString, raceTypes)
 import Date
 import DatePicker
-import Html exposing (Html, button, div, h2, input, p)
+import Html exposing (Html, button, div, h2, input, p, span)
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Page.Race.Add.Model exposing (Model)
@@ -43,10 +45,15 @@ view raceAdd now =
     in
     div []
         [ h2 [ class "title is-2" ] [ Html.text "Add Race" ]
-        , horizontal
-            [ label "Name"
-            , field [ input [ id "name", type_ "text", onInput Msg.Name, autofocus True, value raceName ] [] ]
-            ]
+        , Component.TextInput.view
+            { id = "name"
+            , label = "Name"
+            , value = raceName
+            , onInput = Msg.Name
+            , autofocus = True
+            , icon = Nothing
+            , isHorizontal = True
+            }
         , horizontal
             [ label "Category"
             , field [ raceTypeButtons raceAdd.raceType ]
@@ -58,13 +65,12 @@ view raceAdd now =
         , horizontal
             [ label ""
             , field
-                [ button
-                    [ class "button"
-                    , type_ "submit"
-                    , onClick Msg.Submit
-                    , disabled submitDisabled
-                    ]
-                    [ Html.text "Add Race" ]
+                [ Component.SubmitButton.view
+                    { text = "Add Race"
+                    , onClick = Msg.Submit
+                    , isDisabled = submitDisabled
+                    , name = Nothing
+                    }
                 ]
             ]
         ]
@@ -89,13 +95,13 @@ raceTypeButtonCheck raceType current =
                             ""
                    )
     in
-    p []
+    Html.label [ for raceTypeName, class "radio" ]
         [ input [ checked isChecked, name "type", type_ "radio", id raceTypeName, onClick (Msg.RaceType raceType) ] []
-        , Html.label [ for raceTypeName ] [ Html.text raceTypeText ]
+        , Html.span [] [ Html.text raceTypeText ]
         ]
 
 
 raceTypeButtons : RaceType -> Html Msg
 raceTypeButtons current =
-    div [ class "col s6" ] <|
+    div [] <|
         List.map (\raceType -> raceTypeButtonCheck raceType current) raceTypes

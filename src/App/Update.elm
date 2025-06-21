@@ -132,3 +132,12 @@ update msg app =
 
         Msg.Now now ->
             ( { app | now = now }, Cmd.none )
+
+        Msg.ToggleMobileMenu ->
+            ( { app | mobileMenuOpen = not app.mobileMenuOpen }, Cmd.none )
+
+        Msg.CloseMobileMenu ->
+            ( { app | mobileMenuOpen = False }, Cmd.none )
+
+        Msg.GoBack ->
+            ( app, Browser.Navigation.back app.navKey 1 )
