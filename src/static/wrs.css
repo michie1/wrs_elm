@@ -1,4 +1,4 @@
-/* Color Variables - Bulma 0.6.1 Compatible */
+/* Use Bulma 1.0 CSS Variables with light theme defaults */
 :root {
   --primary-color: #3273dc;
   --primary-hover: #2366d1;
@@ -57,20 +57,49 @@ label {
 }
 
 /* Form improvements */
-/* Larger input field for race name and rider name */
-#name.input, input#name, .input#name {
-  font-size: 1.25rem !important;
+/* Consistent styling for all input fields */
+.input, input[type="text"], input[type="email"], input[type="password"], 
+.textarea, textarea, .select select, select {
+  font-size: 1rem !important;
   padding: 0.75rem 1rem !important;
   height: auto !important;
-  min-height: 3rem;
-  font-weight: 500;
-  border-color: var(--border-light);
+  min-height: 2.5rem;
+  font-weight: 400;
+  border: 1px solid var(--border-light) !important;
+  border-radius: 4px !important;
+  background: var(--background-white) !important;
+  color: var(--text-dark) !important;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Special styling for name inputs (larger) */
+#name.input, input#name, .input#name {
+  font-size: 1.25rem !important;
+  min-height: 3rem;
+  font-weight: 500;
+}
+
+.input:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus,
+.textarea:focus, textarea:focus, .select select:focus, select:focus,
 #name.input:focus, input#name:focus, .input#name:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(50, 115, 220, 0.25);
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(50, 115, 220, 0.25) !important;
+  outline: none !important;
+}
+
+/* Fix for inputs with left icons - text appears behind icon */
+.control.has-icons-left .input {
+  padding-left: 2.5rem !important;
+}
+
+/* Fix vertical alignment of icons in input fields */
+.control.has-icons-left .icon.is-left {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 /* Better button styling and consistency */
@@ -255,9 +284,10 @@ label:last-child {
     padding-top: 1rem;
   }
   
-  /* Add extra padding when back button is present */
+  /* Add extra padding when back button is present and move it to avoid toggle */
   .column.is-four-fifths .back-button {
-    margin-top: 3rem;
+    margin-top: 1rem;
+    margin-left: 4.5rem;
   }
   
   /* Mobile navigation toggle - position in top left corner */
