@@ -103,7 +103,7 @@ loadingPage app =
             mainView app races riders results app.user app.wtosLoginUrl
 
         ( _, _, _ ) ->
-            div [ class "col s9 m8 offset-s3 offset-m4" ]
+            div [ class "section" ]
                 [ h2 [ class "title is-2" ] [ text "Loading data" ]
                 , spinner
                 ]

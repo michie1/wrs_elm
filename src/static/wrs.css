@@ -215,7 +215,7 @@ label span {
 }
 
 /* Reset ALL potential conflicting styles */
-.col, [class*="col "], .control, .field-body {
+.control, .field-body {
   margin: 0 !important;
   padding: 0 !important;
 }
