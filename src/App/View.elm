@@ -8,8 +8,8 @@ import Data.Race exposing (Race, getRace, lastRaces)
 import Data.RaceResult exposing (RaceResult)
 import Data.Rider exposing (Rider)
 import Data.User exposing (User)
-import Html exposing (Html, a, aside, button, div, h2, li, p, section, text, ul, span)
-import Html.Attributes exposing (class, href, target, classList)
+import Html exposing (Html, a, aside, button, div, h2, li, p, section, span, text, ul)
+import Html.Attributes exposing (class, classList, href, target)
 import Html.Events exposing (onClick)
 import Page.Race.Add.View
 import Page.Race.Details
@@ -38,18 +38,18 @@ mainView app races riders results maybeUser wtosLoginUrl =
         [ mobileNavToggle app.mobileMenuOpen
         , mobileOverlay app.mobileMenuOpen
         , div [ class "columns" ]
-            [ section 
-                [ classList 
+            [ section
+                [ classList
                     [ ( "section", True )
                     , ( "column", True )
                     , ( "is-one-fifth", True )
                     , ( "is-active", app.mobileMenuOpen )
                     ]
-                ] 
+                ]
                 [ sidebar races maybeUser wtosLoginUrl app.mobileMenuOpen ]
-            , section [ class "section", class "column", class "is-four-fifths" ] 
+            , section [ class "section", class "column", class "is-four-fifths" ]
                 [ backButton app.page
-                , viewPage app races riders results 
+                , viewPage app races riders results
                 ]
             ]
         ]
@@ -157,41 +157,52 @@ userUl maybeUser wtosLoginUrl =
 
 mobileNavToggle : Bool -> Html App.Msg.Msg
 mobileNavToggle isOpen =
-    button 
-        [ classList 
+    button
+        [ classList
             [ ( "mobile-nav-toggle", True )
             , ( "is-active", isOpen )
             ]
         , onClick App.Msg.ToggleMobileMenu
         ]
-        [ text (if isOpen then "×" else "☰") ]
+        [ text
+            (if isOpen then
+                "×"
+
+             else
+                "☰"
+            )
+        ]
+
 
 mobileOverlay : Bool -> Html App.Msg.Msg
 mobileOverlay isOpen =
     if isOpen then
-        div 
+        div
             [ class "mobile-overlay"
             , onClick App.Msg.CloseMobileMenu
-            ] 
+            ]
             []
+
     else
         text ""
+
 
 backButton : App.Page.Page -> Html App.Msg.Msg
 backButton currentPage =
     case currentPage of
         App.Page.Races ->
             text ""
-        
+
         App.Page.Riders ->
             text ""
-            
+
         _ ->
-            button 
+            button
                 [ class "back-button"
                 , onClick App.Msg.GoBack
                 ]
                 [ text "← Back" ]
+
 
 raceLi : Race -> Html App.Msg.Msg
 raceLi race =

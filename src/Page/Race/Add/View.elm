@@ -1,11 +1,11 @@
 module Page.Race.Add.View exposing (view)
 
+import Component.SubmitButton
+import Component.TextInput
 import Data.RaceType exposing (RaceType, raceTypeDescription, raceTypeReadable, raceTypeToString, raceTypes)
 import Date
 import DatePicker
 import Html exposing (Html, button, div, h2, input, p, span)
-import Component.SubmitButton
-import Component.TextInput
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Page.Race.Add.Model exposing (Model)

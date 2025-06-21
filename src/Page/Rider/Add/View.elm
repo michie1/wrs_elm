@@ -1,9 +1,9 @@
 module Page.Rider.Add.View exposing (view)
 
-import Data.Licence as Licence exposing (Licence)
-import Html exposing (Html, button, div, h2, input, label, span, text)
 import Component.SubmitButton
 import Component.TextInput
+import Data.Licence as Licence exposing (Licence)
+import Html exposing (Html, button, div, h2, input, label, span, text)
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Page.Rider.Add.Model exposing (Model)

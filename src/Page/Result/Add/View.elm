@@ -1,13 +1,13 @@
 module Page.Result.Add.View exposing (view)
 
+import Component.SubmitButton
+import Component.TextInput
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
 import Data.ResultCategory exposing (ResultCategory, categoryReadable, categoryToString, resultCategories)
 import Data.Rider exposing (Rider)
 import Html exposing (Html, button, div, h2, i, input, label, option, p, select, span, text)
-import Component.SubmitButton
-import Component.TextInput
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Page.Result.Add.Model exposing (Model)

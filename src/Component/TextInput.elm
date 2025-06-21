@@ -35,9 +35,10 @@ view config =
                 Just iconClass ->
                     p [ class "control has-icons-left" ]
                         [ inputElement
-                        , span [ class "icon is-small is-left" ] 
+                        , span [ class "icon is-small is-left" ]
                             [ i [ class iconClass ] [] ]
                         ]
+
                 Nothing ->
                     div [ class "control" ]
                         [ inputElement ]
@@ -55,6 +56,7 @@ view config =
                             [ inputWithIcon ]
                         ]
                     ]
+
             else
                 div [ class "field" ]
                     [ labelElement

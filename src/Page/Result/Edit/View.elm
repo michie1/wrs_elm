@@ -1,9 +1,9 @@
 module Page.Result.Edit.View exposing (view)
 
-import Data.ResultCategory exposing (ResultCategory, categoryReadable, categoryToString, resultCategories)
-import Html exposing (Html, button, div, h2, i, input, label, p, span, text)
 import Component.SubmitButton
 import Component.TextInput
+import Data.ResultCategory exposing (ResultCategory, categoryReadable, categoryToString, resultCategories)
+import Html exposing (Html, button, div, h2, i, input, label, p, span, text)
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Page.Result.Edit.Model exposing (Model)

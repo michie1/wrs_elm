@@ -1,8 +1,7 @@
 module Component.SubmitButton exposing (view)
 
 import Html exposing (Html, button, text)
-import Html.Attributes exposing (class, disabled, name, type_)
-import Html.Attributes as Attributes
+import Html.Attributes as Attributes exposing (class, disabled, name, type_)
 import Html.Events exposing (onClick)
 
 
@@ -23,11 +22,12 @@ view config =
             , onClick config.onClick
             , disabled config.isDisabled
             ]
-        
+
         nameAttribute =
             case config.name of
                 Just n ->
                     [ name n ]
+
                 Nothing ->
                     []
     in
