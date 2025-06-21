@@ -2,6 +2,8 @@ module Page.Rider.Add.View exposing (view)
 
 import Data.Licence as Licence exposing (Licence)
 import Html exposing (Html, button, div, h2, input, label, span, text)
+import Component.SubmitButton
+import Component.TextInput
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Page.Rider.Add.Model exposing (Model)
@@ -19,34 +21,27 @@ view add =
     in
     div []
         [ h2 [ class "title is-2" ] [ text "Add rider" ]
-        , div [ class "field" ]
-            [ label [ class "label", for "name" ] [ text "Name" ]
-            , div [ class "control" ]
-                [ input
-                    [ id "name"
-                    , class "input"
-                    , type_ "text"
-                    , onInput Msg.Name
-                    , autofocus True
-                    , value riderName
-                    ]
-                    []
-                ]
-            ]
+        , Component.TextInput.view
+            { id = "name"
+            , label = "Name"
+            , value = riderName
+            , onInput = Msg.Name
+            , autofocus = True
+            , icon = Nothing
+            , isHorizontal = False
+            }
         , div [ class "field" ]
             [ label [ class "label" ] [ text "Licence" ]
             , licenceButtons add.licence
             ]
         , div [ class "field" ]
             [ div [ class "control" ]
-                [ button
-                    [ class "button is-primary"
-                    , type_ "submit"
-                    , onClick Msg.Submit
-                    , Html.Attributes.name "action"
-                    , disabled submitDisabled
-                    ]
-                    [ text "Add rider" ]
+                [ Component.SubmitButton.view
+                    { text = "Add rider"
+                    , onClick = Msg.Submit
+                    , isDisabled = submitDisabled
+                    , name = Just "action"
+                    }
                 ]
             ]
         ]
