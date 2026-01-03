@@ -126,6 +126,7 @@ sidebar races maybeUser wtosLoginUrl mobileMenuOpen =
         , ul [ class "menu-list" ] (List.map raceLi <| lastRaces races)
         , p [ class "menu-label" ] [ a [ href "/riders", onClick App.Msg.CloseMobileMenu ] [ text "Riders" ] ]
         , userUl maybeUser wtosLoginUrl
+        , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2025/", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "Uitslagen 2025" ] ]
         , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2024/", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "Uitslagen 2024" ] ]
         , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2023/", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "Uitslagen 2023" ] ]
         , p [ class "menu-label" ] [ a [ href "https://uitslagen.wtos.nl/2022/", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "Uitslagen 2022" ] ]
