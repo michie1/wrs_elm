@@ -8,3 +8,4 @@ build
 icon?family=Material+Icons
 dist/
 .vscode
+.config.dev.backup.js
