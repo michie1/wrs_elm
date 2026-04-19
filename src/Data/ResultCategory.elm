@@ -6,12 +6,13 @@ import Json.Decode
 type ResultCategory
     = Amateurs
     | Elite
+    | Klasse 1
+    | Klasse 2
+    | Klasse 3
+    | Klasse 4
+    | Klasse 5
     | CatA
-    | Basislidmaatschap
-    | EliteAmateurs
     | EliteAmateurVrouwen
-    | AmateursSportklasse
-    | Sportklasse
     | CatB
     | CatC
     | CatD
@@ -23,12 +24,13 @@ resultCategories : List ResultCategory
 resultCategories =
     [ Amateurs
     , Elite
+    , Klasse1
+    , Klasse2
+    , Klasse3
+    , Klasse4
+    , Klasse5
     , CatA
-    , Basislidmaatschap
-    , EliteAmateurs
     , EliteAmateurVrouwen
-    , AmateursSportklasse
-    , Sportklasse
     , CatB
     , CatC
     , CatD
@@ -45,23 +47,26 @@ categoryToString category =
         Elite ->
             "elite"
 
+        Klasse1 ->
+            "klasse1"
+
+        Klasse2 ->
+            "klasse2"
+
+        Klasse3 ->
+            "klasse3"
+
+        Klasse4 ->
+            "klasse4"
+
+        Klasse5 ->
+            "klasse5"
+
         CatA ->
-            "cata"
-
-        Basislidmaatschap ->
-            "basislidmaatschap"
-
-        EliteAmateurs ->
-            "elite_amateurs"
+            "cata
 
         EliteAmateurVrouwen ->
             "elite_amateur_vrouwen"
-
-        AmateursSportklasse ->
-            "amateurs_sportklasse"
-
-        Sportklasse ->
-            "sportklasse"
 
         CatB ->
             "catb"
@@ -88,23 +93,26 @@ categoryReadable category =
         Elite ->
             "Elite"
 
+        Klasse1 ->
+            "Klasse 1"
+
+        Klasse2 ->
+            "Klasse 2"
+
+        Klasse3 ->
+            "Klasse 3"
+
+        Klasse4 ->
+            "Klasse 4"
+
+        Klasse5 ->
+            "Klasse 5"
+            
         CatA ->
             "Cat. a"
 
-        Basislidmaatschap ->
-            "Basislidmaatschap"
-
-        EliteAmateurs ->
-            "Elite/amateurs"
-
         EliteAmateurVrouwen ->
             "Elite/amateur vrouwen"
-
-        AmateursSportklasse ->
-            "Amateurs/sportklasse"
-
-        Sportklasse ->
-            "Sportklasse"
 
         CatB ->
             "Cat. b"
@@ -131,24 +139,27 @@ resultCategoryDecoder string =
 
             "elite" ->
                 Elite
+                
+             "klasse1" ->
+                Klasse1
+
+            "klasse2" ->
+                Klasse2
+            
+            "klasse3" ->
+                Klasse3
+
+            "klasse4" ->
+                Klasse4
+
+            "klasse5" ->
+                Klasse5
 
             "cata" ->
                 CatA
 
-            "basislidmaatschap" ->
-                Basislidmaatschap
-
-            "elite_amateurs" ->
-                EliteAmateurs
-
             "elite_amateur_vrouwen" ->
                 EliteAmateurVrouwen
-
-            "amateurs_sportklasse" ->
-                AmateursSportklasse
-
-            "sportklasse" ->
-                Sportklasse
 
             "catb" ->
                 CatB
