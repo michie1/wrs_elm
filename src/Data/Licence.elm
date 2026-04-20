@@ -5,9 +5,9 @@ import Json.Decode
 
 type Licence
     = Elite
-    | Amateurs
-    | Basislidmaatschap
-    | Sportklasse
+    | Basis
+    | Plus
+    | Premium
     | Other
 
 
@@ -17,14 +17,14 @@ licenceToString licence =
         Elite ->
             "elite"
 
-        Amateurs ->
-            "amateurs"
+        Basis ->
+            "basis"
 
-        Basislidmaatschap ->
-            "basislidmaatschap"
+        Plus ->
+            "plus"
 
-        Sportklasse ->
-            "sportklasse"
+        Premium ->
+            "premium"
 
         Other ->
             "other"
@@ -36,14 +36,14 @@ parseLicence string =
         "elite" ->
             Elite
 
-        "amateurs" ->
-            Amateurs
+        "basis" ->
+            Basis
 
-        "basislidmaatschap" ->
-            Basislidmaatschap
+        "plus" ->
+            Plus
 
-        "sportklasse" ->
-            Sportklasse
+        "premium" ->
+            Premium
 
         _ ->
             Other
