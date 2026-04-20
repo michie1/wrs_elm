@@ -242,7 +242,7 @@ getPointsByRaceType category =
             3
 
         Toertocht ->
-            2
+            0
 
         Other ->
             0
