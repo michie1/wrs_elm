@@ -67,8 +67,7 @@ licenceButtonCheck categoryName categoryText categoryModel maybeCurrent =
 licenceButtons : Maybe Licence -> Html Msg
 licenceButtons maybeCurrent =
     div []
-        (Licence.licences
-            |> List.filter isSelectableLicence
+        (Licence.selectableLicences
             |> List.map
                 (\licence ->
                     licenceButtonCheck
@@ -78,22 +77,3 @@ licenceButtons maybeCurrent =
                         maybeCurrent
                 )
         )
-
-
-isSelectableLicence : Licence -> Bool
-isSelectableLicence licence =
-    case licence of
-        Licence.Basic ->
-            True
-
-        Licence.Plus ->
-            True
-
-        Licence.Premium ->
-            True
-
-        Licence.Other ->
-            True
-
-        _ ->
-            False

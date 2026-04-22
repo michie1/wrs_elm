@@ -3,17 +3,20 @@ module Page.Rider.Details exposing (view)
 import App.Helpers exposing (formatDate)
 import App.Model
 import App.Msg
+import App.Page
 import Data.Licence exposing (licenceLabel)
 import Data.Outfit exposing (outfitToString)
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult, getPointsByResult, getPointsByResults)
 import Data.Rider exposing (Rider)
-import Html exposing (Html, a, dd, div, dl, dt, h2, p, table, tbody, td, text, th, thead, tr)
-import Html.Attributes exposing (class, href)
+import Html exposing (Html, a, dd, div, dl, dt, h2, i, p, span, table, tbody, td, text, th, thead, tr)
+import Html.Attributes exposing (class, href, style)
+import Html.Events exposing (onClick)
+import Page.Rider.Edit.Model as RiderEdit
 
 
 view : App.Model.App -> String -> List Race -> List Rider -> List RaceResult -> Html App.Msg.Msg
-view _ riderKey races riders results =
+view app riderKey races riders results =
     let
         maybeRider =
             List.head
@@ -21,6 +24,9 @@ view _ riderKey races riders results =
                     (\rider -> rider.key == riderKey)
                     riders
                 )
+
+        signedIn =
+            app.user /= Nothing
     in
     case maybeRider of
         Nothing ->
@@ -41,13 +47,32 @@ view _ riderKey races riders results =
             in
             div [ class "col s12" ]
                 [ h2 [ class "title is-2" ] [ text rider.name ]
-                , info rider points
+                , info rider points signedIn
                 , resultsTable riderResults races
                 ]
 
 
-info : Rider -> Int -> Html App.Msg.Msg
-info rider points =
+editButton : Rider -> Html App.Msg.Msg
+editButton rider =
+    let
+        riderEdit =
+            { riderName = rider.name
+            , riderKey = rider.key
+            , currentLicence = rider.licence
+            , licence = rider.licence
+            }
+    in
+    a
+        [ href ("/riders/" ++ rider.key ++ "/edit")
+        , style "display" "inline-block"
+        , style "margin-left" "0.5rem"
+        , onClick (App.Msg.Navigate (App.Page.RiderEdit riderEdit))
+        ]
+        [ span [ class "icon" ] [ i [ class "fas fa-pencil-alt" ] [ text "" ] ] ]
+
+
+info : Rider -> Int -> Bool -> Html App.Msg.Msg
+info rider points signedIn =
     div [ class "card" ]
         [ div [ class "card-content" ]
             [ div [ class "content" ]
@@ -55,7 +80,14 @@ info rider points =
                     [ dt [] [ text "Name" ]
                     , dd [] [ text rider.name ]
                     , dt [] [ text "Licence" ]
-                    , dd [] [ text <| licenceLabel rider.licence ]
+                    , dd []
+                        [ span [] [ text <| licenceLabel rider.licence ]
+                        , if signedIn then
+                            editButton rider
+
+                          else
+                            text ""
+                        ]
                     , dt [] [ text "Points" ]
                     , dd [] [ text <| String.fromInt <| points ]
                     ]

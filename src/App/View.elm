@@ -18,6 +18,7 @@ import Page.Result.Add.View
 import Page.Result.Edit.View
 import Page.Rider.Add.View
 import Page.Rider.Details
+import Page.Rider.Edit.View
 import Page.Rider.List
 
 
@@ -67,6 +68,14 @@ viewPage app races riders results =
         App.Page.RiderAdd add ->
             Page.Rider.Add.View.view add
                 |> Html.map App.Msg.RiderAdd
+
+        App.Page.RiderEdit edit ->
+            if app.user /= Nothing then
+                Page.Rider.Edit.View.view edit
+                    |> Html.map App.Msg.RiderEdit
+
+            else
+                div [] [ text "You must be signed in to edit a rider." ]
 
         App.Page.RaceDetails key ->
             Page.Race.Details.view app key races riders results

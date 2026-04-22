@@ -4,6 +4,7 @@ import Page.Race.Add.Model as RaceAdd
 import Page.Result.Add.Model as ResultAdd
 import Page.Result.Edit.Model as ResultEdit
 import Page.Rider.Add.Model as RiderAdd
+import Page.Rider.Edit.Model as RiderEdit
 
 
 type Page
@@ -14,6 +15,7 @@ type Page
     | Riders
     | RiderDetails String
     | RiderAdd RiderAdd.Model
+    | RiderEdit RiderEdit.Model
       --
     | ResultAdd ResultAdd.Model
     | ResultEdit ResultEdit.Model

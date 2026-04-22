@@ -1,4 +1,4 @@
-module Data.Licence exposing (Licence(..), licences, licenceDecoder, licenceLabel, licenceToString, parseLicence)
+module Data.Licence exposing (Licence(..), licences, licenceDecoder, licenceLabel, licenceToString, parseLicence, selectableLicences)
 
 import Json.Decode
 
@@ -23,6 +23,15 @@ licences =
     , Plus
     , Premium
     , Sportklasse
+    , Other
+    ]
+
+
+selectableLicences : List Licence
+selectableLicences =
+    [ Basic
+    , Plus
+    , Premium
     , Other
     ]
 
