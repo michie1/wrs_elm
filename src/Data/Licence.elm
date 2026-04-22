@@ -1,4 +1,4 @@
-module Data.Licence exposing (Licence(..), licenceDecoder, licenceToString, parseLicence)
+module Data.Licence exposing (Licence(..), licences, licenceDecoder, licenceLabel, licenceToString, parseLicence)
 
 import Json.Decode
 
@@ -7,8 +7,52 @@ type Licence
     = Elite
     | Amateurs
     | Basislidmaatschap
+    | Basic
+    | Plus
+    | Premium
     | Sportklasse
     | Other
+
+
+licences : List Licence
+licences =
+    [ Elite
+    , Amateurs
+    , Basislidmaatschap
+    , Basic
+    , Plus
+    , Premium
+    , Sportklasse
+    , Other
+    ]
+
+
+licenceLabel : Licence -> String
+licenceLabel licence =
+    case licence of
+        Elite ->
+            "Elite-old"
+
+        Amateurs ->
+            "Amateurs-old"
+
+        Basislidmaatschap ->
+            "Basislidmaatschap-old"
+
+        Basic ->
+            "Basic"
+
+        Plus ->
+            "Plus"
+
+        Premium ->
+            "Premium"
+
+        Sportklasse ->
+            "Sportklasse-old"
+
+        Other ->
+            "Other"
 
 
 licenceToString : Licence -> String
@@ -22,6 +66,15 @@ licenceToString licence =
 
         Basislidmaatschap ->
             "basislidmaatschap"
+
+        Basic ->
+            "basic"
+
+        Plus ->
+            "plus"
+
+        Premium ->
+            "premium"
 
         Sportklasse ->
             "sportklasse"
@@ -41,6 +94,15 @@ parseLicence string =
 
         "basislidmaatschap" ->
             Basislidmaatschap
+
+        "basic" ->
+            Basic
+
+        "plus" ->
+            Plus
+
+        "premium" ->
+            Premium
 
         "sportklasse" ->
             Sportklasse

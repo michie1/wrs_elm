@@ -3,7 +3,7 @@ module Page.Rider.Details exposing (view)
 import App.Helpers exposing (formatDate)
 import App.Model
 import App.Msg
-import Data.Licence exposing (licenceToString)
+import Data.Licence exposing (licenceLabel)
 import Data.Outfit exposing (outfitToString)
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult, getPointsByResult, getPointsByResults)
@@ -55,7 +55,7 @@ info rider points =
                     [ dt [] [ text "Name" ]
                     , dd [] [ text rider.name ]
                     , dt [] [ text "Licence" ]
-                    , dd [] [ text <| licenceToString rider.licence ]
+                    , dd [] [ text <| licenceLabel rider.licence ]
                     , dt [] [ text "Points" ]
                     , dd [] [ text <| String.fromInt <| points ]
                     ]
