@@ -13,6 +13,7 @@ import Page.Race.Add.Update as RaceAdd
 import Page.Result.Add.Update as ResultAdd
 import Page.Result.Edit.Update as ResultEdit
 import Page.Rider.Add.Update as RiderAdd
+import Page.Rider.Edit.Update as RiderEdit
 import Url
 
 
@@ -45,6 +46,9 @@ update msg app =
                 App.OutsideInfo.RiderAdded key ->
                     ( app, App.Helpers.navigate app.navKey <| App.Page.RiderDetails key )
 
+                App.OutsideInfo.RiderEdited key ->
+                    ( app, App.Helpers.navigate app.navKey <| App.Page.RiderDetails key )
+
                 App.OutsideInfo.ResultAdded raceKey ->
                     ( app, App.Helpers.navigate app.navKey <| App.Page.RaceDetails raceKey )
 
@@ -55,7 +59,7 @@ update msg app =
                     ( { app | user = Just { email = email } }, Cmd.none )
 
                 App.OutsideInfo.UserSignedOut ->
-                    ( { app | user = Nothing }, Cmd.none )
+                    ( { app | user = Nothing }, App.Helpers.navigate app.navKey App.Page.Races )
 
         Msg.LogErr err ->
             ( app, App.OutsideInfo.sendInfoOutside <| App.OutsideInfo.LogError err )
@@ -80,6 +84,18 @@ update msg app =
                             RiderAdd.update subMsg page
                     in
                     ( { app | page = App.Page.RiderAdd nextPage }, Cmd.map Msg.RiderAdd nextCmd )
+
+                _ ->
+                    ( app, Cmd.none )
+
+        Msg.RiderEdit subMsg ->
+            case app.page of
+                App.Page.RiderEdit page ->
+                    let
+                        ( nextPage, nextCmd ) =
+                            RiderEdit.update subMsg page
+                    in
+                    ( { app | page = App.Page.RiderEdit nextPage }, Cmd.map Msg.RiderEdit nextCmd )
 
                 _ ->
                     ( app, Cmd.none )

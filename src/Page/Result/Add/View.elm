@@ -5,7 +5,7 @@ import Component.TextInput
 import Data.Outfit as Outfit exposing (Outfit)
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
-import Data.ResultCategory exposing (ResultCategory, categoryReadable, categoryToString, resultCategories)
+import Data.ResultCategory exposing (ResultCategory, activeResultCategories, categoryReadable, categoryToString)
 import Data.Rider exposing (Rider)
 import Html exposing (Html, button, div, h2, i, input, label, option, p, select, span, text)
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
@@ -133,7 +133,7 @@ resultCategoryButton category current =
 resultCategoryButtons : ResultCategory -> Html Msg
 resultCategoryButtons current =
     div [] <|
-        List.map (\resultCategory -> resultCategoryButton resultCategory current) resultCategories
+        List.map (\resultCategory -> resultCategoryButton resultCategory current) activeResultCategories
 
 
 outfitButton : String -> String -> Outfit -> Bool -> Html Msg

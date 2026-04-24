@@ -8,6 +8,7 @@ import Page.Race.Add.Msg as RaceAdd
 import Page.Result.Add.Msg as ResultAdd
 import Page.Result.Edit.Msg as ResultEdit
 import Page.Rider.Add.Msg as RiderAdd
+import Page.Rider.Edit.Msg as RiderEdit
 import Time exposing (Posix)
 import Url
 
@@ -20,6 +21,7 @@ type Msg
     | Noop
     | RaceAdd RaceAdd.Msg
     | RiderAdd RiderAdd.Msg
+    | RiderEdit RiderEdit.Msg
     | ResultAdd ResultAdd.Msg
     | ResultEdit ResultEdit.Msg
     | UserSignOut

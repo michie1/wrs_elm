@@ -1,7 +1,7 @@
 module Page.Rider.List exposing (view)
 
 import App.Msg
-import Data.Licence exposing (licenceToString)
+import Data.Licence exposing (licenceLabel)
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
 import Data.Rider exposing (Rider, getPointsByRiderId)
@@ -35,7 +35,7 @@ view riders races results =
                                         [ a [ href ("/riders/" ++ rider.key), style "display" "block" ]
                                             [ text rider.name ]
                                         ]
-                                    , td [] [ text <| licenceToString rider.licence ]
+                                    , td [] [ text <| licenceLabel rider.licence ]
                                     , td [] [ text <| String.fromInt <| rider.points ]
                                     ]
                             )

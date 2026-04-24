@@ -1,7 +1,7 @@
 /* Use Bulma 1.0 CSS Variables with light theme defaults */
 :root {
-  --primary-color: #3273dc;
-  --primary-hover: #2366d1;
+  --primary-color: #2273b9;
+  --primary-hover: #07447B;
   --text-dark: #363636;
   --text-light: #4a4a4a;
   --border-light: #dbdbdb;
@@ -54,6 +54,15 @@
 
 label {
   padding-left: 5px;
+}
+
+a:not(.button) {
+  color: var(--primary-color) !important;
+}
+
+a:not(.button):hover,
+a:not(.button):focus {
+  color: var(--primary-hover) !important;
 }
 
 /* Form improvements */

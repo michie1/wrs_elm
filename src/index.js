@@ -185,6 +185,21 @@ import { Elm } from "./Main";
       });
   }
 
+  function editRider(rider) {
+    firebase
+      .database()
+      .ref("riders/" + rider.key)
+      .update({
+        licence: rider.licence
+      })
+      .then(function() {
+        app.ports.infoForElm.send({
+          tag: "RiderEdited",
+          data: rider.key
+        });
+      });
+  }
+
   function userSignedIn(user) {
     app.ports.infoForElm.send({
       tag: "UserLoaded",
@@ -209,6 +224,8 @@ import { Elm } from "./Main";
   app.ports.infoForOutside.subscribe(function(msg) {
     if (msg.tag === "RiderAdd") {
       addRider(msg.data);
+    } else if (msg.tag === "RiderEdit") {
+      editRider(msg.data);
     } else if (msg.tag === "RaceAdd") {
       addRace(msg.data);
     } else if (msg.tag === "ResultAdd") {

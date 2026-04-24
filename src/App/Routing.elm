@@ -8,6 +8,7 @@ import Url.Parser exposing ((</>), Parser, map, oneOf, parse, s, string)
 type Route
     = RiderDetails String
     | RiderAdd
+    | RiderEdit String
     | Riders
     | RaceAdd
     | RaceDetails String
@@ -28,6 +29,9 @@ pathFor page =
 
         App.Page.RiderAdd _ ->
             "/riders/add"
+
+        App.Page.RiderEdit edit ->
+            "/riders/" ++ edit.riderKey ++ "/edit"
 
         App.Page.Races ->
             "/races"
@@ -51,6 +55,7 @@ matchers =
         [ map Races (s "races")
         , map Races (s "")
         , map RiderAdd (s "riders" </> s "add")
+        , map RiderEdit (s "riders" </> string </> s "edit")
         , map RiderDetails (s "riders" </> string)
         , map Riders (s "riders")
         , map ResultAdd (s "races" </> string </> s "add")

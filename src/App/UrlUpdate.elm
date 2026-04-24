@@ -5,6 +5,7 @@ import App.Msg as Msg exposing (Msg)
 import App.Page
 import App.Routing
 import Browser.Dom
+import Data.Licence exposing (licenceToString)
 import Data.RaceType as RaceType
 import DatePicker
 import Page.Race.Add.Model as RaceAdd
@@ -12,6 +13,7 @@ import Page.Race.Add.Msg as RaceAdd
 import Page.Result.Add.Model as ResultAdd
 import Page.Result.Edit.Model as ResultEdit
 import Page.Rider.Add.Model as RiderAdd
+import Page.Rider.Edit.Model as RiderEdit
 import Task
 import Time
 
@@ -42,6 +44,16 @@ urlUpdate route app =
                 Just resultEdit ->
                     ( { app | page = App.Page.ResultEdit resultEdit }
                     , Task.attempt (always Msg.Noop) (Browser.Dom.focus "result")
+                    )
+
+                Nothing ->
+                    ( app, Cmd.none )
+
+        App.Routing.RiderEdit riderKey ->
+            case RiderEdit.initial riderKey app.riders of
+                Just riderEdit ->
+                    ( { app | page = App.Page.RiderEdit riderEdit }
+                    , Task.attempt (always Msg.Noop) (Browser.Dom.focus <| licenceToString riderEdit.licence)
                     )
 
                 Nothing ->

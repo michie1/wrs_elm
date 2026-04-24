@@ -2,7 +2,7 @@ module Page.Result.Edit.View exposing (view)
 
 import Component.SubmitButton
 import Component.TextInput
-import Data.ResultCategory exposing (ResultCategory, categoryReadable, categoryToString, resultCategories)
+import Data.ResultCategory exposing (ResultCategory, activeResultCategories, categoryReadable, categoryToString)
 import Html exposing (Html, button, div, h2, i, input, label, p, span, text)
 import Html.Attributes exposing (autofocus, checked, class, disabled, for, id, name, type_, value)
 import Html.Events exposing (onClick, onInput)
@@ -29,6 +29,16 @@ view resultEdit =
             , icon = Just "fa fa-trophy"
             , isHorizontal = True
             }
+        , div [ class "field is-horizontal" ]
+            [ div [ class "field-label" ]
+                [ label [ class "label" ] [ text "Current category" ]
+                ]
+            , div [ class "field-body" ]
+                [ div [ class "field" ]
+                    [ p [ class "control" ] [ text <| categoryReadable resultEdit.currentCategory ]
+                    ]
+                ]
+            ]
         , div [ class "field is-horizontal" ]
             [ div [ class "field-label" ]
                 [ label [ class "label", for "result" ] [ text "Category" ]
@@ -78,4 +88,4 @@ resultCategoryButton category current =
 resultCategoryButtons : ResultCategory -> Html Msg
 resultCategoryButtons current =
     div [] <|
-        List.map (\resultCategory -> resultCategoryButton resultCategory current) resultCategories
+        List.map (\resultCategory -> resultCategoryButton resultCategory current) activeResultCategories

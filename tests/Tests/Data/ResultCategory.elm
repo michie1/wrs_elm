@@ -13,5 +13,5 @@ suite =
                 Expect.equal "amateurs" (categoryToString Amateurs)
         , test "categoryReadable" <|
             \_ ->
-                Expect.equal "Elite/amateurs" (categoryReadable EliteAmateurs)
+                Expect.equal "Klasse 1" (categoryReadable Klasse1)
         ]

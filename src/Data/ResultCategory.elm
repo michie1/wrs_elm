@@ -1,4 +1,4 @@
-module Data.ResultCategory exposing (ResultCategory(..), categoryReadable, categoryToString, resultCategories, resultCategoryDecoder)
+module Data.ResultCategory exposing (ResultCategory(..), activeResultCategories, categoryReadable, categoryToString, resultCategories, resultCategoryDecoder)
 
 import Json.Decode
 
@@ -6,6 +6,11 @@ import Json.Decode
 type ResultCategory
     = Amateurs
     | Elite
+    | Klasse1
+    | Klasse2
+    | Klasse3
+    | Klasse4
+    | Klasse5
     | CatA
     | Basislidmaatschap
     | EliteAmateurs
@@ -23,12 +28,34 @@ resultCategories : List ResultCategory
 resultCategories =
     [ Amateurs
     , Elite
+    , Klasse1
+    , Klasse2
+    , Klasse3
+    , Klasse4
+    , Klasse5
     , CatA
     , Basislidmaatschap
     , EliteAmateurs
     , EliteAmateurVrouwen
     , AmateursSportklasse
     , Sportklasse
+    , CatB
+    , CatC
+    , CatD
+    , Other
+    ]
+
+
+activeResultCategories : List ResultCategory
+activeResultCategories =
+    [ Amateurs
+    , Elite
+    , Klasse1
+    , Klasse2
+    , Klasse3
+    , Klasse4
+    , Klasse5
+    , CatA
     , CatB
     , CatC
     , CatD
@@ -44,6 +71,21 @@ categoryToString category =
 
         Elite ->
             "elite"
+
+        Klasse1 ->
+            "klasse_1"
+
+        Klasse2 ->
+            "klasse_2"
+
+        Klasse3 ->
+            "klasse_3"
+
+        Klasse4 ->
+            "klasse_4"
+
+        Klasse5 ->
+            "klasse_5"
 
         CatA ->
             "cata"
@@ -88,23 +130,38 @@ categoryReadable category =
         Elite ->
             "Elite"
 
+        Klasse1 ->
+            "Klasse 1"
+
+        Klasse2 ->
+            "Klasse 2"
+
+        Klasse3 ->
+            "Klasse 3"
+
+        Klasse4 ->
+            "Klasse 4"
+
+        Klasse5 ->
+            "Klasse 5"
+
         CatA ->
             "Cat. a"
 
         Basislidmaatschap ->
-            "Basislidmaatschap"
+            "Basislidmaatschap-old"
 
         EliteAmateurs ->
-            "Elite/amateurs"
+            "Elite/amateurs-old"
 
         EliteAmateurVrouwen ->
-            "Elite/amateur vrouwen"
+            "Elite/amateur vrouwen-old"
 
         AmateursSportklasse ->
-            "Amateurs/sportklasse"
+            "Amateurs/sportklasse-old"
 
         Sportklasse ->
-            "Sportklasse"
+            "Sportklasse-old"
 
         CatB ->
             "Cat. b"
@@ -131,6 +188,21 @@ resultCategoryDecoder string =
 
             "elite" ->
                 Elite
+
+            "klasse_1" ->
+                Klasse1
+
+            "klasse_2" ->
+                Klasse2
+
+            "klasse_3" ->
+                Klasse3
+
+            "klasse_4" ->
+                Klasse4
+
+            "klasse_5" ->
+                Klasse5
 
             "cata" ->
                 CatA
