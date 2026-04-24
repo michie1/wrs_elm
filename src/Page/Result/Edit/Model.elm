@@ -6,6 +6,7 @@ import Data.ResultCategory exposing (ResultCategory)
 
 type alias Model =
     { result : String
+    , currentCategory : ResultCategory
     , category : ResultCategory
     , resultKey : String
     , raceKey : String
@@ -23,6 +24,7 @@ initial resultKey maybeResults =
                     |> Maybe.map
                         (\result ->
                             { result = result.result
+                            , currentCategory = result.category
                             , category = result.category
                             , resultKey = resultKey
                             , raceKey = result.raceKey
