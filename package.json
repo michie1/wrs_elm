@@ -21,7 +21,6 @@
   "devDependencies": {
     "elm": "^0.19.1-6",
     "elm-format": "^0.8.8",
-    "elm-hot-loader": "^0.5.4",
     "elm-test": "^0.19.1-revision2",
     "elm-test-tests": "elm-explorations/test",
     "elm-webpack-loader": "^8.0.0",
