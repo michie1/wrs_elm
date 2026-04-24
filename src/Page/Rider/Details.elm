@@ -79,7 +79,7 @@ info rider points signedIn =
                 [ dl []
                     [ dt [] [ text "Name" ]
                     , dd [] [ text rider.name ]
-                    , dt [] [ text "Licence" ]
+                    , dt [] [ text "KNWU Licence" ]
                     , dd []
                         [ span [] [ text <| licenceLabel rider.licence ]
                         , if signedIn then
