@@ -8,8 +8,8 @@ import Data.Race exposing (Race, getRace, lastRaces)
 import Data.RaceResult exposing (RaceResult)
 import Data.Rider exposing (Rider)
 import Data.User exposing (User)
-import Html exposing (Html, a, aside, button, div, h2, li, p, section, span, text, ul)
-import Html.Attributes exposing (class, classList, href, target)
+import Html exposing (Html, a, aside, button, div, h2, img, li, p, section, span, text, ul)
+import Html.Attributes exposing (alt, class, classList, href, src, style, target)
 import Html.Events exposing (onClick)
 import Page.Race.Add.View
 import Page.Race.Details
@@ -130,7 +130,17 @@ spinner =
 sidebar : List Race -> Maybe User -> String -> Bool -> Html App.Msg.Msg
 sidebar races maybeUser wtosLoginUrl mobileMenuOpen =
     aside [ class "menu" ]
-        [ p [ class "menu-label" ] [ a [ href "https://wtos.nl", target "_blank", onClick App.Msg.CloseMobileMenu ] [ text "WTOS.nl" ] ]
+        [ p [ class "menu-label" ]
+            [ a [ href "https://wtos.nl", target "_blank", onClick App.Msg.CloseMobileMenu ]
+                [ img
+                    [ src "https://wtos.nl/wp-content/uploads/2018/07/wtos_logo.png"
+                    , alt "WTOS logo"
+                    , style "max-width" "140px"
+                    , style "height" "auto"
+                    ]
+                    []
+                ]
+            ]
         , p [ class "menu-label" ] [ a [ href "/races", onClick App.Msg.CloseMobileMenu ] [ text "Races" ] ]
         , ul [ class "menu-list" ] (List.map raceLi <| lastRaces races)
         , p [ class "menu-label" ] [ a [ href "/riders", onClick App.Msg.CloseMobileMenu ] [ text "Riders" ] ]

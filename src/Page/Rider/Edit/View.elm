@@ -14,11 +14,11 @@ view riderEdit =
     div []
         [ h2 [ class "title is-2" ] [ text riderEdit.riderName ]
         , div [ class "field" ]
-            [ label [ class "label" ] [ text "Current licence" ]
+            [ label [ class "label" ] [ text "Current KNWU Licence" ]
             , div [] [ text <| Licence.licenceLabel riderEdit.currentLicence ]
             ]
         , div [ class "field" ]
-            [ label [ class "label" ] [ text "Licence" ]
+            [ label [ class "label" ] [ text "KNWU Licence" ]
             , licenceButtons riderEdit.licence
             ]
         , div [ class "field" ]
