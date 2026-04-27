@@ -1,4 +1,4 @@
-import config from "../config";
+import configs from "../config";
 import { Elm } from "./Main";
 
 (function() {
@@ -12,6 +12,8 @@ import { Elm } from "./Main";
 
   var url = new URL(window.location.href);
   var token = url.searchParams.get("token");
+  const { devConfig, prodConfig } = configs;
+  const selectedConfig = hasParam("prod") ? prodConfig : devConfig;
 
   function trySignIn(firebase) {
     firebase.auth().onAuthStateChanged(function(user) {
@@ -34,14 +36,14 @@ import { Elm } from "./Main";
     }
   }
 
-  firebase.initializeApp(config);
+  firebase.initializeApp(selectedConfig);
 
   const app = Elm.Main.init({
     node: document.getElementById("main"),
     flags: {
-      wtosLoginUrl: config.wtosLoginUrl,
-      payoutPot: config.payoutPot || 0,
-      minimumPayoutPoints: config.minimumPayoutPoints ?? 10
+      wtosLoginUrl: selectedConfig.wtosLoginUrl,
+      payoutPot: selectedConfig.payoutPot || 0,
+      minimumPayoutPoints: selectedConfig.minimumPayoutPoints ?? 10
     }
   });
 
