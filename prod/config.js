@@ -5,7 +5,9 @@ const config = {
   projectId: "cycling-results",
   storageBucket: "cycling-results.appspot.com",
   messagingSenderId: "939143658590",
-  wtosLoginUrl: "https://wtos.nl/wrslogin.php"
+  wtosLoginUrl: "https://wtos.nl/wrslogin.php",
+  payoutPot: 1000,
+  minimumPayoutPoints: 10
 };
 
 const testConfig = {
@@ -15,5 +17,7 @@ const testConfig = {
   projectId: "cycling-results-dev",
   storageBucket: "",
   messagingSenderId: "863333663162",
-  wtosLoginUrl: "https://wtos.nl/wrslogin.php"
+  wtosLoginUrl: "https://wtos.nl/wrslogin.php",
+  payoutPot: 1000,
+  minimumPayoutPoints: 10
 };

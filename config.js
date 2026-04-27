@@ -5,5 +5,7 @@ module.exports = {
   projectId: "cycling-results-dev",
   storageBucket: "",
   messagingSenderId: "863333663162",
-  wtosLoginUrl: "https://wtos.nl/wrslogin.php?dev"
+  wtosLoginUrl: "https://wtos.nl/wrslogin.php?dev",
+  payoutPot: 1000,
+  minimumPayoutPoints: 0
 };

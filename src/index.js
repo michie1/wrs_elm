@@ -39,7 +39,9 @@ import { Elm } from "./Main";
   const app = Elm.Main.init({
     node: document.getElementById("main"),
     flags: {
-      wtosLoginUrl: config.wtosLoginUrl
+      wtosLoginUrl: config.wtosLoginUrl,
+      payoutPot: config.payoutPot || 0,
+      minimumPayoutPoints: config.minimumPayoutPoints ?? 10
     }
   });
 

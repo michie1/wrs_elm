@@ -63,7 +63,7 @@ viewPage app races riders results =
             Page.Rider.Details.view app key races riders results
 
         App.Page.Riders ->
-            Page.Rider.List.view riders races results
+            Page.Rider.List.view app.payoutPot app.minimumPayoutPoints riders races results
 
         App.Page.RiderAdd add ->
             Page.Rider.Add.View.view add
