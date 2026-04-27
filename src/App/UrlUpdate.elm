@@ -14,6 +14,7 @@ import Page.Result.Add.Model as ResultAdd
 import Page.Result.Edit.Model as ResultEdit
 import Page.Rider.Add.Model as RiderAdd
 import Page.Rider.Edit.Model as RiderEdit
+import Page.Rider.List.Model as RiderList
 import Task
 import Time
 
@@ -22,7 +23,7 @@ routeToPage : App.Routing.Route -> Maybe App.Page.Page
 routeToPage route =
     let
         routePages =
-            [ ( App.Routing.Riders, App.Page.Riders )
+            [ ( App.Routing.Riders, App.Page.Riders RiderList.initial )
             , ( App.Routing.Races, App.Page.Races )
             ]
     in

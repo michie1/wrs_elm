@@ -62,8 +62,8 @@ viewPage app races riders results =
         App.Page.RiderDetails key ->
             Page.Rider.Details.view app key races riders results
 
-        App.Page.Riders ->
-            Page.Rider.List.view app.user app.showPayoutColumn app.payoutModalOpen app.payoutPotDraft app.payoutPot app.minimumPayoutPoints riders races results
+        App.Page.Riders riderList ->
+            Page.Rider.List.view app.user riderList app.minimumPayoutPoints riders races results
 
         App.Page.RiderAdd add ->
             Page.Rider.Add.View.view add
@@ -213,7 +213,7 @@ backButton currentPage =
         App.Page.Races ->
             text ""
 
-        App.Page.Riders ->
+        App.Page.Riders _ ->
             text ""
 
         _ ->

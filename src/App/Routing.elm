@@ -1,6 +1,7 @@
 module App.Routing exposing (Route(..), parseUrl, pathFor)
 
 import App.Page
+import Page.Rider.List.Model as RiderList
 import Url
 import Url.Parser exposing ((</>), Parser, map, oneOf, parse, s, string)
 
@@ -21,7 +22,7 @@ type Route
 pathFor : App.Page.Page -> String
 pathFor page =
     case page of
-        App.Page.Riders ->
+        App.Page.Riders _ ->
             "/riders"
 
         App.Page.RiderDetails key ->

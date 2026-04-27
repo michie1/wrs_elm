@@ -1,5 +1,6 @@
 module App.Page exposing (Page(..))
 
+import Page.Rider.List.Model as RiderList
 import Page.Race.Add.Model as RaceAdd
 import Page.Result.Add.Model as ResultAdd
 import Page.Result.Edit.Model as ResultEdit
@@ -12,7 +13,7 @@ type Page
     | RaceDetails String
     | RaceAdd RaceAdd.Model
       --
-    | Riders
+    | Riders RiderList.Model
     | RiderDetails String
     | RiderAdd RiderAdd.Model
     | RiderEdit RiderEdit.Model

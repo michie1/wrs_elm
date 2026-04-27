@@ -20,16 +20,12 @@ type alias App =
     , token : Maybe String
     , user : Maybe User
     , wtosLoginUrl : String
-    , payoutPot : Float
     , minimumPayoutPoints : Int
     , now : Posix
     , mobileMenuOpen : Bool
-    , showPayoutColumn : Bool
-    , payoutModalOpen : Bool
-    , payoutPotDraft : String
     }
 
 
 initial : Flags -> Browser.Navigation.Key -> App
 initial flags navKey =
-    App navKey App.Page.Races Nothing Nothing Nothing Nothing Nothing flags.wtosLoginUrl flags.payoutPot flags.minimumPayoutPoints (Time.millisToPosix 0) False False False (String.fromFloat flags.payoutPot)
+    App navKey App.Page.Races Nothing Nothing Nothing Nothing Nothing flags.wtosLoginUrl flags.minimumPayoutPoints (Time.millisToPosix 0) False

@@ -11,6 +11,8 @@ import Dict exposing (Dict)
 import Html exposing (Html, a, button, div, h2, input, p, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, disabled, href, rel, style, target, type_, value)
 import Html.Events exposing (onClick, onInput)
+import Page.Rider.List.Model exposing (Model)
+import Page.Rider.List.Msg as Msg
 import String
 
 
@@ -22,8 +24,8 @@ type alias RiderPoints =
     }
 
 
-view : Maybe User -> Bool -> Bool -> String -> Float -> Int -> List Rider -> List Race -> List RaceResult -> Html App.Msg.Msg
-view maybeUser showPayoutColumn payoutModalOpen payoutPotDraft payoutPot minimumPayoutPoints riders races results =
+view : Maybe User -> Model -> Int -> List Rider -> List Race -> List RaceResult -> Html App.Msg.Msg
+view maybeUser model minimumPayoutPoints riders races results =
     let
         riderPoints =
             riders
@@ -39,12 +41,12 @@ view maybeUser showPayoutColumn payoutModalOpen payoutPotDraft payoutPot minimum
                 |> List.reverse
 
         provisionalPayouts =
-            Data.Payout.payoutEstimates payoutPot minimumPayoutPoints
+            Data.Payout.payoutEstimates model.payoutBudget minimumPayoutPoints
                 (List.map (\rider -> { riderId = rider.key, points = rider.points }) riderPoints)
     in
     div []
         [ h2 [ class "title is-2" ] [ text "Riders" ]
-        , actions maybeUser showPayoutColumn
+        , actions maybeUser model.showPayoutColumn
         , div [ class "table-container" ]
             [ table [ class "table" ]
                 [ thead []
@@ -54,7 +56,7 @@ view maybeUser showPayoutColumn payoutModalOpen payoutPotDraft payoutPot minimum
                          , th [] [ text "Points" ]
                          ]
                             ++
-                                (if showPayoutColumn then
+                                (if model.showPayoutColumn then
                                     [ th [] [ text "Provisional payout" ] ]
 
                                  else
@@ -75,7 +77,7 @@ view maybeUser showPayoutColumn payoutModalOpen payoutPotDraft payoutPot minimum
                                      , td [] [ text <| String.fromInt <| rider.points ]
                                      ]
                                         ++
-                                            (if showPayoutColumn then
+                                            (if model.showPayoutColumn then
                                                 [ td [] [ text <| formatPayoutCell (Dict.get rider.key provisionalPayouts |> Maybe.withDefault 0) ] ]
 
                                              else
@@ -86,7 +88,7 @@ view maybeUser showPayoutColumn payoutModalOpen payoutPotDraft payoutPot minimum
                     )
                 ]
             ]
-        , payoutModal payoutModalOpen payoutPotDraft
+        , payoutModal model.payoutModalOpen model.payoutBudgetDraft
         ]
 
 
@@ -114,16 +116,16 @@ payoutButton showPayoutColumn =
     button
         [ class "button"
         , disabled showPayoutColumn
-        , onClick App.Msg.OpenPayoutModal
+        , onClick (App.Msg.RiderList Msg.OpenPayoutModal)
         ]
         [ text "Show provisional payout" ]
 
 
 payoutModal : Bool -> String -> Html App.Msg.Msg
-payoutModal payoutModalOpen payoutPotDraft =
+payoutModal payoutModalOpen payoutBudgetDraft =
     if payoutModalOpen then
         div [ class "modal is-active" ]
-            [ div [ class "modal-background", onClick App.Msg.ClosePayoutModal ] []
+            [ div [ class "modal-background", onClick (App.Msg.RiderList Msg.ClosePayoutModal) ] []
             , div [ class "modal-card" ]
                 [ div [ class "modal-card-head" ]
                     [ div []
@@ -150,16 +152,16 @@ payoutModal payoutModalOpen payoutPotDraft =
                             [ input
                                 [ class "input"
                                 , type_ "text"
-                                , value payoutPotDraft
-                                , onInput App.Msg.UpdatePayoutPotDraft
+                                , value payoutBudgetDraft
+                                , onInput (App.Msg.RiderList << Msg.UpdatePayoutBudgetDraft)
                                 ]
                                 []
                             ]
                         ]
                     ]
                 , div [ class "modal-card-foot buttons" ]
-                    [ button [ class "button", onClick App.Msg.ClosePayoutModal ] [ text "Cancel" ]
-                    , button [ class "button is-primary", onClick App.Msg.SubmitPayoutPot ] [ text "Show column" ]
+                    [ button [ class "button", onClick (App.Msg.RiderList Msg.ClosePayoutModal) ] [ text "Cancel" ]
+                    , button [ class "button is-primary", onClick (App.Msg.RiderList Msg.SubmitPayoutBudget) ] [ text "Show column" ]
                     ]
                 ]
             ]
