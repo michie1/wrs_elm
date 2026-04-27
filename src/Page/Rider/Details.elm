@@ -8,6 +8,7 @@ import Data.Licence exposing (licenceLabel)
 import Data.Outfit exposing (outfitToString)
 import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult, getPointsByResult, getPointsByResults)
+import Data.ResultCategory exposing (categoryReadable)
 import Data.Rider exposing (Rider)
 import Html exposing (Html, a, dd, div, dl, dt, h2, i, p, span, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, href, style)
@@ -103,9 +104,10 @@ resultsTable results races =
             [ thead []
                 [ tr []
                     [ th [] [ text "Race" ]
+                    , th [] [ text "Result" ]
                     , th [] [ text "Date" ]
                     , th [] [ text "Points" ]
-                    , th [] [ text "Result" ]
+                    , th [] [ text "Category" ]
                     , th [] [ text "Outfit" ]
                     ]
                 ]
@@ -142,8 +144,9 @@ raceRow races result =
                         [ href ("/races/" ++ race.key) ]
                         [ text race.name ]
                     ]
+                , td [] [ text result.result ]
                 , td [] [ text <| dateString ]
                 , td [] [ text <| String.fromInt <| getPointsByResult result races ]
-                , td [] [ text result.result ]
+                , td [] [ text <| categoryReadable result.category ]
                 , td [] [ text <| outfitToString result.outfit ]
                 ]
