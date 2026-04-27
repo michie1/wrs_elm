@@ -1,11 +1,7 @@
-main.html
+.config.dev.backup.js
+.vscode
+*.pdf
+build
+dist/
 elm-stuff/
 node_modules
-npm-debug.log
-.ctags
-tags
-build
-icon?family=Material+Icons
-dist/
-.vscode
-.config.dev.backup.js
