@@ -31,3 +31,7 @@ type Msg
     | ToggleMobileMenu
     | CloseMobileMenu
     | GoBack
+    | OpenPayoutModal
+    | ClosePayoutModal
+    | UpdatePayoutPotDraft String
+    | SubmitPayoutPot

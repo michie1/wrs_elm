@@ -7,6 +7,7 @@ import Data.Race exposing (Race)
 import Data.RaceResult exposing (RaceResult)
 import Data.Rider exposing (Rider)
 import Data.User exposing (User)
+import String
 import Time exposing (Posix)
 
 
@@ -23,9 +24,12 @@ type alias App =
     , minimumPayoutPoints : Int
     , now : Posix
     , mobileMenuOpen : Bool
+    , showPayoutColumn : Bool
+    , payoutModalOpen : Bool
+    , payoutPotDraft : String
     }
 
 
 initial : Flags -> Browser.Navigation.Key -> App
 initial flags navKey =
-    App navKey App.Page.Races Nothing Nothing Nothing Nothing Nothing flags.wtosLoginUrl flags.payoutPot flags.minimumPayoutPoints (Time.millisToPosix 0) False
+    App navKey App.Page.Races Nothing Nothing Nothing Nothing Nothing flags.wtosLoginUrl flags.payoutPot flags.minimumPayoutPoints (Time.millisToPosix 0) False False False (String.fromFloat flags.payoutPot)

@@ -14,6 +14,7 @@ import Page.Result.Add.Update as ResultAdd
 import Page.Result.Edit.Update as ResultEdit
 import Page.Rider.Add.Update as RiderAdd
 import Page.Rider.Edit.Update as RiderEdit
+import String
 import Url
 
 
@@ -157,3 +158,26 @@ update msg app =
 
         Msg.GoBack ->
             ( app, Browser.Navigation.back app.navKey 1 )
+
+        Msg.OpenPayoutModal ->
+            ( { app | payoutModalOpen = True }, Cmd.none )
+
+        Msg.ClosePayoutModal ->
+            ( { app | payoutModalOpen = False }, Cmd.none )
+
+        Msg.UpdatePayoutPotDraft value ->
+            ( { app | payoutPotDraft = value }, Cmd.none )
+
+        Msg.SubmitPayoutPot ->
+            case String.toFloat app.payoutPotDraft of
+                Just payoutPot ->
+                    ( { app
+                        | payoutPot = payoutPot
+                        , payoutModalOpen = False
+                        , showPayoutColumn = True
+                      }
+                    , Cmd.none
+                    )
+
+                Nothing ->
+                    ( app, Cmd.none )

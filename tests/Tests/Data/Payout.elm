@@ -18,7 +18,7 @@ suite =
                         ]
         , test "applies the minimum points threshold" <|
             \_ ->
-                Expect.equal (Dict.fromList [ ( "b", 1000 ) ]) <|
+                Expect.equal (Dict.fromList [ ( "b", 200 ) ]) <|
                     payoutEstimates 1000 10
                         [ { riderId = "a", points = 9 }
                         , { riderId = "b", points = 10 }
@@ -26,11 +26,14 @@ suite =
         , test "splits proportionally when nobody hits the cap" <|
             \_ ->
                 Expect.equal
-                    (Dict.fromList [ ( "a", 600 ), ( "b", 400 ) ])
+                    (Dict.fromList [ ( "a", 20 ), ( "b", 20 ), ( "c", 20 ), ( "d", 20 ), ( "e", 20 ) ])
                 <|
-                    payoutEstimates 1000 0
-                        [ { riderId = "a", points = 6 }
-                        , { riderId = "b", points = 4 }
+                    payoutEstimates 100 0
+                        [ { riderId = "a", points = 2 }
+                        , { riderId = "b", points = 2 }
+                        , { riderId = "c", points = 2 }
+                        , { riderId = "d", points = 2 }
+                        , { riderId = "e", points = 2 }
                         ]
         , test "caps riders at 20 percent and redistributes the remainder" <|
             \_ ->
