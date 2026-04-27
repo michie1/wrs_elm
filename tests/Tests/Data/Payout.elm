@@ -9,7 +9,7 @@ import Test exposing (Test, describe, test)
 suite : Test
 suite =
     describe "Data Payout"
-        [ test "returns empty payouts for zero pot" <|
+        [ test "returns empty payouts for zero budget" <|
             \_ ->
                 Expect.equal Dict.empty <|
                     payoutEstimates 0 10

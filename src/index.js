@@ -42,7 +42,6 @@ import { Elm } from "./Main";
     node: document.getElementById("main"),
     flags: {
       wtosLoginUrl: selectedConfig.wtosLoginUrl,
-      payoutPot: selectedConfig.payoutPot || 0,
       minimumPayoutPoints: selectedConfig.minimumPayoutPoints ?? 10
     }
   });

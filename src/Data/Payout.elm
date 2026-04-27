@@ -10,19 +10,19 @@ type alias PayoutRider comparable =
 
 
 payoutEstimates : Float -> Int -> List (PayoutRider comparable) -> Dict comparable Float
-payoutEstimates payoutPot minimumPayoutPoints riders =
+payoutEstimates payoutBudget minimumPayoutPoints riders =
     let
         eligibleRiders =
             List.filter (\rider -> rider.points >= minimumPayoutPoints) riders
 
         maxPayout =
-            payoutPot * 0.2
+            payoutBudget * 0.2
     in
-    if payoutPot <= 0 || List.isEmpty eligibleRiders then
+    if payoutBudget <= 0 || List.isEmpty eligibleRiders then
         Dict.empty
 
     else
-        distributePayouts maxPayout payoutPot eligibleRiders
+        distributePayouts maxPayout payoutBudget eligibleRiders
             |> Dict.fromList
 
 

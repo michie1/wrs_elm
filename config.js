@@ -7,7 +7,6 @@ module.exports = {
     storageBucket: "",
     messagingSenderId: "863333663162",
     wtosLoginUrl: "https://wtos.nl/wrslogin.php?dev",
-    payoutPot: 1000,
     minimumPayoutPoints: 0
   },
   prodConfig: {
@@ -18,7 +17,6 @@ module.exports = {
     storageBucket: "cycling-results.appspot.com",
     messagingSenderId: "939143658590",
     wtosLoginUrl: "https://wtos.nl/wrslogin.php",
-    payoutPot: 1000,
     minimumPayoutPoints: 10
   }
 };
