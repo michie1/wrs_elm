@@ -32,25 +32,30 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-1.0.0.tgz#f75c08f88cfd9eb8d9b062284d5bbcc60c41bf2a"
   integrity sha512-dDlz3W405VMFO4w5kIP9DOmELBcvFQGmLoKSdIRstBDubKFYwaNHV1NnlzMCQpXQFGWVALmeMORAuiLx18AvZQ==
 
-"@elm_binaries/darwin_arm64@0.19.1-0":
-  version "0.19.1-0"
-  resolved "https://registry.yarnpkg.com/@elm_binaries/darwin_arm64/-/darwin_arm64-0.19.1-0.tgz#ea09fca7cdfedad3fa517267099d78d180f01098"
-  integrity sha512-mjbsH7BNHEAmoE2SCJFcfk5fIHwFIpxtSgnEAqMsVLpBUFoEtAeX+LQ+N0vSFJB3WAh73+QYx/xSluxxLcL6dA==
+"@elm_binaries/darwin_arm64@0.19.2-0":
+  version "0.19.2-0"
+  resolved "https://registry.yarnpkg.com/@elm_binaries/darwin_arm64/-/darwin_arm64-0.19.2-0.tgz#6dd4e68a34b1a8ac81fb73895cd0f25d424d79a7"
+  integrity sha512-vhgvWAgc+jkB/oSCqI0BK1w908ivNbV6OBWIGtJgbzAXFh6RYLcGdE04+X6CTLgj+u5ufl81lsnMG6lWEMzbJg==
 
-"@elm_binaries/darwin_x64@0.19.1-0":
-  version "0.19.1-0"
-  resolved "https://registry.yarnpkg.com/@elm_binaries/darwin_x64/-/darwin_x64-0.19.1-0.tgz#8c3254590804c35ee7b97b4d8a21a63318511c44"
-  integrity sha512-QGUtrZTPBzaxgi9al6nr+9313wrnUVHuijzUK39UsPS+pa+n6CmWyV/69sHZeX9qy6UfeugE0PzF3qcUiy2GDQ==
+"@elm_binaries/darwin_x64@0.19.2-0":
+  version "0.19.2-0"
+  resolved "https://registry.yarnpkg.com/@elm_binaries/darwin_x64/-/darwin_x64-0.19.2-0.tgz#c5e090d7872d89233e04bcfa68f2815f7cfbfd84"
+  integrity sha512-CQub4GhTa9nOHkUpi4eVGy34mxhfQOpVteLWkgsFwSHxXathKzNaOR9W7nVHR1iKEMBNcYJpXS2MoQognOUMkA==
 
-"@elm_binaries/linux_x64@0.19.1-0":
-  version "0.19.1-0"
-  resolved "https://registry.yarnpkg.com/@elm_binaries/linux_x64/-/linux_x64-0.19.1-0.tgz#95440341eee8f6bee2d88859b3bdd99f33ca88f0"
-  integrity sha512-T1ZrWVhg2kKAsi8caOd3vp/1A3e21VuCpSG63x8rDie50fHbCytTway9B8WHEdnBFv4mYWiA68dzGxYCiFmU2w==
+"@elm_binaries/linux_arm64@0.19.2-0":
+  version "0.19.2-0"
+  resolved "https://registry.yarnpkg.com/@elm_binaries/linux_arm64/-/linux_arm64-0.19.2-0.tgz#4297d17054157f44f611e428f0dbe41a7889be34"
+  integrity sha512-50LdOV2ddvgBqcgfVKC3yCKg3/3RQdkfE7Be5k7Zj2xYLALQolk3X2ualXUmXIbP6Zo1xYKymDAfa/M1PTF+dw==
 
-"@elm_binaries/win32_x64@0.19.1-0":
-  version "0.19.1-0"
-  resolved "https://registry.yarnpkg.com/@elm_binaries/win32_x64/-/win32_x64-0.19.1-0.tgz#3f8decfd6f5fbc46906f3f5d50561b6e5b33ac3a"
-  integrity sha512-yDleiXqSE9EcqKtd9SkC/4RIW8I71YsXzMPL79ub2bBPHjWTcoyyeBbYjoOB9SxSlArJ74HaoBApzT6hY7Zobg==
+"@elm_binaries/linux_x64@0.19.2-0":
+  version "0.19.2-0"
+  resolved "https://registry.yarnpkg.com/@elm_binaries/linux_x64/-/linux_x64-0.19.2-0.tgz#ccceb9472d573e65dc71f4152fac90375cee686d"
+  integrity sha512-03EXHZZBCEFcKKh2kKUGPsFysKXnHANYw2XubBwT3Vj/5uOI/doG0g8kij5ng8n50vma/pNwAWqvVQLSRDmPMA==
+
+"@elm_binaries/win32_x64@0.19.2-0":
+  version "0.19.2-0"
+  resolved "https://registry.yarnpkg.com/@elm_binaries/win32_x64/-/win32_x64-0.19.2-0.tgz#a828a2c3a9d2093b03c961b1be5466967ee1fb21"
+  integrity sha512-FCzv6KAlo/L2/FZe3rsIH5dgFfljlgKWpMUDxVgNm1mFKep4TeFEnwRlSUh7hFnKCDVyjUL9oNL+x4OwYr3KWg==
 
 "@jridgewell/gen-mapping@^0.3.5":
   version "0.3.8"
@@ -633,13 +638,6 @@ ansi-html-community@^0.0.8:
   resolved "https://registry.yarnpkg.com/ansi-html-community/-/ansi-html-community-0.0.8.tgz#69fbc4d6ccbe383f9736934ae34c3f8290f1bf41"
   integrity sha512-1APHAyr3+PCamwNw3bXCPp4HFLONZt/yIH0sZp0/469KWNTEy+qN5jQ3GVX6DMZ1UXAi34yVwtTeaG/HpBuuzw==
 
-ansi-styles@^4.1.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-4.3.0.tgz#edd803628ae71c04c85ae7a0906edad34b648937"
-  integrity sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==
-  dependencies:
-    color-convert "^2.0.1"
-
 anymatch@~3.1.2:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/anymatch/-/anymatch-3.1.3.tgz#790c58b19ba1720a84205b57c618d5ad8524973e"
@@ -782,14 +780,6 @@ caniuse-lite@^1.0.30001782:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001790.tgz#04660c7de15f445d86dd10ac88a8936ac0698e45"
   integrity sha512-bOoxfJPyYo+ds6W0YfptaCWbFnJYjh2Y1Eow5lRv+vI2u8ganPZqNm1JwNh0t2ELQCqIWg4B3dWEusgAmsoyOw==
 
-chalk@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
-  integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
-  dependencies:
-    ansi-styles "^4.1.0"
-    supports-color "^7.1.0"
-
 chokidar@^3.5.3, chokidar@^3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.6.0.tgz#197c6cc669ef2a8dc5e7b4d97ee4e092c3eb0d5b"
@@ -818,18 +808,6 @@ clone-deep@^4.0.1:
     is-plain-object "^2.0.4"
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
-
-color-convert@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-2.0.1.tgz#72d3a68d598c9bdb3af2ad1e84f21d896abd4de3"
-  integrity sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==
-  dependencies:
-    color-name "~1.1.4"
-
-color-name@~1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
-  integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
 colorette@^2.0.10:
   version "2.0.20"
@@ -1045,12 +1023,11 @@ elm-test-tests@elm-explorations/test:
   version "0.0.0"
   resolved "https://codeload.github.com/elm-explorations/test/tar.gz/2900b087d3311977ef1f4f91ac3d623d848b4b52"
 
-elm-test@^0.19.1-revision17:
-  version "0.19.1-revision17"
-  resolved "https://registry.yarnpkg.com/elm-test/-/elm-test-0.19.1-revision17.tgz#c659865ac0604971566fadfadd9bdb52245f7dfe"
-  integrity sha512-P9J8tXdLXmqgIMlSozfcb/KCORq4GuxfwBbzqFLMss8KlGmUKonOJwseRX6xVkdU5xgGVA/mz9rfMTNomIbwng==
+elm-test@^0.19.2-0:
+  version "0.19.2-0"
+  resolved "https://registry.yarnpkg.com/elm-test/-/elm-test-0.19.2-0.tgz#977dd302dd691effc2a587d68a58b05e2d29232f"
+  integrity sha512-vXr9HS3ikJA8fNYtMYusha1sG8exjigeg/4Gh+wedd9412DKb0sNMNg7hXOF3N4jxc+SroyyL6SoBxLSJ/bBlw==
   dependencies:
-    chalk "^4.1.2"
     chokidar "^3.5.3"
     commander "^9.4.1"
     cross-spawn "^7.0.6"
@@ -1069,15 +1046,16 @@ elm-webpack-loader@^8.0.0:
     loader-utils "^2.0.0"
     node-elm-compiler "^5.0.0"
 
-elm@^0.19.1-6:
-  version "0.19.1-6"
-  resolved "https://registry.yarnpkg.com/elm/-/elm-0.19.1-6.tgz#b6f51d0add8877de70592097a8f6efc4588c476a"
-  integrity sha512-mKYyierHICPdMx/vhiIacdPmTPnh889gjHOZ75ZAoCxo3lZmSWbGP8HMw78wyctJH0HwvTmeKhlYSWboQNYPeQ==
+elm@^0.19.2-0:
+  version "0.19.2-0"
+  resolved "https://registry.yarnpkg.com/elm/-/elm-0.19.2-0.tgz#c7c79f00c5bc55e2ff593576d047b5f6de77b504"
+  integrity sha512-a2N4WJ6ge+cXOemAgo6tu8gN17cIzzitYoPcJRpvbiPbay1+BfQAv9wyWtgTyR3YkrduN5oQwzLgSIaUBZwjYQ==
   optionalDependencies:
-    "@elm_binaries/darwin_arm64" "0.19.1-0"
-    "@elm_binaries/darwin_x64" "0.19.1-0"
-    "@elm_binaries/linux_x64" "0.19.1-0"
-    "@elm_binaries/win32_x64" "0.19.1-0"
+    "@elm_binaries/darwin_arm64" "0.19.2-0"
+    "@elm_binaries/darwin_x64" "0.19.2-0"
+    "@elm_binaries/linux_arm64" "0.19.2-0"
+    "@elm_binaries/linux_x64" "0.19.2-0"
+    "@elm_binaries/win32_x64" "0.19.2-0"
 
 emojis-list@^3.0.0:
   version "3.0.0"
@@ -2408,13 +2386,6 @@ style-loader@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-4.0.0.tgz#0ea96e468f43c69600011e0589cb05c44f3b17a5"
   integrity sha512-1V4WqhhZZgjVAVJyt7TdDPZoPBPNHbekX4fWnCJL1yQukhCeZhJySUL+gL9y6sNdN95uEOS83Y55SqHcP7MzLA==
-
-supports-color@^7.1.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-7.2.0.tgz#1b7dcdcb32b8138801b3e478ba6a51caa89648da"
-  integrity sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==
-  dependencies:
-    has-flag "^4.0.0"
 
 supports-color@^8.0.0:
   version "8.1.1"

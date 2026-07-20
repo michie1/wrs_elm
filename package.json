@@ -18,9 +18,9 @@
     "css-loader": "^7.1.4"
   },
   "devDependencies": {
-    "elm": "^0.19.1-6",
+    "elm": "^0.19.2-0",
     "elm-format": "^0.8.8",
-    "elm-test": "^0.19.1-revision17",
+    "elm-test": "^0.19.2-0",
     "elm-test-tests": "elm-explorations/test",
     "elm-webpack-loader": "^8.0.0",
     "style-loader": "^4.0.0",
