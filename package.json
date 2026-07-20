@@ -3,6 +3,9 @@
   "private": true,
   "version": "3.0.0",
   "description": "",
+  "engines": {
+    "node": ">=24 <25"
+  },
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --hot --allowed-hosts all",
